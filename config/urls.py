@@ -30,11 +30,14 @@ urlpatterns = [
     # User management
     path('accounts/', include('django.contrib.auth.urls')),
 
+    path('i18n/', include('django.conf.urls.i18n')),
+
+    path('', include('pages.urls')),
 
 ]
 
 # Local apps
-urlpatterns += i18n_patterns(path('', include('pages.urls')))
+# urlpatterns += i18n_patterns(path('', include('pages.urls')))
 
 if settings.DEBUG:
     urlpatterns += path('__debug__/', include(debug_toolbar.urls)),

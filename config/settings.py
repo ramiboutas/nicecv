@@ -210,3 +210,9 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 SITE_NAME = _('Nice CV')
 META_KEYWORDS = _('Enter meta keywords here')
 META_DESCRIPTION = _('Enter meta description here')
+
+
+# Redirects after login & logout
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
