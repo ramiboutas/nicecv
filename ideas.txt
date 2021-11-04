@@ -18,3 +18,8 @@ class MyThing(models.Model):
     verbose_name_plural = _('my things')
 
 *********************************************************
+Testing the language
+
+https://docs.djangoproject.com/en/3.2/topics/testing/tools/#setting-the-language
+
+*********************************************************

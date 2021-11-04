@@ -27,23 +27,20 @@ urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
 
+    # i18n
+    path('i18n/', include('django.conf.urls.i18n')),
+
     # User management
     path('accounts/', include('django.contrib.auth.urls')),
 
-    path('i18n/', include('django.conf.urls.i18n')),
-
+    # Local apps
+    path('accounts/', include('accounts.urls')),
     path('', include('pages.urls')),
 
 ]
 
-# Local apps
-# urlpatterns += i18n_patterns(path('', include('pages.urls')))
-
 if settings.DEBUG:
-    urlpatterns += path('__debug__/', include(debug_toolbar.urls)),
-
-
-if 'rosetta' in settings.INSTALLED_APPS and settings.DEBUG:
     urlpatterns += [
-        re_path(r'^rosetta/', include('rosetta.urls'))
+        path('__debug__/', include(debug_toolbar.urls)),
+        re_path(r'^rosetta/', include('rosetta.urls')),
     ]

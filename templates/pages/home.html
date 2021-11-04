@@ -14,6 +14,7 @@
   {% else %}
     <p> {% translate "You are not logged in" %} </p>
     <a href="{% url 'login' %}">{% translate "Log in" %}</a>
+    <a href="{% url 'signup' %}">{% translate "Sign up" %}</a>
   {% endif %}
 
 
