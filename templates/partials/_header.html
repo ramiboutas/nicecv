@@ -1,14 +1,18 @@
 {% load i18n %}
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<nav class="navbar navbar-expand-xl navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="{% url 'home' %}">Nice CV</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo2" aria-controls="navbarTogglerDemo2" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo2">
+      <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{% translate 'Language'%}</a>
+        </li>
+        <li class="nav-item dropdown me-3">
           <form class="form-inline" action="{% url 'set_language' %}" method="post">{% csrf_token %}
             <input name="next" type="hidden" value="{{ redirect_to }}">
             <select onchange="this.form.submit()" name="language" class="form-control">
@@ -22,9 +26,22 @@
                 {% endfor %}
             </select>
         </form>
-        </li>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">{% translate 'Pricing'%}</a>
+      </li>
       </ul>
+      <div class="d-flex">
+        {% if user.is_authenticated %}
+          <a type="button" class="btn btn-outline-dark me-2">{% translate 'Account'%}</a>
+          <a type="button" class="btn btn-outline-secondary">{% translate 'Log out'%}</a>
+        {% else %}
+          <a class="btn btn-outline-success">{% translate 'Log in'%}</a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </nav>
+
+
 </header>

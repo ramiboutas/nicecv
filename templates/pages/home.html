@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 
@@ -8,9 +9,9 @@
 {% block content %}
   {% include "partials/_header.html" %}
   <h1> {% translate 'Homepage' %} </h1>
-
+  <img class="bookcover" src="{% static 'images/dfp.jpg' %}">
   {% if user.is_authenticated %}
-    {% translate "Hello" %} {{ user.email }}
+    <p>{% translate "Hello" %} {{ user.email }}</p>
   {% else %}
     <p> {% translate "You are not logged in" %} </p>
     <a href="{% url 'login' %}">{% translate "Log in" %}</a>
