@@ -31,12 +31,12 @@ class CustomUserTests(TestCase):
 class SignupPageTests(TestCase):
 
     def setUp(self):
-        url = reverse('signup')
+        url = reverse('account_signup')
         self.response = self.client.get(url)
 
     def test_signup_template(self):
         self.assertEqual(self.response.status_code, 200)
-        self.assertTemplateUsed(self.response, 'registration/signup.html')
+        self.assertTemplateUsed(self.response, 'account/signup.html')
         self.assertContains(self.response, 'Sign up')
         self.assertNotContains(self.response, 'Hi, this text is so random that should not be on your page :)')
 
@@ -45,6 +45,6 @@ class SignupPageTests(TestCase):
         self.assertIsInstance(form, CustomUserCreationForm)
         self.assertContains(self.response, 'csrfmiddlewaretoken')
 
-    def test_signup_view(self):
-        view = resolve('/accounts/signup/')
-        self.assertEqual(view.func.__name__, SignupPageView.as_view().__name__)
+    # def test_signup_view(self):
+    #     view = resolve('/accounts/signup/')
+    #     self.assertEqual(view.func.__name__, SignupPageView.as_view().__name__)

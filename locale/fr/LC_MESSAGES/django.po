@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-01 12:34+0000\n"
+"POT-Creation-Date: 2021-11-06 11:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,61 +18,87 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: config/settings.py:173
+#: config/settings.py:197
 msgid "English"
 msgstr ""
 
-#: config/settings.py:174
+#: config/settings.py:198
 msgid "Spanish"
 msgstr ""
 
-#: config/settings.py:175
+#: config/settings.py:199
 msgid "German"
 msgstr ""
 
-#: config/settings.py:176
+#: config/settings.py:200
 msgid "French"
 msgstr ""
 
-#: config/settings.py:177
+#: config/settings.py:201
 msgid "Portuguese"
 msgstr ""
 
-#: config/settings.py:178
+#: config/settings.py:202
 msgid "Italian"
 msgstr ""
 
-#: config/settings.py:209
+#: config/settings.py:240
 msgid "Nice CV"
 msgstr ""
 
-#: config/settings.py:210
+#: config/settings.py:241
 msgid "Enter meta keywords here"
 msgstr ""
 
-#: config/settings.py:211
+#: config/settings.py:242
 msgid "Enter meta description here"
 msgstr ""
 
-#: templates/pages/home.html:4
+#: templates/account/login.html:4 templates/account/login.html:11
+#: templates/account/login.html:15 templates/pages/home.html:18
+#: templates/partials/_header.html:39
+msgid "Log in"
+msgstr ""
+
+#: templates/account/signup.html:4 templates/account/signup.html:13
+#: templates/pages/home.html:19
+msgid "Sign up"
+msgstr ""
+
+#: templates/account/signup.html:9
+msgid "Sign up, create a new account"
+msgstr ""
+
+#: templates/pages/home.html:6
 msgid "Home"
 msgstr ""
 
-#: templates/pages/home.html:9
+#: templates/pages/home.html:12
 msgid "Homepage"
 msgstr ""
 
-#: templates/pages/home.html:12
+#: templates/pages/home.html:15
 msgid "Hello"
 msgstr ""
 
-#: templates/pages/home.html:14
+#: templates/pages/home.html:17
 msgid "You are not logged in"
 msgstr ""
 
-#: templates/pages/home.html:15 templates/registration/login.html:5
-#: templates/registration/login.html:10 templates/registration/login.html:15
-msgid "Log in"
+#: templates/partials/_header.html:13
+msgid "Language"
+msgstr ""
+
+#: templates/partials/_header.html:31
+msgid "Pricing"
+msgstr ""
+
+#: templates/partials/_header.html:36
+msgid "Account"
+msgstr ""
+
+#: templates/partials/_header.html:37
+msgid "Log out"
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/contrib/messages/apps.py:7

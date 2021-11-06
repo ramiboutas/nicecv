@@ -31,7 +31,7 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
 
     # User management
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
 
     # Local apps
     path('accounts/', include('accounts.urls')),

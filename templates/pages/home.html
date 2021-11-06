@@ -8,15 +8,17 @@
 
 {% block content %}
   {% include "partials/_header.html" %}
-  <h1> {% translate 'Homepage' %} </h1>
-  <img class="bookcover" src="{% static 'images/dfp.jpg' %}">
-  {% if user.is_authenticated %}
-    <p>{% translate "Hello" %} {{ user.email }}</p>
-  {% else %}
-    <p> {% translate "You are not logged in" %} </p>
-    <a href="{% url 'login' %}">{% translate "Log in" %}</a>
-    <a href="{% url 'signup' %}">{% translate "Sign up" %}</a>
-  {% endif %}
-
+  <div class="container">
+    <h1> {% translate 'Homepage' %} </h1>
+    <img class="bookcover" src="{% static 'images/dfp.jpg' %}">
+    {% if user.is_authenticated %}
+      <p>{% translate "Hello" %} {{ user.email }}</p>
+    {% else %}
+      <p> {% translate "You are not logged in" %} </p>
+      <a href="{% url 'account_login' %}">{% translate "Log in" %}</a>
+      <a href="{% url 'account_signup' %}">{% translate "Sign up" %}</a>
+    {% endif %}
+  </div>
+  {% include "partials/_footer.html" %}
 
 {% endblock %}

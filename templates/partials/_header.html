@@ -33,10 +33,10 @@
       </ul>
       <div class="d-flex">
         {% if user.is_authenticated %}
-          <a type="button" class="btn btn-outline-dark me-2">{% translate 'Account'%}</a>
-          <a type="button" class="btn btn-outline-secondary">{% translate 'Log out'%}</a>
+          <a href="." class="btn btn-outline-dark me-2">{% translate 'Account'%}</a>
+          <a href="{% url 'account_logout' %}" class="btn btn-outline-secondary">{% translate 'Log out'%}</a>
         {% else %}
-          <a class="btn btn-outline-success">{% translate 'Log in'%}</a>
+          <a href="{% url 'account_login' %}" class="btn btn-outline-success">{% translate 'Log in'%}</a>
         {% endif %}
       </div>
     </div>
