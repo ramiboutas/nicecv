@@ -36,8 +36,7 @@ INTERNAL_IPS = [
 ALLOWED_HOSTS = []
 
 if not DEBUG:
-    ALLOWED_HOSTS += [os.environ.get('DJANGO_ALLOWED_HOSTS')]
-
+    ALLOWED_HOSTS += ['nicecv.online', 'www.nicecv.online', ]
 
 # Application definition
 
@@ -49,8 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-
 
     # Third-party apps
     'rosetta',
