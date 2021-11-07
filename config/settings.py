@@ -22,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'asfasfdadsfadfadsf')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = str(os.environ.get('DEBUG')) == '1'
 
 INTERNAL_IPS = [
     # ...
@@ -33,10 +33,17 @@ INTERNAL_IPS = [
     # ...
 ]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhosst']
 
-if not DEBUG:
-    ALLOWED_HOSTS += ['nicecv.online', 'www.nicecv.online', ]
+# https
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 5
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_PRELOAD = True
+
 
 # Application definition
 
