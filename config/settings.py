@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'rosetta',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     # Local
     'accounts.apps.AccountsConfig',
@@ -156,7 +158,7 @@ else:
             'HOST': POSTGRES_HOST,
             'PORT': POSTGRES_PORT,
             'TEST': {
-             'MIRROR': 'default',
+             'NAME': 'test_db',
              },
         }
     }
@@ -251,3 +253,17 @@ META_DESCRIPTION = _('Enter meta description here')
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

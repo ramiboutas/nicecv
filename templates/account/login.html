@@ -1,20 +1,41 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load socialaccount %}
 
 {% block title %} | {% translate 'Log in' %}{% endblock %}
 
 
 {% block content %}
   {% include "partials/_header.html" %}
-  <div class="container">
-    <div class="container">
-      <h2> {% translate 'Log in' %} </h2>
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{% translate 'Log in' %}</button>
-      </form>
-    </div>
-  </div>
+
+  <div class="container text-dark mt-5">
+     <div class="row justify-content-md-center">
+       <div class="col-md-5 bg-grey p-3">
+         <form class="form-signin" method="post">
+           {% csrf_token %}
+             <h1 class="h3 mb-3 text-center">{% translate 'Log in' %}</h1>
+             <input type="email" id="inputEmail" class="form-control mb-3" placeholder="{% translate 'Email address' %}" required autofocus>
+             <input type="password" id="inputPassword" class="form-control mb-3" placeholder="{% translate 'Password' %}" required>
+               <div class="checkbox mb-3">
+                 <label>
+                   <input type="checkbox" value="remember-me"> {% translate 'Remember me' %}
+                 </label>
+               </div>
+             <div class="text-center">
+               <button  class="btn btn-primary btn-block" type="submit">{% translate 'Log in' %}</button>
+               <p class="mt-3">{% translate 'or' %}</p>
+               <hr class="mb-4">
+               <a href="{% provider_login_url 'google' %}"
+               class="btn btn btn-danger" role="button" aria-pressed="true">
+                {% translate 'Google' %}</a>
+
+                <p class="mt-5">
+                  <a href="{% url 'account_signup' %}" class="text-left">{% translate 'Create new account' %}</a>
+                </p>
+             </div>
+           </form>
+       </div>
+     </div>
+   </div>
   {% include "partials/_footer.html" %}
 {% endblock %}

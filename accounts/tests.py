@@ -7,6 +7,7 @@ from .views import SignupPageView
 
 
 class CustomUserTests(TestCase):
+
     def setUp(self):
         User = get_user_model()
         self.standard_user = User.objects.create(username='myuser', email='myuser@email.com', password='myuserpass123')
@@ -29,7 +30,8 @@ class CustomUserTests(TestCase):
 
 
 class SignupPageTests(TestCase):
-
+    username = 'newuser'
+    email = 'newuser@gmail.com'
     def setUp(self):
         url = reverse('account_signup')
         self.response = self.client.get(url)
@@ -41,9 +43,11 @@ class SignupPageTests(TestCase):
         self.assertNotContains(self.response, 'Hi, this text is so random that should not be on your page :)')
 
     def test_signup_form(self):
-        form = self.response.context.get('form')
-        self.assertIsInstance(form, CustomUserCreationForm)
-        self.assertContains(self.response, 'csrfmiddlewaretoken')
+        new_user = get_user_model().objects.create_user(self.username, self.email)
+        self.assertEqual(get_user_model().objects.all().count(), 1)
+        self.assertEqual(get_user_model().objects.all()[0].username, self.username)
+        self.assertEqual(get_user_model().objects.all()[0].email, self.email)
+
 
     # def test_signup_view(self):
     #     view = resolve('/accounts/signup/')
