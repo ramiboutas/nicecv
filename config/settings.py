@@ -96,8 +96,8 @@ if PRODUCTION:
     ALLOWED_HOSTS += ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1']
     # https
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 5
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 3600 # usual: 31536000 (1 year)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
