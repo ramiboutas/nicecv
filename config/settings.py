@@ -74,6 +74,7 @@ EMAIL_USE_TLS = str(os.environ.get('EMAIL_USE_TLS')) == '1'
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST
 
 
 MIDDLEWARE = [
