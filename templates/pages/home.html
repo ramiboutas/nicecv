@@ -7,7 +7,6 @@
 
 
 {% block content %}
-  {% include "partials/_header.html" %}
   <div class="container">
     <h1> {% translate 'Homepage' %} </h1>
     <img class="bookcover" src="{% static 'images/dfp.jpg' %}">
@@ -19,6 +18,5 @@
       <a href="{% url 'account_signup' %}">{% translate "Sign up" %}</a>
     {% endif %}
   </div>
-  {% include "partials/_footer.html" %}
 
 {% endblock %}

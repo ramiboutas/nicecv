@@ -17,8 +17,15 @@
     <title>{{ site_name }} {% block title %} {% endblock %}</title>
   </head>
   <body>
-    {% block content %}
+    {% block body %}
+      {% include "partials/_messages.html" %}
+      {% include "partials/_header.html" %}
+      {% block content %}{% endblock %}
     {% endblock %}
+
+    {% block extra_body %}  {% endblock %}
+
+    {% include "partials/_footer.html" %}
     <!-- JavaScript -->
     <script src="{% static 'js/base.js' %}"></script>
     <!-- htmx -->

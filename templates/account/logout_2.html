@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %} | {% translate "Log out" %}  {% endblock %}
+
+{% block content %}
+  {% include "partials/_header.html" %}
+  <div class="container">
+    <h2>{% translate "Log out" %}</h2>
+    <p>{% translate "Are you sure you want to log out?" %}</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-danger">{% translate "Log out" %}</button>
+    </form>
+  </div>
+  {% include "partials/_footer.html" %}
+{% endblock %}
