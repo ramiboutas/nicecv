@@ -5,6 +5,8 @@
 {% block head_title %}{% trans "Account Connections" %}{% endblock %}
 
 {% block content %}
+<div class="container">
+
 <h1>{% trans "Account Connections" %}</h1>
 
 {% if form.accounts %}
@@ -51,4 +53,5 @@
 
 {% include "socialaccount/snippets/login_extra.html" %}
 
+</div>
 {% endblock %}
