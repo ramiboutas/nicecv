@@ -9,6 +9,5 @@ class PrivacyPolicyView(TemplateView):
     template_name = 'pages/privacy-policy.html'
 
 
-
 class TermsAndConditionsView(TemplateView):
     template_name = 'pages/terms-conditions.html'

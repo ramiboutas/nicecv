@@ -34,8 +34,11 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
     # Local apps
-    path('accounts/', include('accounts.urls')),
+    path('pricing/', include('pricing.urls')),
     path('', include('pages.urls')),
+
+    # Payments
+    path('payments/', include('payments.urls')),
 
 ]
 

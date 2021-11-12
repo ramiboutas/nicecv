@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'payments',
 
     # Local
     'accounts.apps.AccountsConfig',
     'pages.apps.PagesConfig',
+    'pricing.apps.PricingConfig',
 
 ]
 
@@ -75,6 +77,14 @@ EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST
+
+# payments (django-payments app)
+# https://django-payments.readthedocs.io/en/latest/install.html
+PAYMENT_HOST = 'localhost:8000'
+PAYMENT_USES_SSL = False
+PAYMENT_MODEL = 'pricing.Payment'
+PAYMENT_VARIANTS = {'default': ('payments.dummy.DummyProvider', {})}
+
 
 
 MIDDLEWARE = [
