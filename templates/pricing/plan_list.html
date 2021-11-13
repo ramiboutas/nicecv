@@ -10,6 +10,9 @@
 
 
 {% block content %}
+
+<div class="container">
+
 <h1>{% translate "Pricing" %}</h1>
 
 <ul>
@@ -17,5 +20,16 @@
   <li> <a href="https://github.com/django-getpaid/django-getpaid">django-getpaid</a> </li>
   <li> <a href="https://github.com/django-getpaid/django-plans">django-plans</a> </li>
 </ul>
+
+<form class="" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" name="button">Get</button>
+
+</form>
+
+
+</div>
+
 
 {% endblock %}

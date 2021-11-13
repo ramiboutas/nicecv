@@ -1,0 +1,28 @@
+
+
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "My profiles" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<h1>{% trans "My profiles" %}</h1>
+
+<ul>
+  {% for profile in object_list %}
+  <li> {{ profile.name }} <a href="{{ profile.edit_url }}"> Edit </a> <a href="{{ profile.detail_url }}"> View </a>  </li>
+  {% empty %}
+    <a href="#" class="btn btn-outline-dark me-2">{% translate 'Create your first profile' %}</a>
+  {% endfor %}
+
+</ul>
+
+
+
+
+
+</div>
+{% endblock %}

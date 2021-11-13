@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "My account" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+
+<h1>{% trans "My account" %}</h1>
+
+<ul>
+  <li> <a href="{% url 'account_email' %}" class="btn btn-outline-dark me-2">{% translate 'Change E-mail'%}</a></li>
+  <li><a href="{% url 'account_logout' %}" class="btn btn-outline-secondary">{% translate 'Log out'%}</a></li>
+</ul>
+
+</div>
+{% endblock %}

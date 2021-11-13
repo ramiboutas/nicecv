@@ -32,13 +32,14 @@ urlpatterns = [
 
     # User management
     path('accounts/', include('allauth.urls')),
+    path('accounts/', include('accounts.urls')), # this just for my-account url
 
     # Local apps
     path('pricing/', include('pricing.urls')),
+    path('profiles/', include('profiles.urls')),
     path('', include('pages.urls')),
 
     # Payments
-    path('payments/', include('payments.urls')),
 
 ]
 

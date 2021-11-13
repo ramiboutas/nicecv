@@ -1,19 +1,18 @@
-from decimal import Decimal
-
 from django.db import models
+from django.contrib.auth import get_user_model
 
-from payments import PurchasedItem
-from payments.models import BasePayment
+class Plan(models.Model):
+    months = models.PositiveSmallIntegerField()
+    price = models.DecimalField(max_digits=4, decimal_places=2)
 
-class Payment(BasePayment):
+    def __str__(self):
+        return f"{self.months} months"
 
-    def get_failure_url(self):
-        return 'http://example.com/failure/'
 
-    def get_success_url(self):
-        return 'http://example.com/success/'
+class Order(models.Model):
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
-    def get_purchased_items(self):
-        # you'll probably want to retrieve these from an associated order
-        yield PurchasedItem(name='The Hound of the Baskervilles', sku='BSKV',
-                            quantity=9, price=Decimal(10), currency='USD')
+    def __str__(self):
+        return f"{self.id} - {self.user.email}"
