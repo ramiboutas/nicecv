@@ -7,7 +7,8 @@ from .forms import SelectMonthPlanForm, LifeTimePlanForm
 from .models import Plan
 
 
-def pricing_view(request):
-    default_plan = Plan.objects.filter(default=True).first()
-    context = {'plan': default_plan}
-    return render(request, 'pricing/plan_list.html', context)
+def update_price(request):
+    months = request.GET.get('months')
+    plan = Plan.objects.filter(months=int(months)).first()
+    context = {'plan': plan}
+    return render(request, 'pricing/partials/price_months.html', context)

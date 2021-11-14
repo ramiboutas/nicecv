@@ -1,9 +1,18 @@
 from django.urls import path
 
-from .views import PricingView, OrderView
+from .views import pricing_view
+from . import hx_views
 
 urlpatterns = [
-    path('', PricingView.as_view(), name='pricing'),
-    path('', OrderView.as_view(), name='order_plan'),
+    path('', pricing_view, name='pricing'),
 
 ]
+
+
+hx_urlpatterns = [
+    path('update-price/', hx_views.update_price, name='pricing_update_price'),
+]
+
+
+
+urlpatterns += hx_urlpatterns
