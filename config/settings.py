@@ -262,6 +262,13 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 # PAYMENT_VARIANTS = {'default': ('payments.dummy.DummyProvider', {})}
 
 
+# braintree
+
+BRAINTREE_PRODUCTION = str(os.environ.get('BRAINTREE_PRODUCTION')) == '1'
+BRAINTREE_MERCHANT_ID = os.environ.get('RAINTREE_MERCHANT_ID')
+BRAINTREE_PUBLIC_KEY = os.environ.get('BRAINTREE_PUBLIC_KEY')
+BRAINTREE_PRIVATE_KEY = os.environ.get('BRAINTREE_PRIVATE_KEY')
+
 
 # SEO, Meta data & Naming
 

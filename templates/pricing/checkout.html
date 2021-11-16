@@ -1,0 +1,51 @@
+
+
+
+
+
+
+
+
+{% block content %}
+
+
+<h1>check out page</h1>
+
+
+
+<div id="dropin-container"></div>
+<button id="submit-button" class="button button--small button--green">Purchase</button>
+
+{% endblock %}
+
+
+
+{% block extra_body %}
+<script>
+    var braintree_client_token = "{{ braintree_client_token }}";
+    var button = document.querySelector('#submit-button');
+
+    braintree.dropin.create({
+      authorization: braintree_client_token,
+      container: '#braintree-dropin',
+      card: {
+        cardholderName: {
+            required: false
+        }
+      }
+    }, function (createErr, instance) {
+        button.addEventListener('click', function () {
+            instance.requestPaymentMethod(function (err, payload) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "procced_with_payment" %}',
+                    data: {'paymentMethodNonce': payload.nonce,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'}
+                }).done(function (result) {
+                   //do accordingly
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
