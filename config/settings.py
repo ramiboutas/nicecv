@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django_htmx',
+    'djstripe',
+
 
     # Local
     'accounts.apps.AccountsConfig',
@@ -88,6 +91,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 
@@ -249,9 +253,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Payments
 
 # Stripe
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
+STRIPE_LIVE_MODE = str(os.environ.get('STRIPE_LIVE_MODE')) == '1'
+STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
+DJSTRIPE_WEBHOOK_SECRET = os.environ.get("DJSTRIPE_WEBHOOK_SECRET")
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 
 # payments (django-payments app)
@@ -261,13 +269,6 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 # PAYMENT_MODEL = 'pricing.Payment'
 # PAYMENT_VARIANTS = {'default': ('payments.dummy.DummyProvider', {})}
 
-
-# braintree
-
-BRAINTREE_PRODUCTION = str(os.environ.get('BRAINTREE_PRODUCTION')) == '1'
-BRAINTREE_MERCHANT_ID = os.environ.get('RAINTREE_MERCHANT_ID')
-BRAINTREE_PUBLIC_KEY = os.environ.get('BRAINTREE_PUBLIC_KEY')
-BRAINTREE_PRIVATE_KEY = os.environ.get('BRAINTREE_PRIVATE_KEY')
 
 
 # SEO, Meta data & Naming

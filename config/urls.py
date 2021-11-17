@@ -40,6 +40,7 @@ urlpatterns = [
     path('', include('pages.urls')),
 
     # Payments
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 
 ]
 

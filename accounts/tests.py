@@ -45,6 +45,21 @@ class CustomUserTests(TestCase):
         self.standard_user.save()
         self.assertTrue(self.standard_user.has_paid())
 
+    def test_set_paid_until_none(self):
+        "the user has nothig ordered"
+        self.standard_user.paid_until = None
+        self.standard_user.save()
+        self.standard_user.set_paid_until(months=1)
+        self.standard_user.save()
+        self.assertTrue(self.standard_user.has_paid())
+
+    def test_set_paid_until_1_plus_1(self):
+        "the user is already premium member but add one month more"
+        self.standard_user.paid_until = datetime.date.today() + datetime.timedelta(days=365.25/12)
+        self.standard_user.save()
+        self.standard_user.set_paid_until(months=1)
+        self.standard_user.save()
+        self.assertTrue(self.standard_user.pro_days_left() >= 60)
 
 
 class SignupPageTests(TestCase):

@@ -1,20 +1,15 @@
 from django.urls import path
 
-from .views import pricing_view, checkout_view, payment_view
-from . import hx_views
+from .views import (pricing_view, get_payment_methods_view, proceed_with_payment_view, hx_update_price_view, hx_get_payment_methods_view)
 
 urlpatterns = [
-    path('', pricing_view, name='pricing'),
-    path('checkout/', checkout_view, name='pricing_checkout'),
-    path('procced-with-payment/', payment_view, name='procced_with_payment'),
+    # standard
+    path('', pricing_view, name='pricing_main'),
+    # this is used when the user is not logged in so we redirect him to login
+    path('get-payment-methods/', get_payment_methods_view ,name='pricing_get_payment_methods'),
+    path('proceed-with-payment/', proceed_with_payment_view ,name='pricing_proceed_with_payment'),
 
+    # htmx urls
+    path('hx/update-price/', hx_update_price_view, name='pricing_hx_update_price'),
+    path('hx/get-payment-methods/', hx_get_payment_methods_view ,name='pricing_hx_get_payment_methods'),
 ]
-
-
-hx_urlpatterns = [
-    path('update-price/', hx_views.update_price, name='pricing_update_price'),
-]
-
-
-
-urlpatterns += hx_urlpatterns
