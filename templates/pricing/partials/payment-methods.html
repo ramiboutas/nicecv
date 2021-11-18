@@ -1,5 +1,21 @@
 {% load i18n %}
-{% translate "Select your suitable method" %}
-<button type="submit" name="payment_method" value="card" >{% translate "Credit card" %}</button>
-<button type="submit" name="payment_method" value="paypal">Paypal</button>
-<button type="submit" name="payment_method" value="coinbase">{% translate "Criptos" %}</button>
+<hr>
+<p>{% translate "Select your suitable payment method" %}</p>
+
+<button type="submit" name="payment_method" value="card"
+  class="btn btn-primary btn-lg btn-block">
+  <i class="bi bi-credit-card"></i>
+  {% translate "Credit card" %}
+</button>
+
+<button type="submit" name="payment_method" value="paypal"
+  class="btn btn-primary btn-lg btn-block">
+  <i class="bi bi-paypal"></i>
+  Paypal
+</button>
+
+<button type="submit" name="payment_method" value="coinbase"
+  class="btn btn-primary btn-lg btn-block">
+  <i class="bi bi-currency-bitcoin"></i>
+  {% translate "Criptos" %}
+</button>

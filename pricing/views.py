@@ -8,10 +8,10 @@ from .models import Plan
 
 
 def pricing_view(request):
-    plan = Plan.objects.filter(default=True).first() # first default plan
-    context = {'plan': plan}
+    default_plan = Plan.objects.filter(default=True).first() # first default plan
+    months = set(Plan.objects.values_list('months', flat=True))
+    context = {'plan': default_plan, 'months': months}
     return render(request, 'pricing/main.html', context)
-
 
 @login_required
 def hx_get_payment_methods_view(request):
@@ -37,7 +37,7 @@ def hx_update_price_view(request):
         months = request.GET.get('months')
         plan = Plan.objects.filter(months=int(months)).first()
         context = {'plan': plan}
-        return render(request, 'pricing/partials/price_months.html', context)
+        return render(request, 'pricing/partials/price.html', context)
     return redirect('pricing_main')
 
 

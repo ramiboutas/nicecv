@@ -277,12 +277,31 @@ SITE_NAME = _('Nice CV')
 META_KEYWORDS = _('Enter meta keywords here')
 META_DESCRIPTION = _('Enter meta description here')
 
+#  pricing site
+DEFAULT_PRICING_MONTH = 6
+MONTH_PRICING = (
+# months, price, saving
+    (1, 12.00, 0),
+    (2, 21.50, 2.5),
+    (3, 28.90, 7.1),
+    (4, 34.1, 13.9),
+    (5, 38.2, 21.8),
+    (6, 41.5, 30.5),
+    (7, 44.2, 39.8),
+    (8, 46.7, 49.3),
+    (9, 48.8, 59.2),
+    (10, 50.70, 69.3),
+    (11, 52.70, 79.3),
+    (12, 54.00, 90),
+)
+DEFAULT_PRICING_PRICE = MONTH_PRICING[DEFAULT_PRICING_MONTH][1]
+DEFAULT_PRICING_SAVING = MONTH_PRICING[DEFAULT_PRICING_MONTH][2]
+
 
 # Redirects after login & logout
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
 
 
 SOCIALACCOUNT_PROVIDERS = {

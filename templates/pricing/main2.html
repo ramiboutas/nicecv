@@ -39,18 +39,11 @@
 
           <form class="mt-4 mb-2" action="{% url 'pricing_proceed_with_payment' %}" method="post">
             {% csrf_token %}
-            <select name="months" class="form-select form-select-lg mb-3"
-            hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML">
-              {% for month in months %}
-                <option value="{{month}}" {% if month == plan.month %}selected{% endif %}>
-                   {{ month }} month{{ month|pluralize }}
-                 </option>
-              {% endfor %}
-            </select>
+            <input name="months" type="range" class="form-range" min="1" max="12" value="{{ plan.months }}"
+                 hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price-months" hx-swap="innerHTML">
 
-
-            <div id="pro-price">
-              {% include "pricing/partials/price.html" %}
+            <div id="pro-price-months">
+              {% include "pricing/partials/price_months.html" %}
             </div>
               <ul class="list-unstyled mt-3 mb-4">
                 <li>{% translate "Unlimited profiles" %}</li>
