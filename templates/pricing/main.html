@@ -42,7 +42,7 @@
             <select name="months" class="form-select form-select-lg mb-3"
             hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML">
               {% for month in months %}
-                <option value="{{month}}" {% if month == plan.month %}selected{% endif %}>
+                <option value="{{month}}" {% if month == plan.months %}selected{% endif %}>
                    {{ month }} month{{ month|pluralize }}
                  </option>
               {% endfor %}

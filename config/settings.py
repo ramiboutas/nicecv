@@ -278,6 +278,7 @@ META_KEYWORDS = _('Enter meta keywords here')
 META_DESCRIPTION = _('Enter meta description here')
 
 #  pricing site
+# Plan model will be used instead
 DEFAULT_PRICING_MONTH = 6
 MONTH_PRICING = (
 # months, price, saving
