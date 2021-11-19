@@ -15,9 +15,9 @@
         <h1 class="display-1 fw-normal">{% translate "Welcome" %} </h1>
         <h1 class="h4 fw-normal">{% translate "Site under construction" %} </h1>
         <p class="lead fw-normal my-5">{% translate "This site will enable you to create high quality CVs like the one below :)" %}</p>
-        <form class="form-inline" action="{% url 'accounts_early_adopters_url' %}" method="post">
+        <form class="form-inline text-center" action="{% url 'accounts_early_adopters_url' %}" method="post">
           {% csrf_token %}
-          <input type="email" name="email"  class="form-control mb-2 mr-sm-2" id="exampleFormControlInput1" placeholder="email@example.com">
+          <input type="email" name="email"  class="form-control mb-2 mr-sm-2 text-center" id="exampleFormControlInput1" placeholder="email@example.com">
           <button type="submit" class="form-control btn btn-outline-secondary" href="#">{% translate "Get a email when it's ready" %}</button>
         </form>
       </div>
@@ -25,8 +25,8 @@
       <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
     </div>
 
-    <div class="container my-5">
-      <img src="{% static "images/cv_examples/rami_cv.jpg" %}" alt="">
+    <div >
+      <img class="img-fluid"src="{% static "images/cv_examples/rami_cv.jpg" %}" alt="">
     </div>
 
 
