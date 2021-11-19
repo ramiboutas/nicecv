@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-
+from .models import EarlyAdopter
 CustomUser = get_user_model()
 
 
@@ -23,3 +23,4 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(EarlyAdopter)

@@ -7,16 +7,31 @@
 
 
 {% block content %}
-  <div class="container">
-    <h1> {% translate 'This website is under construction' %} </h1>
 
-    {% if user.is_authenticated %}
-      <p>{% translate "Hello" %} {{ user.email }}</p>
-    {% else %}
-      <p> {% translate "You are not logged in" %} </p>
-      <a href="{% url 'account_login' %}">{% translate "Log in" %}</a>
-      <a href="{% url 'account_signup' %}">{% translate "Sign up" %}</a>
-    {% endif %}
-  </div>
+
+    <main>
+    <div class="position-relative overflow-hidden text-center bg-light">
+      <div class="col-md-5 p-lg-5 mx-auto my-5 b">
+        <h1 class="display-1 fw-normal">{% translate "Welcome" %} </h1>
+        <h1 class="h4 fw-normal">{% translate "Site under construction" %} </h1>
+        <p class="lead fw-normal my-5">{% translate "This site will enable you to create high quality CVs like the one below :)" %}</p>
+        <form class="form-inline" action="{% url 'accounts_early_adopters_url' %}" method="post">
+          {% csrf_token %}
+          <input type="email" name="email"  class="form-control mb-2 mr-sm-2" id="exampleFormControlInput1" placeholder="email@example.com">
+          <button type="submit" class="form-control btn btn-outline-secondary" href="#">{% translate "Get a email when it's ready" %}</button>
+        </form>
+      </div>
+      <div class="product-device shadow-sm d-none d-md-block"></div>
+      <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+    </div>
+
+    <div class="container my-5">
+      <img src="{% static "images/cv_examples/rami_cv.jpg" %}" alt="">
+    </div>
+
+
+</main>
+
+
 
 {% endblock %}
