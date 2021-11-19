@@ -8,8 +8,9 @@ from .models import Plan
 
 
 def pricing_view(request):
+    months = Plan.objects.values_list('months', flat=True)
+    print(months)
     default_plan = Plan.objects.filter(default=True).first() # first default plan
-    months = set(Plan.objects.values_list('months', flat=True))
     context = {'plan': default_plan, 'months': months}
     return render(request, 'pricing/main.html', context)
 

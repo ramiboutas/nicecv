@@ -33,43 +33,61 @@
     <div class="col-lg-8 col-md-8">
       <div class="card mb-4 rounded-3 shadow-sm border-primary">
         <div class="card-header py-3 text-white bg-primary border-primary">
-          <h4 class="my-0 fw-normal">{% trans "PRO" %}</h4>
+          <h4 class="my-0 fw-normal">{% trans "Premium" %}</h4>
         </div>
         <div class="card-body">
 
           <form class="mt-4 mb-2" action="{% url 'pricing_proceed_with_payment' %}" method="post">
             {% csrf_token %}
-            <select name="months" class="form-select form-select-lg mb-3"
-            hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML">
-              {% for month in months %}
-                <option value="{{month}}" {% if month == plan.months %}selected{% endif %}>
-                   {{ month }} month{{ month|pluralize }}
-                 </option>
-              {% endfor %}
-            </select>
+            {% for month in months %}
+            <div class="form-check form-check-inline">
+                <p class="text-capitalize h5 text-muted">
+                <input class="form-check-input" type="radio" name="months" id="inlineRadio{{month}}" value="{{month}}"
+                hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML"
+                {% if month == plan.months %}checked{% endif %}>
+                <label class="form-check-label" for="inlineRadio{{month}}">
+                  {{ month }} month{{ month|pluralize }}
+                  </p>
+                </label>
+            </div>
+            {% endfor %}
+
 
 
             <div id="pro-price">
               {% include "pricing/partials/price.html" %}
             </div>
+
+
               <ul class="list-unstyled mt-3 mb-4">
                 <li>{% translate "Unlimited profiles" %}</li>
                 <li>{% translate "Unlimited CV downloads" %}</li>
                 <li>{% translate "Cover letters" %}</li>
                 <li>{% translate "Support" %}</li>
+
               </ul>
 
             <div id="proceed-with-payment">
               {% if user.is_authenticated %}
                 {% if user.has_paid %}
-                  <p>{% blocktranslate with days=user.pro_days_left %} You already have {{ days }} days remaining to use the premium plan.
-                    {% endblocktranslate %}</p>
-                    <button hx-get="{% url 'pricing_hx_get_payment_methods' %}" hx-target="#proceed-with-payment"> {% translate "Want to extend it anyways?" %}</button>
+                  <p>{% blocktranslate with expire_date=user.paid_until %}
+                    You already have a premium plan valid until {{ expire_date }}.
+                    {% endblocktranslate %}
+                  </p>
+                    <button hx-get="{% url 'pricing_hx_get_payment_methods' %}"
+                      hx-target="#proceed-with-payment" class="btn btn-primary">
+                      {% translate "Want to extend it anyways?" %}
+                  </button>
                 {% else %}
-                  <button hx-get="{% url 'pricing_hx_get_payment_methods' %}" hx-target="#proceed-with-payment">{% translate "Select plan" %}</button>
+                  <button hx-get="{% url 'pricing_hx_get_payment_methods' %}"
+                    hx-target="#proceed-with-payment" class="btn btn-primary">
+                    {% translate "Select plan" %}
+                  </button>
                 {% endif %}
               {% else %}
-                <a href="{% url 'pricing_get_payment_methods' %}" class="btn btn-primary">{% translate "Start by sign in" %}</a>
+                <a href="{% url 'pricing_get_payment_methods' %}" class="btn btn-primary">
+                  {% translate "Start by sign in" %}
+                </a>
               {% endif %}
             </div>
           </form>
