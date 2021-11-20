@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-19 08:20+0100\n"
+"POT-Creation-Date: 2021-11-20 03:23+0100\n"
 "PO-Revision-Date: 2021-11-01 18:21+0000\n"
 "Last-Translator:   <rami@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,10 @@ msgstr ""
 
 #: accounts/admin.py:21
 msgid "Important dates"
+msgstr ""
+
+#: accounts/views.py:24
+msgid "Enter a valid email"
 msgstr ""
 
 #: config/settings.py:211
@@ -485,16 +489,20 @@ msgid "Welcome"
 msgstr ""
 
 #: templates/pages/home.html:16
-msgid "Site under construction"
-msgstr ""
-
-#: templates/pages/home.html:17
-msgid ""
-"This site will enable you to create high quality CVs like the one below :)"
+msgid "This website is under development!"
 msgstr ""
 
 #: templates/pages/home.html:21
-msgid "Get a email when it's ready"
+msgid "Contact the developer for suggestions"
+msgstr ""
+
+#: templates/pages/home.html:22
+msgid ""
+"This site will enable you to create high quality CVs like the ones below :)"
+msgstr ""
+
+#: templates/pages/home.html:31
+msgid "I want the deal :)"
 msgstr ""
 
 #: templates/pages/privacy-policy.html:5 templates/pages/privacy-policy.html:11

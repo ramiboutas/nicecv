@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-19 08:20+0100\n"
-"PO-Revision-Date: 2021-11-19 07:18+0000\n"
+"POT-Creation-Date: 2021-11-20 03:23+0100\n"
+"PO-Revision-Date: 2021-11-20 02:30+0000\n"
 "Last-Translator:   <rami@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -21,15 +21,20 @@ msgstr ""
 
 #: accounts/admin.py:18
 msgid "Personal info"
-msgstr ""
+msgstr "Información personal"
 
 #: accounts/admin.py:19
 msgid "Permissions"
-msgstr ""
+msgstr "Permisos"
 
 #: accounts/admin.py:21
 msgid "Important dates"
-msgstr ""
+msgstr "Fechas importantes"
+
+#: accounts/views.py:24
+#| msgid "Enter a valid value."
+msgid "Enter a valid email"
+msgstr "Introduce un valor correcto"
 
 #: config/settings.py:211
 msgid "English"
@@ -76,39 +81,41 @@ msgstr "Cuenta"
 
 #: templates/account/account_inactive.html:12
 msgid "This account is inactive."
-msgstr ""
+msgstr "Esta cuenta está inactiva"
 
 #: templates/account/email.html:5 templates/account/email.html:10
 msgid "E-mail Addresses"
-msgstr ""
+msgstr "Email"
 
 #: templates/account/email.html:12
 msgid "The following e-mail addresses are associated with your account:"
 msgstr ""
+"Las siguientes direcciones de correo electrónico están asociadas a su "
+"cuenta:"
 
 #: templates/account/email.html:26
 msgid "Verified"
-msgstr ""
+msgstr "Verificado"
 
 #: templates/account/email.html:28
 msgid "Unverified"
-msgstr ""
+msgstr "No verificado"
 
 #: templates/account/email.html:30
 msgid "Primary"
-msgstr ""
+msgstr "Principal"
 
 #: templates/account/email.html:36
 msgid "Make Primary"
-msgstr ""
+msgstr "Hacer principal"
 
 #: templates/account/email.html:37
 msgid "Re-send Verification"
-msgstr ""
+msgstr "Reenviar verificación"
 
 #: templates/account/email.html:38 templates/socialaccount/connections.html:37
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: templates/account/email.html:45
 msgid "Warning:"
@@ -117,20 +124,22 @@ msgstr ""
 #: templates/account/email.html:45
 msgid ""
 "You currently do not have any e-mail address set up. You should really add "
-"an e-mail address so you can receive notifications, reset your password, etc."
+"an e-mail address so you can receive notifications, reset your password, "
+"etc."
 msgstr ""
 
 #: templates/account/email.html:50
 msgid "Add E-mail Address"
-msgstr ""
+msgstr "Añade email"
 
 #: templates/account/email.html:55
 msgid "Add E-mail"
-msgstr ""
+msgstr "Añade email"
 
 #: templates/account/email.html:66
 msgid "Do you really want to remove the selected e-mail address?"
 msgstr ""
+"¿Realmente deseas eliminar la dirección de correo electrónico seleccionada?"
 
 #: templates/account/email/base_message.txt:1
 #, python-format
@@ -147,23 +156,22 @@ msgstr ""
 #: templates/account/email/email_confirmation_message.txt:5
 #, python-format
 msgid ""
-"You're receiving this e-mail because user %(user_display)s has given your e-"
-"mail address to register an account on %(site_domain)s.\n"
+"You're receiving this e-mail because user %(user_display)s has given your e-mail address to register an account on %(site_domain)s.\n"
 "\n"
 "To confirm this is correct, go to %(activate_url)s"
 msgstr ""
 
 #: templates/account/email/email_confirmation_subject.txt:3
 msgid "Please Confirm Your E-mail Address"
-msgstr ""
+msgstr "Por favor, confirma tu email"
 
 #: templates/account/email/password_reset_key_message.txt:4
 msgid ""
-"You're receiving this e-mail because you or someone else has requested a "
-"password for your user account.\n"
-"It can be safely ignored if you did not request a password reset. Click the "
-"link below to reset your password."
+"You're receiving this e-mail because you or someone else has requested a password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the link below to reset your password."
 msgstr ""
+"Está recibiendo este correo electrónico porque usted u otra persona ha solicitado una contraseña para su cuenta de usuario.\n"
+"Puede ignorarlo con seguridad si no ha solicitado el restablecimiento de la contraseña. Haga clic en el siguiente enlace para restablecer su contraseña."
 
 #: templates/account/email/password_reset_key_message.txt:9
 #, python-format
@@ -193,8 +201,8 @@ msgstr ""
 #: templates/account/email_confirm.html:29
 #, python-format
 msgid ""
-"This e-mail confirmation link expired or is invalid. Please <a href="
-"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+"This e-mail confirmation link expired or is invalid. Please <a "
+"href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
 msgstr ""
 
 #: templates/account/login.html:6 templates/account/login.html:12
@@ -208,15 +216,16 @@ msgstr "Registrate"
 #, python-format
 msgid ""
 "Please sign in with one\n"
-"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
-"up</a>\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign up</a>\n"
 "for a %(site_name)s account and sign in below:"
 msgstr ""
+"Please sign in with one of your existing third party accounts. O <a href=\"%(signup_url)s\">registrate</a>\n"
+"para una cuenta en %(site_name):"
 
 #: templates/account/login.html:27
 #: venv/lib/python3.8/site-packages/django/utils/text.py:240
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: templates/account/login.html:34
 #, python-format
@@ -227,7 +236,7 @@ msgstr ""
 
 #: templates/account/login.html:44 templates/account/password_change.html:16
 msgid "Forgot Password?"
-msgstr ""
+msgstr "¿Contraseña olvidada?"
 
 #: templates/account/login_2.html:5 templates/account/login_2.html:16
 #: templates/account/login_2.html:27 templates/partials/_header.html:40
@@ -237,19 +246,19 @@ msgstr "Iniciar"
 #: templates/account/login_2.html:17
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1638
 msgid "Email address"
-msgstr ""
+msgstr "Email"
 
 #: templates/account/login_2.html:18
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: templates/account/login_2.html:22
 msgid "Remember me"
-msgstr ""
+msgstr "Recuérdame"
 
 #: templates/account/login_2.html:32
 msgid "Log in with Google"
-msgstr ""
+msgstr "Iniciar con Google"
 
 #: templates/account/login_2.html:35
 #, fuzzy
@@ -266,7 +275,7 @@ msgstr "Registrate"
 
 #: templates/account/logout.html:12
 msgid "Are you sure you want to sign out?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres cerrar la sesión?"
 
 #: templates/account/logout_2.html:4 templates/account/logout_2.html:9
 #: templates/account/logout_2.html:14 templates/account/my_account.html:14
@@ -278,12 +287,13 @@ msgstr "Iniciar"
 
 #: templates/account/logout_2.html:10
 msgid "Are you sure you want to log out?"
-msgstr ""
+msgstr "¿Estás seguro de que quieres cerrar la sesión?"
 
 #: templates/account/messages/cannot_delete_primary_email.txt:2
 #, python-format
 msgid "You cannot remove your primary e-mail address (%(email)s)."
 msgstr ""
+"No puede eliminar su dirección de correo electrónico principal  (%(email)s)."
 
 #: templates/account/messages/email_confirmation_sent.txt:2
 #, python-format
@@ -357,8 +367,8 @@ msgstr ""
 
 #: templates/account/password_reset.html:16
 msgid ""
-"Forgotten your password? Enter your e-mail address below, and we'll send you "
-"an e-mail allowing you to reset it."
+"Forgotten your password? Enter your e-mail address below, and we'll send you"
+" an e-mail allowing you to reset it."
 msgstr ""
 
 #: templates/account/password_reset.html:21
@@ -383,8 +393,8 @@ msgstr ""
 #, python-format
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password "
+"reset</a>."
 msgstr ""
 
 #: templates/account/password_reset_from_key.html:19
@@ -396,7 +406,8 @@ msgstr ""
 msgid "Your password is now changed."
 msgstr ""
 
-#: templates/account/password_set.html:5 templates/account/password_set.html:10
+#: templates/account/password_set.html:5
+#: templates/account/password_set.html:10
 #: templates/account/password_set.html:15
 msgid "Set Password"
 msgstr ""
@@ -478,8 +489,8 @@ msgstr ""
 #: templates/account/verified_email_required.html:22
 #, python-format
 msgid ""
-"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
-"mail address</a>."
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your "
+"e-mail address</a>."
 msgstr ""
 
 #: templates/early_adopters_thanks.html:11
@@ -503,19 +514,24 @@ msgid "Welcome"
 msgstr ""
 
 #: templates/pages/home.html:16
-msgid "Site under construction"
-msgstr ""
-
-#: templates/pages/home.html:17
-msgid ""
-"This site will enable you to create high quality CVs like the one below :)"
+msgid "This website is under development!"
 msgstr ""
 
 #: templates/pages/home.html:21
-msgid "Get a email when it's ready"
+msgid "Contact the developer for suggestions"
 msgstr ""
 
-#: templates/pages/privacy-policy.html:5 templates/pages/privacy-policy.html:11
+#: templates/pages/home.html:22
+msgid ""
+"This site will enable you to create high quality CVs like the ones below :)"
+msgstr ""
+
+#: templates/pages/home.html:31
+msgid "I want the deal :)"
+msgstr ""
+
+#: templates/pages/privacy-policy.html:5
+#: templates/pages/privacy-policy.html:11
 msgid "Privacy Policy"
 msgstr ""
 
@@ -592,8 +608,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                    You already have a premium plan valid until "
-"%(expire_date)s.\n"
+"                    You already have a premium plan valid until %(expire_date)s.\n"
 "                    "
 msgstr ""
 
@@ -688,8 +703,8 @@ msgstr ""
 #, python-format
 msgid ""
 "You decided to cancel logging in to our site using one of your existing "
-"accounts. If this was a mistake, please proceed to <a href=\"%(login_url)s"
-"\">sign in</a>."
+"accounts. If this was a mistake, please proceed to <a "
+"href=\"%(login_url)s\">sign in</a>."
 msgstr ""
 
 #: templates/socialaccount/messages/account_connected.txt:2
@@ -770,8 +785,8 @@ msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/core/validators.py:269
 msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
-"hyphens."
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
+" hyphens."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/core/validators.py:278
@@ -957,15 +972,15 @@ msgstr ""
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1288
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
-"uuuuuu]][TZ] format."
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1292
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
+"“%(value)s” value has the correct format (YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1296
@@ -984,8 +999,8 @@ msgstr ""
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1585
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
-"uuuuuu] format."
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/db/models/fields/__init__.py:1588
@@ -1140,7 +1155,8 @@ msgid "Many-to-many relationship"
 msgstr ""
 
 #. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the label
+#. characters will prevent the default label_suffix to be appended to the
+#. label
 #: venv/lib/python3.8/site-packages/django/forms/boundfield.py:150
 msgid ":?.!"
 msgstr ""
@@ -1190,7 +1206,8 @@ msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/forms/fields.py:553
 #, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid ""
+"Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
 msgstr[0] ""
@@ -1297,7 +1314,8 @@ msgid "The inline value did not match the parent instance."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/forms/models.py:1193
-msgid "Select a valid choice. That choice is not one of the available choices."
+msgid ""
+"Select a valid choice. That choice is not one of the available choices."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/forms/models.py:1311
@@ -1753,11 +1771,11 @@ msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/views/csrf.py:124
 msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
-"\" …> for links to third-party sites."
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
+" including the “Referrer-Policy: no-referrer” header, please remove them. "
+"The CSRF protection requires the “Referer” header to do strict referer "
+"checking. If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/views/csrf.py:132
@@ -1808,8 +1826,8 @@ msgstr ""
 #: venv/lib/python3.8/site-packages/django/views/generic/dates.py:594
 #, python-format
 msgid ""
-"Future %(verbose_name_plural)s not available because %(class_name)s."
-"allow_future is False."
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/views/generic/dates.py:628
@@ -1865,10 +1883,10 @@ msgstr ""
 #: venv/lib/python3.8/site-packages/django/views/templates/default_urlconf.html:222
 #, python-format
 msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
-"\">DEBUG=True</a> is in your settings file and you have not configured any "
-"URLs."
+"You are seeing this page because <a "
+"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
+"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
+"and you have not configured any URLs."
 msgstr ""
 
 #: venv/lib/python3.8/site-packages/django/views/templates/default_urlconf.html:230
