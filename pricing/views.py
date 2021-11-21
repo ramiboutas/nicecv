@@ -46,8 +46,9 @@ def hx_update_price_view(request):
 
 
 # move to a payments app!
+
+@login_required
 def proceed_with_payment_view(request):
-    payment_method = request.POST.get("payment_method")
     if payment_method == "card":
         return HttpResponse("this will return a stripe page")
     elif payment_method == "paypal":
