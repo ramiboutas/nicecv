@@ -20,8 +20,7 @@ class TermsAndConditionsView(TemplateView):
 
 
 class CookiePolicyView(TemplateView):
-    pass
-
+    template_name = 'pages/cookie-policy.html'
 
 class GeneralFAQView(TemplateView):
-    pass
+    template_name = 'pages/faq-general.html'
