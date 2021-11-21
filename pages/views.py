@@ -7,7 +7,7 @@ class HomePageView(TemplateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect('profile_list')            
+            return redirect('profile_list')
         return render(self.request, self.template_name)
 
 
@@ -17,3 +17,11 @@ class PrivacyPolicyView(TemplateView):
 
 class TermsAndConditionsView(TemplateView):
     template_name = 'pages/terms-conditions.html'
+
+
+class CookiePolicyView(TemplateView):
+    pass
+
+
+class GeneralFAQView(TemplateView):
+    pass

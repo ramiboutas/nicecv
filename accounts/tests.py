@@ -59,7 +59,7 @@ class CustomUserTests(TestCase):
         self.standard_user.save()
         self.standard_user.set_paid_until(months=1)
         self.standard_user.save()
-        self.assertTrue(self.standard_user.pro_days_left() >= 60)
+        self.assertEqual(self.standard_user.paid_until, datetime.date.today() + datetime.timedelta(days=2*365.25/12))
 
 
 class SignupPageTests(TestCase):

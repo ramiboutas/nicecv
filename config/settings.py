@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django_htmx',
     'djstripe',
 
-
     # Local
     'accounts.apps.AccountsConfig',
     'pages.apps.PagesConfig',
@@ -71,6 +70,23 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+
+
 # Email Backend
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -95,22 +111,6 @@ MIDDLEWARE = [
 ]
 
 
-
-if DEBUG:
-    INSTALLED_APPS  += ['debug_toolbar',]
-    MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
-
-
-if PRODUCTION:
-    ALLOWED_HOSTS += ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1']
-    # https
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 3600 # usual: 31536000 (1 year)
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_PRELOAD = True
 
 
 
@@ -262,14 +262,6 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new ins
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 
-# payments (django-payments app)
-# https://django-payments.readthedocs.io/en/latest/install.html
-# PAYMENT_HOST = 'localhost:8000'
-# PAYMENT_USES_SSL = False
-# PAYMENT_MODEL = 'pricing.Payment'
-# PAYMENT_VARIANTS = {'default': ('payments.dummy.DummyProvider', {})}
-
-
 
 # SEO, Meta data & Naming
 
@@ -277,42 +269,22 @@ SITE_NAME = _('Nice CV')
 META_KEYWORDS = _('Enter meta keywords here')
 META_DESCRIPTION = _('Enter meta description here')
 
-#  pricing site
-# Plan model will be used instead
-DEFAULT_PRICING_MONTH = 6
-MONTH_PRICING = (
-# months, price, saving
-    (1, 12.00, 0),
-    (2, 21.50, 2.5),
-    (3, 28.90, 7.1),
-    (4, 34.1, 13.9),
-    (5, 38.2, 21.8),
-    (6, 41.5, 30.5),
-    (7, 44.2, 39.8),
-    (8, 46.7, 49.3),
-    (9, 48.8, 59.2),
-    (10, 50.70, 69.3),
-    (11, 52.70, 79.3),
-    (12, 54.00, 90),
-)
-DEFAULT_PRICING_PRICE = MONTH_PRICING[DEFAULT_PRICING_MONTH][1]
-DEFAULT_PRICING_SAVING = MONTH_PRICING[DEFAULT_PRICING_MONTH][2]
 
 
-# Redirects after login & logout
-
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
+if DEBUG:
+    INSTALLED_APPS  += ['debug_toolbar',]
+    MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
+
+
+if PRODUCTION:
+    ALLOWED_HOSTS += ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1']
+    # https
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 3600 # usual: 31536000 (1 year)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_PRELOAD = True

@@ -37,3 +37,11 @@ class EarlyAdopter(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField()
+    created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

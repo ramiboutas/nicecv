@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .models import EarlyAdopter
-
+from .models import NewsletterSubscriber
 
 class MyAccountView(TemplateView):
     template_name = 'account/my_account.html'
@@ -26,7 +26,20 @@ def early_adopters_view(request):
     else:
         return redirect('home')
 
-
+@require_http_methods(["POST"])
+def newsletter_subscribers_view(request):
+    print(request.POST)
+    email = request.POST.get('email')
+    try:
+        validate_email(email)
+        NewsletterSubscriber.objects.create(email=email)
+        messages.success(request, _('Thank you for your subscription!'))
+        return redirect('home')
+    except ValidationError as e:
+        messages.error(request, _('Enter a valid email'))
+        return redirect('home')
+    else:
+        return redirect('home')
 
 
 
