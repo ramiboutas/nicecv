@@ -20,8 +20,6 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.i18n import i18n_patterns
 
-from pages.views import HomePageView
-
 
 urlpatterns = [
     # Django admin
@@ -40,12 +38,12 @@ urlpatterns = [
     path('', include('pages.urls')),
 
     # Payments
-    path("stripe/", include("djstripe.urls", namespace="djstripe")),
+    path("payments/", include("payments.urls")),
 
 ]
 
 if settings.DEBUG:
     urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
+        # path('__debug__/', include(debug_toolbar.urls)),
         re_path(r'^rosetta/', include('rosetta.urls')),
     ]

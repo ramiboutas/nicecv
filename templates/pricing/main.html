@@ -37,7 +37,7 @@
         </div>
         <div class="card-body">
 
-          <form class="mt-4 mb-2" action="{% url 'pricing_proceed_with_payment' %}" method="post">
+          <form class="mt-4 mb-2" action="{% url 'payments_proceed_with_checkout' %}" method="post">
             {% csrf_token %}
             {% for month in months %}
             <div class="form-check form-check-inline">

@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'django_htmx',
-    'djstripe',
 
     # Local
     'accounts.apps.AccountsConfig',
@@ -278,8 +277,9 @@ META_DESCRIPTION = _('Enter meta description here')
 
 
 if DEBUG:
-    INSTALLED_APPS  += ['debug_toolbar',]
-    MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
+    pass
+    # INSTALLED_APPS  += ['debug_toolbar',]
+    # MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
 
 
 if PRODUCTION:
