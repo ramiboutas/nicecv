@@ -44,6 +44,6 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        # path('__debug__/', include(debug_toolbar.urls)),
+        path('__debug__/', include(debug_toolbar.urls)),
         re_path(r'^rosetta/', include('rosetta.urls')),
     ]

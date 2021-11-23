@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
+from pricing.models import Plan
+
 # https://nicecv.online/pricing/payment/stripe/webhook/
 # https://testdriven.io/blog/django-coinbase/
 
@@ -27,14 +29,16 @@ def proceed_with_payment_view(request):
     return redirect('pricing_main')
 
 def stripe_checkout_view(request):
+    months = request.POST.get('months')
+    plan = Plan.objects.filter(months=months).first()
+    YOUR_DOMAIN = "http://127.0.0.1:8000"
     try:
         checkout_session = stripe.checkout.Session.create(
-            customer_email='customer@example.com',
+            customer_email=request.user.email,
             billing_address_collection='auto',
             line_items=[
                 {
-                    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-                    'price': '{{PRICE_ID}}',
+                    'price': plan.stripe_product_id,
                     'quantity': 1,
                 },
             ],

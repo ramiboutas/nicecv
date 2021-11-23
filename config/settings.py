@@ -256,9 +256,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_LIVE_MODE = str(os.environ.get('STRIPE_LIVE_MODE')) == '1'
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
 STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
-DJSTRIPE_WEBHOOK_SECRET = os.environ.get("DJSTRIPE_WEBHOOK_SECRET")
-DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
-DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
 if STRIPE_LIVE_MODE:
     STRIPE_SECRET_KEY = STRIPE_LIVE_SECRET_KEY
 else:
@@ -275,11 +273,9 @@ META_DESCRIPTION = _('Enter meta description here')
 
 
 
-
 if DEBUG:
-    pass
-    # INSTALLED_APPS  += ['debug_toolbar',]
-    # MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
+    INSTALLED_APPS  += ['debug_toolbar',]
+    MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
 
 
 if PRODUCTION:
