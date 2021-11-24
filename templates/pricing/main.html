@@ -101,3 +101,11 @@
 
 
 {% endblock %}
+
+{% if user.is_authenticated %}
+{% block extra_body %}
+
+
+
+{% endblock %}
+{% endif %}

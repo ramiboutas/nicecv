@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'pricing.apps.PricingConfig',
     'profiles.apps.ProfilesConfig',
+    'payments.apps.PaymentsConfig',
 
 ]
 
@@ -253,25 +254,42 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Stripe
 
+# general
 STRIPE_LIVE_MODE = str(os.environ.get('STRIPE_LIVE_MODE')) == '1'
-STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
-STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
+STRIPE_LOCAL_WEBHOOK_SECRET=os.environ.get("STRIPE_LOCAL_WEBHOOK_SECRET")
+STRIPE_PRODUCTION_WEBHOOK_SECRET=os.environ.get("STRIPE_PRODUCTION_WEBHOOK_SECRET")
 
+# production keys
+STRIPE_LIVE_PUBLIC_KEY=os.environ.get("STRIPE_LIVE_PUBLICKEY")
+STRIPE_LIVE_SECRET_KEY=os.environ.get("STRIPE_LIVE_SECRET_KEY")
+
+# test keys
+STRIPE_TEST_PUBLIC_KEY=os.environ.get("STRIPE_TEST_PUBLIC_KEY")
+STRIPE_TEST_SECRET_KEY=os.environ.get("STRIPE_TEST_SECRET_KEY")
+
+# depending on the STRIPE_LIVE_MODE, we select to test keys or production keys
 if STRIPE_LIVE_MODE:
+    STRIPE_PUBLIC_KEY = STRIPE_LIVE_PUBLIC_KEY
     STRIPE_SECRET_KEY = STRIPE_LIVE_SECRET_KEY
 else:
+    STRIPE_PUBLIC_KEY = STRIPE_TEST_PUBLIC_KEY
     STRIPE_SECRET_KEY = STRIPE_TEST_SECRET_KEY
 
+if PRODUCTION:
+    STRIPE_WEBHOOK_SECRET = STRIPE_PRODUCTION_WEBHOOK_SECRET
+else:
+    STRIPE_WEBHOOK_SECRET = STRIPE_LOCAL_WEBHOOK_SECRET
 
 
 # SEO, Meta data & Naming
-
+# 'utils.context_processors.nicecv
 SITE_NAME = _('Nice CV')
-META_KEYWORDS = _('Enter meta keywords here')
-META_DESCRIPTION = _('Enter meta description here')
+META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
+META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
 
 
 
+# general stuff depending on debug and production
 
 if DEBUG:
     INSTALLED_APPS  += ['debug_toolbar',]
