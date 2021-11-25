@@ -23,7 +23,7 @@
             <li>{% translate "5 CV downloads" %}</li>
           </ul>
           {% if not user.is_authenticated %}
-            <a href="{% url 'account_signup' %}" class="w-100 btn btn-lg btn-outline-primary">{% translate "Sign up for free" %}</a>
+            <a href="{% url 'account_login' %}" class="w-100 btn btn-lg btn-outline-primary">{% translate "Log in" %}</a>
           {% endif %}
         </div>
       </div>
@@ -75,18 +75,18 @@
                     {% endblocktranslate %}
                   </p>
                     <button hx-get="{% url 'pricing_hx_get_payment_methods' %}"
-                      hx-target="#proceed-with-payment" class="btn btn-primary">
+                      hx-target="#proceed-with-payment" class="w-100 btn btn-lg btn-primary">
                       {% translate "Want to extend it anyways?" %}
                   </button>
                 {% else %}
                   <button hx-get="{% url 'pricing_hx_get_payment_methods' %}"
-                    hx-target="#proceed-with-payment" class="btn btn-primary">
+                    hx-target="#proceed-with-payment" class="w-100 btn btn-lg btn-primary">
                     {% translate "Select plan" %}
                   </button>
                 {% endif %}
               {% else %}
-                <a href="{% url 'pricing_get_payment_methods' %}" class="btn btn-primary">
-                  {% translate "Start by sign in" %}
+                <a href="{% url 'pricing_get_payment_methods' %}" class="w-100 btn btn-lg btn-primary">
+                  {% translate "Sign in to start" %}
                 </a>
               {% endif %}
             </div>

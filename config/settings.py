@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'django_htmx',
+    'djstripe',
 
     # Local
     'accounts.apps.AccountsConfig',
@@ -279,6 +280,11 @@ if PRODUCTION:
     STRIPE_WEBHOOK_SECRET = STRIPE_PRODUCTION_WEBHOOK_SECRET
 else:
     STRIPE_WEBHOOK_SECRET = STRIPE_LOCAL_WEBHOOK_SECRET
+
+# addional for dj-stripe
+DJSTRIPE_WEBHOOK_SECRET = STRIPE_WEBHOOK_SECRET
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 
 # SEO, Meta data & Naming

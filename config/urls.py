@@ -39,6 +39,8 @@ urlpatterns = [
 
     # Payments
     path("payments/", include("payments.urls")),
+    # dj-stripe
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 
 ]
 
