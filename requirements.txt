@@ -4,6 +4,7 @@ cffi==1.15.0
 charset-normalizer==2.0.7
 cryptography==35.0.0
 defusedxml==0.7.1
+dj-stripe==2.5.1
 Django==3.2.8
 django-allauth==0.45.0
 django-debug-toolbar==3.2.2
