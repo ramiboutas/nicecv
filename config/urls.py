@@ -42,10 +42,12 @@ urlpatterns = [
     # dj-stripe
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
 
+    # translation tool
+    re_path(r'^rosetta/', include('rosetta.urls')),
 ]
 
 if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
-        re_path(r'^rosetta/', include('rosetta.urls')),
+        path("__reload__/", include("django_browser_reload.urls")),
     ]

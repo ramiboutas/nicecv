@@ -20,7 +20,7 @@ PRODUCTION = str(os.environ.get('PRODUCTION')) == '1'
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost',]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -34,6 +34,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
+    # My own apps
+    'accounts.apps.AccountsConfig',
+    'pages.apps.PagesConfig',
+    'pricing.apps.PricingConfig',
+    'profiles.apps.ProfilesConfig',
+    'payments.apps.PaymentsConfig',
+
     # Third-party apps
     'rosetta',
     'allauth',
@@ -43,12 +50,9 @@ INSTALLED_APPS = [
     'django_htmx',
     'djstripe',
 
-    # Local
-    'accounts.apps.AccountsConfig',
-    'pages.apps.PagesConfig',
-    'pricing.apps.PricingConfig',
-    'profiles.apps.ProfilesConfig',
-    'payments.apps.PaymentsConfig',
+    # Tools for debug & productivity
+    'django_browser_reload',
+    'debug_toolbar',
 
 ]
 
@@ -100,6 +104,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST
 
 
 MIDDLEWARE = [
+    # django middlewares
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -108,11 +113,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # third-party middlewares
     'django_htmx.middleware.HtmxMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
-
-
-
 
 
 ROOT_URLCONF = 'config.urls'
@@ -217,10 +223,7 @@ LANGUAGES = (
     ('it', _('Italian')),
 )
 
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
-
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 
 # Static files (CSS, JavaScript, Images)
@@ -244,7 +247,6 @@ MESSAGE_TAGS = {
 
 
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -253,22 +255,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Payments
 
-# Stripe
-
-# general
+# Stripe - general
 STRIPE_LIVE_MODE = str(os.environ.get('STRIPE_LIVE_MODE')) == '1'
 
-# live keys
+# Stripe - live keys
 STRIPE_LIVE_PUBLIC_KEY=os.environ.get("STRIPE_LIVE_PUBLICKEY")
 STRIPE_LIVE_SECRET_KEY=os.environ.get("STRIPE_LIVE_SECRET_KEY")
 STRIPE_LIVE_WEBHOOK_SECRET=os.environ.get("STRIPE_LIVE_WEBHOOK_SECRET")
 
-# test keys
+# Stripe - test keys
 STRIPE_TEST_PUBLIC_KEY=os.environ.get("STRIPE_TEST_PUBLIC_KEY")
 STRIPE_TEST_SECRET_KEY=os.environ.get("STRIPE_TEST_SECRET_KEY")
 STRIPE_TEST_WEBHOOK_SECRET=os.environ.get("STRIPE_TEST_WEBHOOK_SECRET")
 
-# depending on the STRIPE_LIVE_MODE, we select to test keys or production keys
+# Stripe - depending on the STRIPE_LIVE_MODE, we select to test keys or production keys
 if STRIPE_LIVE_MODE:
     STRIPE_PUBLIC_KEY = STRIPE_LIVE_PUBLIC_KEY
     STRIPE_SECRET_KEY = STRIPE_LIVE_SECRET_KEY
@@ -285,6 +285,14 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new ins
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 
+# PayPal
+# Keys & stuff to include
+
+# Coinbase
+# Keys & stuff to include
+
+
+
 # SEO, Meta data & Naming
 # 'utils.context_processors.nicecv
 SITE_NAME = _('Nice CV')
@@ -292,17 +300,9 @@ META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
 META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
 
 
-
-# general stuff depending on debug and production
-
-if DEBUG:
-    INSTALLED_APPS  += ['debug_toolbar',]
-    MIDDLEWARE  += ['debug_toolbar.middleware.DebugToolbarMiddleware',]
-
+# General stuff depending on debug and production
 
 if PRODUCTION:
-    ALLOWED_HOSTS += ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1']
-    # https
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_HSTS_SECONDS = 31536000 # usual: 31536000 (1 year)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
