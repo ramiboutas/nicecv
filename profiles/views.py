@@ -15,3 +15,8 @@ class ProfileListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
+
+
+def create_profile_from_linkedin_view(request):
+    pass
+    # set profile.imported_from_linkedin to True when done!
