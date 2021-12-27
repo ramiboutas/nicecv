@@ -27,14 +27,15 @@
   </head>
   <body>
     {% block body %}
-      {% include "partials/_messages.html" %}
-      {% include "partials/_header.html" %}
+      {% include "_messages.html" %}
+      {% include "_header.html" %}
       {% block content %}{% endblock %}
     {% endblock %}
 
+    {% include "_footer.html" %}
+
     {% block extra_body %}  {% endblock %}
 
-    {% include "partials/_footer.html" %}
     <!-- JavaScript -->
     <script src="{% static 'js/base.js' %}"></script>
     <!-- htmx -->

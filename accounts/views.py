@@ -19,7 +19,7 @@ def early_adopters_view(request):
     try:
         validate_email(email)
         EarlyAdopter.objects.create(email=email)
-        return render(request, 'early_adopters_thanks.html')
+        return render(request, 'pages/early_adopters_thanks.html')
     except ValidationError as e:
         messages.error(request, _('Enter a valid email'))
         return redirect('home')

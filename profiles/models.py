@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
+
 from django.utils import timezone
 
 import uuid
@@ -15,23 +16,16 @@ def user_directory_path(instance, filename):
     return '{0}/{1}'.format(instance.username.id, filename)
 
 class Profile(models.Model):
+    """
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profiles')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    imported_from_linkedin = models.BooleanField(default=False) # set in
 
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
 
-    # address       Localizable address that a member wants to display on the profile. Represented as a MultiLocaleString object type.
-    # birthDate     Birth date of the member. Represented as a date object.
-    # firstName 	Localizable first name of the member. Represented as a MultiLocaleString object
-    # geoLocation 	Member's location listed in their profile; may be null if no location is selected.
-    #               GeoUrn defined by standardization is used to specify the location.
-    # headline      Localizable headline of member's choosing. Represented as a MultiLocaleString object type.
-
-    address = models.CharField(null=True, blank=True, max_length=100)
-    geo_location = models.CharField(null=True, blank=True, max_length=100)
+    location = models.CharField(null=True, blank=True, max_length=100)
     birth_date = models.DateTimeField(null=True, blank=True)
 
     first_name = models.CharField(null=True, blank=True, max_length=50)
@@ -41,21 +35,16 @@ class Profile(models.Model):
     # media
     picture = models.ImageField(null=True, blank=True, upload_to='profiles/')
 
-
-    headline = models.CharField(null=True, blank=True, max_length=100)
-    summary = models.TextField(max_length=1000)
     jobtitle = models.CharField(max_length=200)
+    description = models.TextField(max_length=1000)
 
     linkedin_id = models.BigIntegerField(null=True, blank=True)
     linkedin_industry_id = models.BigIntegerField(null=True, blank=True)
     linkedin_last_modified = models.DateTimeField(null=True, blank=True)
     linkedin_vanity_name = models.CharField(null=True, blank=True, max_length=100) # www.linkedin.com/in/{vanityName}
 
-    # contact fields
-    # Linkedin API can give multiple phone numbers (take one: priority 1.MOBILE 2.HOME 3.WORK)
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/phone-number
+    # contact info
     phone = models.CharField(null=True, blank=True, max_length=200)
-
     website = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     interests = models.CharField(max_length=200)
@@ -82,28 +71,6 @@ class Profile(models.Model):
             img.save(self.photo.path)
 
 
-class LinkedinProfilePicture(models.Model):
-    """
-    Metadata about the member's background image in the profile. This replaces existing backgroundImage.
-    See Background Picture Fields for a description of the fields available within this object.
-
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/profile-picture
-    """
-    profile = models.ForeignKey(Profile, related_name='profile_picture', on_delete=models.CASCADE)
-    linkedin_data = models.JSONField(null=True, blank=True)
-
-
-class LinkedinBackgroundPicture(models.Model):
-    """
-    Metadata about the member's background image in the profile. This replaces existing backgroundImage.
-    See Background Picture Fields for a description of the fields available within this object.
-
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/background-picture
-    """
-    profile = models.ForeignKey(Profile, related_name='background_picture', on_delete=models.CASCADE)
-    linkedin_data = models.JSONField(null=True, blank=True)
-
-
 class Certification(models.Model):
     """
     An object representing the certifications that the member holds.
@@ -122,9 +89,6 @@ class Certification(models.Model):
 
     """
     profile = models.ForeignKey(Profile, related_name='certifications', on_delete=models.CASCADE)
-    linkedin_data = models.JSONField(null=True, blank=True) # include all the fields
-
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
     name = models.CharField(null=True, blank=True, max_length=100)
@@ -145,11 +109,7 @@ class Course(models.Model):
     # number 	    No 	Assigned course number. Represented in string.
     # occupation    No 	Member's occupation when the course was completed. Standardized referenced company or school URN.
     """
-
     profile = models.ForeignKey(Profile, related_name='courses', on_delete=models.CASCADE)
-    linkedin_data = models.JSONField(null=True, blank=True)
-
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
     name = models.JSONField(null=True, blank=True)
     number = models.CharField(null=True, blank=True, max_length=100)
     occupation = models.CharField(null=True, blank=True, max_length=100)
@@ -177,18 +137,13 @@ class Education(models.Model):
     memberRichContents  No 	The list of MemberRichContentUrn associated with the education. Default to empty array.
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='educations')
-    linkedin_data = models.JSONField(null=True, blank=True)
-
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
     degree_name = models.CharField(null=True, blank=True, max_length=100)
     program = models.CharField(null=True, blank=True, max_length=100)
+    grade = models.CharField(null=True, blank=True, max_length=20)
     start_date = models.CharField(null=True, blank=True, max_length=50)
     end_date = models.CharField(null=True, blank=True, max_length=50)
     school_name = models.CharField(null=True, blank=True, max_length=100)
-    organization = models.CharField(null=True, blank=True, max_length=100)
-    activities = models.CharField(null=True, blank=True, max_length=200)
-    notes = models.CharField(null=True, blank=True, max_length=200) # use as description
-    grade = models.CharField(null=True, blank=True, max_length=20)
+    description = models.TextField(null=True, blank=True, max_length=300)
 
     def __str__(self):
         return self.degree_name
@@ -209,14 +164,11 @@ class Honor(models.Model):
 
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='honors')
-    linkedin_data = models.JSONField(null=True, blank=True)
-
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
     title = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True)
     issue_date = models.CharField(null=True, blank=True, max_length=100)
     issuer = models.CharField(null=True, blank=True, max_length=100)
     occupation = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True)
 
 
 class Organization(models.Model):
@@ -305,9 +257,6 @@ class Position(models.Model):
     #                               2) there is a value for profile default locale in the localized string maps.
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='positions')
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
-    linkedin_company = models.CharField(null=True, blank=True, max_length=100)
-
     title = models.CharField(null=True, blank=True, max_length=100)
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
@@ -338,8 +287,6 @@ class Project(models.Model):
     # url               No  URL referencing the project represented in string.
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
-
     title = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
     start_date = models.CharField(null=True, blank=True, max_length=100)
@@ -371,8 +318,6 @@ class Publication(models.Model):
     # url           No  URL referencing the publication represented in string.
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='publications')
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
-
     name = models.CharField(null=True, blank=True, max_length=200)
     date = models.CharField(null=True, blank=True, max_length=20)
     description = models.TextField(null=True, blank=True, max_length=1000)
@@ -398,8 +343,6 @@ class Skill(models.Model):
 
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skills')
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
-
     name = models.CharField(max_length=200)
     level = models.IntegerField(default=50) # Linkedin does not include this
 
@@ -428,46 +371,32 @@ class VolunteeringExperience(models.Model):
 
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='volunteering_experiences')
-    linkedin_id = models.BigIntegerField(null=True, blank=True)
-    linkedin_company = models.CharField(null=True, blank=True, max_length=100)
-
+    title = models.CharField(null=True, blank=True, max_length=100)
+    role = models.CharField(null=True, blank=True, max_length=100)
+    organization = models.CharField(null=True, blank=True, max_length=100)
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
-    company_name = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
     cause = models.CharField(null=True, blank=True, max_length=100)
-    role = models.CharField(null=True, blank=True, max_length=100)
     ongoing = models.BooleanField(null=True, blank=True) # singleDate
 
 
 
-class VolunteeringInterest(models.Model):
-    """
-    The volunteering interests of the member has or supports.
-    See Volunteering Interest Fields for a description of the fields available within this object.
 
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/volunteering-interest
-
-    # supportedPredefinedCauses   No  An array of enum. Enum of predefined volunteering causes:
-    # supportedUserDefinedCauses  No  An array of user inputted string. Not currently used in any LinkedIn platform's UI.
-    """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='volunteering_interests')
-    cause = models.CharField(null=True, blank=True, max_length=100)
-
-
-class LinkedinWebsite(models.Model):
+class Website(models.Model):
     """
     Localized websites the member wants displayed on the profile.
     See Website Fields for a description of the fields available within this object.
-
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
-
-    # category  No  Enum: PERSONAL - COMPANY - BLOG - RSS - PORTFOLIO - OTHER
-    # label     No  Localizable label a member chose for a website in "OTHER" category. It is a  MultiLocaleString  type.
-    # url       Yes Localized URLs for a website. It is a  MultiLocaleUrl  type.
     """
+    WEBSITE_CHOICES =  [
+        ('Linkedin', 'Linkedin'),
+        ('Github', 'Github'),
+        ('Twitter', 'Twitter'),
+        ('Youtube', 'Youtube'),
+        ('Other', _('Other')),
+    ]
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='linkedin_websites')
-
-    category = models.CharField(null=True, blank=True, max_length=100)
-    label = models.CharField(null=True, blank=True, max_length=100)
+    category = models.CharField(null=True, blank=True, max_length=100, choices=WEBSITE_CHOICES)
+    label = models.CharField(null=True, blank=True, max_length=100) # if other > label
     url = models.URLField(null=True, blank=True)
