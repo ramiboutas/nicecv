@@ -27,7 +27,7 @@
             <div class="col-lg-4 col-md-6">
                 <h5 class="text-black mb-3">Newsletter</h5>
                 <p class="small text-muted">{% trans "Suscribe to our newsletter to get tips about how to write good CVs and more " %}</p>
-                <form action="{% url 'accounts_newsletter_subscribers_url' %}" method="post">
+                <form action="#" method="post">
                   {% csrf_token %}
                     <div class="input-group mb-3">
                         <input name="email" class="form-control" type="text" placeholder="{% trans "Enter your email" %}" aria-describedby="button-addon2">

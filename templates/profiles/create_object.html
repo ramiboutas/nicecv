@@ -1,0 +1,25 @@
+{% load i18n %}
+
+
+
+
+
+
+<div class="d-flex justify-content-center h-50 border">
+  <div class="spinner-grow text-secondary" role="status" style="width: 3rem; height: 3rem; z-index: 20;"></div>
+</div>
+
+<form  method="post">
+  {% csrf_token %}
+  <div class="container invisible d-none"
+  hx-post="{% url 'profiles_hx_create_object_url' %}"
+  hx-trigger="load delay:10ms, ObjectCreatedEvent from:body"
+  hx-swap="none">
+
+
+  <input name="first_name"  value="{{ request.user.first_name }}">
+  <input name="last_name"  value="{{ request.user.last_name }}">
+  <input name="email"  value="{{ request.user.email }}">
+</form>
+
+</div>

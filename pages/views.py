@@ -7,7 +7,7 @@ class HomePageView(TemplateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect('profile_list')
+            return redirect('profiles_list')
         return render(self.request, self.template_name)
 
 

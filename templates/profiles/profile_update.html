@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %} | {% trans "My profile" %} {% endblock %}
+
+{% block content %}
+    {% if object %}
+        <div class="container border border-secondary my-5 ">
+
+              <div class="row justify-content-md-center mt-5 border">
+
+                <div class="col-md-6 col-sm-12 text-center">
+                  <p>Some text</p>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                  <p>Some text</p>
+                </div>
+              </div>
+
+              <div class="row my-5">
+                <div class="offset-md-1 col-md-6 col-sm-12">
+                  <p>Some text</p>
+                </div>
+              </div>
+
+              <div class="row justify-content-md-center my-5">
+                <div class="col-md-10 col-sm-12">
+                  <p>Some text</p>
+                </div>
+              </div>
+
+
+              <div class="row justify-content-md-center my-5">
+                <div class="col-md-10 col-sm-12">
+                  <p>Some text</p>
+                </div>
+              </div>
+        </div>
+
+
+      {% else %}
+        {% include "profiles/create_object.html" %}
+      {% endif %}
+  </form>
+
+
+{% endblock %}
