@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+
+{% block content %}
+
+<main>
+<div class="position-relative overflow-hidden text-center bg-light">
+  <div class="col-md-5 p-lg-5 mx-auto my-5 b">
+    <h1 class="display-1 fw-normal">{% translate "Thanks" %} </h1>
+    <p class="lead fw-normal my-5">{% translate "You will receive an email once the site is completely developed" %}</p>
+  </div>
+  <div class="product-device shadow-sm d-none d-md-block"></div>
+  <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+</div>
+
+
+</main>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load i18n %}
+<footer class="w-100 py-4 flex-shrink-0">
+    <div class="container py-4">
+        <div class="row gy-4 gx-5">
+            <div class="col-lg-4 col-md-6">
+                <h5 class="h1 text">nicecv.online</h5>
+                <p class="small text-muted">{% trans "This site will enable you to create high quality CVs and related services" %}</p>
+                <!-- <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">nicecv.online</a></p> -->
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h5 class="text mb-3">{% trans "Quick links" %}</h5>
+                <ul class="list-unstyled text-muted">
+                    <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                    <li><a href="{% url 'account_login' %}">{% trans "Get started" %}</a></li>
+                    <li><a href="{% url 'pricing_main' %}">{% trans "Pricing" %}</a></li>
+                    <li><a href="{% url 'general_faq' %}">{% trans "FAQ" %}</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h5 class="text mb-3">{% trans "Legal" %}</h5>
+                <ul class="list-unstyled text-muted">
+                    <li><a href="{% url 'terms_and_conditions' %}">Terms and conditions</a></li>
+                    <li><a href="{% url 'privacy_policy' %}">Private policy</a></li>
+                    <li><a href="{% url 'cookie_policy' %}">Cookie policy</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-black mb-3">Newsletter</h5>
+                <p class="small text-muted">{% trans "Suscribe to our newsletter to get tips about how to write good CVs and more " %}</p>
+                <form action="{% url 'accounts_newsletter_subscribers_url' %}" method="post">
+                  {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input name="email" class="form-control" type="text" placeholder="{% trans "Enter your email" %}" aria-describedby="button-addon2">
+                        <button class="btn btn-primary" id="button-addon2" type="sumbit">
+                        {% trans "Subscribe" %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                      </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</footer>

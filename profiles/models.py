@@ -15,6 +15,7 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return '{0}/{1}'.format(instance.username.id, filename)
 
+
 class Profile(models.Model):
     """
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
