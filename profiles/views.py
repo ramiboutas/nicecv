@@ -57,3 +57,21 @@ def hx_create_object_view(request):
     object.save()
     # once the object is created, we redirect the user to the obj update url
     return HTTPResponseHXRedirect(redirect_to=object.get_update_url())
+
+
+# htmx - profile - upload full photo
+@login_required
+@require_POST
+def hx_upload_full_photo_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    photo = request.FILES.get("photo")
+    object.photo_full.save(photo.name, photo)
+    context = {'object': object}
+    return render(request, 'profiles/partials/photo_full.html', context)
+
+
+# htmx - profile - upload full photo
+@login_required
+@require_POST
+def hx_upload_and_crop_photo_view(request, pk):
+    pass

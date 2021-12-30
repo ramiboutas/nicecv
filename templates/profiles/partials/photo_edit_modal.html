@@ -1,0 +1,26 @@
+{% load i18n %}
+<!-- Modal -->
+<div class="modal fade" id="photoEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form >
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% csrf_token %}
+          <input type="file" name="photo" hx-encoding='multipart/form-data' hx-post="{{object.upload_full_photo_url}}" hx-trigger="change" target="this" hx-swap="outerHTML">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Cancel"%}</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+          hx-encoding='multipart/form-data' hx-post="{{object.upload_photo_url}}" hx-target="#photo-box"
+          >{% translate "Save" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

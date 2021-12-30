@@ -36,7 +36,8 @@ class Profile(models.Model):
     description = models.TextField(max_length=1000)
 
     # media
-    picture = models.ImageField(null=True, blank=True, upload_to='profiles/')
+    photo = models.ImageField(null=True, blank=True, upload_to='profiles/cropped_photos/')
+    photo_full = models.ImageField(null=True, blank=True, upload_to='profiles/full_photos/')
 
     # contact info
     phone = models.CharField(null=True, blank=True, max_length=200)
@@ -62,15 +63,22 @@ class Profile(models.Model):
     def get_update_url(self):
         return reverse('profiles_update', kwargs={'pk':self.pk})
 
+    def upload_and_crop_photo_url(self):
+        return reverse('profiles_upload_and_crop_photo_url', kwargs={'pk':self.pk})
 
-    def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
-        if self.picture != None:
-            img = Image.open(self.picture)
-            if img.height > 300 or img.width > 300:
-                new_size = (300, 300) # image proportion is manteined / we dont need to do extra work
-                img.thumbnail(new_size)
-                img.save(self.picture.path)
+    def upload_full_photo_url(self):
+        return reverse('profiles_upload_full_photo_url', kwargs={'pk':self.pk})
+
+    # 
+    # def save(self, *args, **kwargs):
+    #     super(Profile, self).save(*args, **kwargs)
+    #     if self.photo != None:
+    #         img = Image.open(self.photo)
+    #         if img.height > 300 or img.width > 300:
+    #             new_size = (300, 300) # image proportion is manteined / we dont need to do extra work
+    #             img.thumbnail(new_size)
+    #             img.save(self.photo.path)
+
 
 
 class Certification(models.Model):

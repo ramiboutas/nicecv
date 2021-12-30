@@ -3,110 +3,107 @@
 
 {% block title %} | {% trans "My profile" %} {% endblock %}
 
+{% block css %}
+{% endblock %}
+
+
 {% block content %}
     {% if object %}
         <div class="container border border-secondary my-5 ">
 
-              <div class="row justify-content-md-center mt-5 border">
+              <div class="row justify-content-md-center mt-5">
 
                 <div class="col-md-6 col-sm-12 text-center">
-                  <p>Some text</p>
+                  <div class="card">
+                    <div class="card-body">
+                      <h2>Photo</h2>
+                      <div class="d-flex flex-column align-items-center text-center">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                          <button type="button" class="btn btn-outline-secondary border-0" data-bs-toggle="modal" data-bs-target="#photoEditModal"><i class="bi bi-pencil"></i></button>
+
+                          <button type="button" class="btn btn-outline-secondary border-0" data-bs-toggle="modal" data-bs-target="#photoDeleteModal"><i class="bi bi-trash"></i></button>
+                        </div>
+                        <div id="photo-box">
+                        {% if object.photo %}
+                          <img src="{{ object.photo.url }}" alt="Admin" class="rounded-circle" width="500">
+                        {% else %}
+                          <p>{% trans "No photo selected" %} </p>
+                        {% endif %}
+                        </div>
+
+                        {% include "profiles/partials/photo_edit_modal.html" %}
+                        {% include "profiles/partials/photo_delete_modal.html" %}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="col-md-6 col-sm-12">
-                  <p>Some text</p>
-                </div>
-              </div>
 
-              <div class="row my-5">
-                <div class="offset-md-1 col-md-6 col-sm-12">
-                  <p>Some text</p>
-                </div>
-              </div>
 
               <div class="row justify-content-md-center my-5">
-                <div class="col-md-10 col-sm-12">
-                  <p>Some text</p>
-                </div>
-              </div>
+                <div class="col-md-12 col-sm-12">
+
+                  <h2>Skills</h2>
+                  <!-- all profile skills -->
+                  <form>
+                    {% csrf_token %}
+                    <div class="htmx-indicator">Updating...</div>
+                    <table>
+
+                      <thead> <tr> <th>Skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
+                      <tbody id="skills" class="sortable"
+                      hx-post="{{object.order_skills_url}}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-include="tr" hx-trigger="end" hx-swap="none">
+                        {% for skill in object.skills.all %}
+                          {% include "profiles/partials/skill-detail.html" %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </form>
 
 
-              <div class="row justify-content-md-center my-5">
-                <div class="col-md-10 col-sm-12">
-                  <p>Some text</p>
+                  <h2>adding new skill item</h2>
+                  <!-- adding new skill item -->
+                  <form>
+                    <table>
+                      <thead> <tr> <th>New skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
+                      <tbody >
+                        <tr id="newSkill">
+                          {% for field in skillform.visible_fields %}
+                            <td>
+                              {{ field }}
+                            </td>
+                          {% endfor %}
+                          <td>
+                            <button type="submit" name="button" class="btn btn-primary"
+                              hx-post="{{object.add_skill_url}}" hx-target="#skills"
+                              hx-swap="beforeend" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                              <span>+</span>
+                          </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </form>
                 </div>
               </div>
         </div>
-
-        <h3>Picture</h3>
-          <form id='pictureform' hx-encoding='multipart/form-data' hx-post="{{object.upload_picture_url}}" hx-target="#picture">
-            {% csrf_token %}
-            {{ pictureform }}
-            <button type="submit" name="button">Upload</button>
-            <progress id='pictureUploadProgress' value='0' max='100'></progress>
-          </form>
-          <div id="picture">
-            {% if object.picture %}
-              <img src="{{object.picture.url}}" alt="" height="40px">
-            {% endif %}
-          </div>
-
-        <h3>Skills (with table):</h3>
-
-
-        <!-- all profile skills -->
-        <form>
-          {% csrf_token %}
-          <div class="htmx-indicator">Updating...</div>
-          <table>
-
-            <thead> <tr> <th>Skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
-            <tbody id="skills" class="sortable"
-            hx-post="{{object.order_skills_url}}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-include="tr" hx-trigger="end" hx-swap="none">
-              {% for skill in object.skills.all %}
-                {% include "profiles/partials/skill-detail.html" %}
-              {% endfor %}
-            </tbody>
-          </table>
-        </form>
-
-
-        <!-- adding new skill item -->
-        <form>
-          <table>
-            <thead> <tr> <th>New skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
-            <tbody >
-              <tr id="newSkill">
-                {% for field in skillform.visible_fields %}
-                  <td>
-                    {{ field }}
-                  </td>
-                {% endfor %}
-                <td>
-                  <button type="submit" name="button"
-                    hx-post="{{object.add_skill_url}}" hx-target="#skills"
-                    hx-swap="beforeend" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-                    <span><i class="fas fa-plus-circle"></i></span>
-                </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-
+      </div>
 
       {% else %}
         {% include "profiles/create_object.html" %}
       {% endif %}
-  </form>
+
+
+
 
 
 {% endblock %}
 
 
-
-
 {% block extra_body %}
+
+
+
   <script>
       htmx.on('#pictureform', 'htmx:xhr:progress', function(evt) {
         htmx.find('#pictureUploadProgress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
@@ -122,6 +119,22 @@
             });
           }
       })
+
+      import Cropper from "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js";
+      
+      const image = document.getElementById('image');
+      const cropper = new Cropper(image, {
+        aspectRatio: 16 / 9,
+        crop(event) {
+          console.log(event.detail.x);
+          console.log(event.detail.y);
+          console.log(event.detail.width);
+          console.log(event.detail.height);
+          console.log(event.detail.rotate);
+          console.log(event.detail.scaleX);
+          console.log(event.detail.scaleY);
+        },
+      });
 
   </script>
 {% endblock %}

@@ -12,21 +12,35 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo2">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item mx-3">
+        <li class="nav-item me-3">
           <a class="nav-link text-primary " href="{% url 'pricing_main' %}">{% translate 'Get premium!'%}</a>
         </li>
         <li class="nav-item mx-3">
           {% include "_set_language_form.html" %}
         </li>
       </ul>
+
       <div class="d-flex">
-          <a href="{% url 'my_account' %}" class="btn btn-outline-dark me-2">
-            {% translate 'My account'%}
-          </a>
-          <a href="{% url 'account_logout' %}" class="btn btn-outline-secondary">
-            {% translate 'Log out'%}
-          </a>
+        <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if user.avatar_url %}
+                <img class="avatar avatar-32 bg-light rounded-circle text-white"src="{{user.avatar_url}}">
+                {% else %}
+                <i class="avatar avatar-32 bi bi-person-circle"></i>
+                {% endif %}
+                {% trans "Hi" %} {% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}!
+            </a>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+            <li><a class="dropdown-item" href="{% url 'my_account' %}">{% translate 'My account'%}</a></li>
+            <li><a class="dropdown-item" href="{% url 'profiles_list' %}">{% translate 'My profiles'%}</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% translate 'Log out'%}</a></li>
+          </ul>
+        </div>
       </div>
+
     </div>
 
   </div>

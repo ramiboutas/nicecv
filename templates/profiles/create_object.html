@@ -9,7 +9,7 @@
 <form  method="post">
   {% csrf_token %}
   <div class="container invisible d-none"
-  hx-post="{% url 'profiles_hx_create_object_url' %}"
+  hx-post="{% url 'profiles_create_object_url' %}"
   hx-trigger="load delay:10ms, ObjectCreatedEvent from:body"
   hx-swap="none">
   <input name="first_name"  value="{{ request.user.first_name }}">
