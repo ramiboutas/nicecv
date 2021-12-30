@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.linkedin',
     'django_htmx',
+    'crispy_forms',
+    'crispy_bootstrap5',
     # 'djstripe',
 
     # Tools for debug & productivity
@@ -296,8 +298,11 @@ META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
 META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
 
 
-# General stuff depending on debug and production
+# crispy forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+# General stuff depending on debug and production
 if PRODUCTION:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_HSTS_SECONDS = 31536000 # usual: 31536000 (1 year)

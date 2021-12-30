@@ -14,10 +14,11 @@ class CustomUserAdmin(UserAdmin):
     list_display = ['email', 'username', 'has_paid', ]
     fieldsets = (
         (None, {'fields': ('username', 'password', )}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email',)}),  # added "age" field
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'avatar_url',)}),
+        (_('Premium'), {'fields': ('paid_until', )}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined', 'paid_until')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined', )}),
     )
 
 

@@ -1,35 +1,57 @@
 {% load i18n %}
 <header>
 
+{% if user.is_authenticated %}
+
 <nav class="navbar navbar-expand-xl navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'home' %}">Nice CV</a>
+  <div class="container">
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo2" aria-controls="navbarTogglerDemo2" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarTogglerDemo2">
-      <ul class="navbar-nav me-auto mb-2 mb-xl-0">
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">{% translate 'Language'%}</a>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item mx-3">
+          <a class="nav-link text-primary " href="{% url 'pricing_main' %}">{% translate 'Get premium!'%}</a>
         </li>
-        <li class="nav-item dropdown me-3">
-          <form class="form-inline" action="{% url 'set_language' %}" method="post">{% csrf_token %}
-            <input name="next" type="hidden" value="{{ redirect_to }}">
-            <select onchange="this.form.submit()" name="language" class="form-control">
-                {% get_current_language as LANGUAGE_CODE %}
-                {% get_available_languages as LANGUAGES %}
-                {% get_language_info_list for LANGUAGES as languages %}
-                {% for language in languages %}
-                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                      {{ language.name_local }} ({{ language.code }})
-                    </option>
-                {% endfor %}
-            </select>
-        </form>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'pricing_main' %}">{% translate 'Pricing'%}</a>
-      </li>
+        <li class="nav-item mx-3">
+          {% include "_set_language_form.html" %}
+        </li>
+      </ul>
+      <div class="d-flex">
+          <a href="{% url 'my_account' %}" class="btn btn-outline-dark me-2">
+            {% translate 'My account'%}
+          </a>
+          <a href="{% url 'account_logout' %}" class="btn btn-outline-secondary">
+            {% translate 'Log out'%}
+          </a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+{% else %}
+
+<nav class="navbar navbar-expand-xl navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand text-secondary" href="{% url 'home' %}">Nice CV</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo2" aria-controls="navbarTogglerDemo2" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo2">
+      <ul class="navbar-nav me-auto">
+
+        <li class="nav-item mx-3">
+          {% include "_set_language_form.html" %}
+        </li>
+
+        <li class="nav-item mx-3">
+          <a class="nav-link" href="{% url 'pricing_main' %}">{% translate 'Pricing'%}</a>
+        </li>
+
       </ul>
       <div class="d-flex">
         {% if user.is_authenticated %}
@@ -43,5 +65,6 @@
     </div>
   </div>
 </nav>
+{% endif %}
 
 </header>

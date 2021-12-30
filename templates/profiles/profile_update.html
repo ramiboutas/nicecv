@@ -38,6 +38,62 @@
               </div>
         </div>
 
+        <h3>Picture</h3>
+          <form id='pictureform' hx-encoding='multipart/form-data' hx-post="{{object.upload_picture_url}}" hx-target="#picture">
+            {% csrf_token %}
+            {{ pictureform }}
+            <button type="submit" name="button">Upload</button>
+            <progress id='pictureUploadProgress' value='0' max='100'></progress>
+          </form>
+          <div id="picture">
+            {% if object.picture %}
+              <img src="{{object.picture.url}}" alt="" height="40px">
+            {% endif %}
+          </div>
+
+        <h3>Skills (with table):</h3>
+
+
+        <!-- all profile skills -->
+        <form>
+          {% csrf_token %}
+          <div class="htmx-indicator">Updating...</div>
+          <table>
+
+            <thead> <tr> <th>Skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
+            <tbody id="skills" class="sortable"
+            hx-post="{{object.order_skills_url}}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-include="tr" hx-trigger="end" hx-swap="none">
+              {% for skill in object.skills.all %}
+                {% include "profiles/partials/skill-detail.html" %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+
+
+        <!-- adding new skill item -->
+        <form>
+          <table>
+            <thead> <tr> <th>New skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
+            <tbody >
+              <tr id="newSkill">
+                {% for field in skillform.visible_fields %}
+                  <td>
+                    {{ field }}
+                  </td>
+                {% endfor %}
+                <td>
+                  <button type="submit" name="button"
+                    hx-post="{{object.add_skill_url}}" hx-target="#skills"
+                    hx-swap="beforeend" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                    <span><i class="fas fa-plus-circle"></i></span>
+                </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
 
       {% else %}
         {% include "profiles/create_object.html" %}
@@ -45,4 +101,27 @@
   </form>
 
 
+{% endblock %}
+
+
+
+
+{% block extra_body %}
+  <script>
+      htmx.on('#pictureform', 'htmx:xhr:progress', function(evt) {
+        htmx.find('#pictureUploadProgress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+      });
+
+      htmx.onLoad(function(content) {
+          var sortables = content.querySelectorAll(".sortable");
+          for (var i = 0; i < sortables.length; i++) {
+            var sortable = sortables[i];
+            new Sortable(sortable, {
+                animation: 150,
+                ghostClass: 'blue-background-class'
+            });
+          }
+      })
+
+  </script>
 {% endblock %}
