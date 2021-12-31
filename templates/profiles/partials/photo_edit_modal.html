@@ -11,7 +11,8 @@
         </div>
         <div class="modal-body">
           {% csrf_token %}
-          <input type="file" name="photo" hx-encoding='multipart/form-data' hx-post="{{object.upload_full_photo_url}}" hx-trigger="change" target="this" hx-swap="outerHTML">
+          <input id="image-to-crop" type="file" name="photo" hx-encoding='multipart/form-data'
+          hx-post="{{object.upload_full_photo_url}}" hx-trigger="change" target="this" hx-swap="outerHTML">
 
         </div>
         <div class="modal-footer">

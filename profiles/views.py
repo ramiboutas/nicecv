@@ -6,8 +6,9 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
-
 from django.utils.translation import gettext as _
+
+from django_htmx.http import trigger_client_event
 
 from .models import Profile
 User = get_user_model()
@@ -67,8 +68,9 @@ def hx_upload_full_photo_view(request, pk):
     photo = request.FILES.get("photo")
     object.photo_full.save(photo.name, photo)
     context = {'object': object}
-    return render(request, 'profiles/partials/photo_full.html', context)
-
+    response = render(request, 'profiles/partials/photo_full.html', context)
+    trigger_client_event(response, "fullPhotoUploaded", { },)
+    return response
 
 # htmx - profile - upload full photo
 @login_required

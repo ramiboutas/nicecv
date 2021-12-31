@@ -101,40 +101,11 @@
 
 
 {% block extra_body %}
-
-
-
   <script>
-      htmx.on('#pictureform', 'htmx:xhr:progress', function(evt) {
-        htmx.find('#pictureUploadProgress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
-      });
 
-      htmx.onLoad(function(content) {
-          var sortables = content.querySelectorAll(".sortable");
-          for (var i = 0; i < sortables.length; i++) {
-            var sortable = sortables[i];
-            new Sortable(sortable, {
-                animation: 150,
-                ghostClass: 'blue-background-class'
-            });
-          }
-      })
 
-      import Cropper from "https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js";
-      
-      const image = document.getElementById('image');
-      const cropper = new Cropper(image, {
-        aspectRatio: 16 / 9,
-        crop(event) {
-          console.log(event.detail.x);
-          console.log(event.detail.y);
-          console.log(event.detail.width);
-          console.log(event.detail.height);
-          console.log(event.detail.rotate);
-          console.log(event.detail.scaleX);
-          console.log(event.detail.scaleY);
-        },
-      });
+
+
 
   </script>
 {% endblock %}
