@@ -17,16 +17,16 @@
           <button type="button" class="btn btn-secondary">{% translate "Delete"%}</button>
           <button type="button" class="btn btn-secondary" onclick="closePhotoModal()">{% translate "Cancel"%}</button>
 
-          <form class="" action="index.html" method="post">
+          <form class="" method="post">
               {% csrf_token %}
               <input type="hidden" id="cropX" name="cropX" value="">
               <input type="hidden" id="cropY" name="cropY" value="">
               <input type="hidden" id="cropWidth" name="cropWidth" value="">
               <input type="hidden" id="cropHeigth" name="cropHeigth" value="">
+              <button type="submit" class="btn btn-primary" onclick="closePhotoModal()"
+                hx-post="{{ object.crop_photo_url }}" hx-target="#photo-box">
+                <i class="bi bi-crop"> </i>{% translate "Crop and save" %}</button>
           </form>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-          hx-encoding='multipart/form-data' hx-post="{{object.upload_photo_url}}" hx-target="#photo-box"
-          >{% translate "Save" %}</button>
         </div>
 
     </div>

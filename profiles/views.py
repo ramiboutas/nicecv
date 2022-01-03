@@ -65,14 +65,15 @@ def hx_create_object_view(request):
 @require_POST
 def hx_upload_full_photo_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    photo = request.FILES.get("photo")
-    object.photo_full.save(photo.name, photo)
+    photo_full = request.FILES.get("photo")
+    object.photo_full.save(photo_full.name, photo_full)
     context = {'object': object}
     response = HttpResponse(status=200)
     trigger_client_event(response, "fullPhotoUploaded", { },)
     return response
 
 
+# htmx - profile - get photo modal
 @login_required
 def hx_get_photo_modal_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
@@ -80,13 +81,15 @@ def hx_get_photo_modal_view(request, pk):
     return render(request, 'profiles/partials/photo_modal.html', context)
 
 
-
-
-
-
-
-# htmx - profile - upload full photo
+# htmx - profile - crop photo
 @login_required
 @require_POST
-def hx_upload_and_crop_photo_view(request, pk):
-    pass
+def hx_crop_photo_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    x = int(request.POST.get("cropX"))
+    y = int(request.POST.get("cropY"))
+    width = int(request.POST.get("cropWidth"))
+    height = int(request.POST.get("cropHeigth"))
+    object = object.crop_and_save_photo(x, y, width, height)
+    context = {'object': object}
+    return render(request, 'profiles/partials/photo_cropped.html', context)

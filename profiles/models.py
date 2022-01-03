@@ -1,7 +1,10 @@
+import os
 import uuid
+from io import BytesIO
 from PIL import Image
-# from croppie.fields import CroppieField # ???
 
+from django.core.files.base import ContentFile
+from django.core.files import File
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -63,24 +66,39 @@ class Profile(models.Model):
     def get_update_url(self):
         return reverse('profiles_update', kwargs={'pk':self.pk})
 
-    def upload_and_crop_photo_url(self):
-        return reverse('profiles_upload_and_crop_photo_url', kwargs={'pk':self.pk})
-
     def upload_full_photo_url(self):
         return reverse('profiles_upload_full_photo_url', kwargs={'pk':self.pk})
 
     def get_photo_modal_url(self):
         return reverse('profiles_get_photo_modal_url', kwargs={'pk':self.pk})
 
-    #
-    # def save(self, *args, **kwargs):
-    #     super(Profile, self).save(*args, **kwargs)
-    #     if self.photo != None:
-    #         img = Image.open(self.photo)
-    #         if img.height > 300 or img.width > 300:
-    #             new_size = (300, 300) # image proportion is manteined / we dont need to do extra work
-    #             img.thumbnail(new_size)
-    #             img.save(self.photo.path)
+    def crop_photo_url(self):
+        return reverse('profiles_crop_photo_url', kwargs={'pk':self.pk})
+
+    def crop_and_save_photo(self, x, y, width, height):
+        if self.photo_full:
+            name, dot_extension = os.path.splitext(self.photo_full.name)
+            extension = dot_extension[1:]
+            image = Image.open(self.photo_full)
+            area = (x, y, x+width, y+height)
+            # https://bhch.github.io/posts/2018/12/django-how-to-editmanipulate-uploaded-images-on-the-fly-before-saving/
+            image = image.crop(area)
+            cropped_image_io = BytesIO() # create a BytesIO object
+            image.save(cropped_image_io, ext=extension, quality=100) # save image to BytesIO object
+            self.photo = File(cropped_image_io, name=f'{name}_cropped{extension}') # create a django friendly File object
+            self.save()
+            return self
+
+        return None
+
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
+        if self.photo_full != None:
+            img = Image.open(self.photo_full)
+            if img.height > 1200 or img.width > 1200:
+                new_size = (1200, 1200) # image proportion is manteined / we dont need to do extra work
+                img.thumbnail(new_size)
+                img.save(self.photo_full.path)
 
 
 
