@@ -69,7 +69,10 @@ class Profile(models.Model):
     def upload_full_photo_url(self):
         return reverse('profiles_upload_full_photo_url', kwargs={'pk':self.pk})
 
-    # 
+    def get_photo_modal_url(self):
+        return reverse('profiles_get_photo_modal_url', kwargs={'pk':self.pk})
+
+    #
     # def save(self, *args, **kwargs):
     #     super(Profile, self).save(*args, **kwargs)
     #     if self.photo != None:

@@ -68,9 +68,22 @@ def hx_upload_full_photo_view(request, pk):
     photo = request.FILES.get("photo")
     object.photo_full.save(photo.name, photo)
     context = {'object': object}
-    response = render(request, 'profiles/partials/photo_full.html', context)
+    response = HttpResponse(status=200)
     trigger_client_event(response, "fullPhotoUploaded", { },)
     return response
+
+
+@login_required
+def hx_get_photo_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return render(request, 'profiles/partials/photo_modal.html', context)
+
+
+
+
+
+
 
 # htmx - profile - upload full photo
 @login_required

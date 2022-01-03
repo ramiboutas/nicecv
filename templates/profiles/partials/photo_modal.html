@@ -1,0 +1,34 @@
+{% load i18n %}
+<!-- Modal -->
+<div id="photo-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="photo-modal" class="modal fade show" style="display:block;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" onclick="closePhotoModal()" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-0">
+          <img  class="img-fluid" id="image-to-crop"  src="{{ object.photo_full.url }}">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary">{% translate "Delete"%}</button>
+          <button type="button" class="btn btn-secondary" onclick="closePhotoModal()">{% translate "Cancel"%}</button>
+
+          <form class="" action="index.html" method="post">
+              {% csrf_token %}
+              <input type="hidden" id="cropX" name="cropX" value="">
+              <input type="hidden" id="cropY" name="cropY" value="">
+              <input type="hidden" id="cropWidth" name="cropWidth" value="">
+              <input type="hidden" id="cropHeigth" name="cropHeigth" value="">
+          </form>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+          hx-encoding='multipart/form-data' hx-post="{{object.upload_photo_url}}" hx-target="#photo-box"
+          >{% translate "Save" %}</button>
+        </div>
+
+    </div>
+  </div>
+</div>

@@ -27,73 +27,34 @@
                         {% if object.photo %}
                           <img src="{{ object.photo.url }}" alt="Admin" class="rounded-circle" width="500">
                         {% else %}
-                          <p>{% trans "No photo selected" %} </p>
+                          <form>
+                            {% csrf_token %}
+                            <input id="add-full-photo-input" type="file" name="photo" hx-encoding='multipart/form-data'
+                            hx-post="{{object.upload_full_photo_url}}" hx-trigger="change" hx-swap="none">
+                          </form>
+
+                          <div hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
+                            hx-trigger="fullPhotoUploaded from:body"
+                          	_="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop">
+                          </div>
                         {% endif %}
                         </div>
 
-                        {% include "profiles/partials/photo_edit_modal.html" %}
                       </div>
                     </div>
                   </div>
                 </div>
 
+                <div id="modals-here"></div>
 
-
-              <div class="row justify-content-md-center my-5">
-                <div class="col-md-12 col-sm-12">
-
-                  <h2>Skills</h2>
-                  <!-- all profile skills -->
-                  <form>
-                    {% csrf_token %}
-                    <div class="htmx-indicator">Updating...</div>
-                    <table>
-
-                      <thead> <tr> <th>Skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
-                      <tbody id="skills" class="sortable"
-                      hx-post="{{object.order_skills_url}}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-include="tr" hx-trigger="end" hx-swap="none">
-                        {% for skill in object.skills.all %}
-                          {% include "profiles/partials/skill-detail.html" %}
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                  </form>
-
-
-                  <h2>adding new skill item</h2>
-                  <!-- adding new skill item -->
-                  <form>
-                    <table>
-                      <thead> <tr> <th>New skill name</th> <th>Level</th> <th>Actions</th> </tr> </thead>
-                      <tbody >
-                        <tr id="newSkill">
-                          {% for field in skillform.visible_fields %}
-                            <td>
-                              {{ field }}
-                            </td>
-                          {% endfor %}
-                          <td>
-                            <button type="submit" name="button" class="btn btn-primary"
-                              hx-post="{{object.add_skill_url}}" hx-target="#skills"
-                              hx-swap="beforeend" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-                              <span>+</span>
-                          </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </form>
-                </div>
-              </div>
         </div>
       </div>
+
+
 
       {% else %}
         {% include "profiles/create_object.html" %}
       {% endif %}
-
-
-
 
 
 {% endblock %}
@@ -103,4 +64,9 @@
   <!-- cropper js
   <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
   <script src="{% static 'js/cropper.js' %}"></script>
+  <script type="text/javascript">
+
+  
+
+  </script>
 {% endblock %}
