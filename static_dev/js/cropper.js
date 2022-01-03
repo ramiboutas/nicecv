@@ -12,20 +12,13 @@
 
 
 
+const element = document.getElementById("image-to-crop");
+element.addEventListener('change', pollDOM);
 
-
-var element = document.getElementById("image-to-crop");
-element.addEventListener('change', crop_the_image);
-
-function crop_the_image() {
-  var element = document.getElementById("image-to-crop");
-  while ( element.tagName != "img" ) {
-      var element = document.getElementById("image-to-crop");
-      console.log(element);
-    }
-
+function crop_the_image(element) {
   const cropper = new Cropper(element, {
-    aspectRatio: 16 / 9,
+    aspectRatio: 1/1,
+    viewMode: 3, // sketch image to fit the container
     crop(event) {
       console.log(event.detail.x);
       console.log(event.detail.y);
@@ -36,4 +29,17 @@ function crop_the_image() {
       console.log(event.detail.scaleY);
     },
   });
+}
+
+
+function pollDOM () {
+  const element = document.getElementById("image-to-crop");
+  console.log("pollDOM was called");
+  console.log(element.tagName);
+  if (element.tagName == "IMG") {
+    crop_the_image(element);
+  } else {
+    setTimeout(pollDOM, 100); // try again in 300 milliseconds
+  }
+  delete element;
 }

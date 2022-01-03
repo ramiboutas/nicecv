@@ -1,9 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block title %} | {% trans "My profile" %} {% endblock %}
 
 {% block css %}
+<!-- cropper  -->
+<link rel="stylesheet" href="{% static 'css/cropper.css' %}">
 {% endblock %}
 
 
@@ -18,11 +21,8 @@
                     <div class="card-body">
                       <h2>Photo</h2>
                       <div class="d-flex flex-column align-items-center text-center">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                          <button type="button" class="btn btn-outline-secondary border-0" data-bs-toggle="modal" data-bs-target="#photoEditModal"><i class="bi bi-pencil"></i></button>
+                        <button type="button" class="btn btn-outline-secondary border-0" data-bs-toggle="modal" data-bs-target="#photoEditModal"><i class="bi bi-pencil"></i></button>
 
-                          <button type="button" class="btn btn-outline-secondary border-0" data-bs-toggle="modal" data-bs-target="#photoDeleteModal"><i class="bi bi-trash"></i></button>
-                        </div>
                         <div id="photo-box">
                         {% if object.photo %}
                           <img src="{{ object.photo.url }}" alt="Admin" class="rounded-circle" width="500">
@@ -32,7 +32,6 @@
                         </div>
 
                         {% include "profiles/partials/photo_edit_modal.html" %}
-                        {% include "profiles/partials/photo_delete_modal.html" %}
                       </div>
                     </div>
                   </div>
@@ -101,11 +100,7 @@
 
 
 {% block extra_body %}
-  <script>
-
-
-
-
-
-  </script>
+  <!-- cropper js
+  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <script src="{% static 'js/cropper.js' %}"></script>
 {% endblock %}

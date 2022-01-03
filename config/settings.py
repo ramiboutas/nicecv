@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     # 'djstripe',
 
-    # Tools for debug & productivity
-    'django_browser_reload',
+    # Tools for debug
     'debug_toolbar',
 
 ]
@@ -120,7 +119,6 @@ MIDDLEWARE = [
 
     # third-party middlewares
     'django_htmx.middleware.HtmxMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 

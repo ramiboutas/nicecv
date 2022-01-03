@@ -21,7 +21,6 @@
 
     <!-- my custom css -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/cropper.css' %}">
 
     <!-- cropper css
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />-->
@@ -48,15 +47,12 @@
     <!-- my JavaScript files -->
     <script src="{% static 'js/base.js' %}"></script>
 
-    <script src="{% static 'js/cropper.js' %}"></script>
 
     <!-- htmx -->
     <script src="https://unpkg.com/htmx.org@1.6.0"></script>
     <!--  Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-    <!-- cropper js
-    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 
     <!-- django-htmx comes with a small JavaScript extension for htmx’s behaviour. Currently the extension only includes a debug error handler, documented below.The script is served as a static file called django-htmx.js, but you shouldn’t reference it directly. Instead, use the included template tags, for both Django and Jinja templates. -->
     {% django_htmx_script %}
