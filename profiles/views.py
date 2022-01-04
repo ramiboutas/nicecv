@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from django_htmx.http import trigger_client_event
 
 from .models import Profile
+from utils.files import delete_path_file
 User = get_user_model()
 
 class ProfileListView(LoginRequiredMixin, ListView):
@@ -69,7 +70,7 @@ def hx_upload_full_photo_view(request, pk):
     object.photo_full.save(photo_full.name, photo_full)
     context = {'object': object}
     response = HttpResponse(status=200)
-    trigger_client_event(response, "fullPhotoUploaded", { },)
+    trigger_client_event(response, "fullPhotoUploadedEvent", { },)
     return response
 
 
@@ -79,6 +80,13 @@ def hx_get_photo_modal_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
     return render(request, 'profiles/partials/photo_modal.html', context)
+
+
+# htmx - profile - remove photo modal
+@login_required
+def hx_remove_photo_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    return HttpResponse(status=200)
 
 
 # htmx - profile - crop photo
@@ -92,4 +100,14 @@ def hx_crop_photo_view(request, pk):
     height = int(request.POST.get("cropHeigth"))
     object = object.crop_and_save_photo(x, y, width, height)
     context = {'object': object}
-    return render(request, 'profiles/partials/photo_cropped.html', context)
+    response = render(request, 'profiles/partials/photo_cropped.html', context)
+    trigger_client_event(response, "photoCroppedEvent", { },)
+    return response
+
+def hx_delete_photos_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    delete_path_file(object.photo_full.path)
+    delete_path_file(object.photo.path)
+    object.photo_full.delete()
+    object.photo.delete()
+    return HttpResponse(status=200)

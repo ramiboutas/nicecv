@@ -72,21 +72,25 @@ class Profile(models.Model):
     def get_photo_modal_url(self):
         return reverse('profiles_get_photo_modal_url', kwargs={'pk':self.pk})
 
+    def remove_photo_modal_url(self):
+        return reverse('profiles_remove_photo_modal_url', kwargs={'pk':self.pk})
+
+    def delete_photos_url(self):
+        return reverse('profiles_delete_photos_url', kwargs={'pk':self.pk})
+
     def crop_photo_url(self):
         return reverse('profiles_crop_photo_url', kwargs={'pk':self.pk})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
-            name, dot_extension = os.path.splitext(self.photo_full.name)
-            extension = dot_extension[1:]
-            image = Image.open(self.photo_full)
-            area = (x, y, x+width, y+height)
-            # https://bhch.github.io/posts/2018/12/django-how-to-editmanipulate-uploaded-images-on-the-fly-before-saving/
-            image = image.crop(area)
-            cropped_image_io = BytesIO() # create a BytesIO object
-            image.save(cropped_image_io, ext=extension, quality=100) # save image to BytesIO object
-            self.photo = File(cropped_image_io, name=f'{name}_cropped{extension}') # create a django friendly File object
-            self.save()
+            photo_full_copy = ContentFile(self.photo_full.read())
+            photo_initial = self.photo_full.name.split("/")[-1]
+            self.photo.save(photo_initial, photo_full_copy)
+            image = Image.open(self.photo)
+            cropping_area = (x, y, x+width, y+height)
+            cropped_image = image.crop(cropping_area)
+            resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
+            resized_image.save(self.photo.path)
             return self
 
         return None

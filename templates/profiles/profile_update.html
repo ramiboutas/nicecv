@@ -21,24 +21,27 @@
                     <div class="card-body">
                       <h2>Photo</h2>
                       <div class="d-flex flex-column align-items-center text-center">
-                        <button type="button" class="btn btn-outline-secondary border-0" data-bs-toggle="modal" data-bs-target="#photoEditModal"><i class="bi bi-pencil"></i></button>
+
+                        <div hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
+                        hx-trigger="fullPhotoUploadedEvent from:body" _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop"></div>
+
+                        <div hx-get="{{ object.remove_photo_modal_url }}" hx-target="#photo-modal-content" hx-swap="outerHTML"
+                          hx-trigger="photoCroppedEvent from:body"></div>
 
                         <div id="photo-box">
-                        {% if object.photo %}
-                          <img src="{{ object.photo.url }}" alt="Admin" class="rounded-circle" width="500">
-                        {% else %}
-                          <form>
-                            {% csrf_token %}
-                            <input id="add-full-photo-input" type="file" name="photo" hx-encoding='multipart/form-data'
-                            hx-post="{{object.upload_full_photo_url}}" hx-trigger="change" hx-swap="none">
-                          </form>
-
-                          <div hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
-                            hx-trigger="fullPhotoUploaded from:body"
-                          	_="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop">
-                          </div>
-                        {% endif %}
+                          {% if object.photo %}
+                            {% include "profiles/partials/photo_cropped.html" %}
+                          {% endif %}
                         </div>
+
+                        <form>
+                            {% csrf_token %}
+                            <label class="btn btn-outline-secondary border-0 mx-2" for="file-input">
+                              <i class="bi bi-camera"></i>  {% trans "Select photo" %}</label>
+                            <input id="file-input" type="file" name="photo" onchange="pollImageToCrop()"  style="visibility: hidden;"
+                            hx-post="{{object.upload_full_photo_url}}" hx-encoding='multipart/form-data'
+                            hx-trigger="change" hx-swap="none">
+                        </form>
 
                       </div>
                     </div>
