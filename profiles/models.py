@@ -66,20 +66,23 @@ class Profile(models.Model):
     def get_update_url(self):
         return reverse('profiles_update', kwargs={'pk':self.pk})
 
+    def delete_object_url(self):
+        return reverse('profiles_delete_object', kwargs={'pk':self.pk})
+
     def upload_full_photo_url(self):
-        return reverse('profiles_upload_full_photo_url', kwargs={'pk':self.pk})
+        return reverse('profiles_upload_full_photo', kwargs={'pk':self.pk})
 
     def get_photo_modal_url(self):
-        return reverse('profiles_get_photo_modal_url', kwargs={'pk':self.pk})
+        return reverse('profiles_get_photo_modal', kwargs={'pk':self.pk})
 
     def remove_photo_modal_url(self):
-        return reverse('profiles_remove_photo_modal_url', kwargs={'pk':self.pk})
+        return reverse('profiles_remove_photo_modal', kwargs={'pk':self.pk})
 
     def delete_photos_url(self):
-        return reverse('profiles_delete_photos_url', kwargs={'pk':self.pk})
+        return reverse('profiles_delete_photos', kwargs={'pk':self.pk})
 
     def crop_photo_url(self):
-        return reverse('profiles_crop_photo_url', kwargs={'pk':self.pk})
+        return reverse('profiles_crop_photo', kwargs={'pk':self.pk})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:

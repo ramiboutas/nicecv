@@ -61,6 +61,15 @@ def hx_create_object_view(request):
     return HTTPResponseHXRedirect(redirect_to=object.get_update_url())
 
 
+# htmx - profile - delete object
+@login_required
+@require_POST
+def hx_delete_object_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.delete()
+    return HttpResponse(status=200)
+
+
 # htmx - profile - upload full photo
 @login_required
 @require_POST
