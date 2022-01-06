@@ -298,6 +298,18 @@ META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
 META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
 
 
+# profile model settings
+
+PROFILE_WEBSITE_LINK_CHOICES =  [
+    ('Linkedin', 'Linkedin'),
+    ('Github', 'Github'),
+    ('Twitter', 'Twitter'),
+    ('Youtube', 'Youtube'),
+    ('Portfolio', _('Portfolio')),
+    ('Other', _('Other')),
+]
+
+
 # crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"

@@ -293,20 +293,14 @@ class VolunteeringExperience(models.Model):
     ongoing = models.BooleanField(null=True, blank=True) # singleDate
 
 
-class Website(models.Model):
+class WebsiteLink(models.Model):
     """
     Localized websites the member wants displayed on the profile.
     See Website Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
     """
-    WEBSITE_CHOICES =  [
-        ('Linkedin', 'Linkedin'),
-        ('Github', 'Github'),
-        ('Twitter', 'Twitter'),
-        ('Youtube', 'Youtube'),
-        ('Other', _('Other')),
-    ]
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='linkedin_websites')
-    category = models.CharField(null=True, blank=True, max_length=100, choices=WEBSITE_CHOICES)
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='website_links')
+    category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_WEBSITE_LINK_CHOICES)
     label = models.CharField(null=True, blank=True, max_length=100) # if other > label
     url = models.URLField(null=True, blank=True)
