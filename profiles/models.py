@@ -29,6 +29,10 @@ class Profile(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    # media
+    photo = models.ImageField(null=True, blank=True, upload_to='profiles/cropped_photos/')
+    photo_full = models.ImageField(null=True, blank=True, upload_to='profiles/full_photos/')
+
     # personal info
     first_name = models.CharField(null=True, blank=True, max_length=50)
     last_name = models.CharField(null=True, blank=True, max_length=50)
@@ -36,16 +40,13 @@ class Profile(models.Model):
     location = models.CharField(null=True, blank=True, max_length=100)
     birth_date = models.DateTimeField(null=True, blank=True)
     jobtitle = models.CharField(max_length=200)
-    description = models.TextField(max_length=1000)
-
-    # media
-    photo = models.ImageField(null=True, blank=True, upload_to='profiles/cropped_photos/')
-    photo_full = models.ImageField(null=True, blank=True, upload_to='profiles/full_photos/')
 
     # contact info
     phone = models.CharField(null=True, blank=True, max_length=200)
-    website = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
+
+    # description & interests
+    description = models.TextField(max_length=1000)
     interests = models.CharField(max_length=200)
 
     # labels
@@ -83,6 +84,9 @@ class Profile(models.Model):
 
     def crop_photo_url(self):
         return reverse('profiles_crop_photo', kwargs={'pk':self.pk})
+
+    def save_general_and_contact_info_url(self):
+        return reverse('profiles_save_general_and_contact_info', kwargs={'pk':self.pk})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:

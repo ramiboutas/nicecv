@@ -4,6 +4,7 @@ from .views import ProfileListView, ProfileUpdateView, ProfileCreateView
 from .views import hx_create_object_view, hx_delete_object_view
 from .views import hx_upload_full_photo_view, hx_crop_photo_view, hx_delete_photos_view
 from .views import hx_get_photo_modal_view, hx_remove_photo_modal_view
+from .views import hx_save_general_and_contact_info_view
 
 
 urlpatterns = [
@@ -27,6 +28,9 @@ urlpatterns = [
     # htmx - photo modal
     path('hx-get-photo-modal/<uuid:pk>/', hx_get_photo_modal_view, name='profiles_get_photo_modal'),
     path('hx-remove-photo-modal/<uuid:pk>/', hx_remove_photo_modal_view, name='profiles_remove_photo_modal'),
+
+    # htmx - general_and_contact_info
+    path('hx-save-general-and-contact-info/<uuid:pk>/', hx_save_general_and_contact_info_view, name='profiles_save_general_and_contact_info'),
 
 
 ]

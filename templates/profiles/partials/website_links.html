@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="input-group mb-3">
+<div class="input-group ">
 
 <select class="custom-select">
   {% for link_value, link_name in profile_website_link_choices %}
@@ -8,7 +8,7 @@
 </select>
 
   <input hx-post="{{ object.save_candidate_info_dynamic_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
-  class="form-control border-0 bg-white" placeholder="{% trans 'Your profile link' %}"  type="text" name="candidate_website" {% if object.candidate_website %} value="{{object.candidate_website}}" {% endif %} maxlength="100" spellcheck="false">
+  class="form-control border-0 bg-white" placeholder="{% trans 'Your profile link (optional)' %}"  type="text" name="candidate_website" {% if object.candidate_website %} value="{{object.candidate_website}}" {% endif %} maxlength="100" spellcheck="false">
 
   <button class="btn btn-outline-secondary" type="button" name="button"><i class="bi bi-plus-circle"></i></button>
 

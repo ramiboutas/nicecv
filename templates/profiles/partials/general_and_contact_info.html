@@ -1,0 +1,52 @@
+{% load i18n %}
+
+
+
+<!-- first_name & last_name -->
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+      <span class="input-group-text border-0" ><i class="bi bi-person-circle"></i></span>
+  </div>
+  <input hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+  class="form-control border-0 bg-white" placeholder="{% trans 'First name' %}"  type="text" name="first_name" {% if object.candidate_name %} value="{{object.first_name}}" {% endif %} maxlength="50" spellcheck="false">
+
+  <input hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+  class="form-control  border-0 bg-white" placeholder="{% trans 'Last name' %}"  type="text" name="last_name" {% if object.candidate_name %} value="{{object.last_name}}" {% endif %} maxlength="50" spellcheck="false">
+</div>
+
+
+<!-- jobtitle -->
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
+  </div>
+  <input hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+  class="form-control border-0 bg-white" placeholder="{% trans 'Job position' %}"  type="text" name="candidate_position" {% if object.jobtitle %} value="{{object.jobtitle}}" {% endif %} maxlength="50" spellcheck="false">
+</div>
+
+<!-- jobtitle -->
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text border-0" ><i class="bi bi-geo-alt"></i></span>
+  </div>
+  <input hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+  class="form-control border-0 bg-white" placeholder="{% trans 'Your city, country' %}" type="text" name="candidate_location" {% if object.candidate_location %} value="{{object.location}}" {% endif %} maxlength="25" spellcheck="false">
+</div>
+
+<!-- jobtitle -->
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text border-0">@</span>
+  </div>
+  <input hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+  class="form-control border-0 bg-white" placeholder="{% trans 'Your email' %}"  type="text" name="candidate_email" {% if object.candidate_email %} value="{{object.candidate_email}}" {% endif %} maxlength="100" spellcheck="false">
+</div>
+
+<!-- jobtitle -->
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text border-0" ><i class="bi bi-telephone"></i></span>
+  </div>
+  <input hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+  class="form-control border-0 bg-white" placeholder="{% trans 'Your phone number' %}"  type="text" name="candidate_phone" {% if object.candidate_phone %} value="{{object.candidate_phone}}" {% endif %} maxlength="15" spellcheck="false">
+</div>

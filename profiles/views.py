@@ -94,7 +94,6 @@ def hx_get_photo_modal_view(request, pk):
 # htmx - profile - remove photo modal
 @login_required
 def hx_remove_photo_modal_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
     return HttpResponse(status=200)
 
 
@@ -113,6 +112,9 @@ def hx_crop_photo_view(request, pk):
     trigger_client_event(response, "photoCroppedEvent", { },)
     return response
 
+# htmx - profile - delete photos
+@login_required
+@require_POST
 def hx_delete_photos_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     delete_path_file(object.photo_full.path)
@@ -120,3 +122,10 @@ def hx_delete_photos_view(request, pk):
     object.photo_full.delete()
     object.photo.delete()
     return HttpResponse(status=200)
+
+
+@login_required
+@require_POST
+def hx_save_general_and_contact_info_view(request, pk):
+    first_name = request.POST.get("first_name")
+    last_name = request.POST.get("last_name")
