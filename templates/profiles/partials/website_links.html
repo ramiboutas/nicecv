@@ -1,15 +1,28 @@
 {% load i18n %}
-<div class="input-group ">
-
-<select class="custom-select">
-  {% for link_value, link_name in profile_website_link_choices %}
-      <option value="{{link_value}}">{{link_name}}</option>
+<div id="website-links-box">
+<form>
+  {% csrf_token %}
+  {% for website_link in object.website_links.all %}
+    <div id="website-link-{{ website_link.pk }}" class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text border-0" ><i class="bi bi-{{website_link.bootstrap_icon}}"></i></span>
+      </div>
+      <input hx-post="{{ website_link.update_object_url }}" hx-swap="outerHTML" hx-target="#website-links-box" hx-trigger="changed" class="form-control border-0 bg-white" type="text" name="url" {% if website_link.url %} value="{{website_link.url}}" {% endif %} spellcheck="false">
+      <button hx-post="{{ website_link.delete_object_url }}" hx-target="#website-link-{{website_link.pk}}" hx-swap="outerHTML"
+      class="btn btn-outline-secondary" type="submit" name="button"><i class="bi bi-trash"></i></button>
+    </div>
   {% endfor %}
-</select>
 
-  <input hx-post="{{ object.save_candidate_info_dynamic_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
-  class="form-control border-0 bg-white" placeholder="{% trans 'Your profile link (optional)' %}"  type="text" name="candidate_website" {% if object.candidate_website %} value="{{object.candidate_website}}" {% endif %} maxlength="100" spellcheck="false">
 
-  <button class="btn btn-outline-secondary" type="button" name="button"><i class="bi bi-plus-circle"></i></button>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text border-0" ><i class="bi bi-globe"></i></span>
+    </div>
 
+    <input
+    class="form-control border-0 bg-white" placeholder="{% trans 'Social media link' %}"  type="text" name="candidate_website" {% if object.candidate_website %} value="{{object.candidate_website}}" {% endif %} maxlength="100" spellcheck="false">
+
+    <button hx-post="{{ object.add_website_link_object_url }}" hx-swap="outerHTML" hx-target="#website-links-box" class="btn btn-outline-secondary" type="submit" name="button"><i class="bi bi-plus-circle"></i></button>
+  </div>
+</form>
 </div>

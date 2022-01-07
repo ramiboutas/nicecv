@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 
 from django_htmx.http import trigger_client_event
 
-from .models import Profile
+from .models import Profile, WebsiteLink
 from utils.files import delete_path_file
 User = get_user_model()
 
@@ -124,8 +124,56 @@ def hx_delete_photos_view(request, pk):
     return HttpResponse(status=200)
 
 
+# htmx - profile - save general & contact info
 @login_required
 @require_POST
 def hx_save_general_and_contact_info_view(request, pk):
-    first_name = request.POST.get("first_name")
-    last_name = request.POST.get("last_name")
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.first_name = request.POST.get("first_name")
+    object.last_name = request.POST.get("last_name")
+    object.jobtitle = request.POST.get("jobtitle")
+    object.location = request.POST.get("location")
+    object.date_of_birth = request.POST.get("date_of_birth")
+    object.phone = request.POST.get("phone")
+    object.email = request.POST.get("email")
+    object.save()
+    return HttpResponse(status=200)
+
+
+def get_website_link_boostrap_icon(text):
+    icon_list = ['github', 'facebook', 'instagram', 'linkedin', 'medium', 'quora', 'reddit', 'skype', 'slack', 'stack-overflow', 'telegram', 'twitch', 'twitter', 'vimeo', 'youtube']
+
+    # use list comprehension!!!
+    for index, icon in enumerate(icon_list):
+        if icon in text:
+            return icon_list[index]
+    return 'globe'
+
+# htmx - profile - add website link object
+@login_required
+@require_POST
+def hx_add_website_link_object_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    url = str(request.POST.get("url"))
+    bootstrap_icon = get_website_link_boostrap_icon(url)
+    website_link_object = WebsiteLink(url=url, profile=object, bootstrap_icon=bootstrap_icon)
+    website_link_object.save()
+    context = {'object': object}
+    return render(request, 'profiles/partials/website_links.html', context)
+
+
+# htmx - profile - update website link object
+@login_required
+@require_POST
+def hx_update_website_link_object_view(request, pk_parent, pk):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    website_link_object = get_object_or_404(WebsiteLink, pk=pk, profile=object)
+
+# htmx - profile - delete website link object
+@login_required
+@require_POST
+def hx_delete_website_link_object_view(request, pk_parent, pk):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    website_link_object = get_object_or_404(WebsiteLink, pk=pk, profile=object)
+    website_link_object.delete()
+    return HttpResponse(status=200)

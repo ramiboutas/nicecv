@@ -300,14 +300,14 @@ META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and rel
 
 # profile model settings
 
-PROFILE_WEBSITE_LINK_CHOICES =  [
-    ('Linkedin', 'Linkedin'),
-    ('Github', 'Github'),
-    ('Twitter', 'Twitter'),
-    ('Youtube', 'Youtube'),
-    ('Portfolio', _('Portfolio')),
-    ('Other', _('Other')),
-]
+# PROFILE_WEBSITE_LINK_CHOICES =  [
+#     ('Linkedin', 'Linkedin'),
+#     ('Github', 'Github'),
+#     ('Twitter', 'Twitter'),
+#     ('Youtube', 'Youtube'),
+#     ('Portfolio', _('Portfolio')),
+#     ('Other', _('Other')),
+# ]
 
 
 # crispy forms

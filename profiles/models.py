@@ -37,13 +37,13 @@ class Profile(models.Model):
     first_name = models.CharField(null=True, blank=True, max_length=50)
     last_name = models.CharField(null=True, blank=True, max_length=50)
     maiden_name = models.CharField(null=True, blank=True, max_length=50)
-    location = models.CharField(null=True, blank=True, max_length=100)
-    birth_date = models.DateTimeField(null=True, blank=True)
-    jobtitle = models.CharField(max_length=200)
+    location = models.CharField(null=True, blank=True, max_length=50)
+    date_of_birth = models.CharField(null=True, blank=True, max_length=50)
+    jobtitle = models.CharField(max_length=50)
 
     # contact info
-    phone = models.CharField(null=True, blank=True, max_length=200)
-    email = models.CharField(max_length=200)
+    phone = models.CharField(null=True, blank=True, max_length=50)
+    email = models.CharField(max_length=50)
 
     # description & interests
     description = models.TextField(max_length=1000)
@@ -88,6 +88,9 @@ class Profile(models.Model):
     def save_general_and_contact_info_url(self):
         return reverse('profiles_save_general_and_contact_info', kwargs={'pk':self.pk})
 
+    def add_website_link_object_url(self):
+        return reverse('profiles_add_website_link_object', kwargs={'pk':self.pk})
+
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
             photo_full_copy = ContentFile(self.photo_full.read())
@@ -110,6 +113,27 @@ class Profile(models.Model):
                 new_size = (1200, 1200) # image proportion is manteined / we dont need to do extra work
                 img.thumbnail(new_size)
                 img.save(self.photo_full.path)
+
+
+
+class WebsiteLink(models.Model):
+    """
+    Localized websites the member wants displayed on the profile.
+    See Website Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
+    """
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='website_links')
+    url = models.URLField(null=True, blank=True)
+    bootstrap_icon = models.CharField(null=True, blank=True, default='globe', max_length=25)
+    # category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_WEBSITE_LINK_CHOICES)
+    # label = models.CharField(null=True, blank=True, max_length=100) # if other > label
+
+    def update_object_url(self):
+        return reverse('profiles_update_website_link_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+    def delete_object_url(self):
+        return reverse('profiles_delete_website_link_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
 
 
 
@@ -295,16 +319,3 @@ class VolunteeringExperience(models.Model):
     description = models.TextField(null=True, blank=True, max_length=1000)
     cause = models.CharField(null=True, blank=True, max_length=100)
     ongoing = models.BooleanField(null=True, blank=True) # singleDate
-
-
-class WebsiteLink(models.Model):
-    """
-    Localized websites the member wants displayed on the profile.
-    See Website Fields for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
-    """
-
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='website_links')
-    category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_WEBSITE_LINK_CHOICES)
-    label = models.CharField(null=True, blank=True, max_length=100) # if other > label
-    url = models.URLField(null=True, blank=True)

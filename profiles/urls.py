@@ -5,6 +5,8 @@ from .views import hx_create_object_view, hx_delete_object_view
 from .views import hx_upload_full_photo_view, hx_crop_photo_view, hx_delete_photos_view
 from .views import hx_get_photo_modal_view, hx_remove_photo_modal_view
 from .views import hx_save_general_and_contact_info_view
+from .views import hx_add_website_link_object_view
+from .views import hx_update_website_link_object_view, hx_delete_website_link_object_view
 
 
 urlpatterns = [
@@ -31,6 +33,15 @@ urlpatterns = [
 
     # htmx - general_and_contact_info
     path('hx-save-general-and-contact-info/<uuid:pk>/', hx_save_general_and_contact_info_view, name='profiles_save_general_and_contact_info'),
+
+    # htmx - add website link object
+    path('hx-add-website-link-object/<uuid:pk>/', hx_add_website_link_object_view, name='profiles_add_website_link_object'),
+
+    # htmx - update website link object
+    path('hx-update-website-link-object/<uuid:pk_parent>/<int:pk>/', hx_update_website_link_object_view, name='profiles_update_website_link_object_url'),
+
+    # htmx - delete website link object
+    path('hx-delete-website-link-object/<uuid:pk_parent>/<int:pk>/', hx_delete_website_link_object_view, name='profiles_delete_website_link_object_url'),
 
 
 ]
