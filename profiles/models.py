@@ -88,8 +88,8 @@ class Profile(models.Model):
     def save_general_and_contact_info_url(self):
         return reverse('profiles_save_general_and_contact_info', kwargs={'pk':self.pk})
 
-    def add_website_link_object_url(self):
-        return reverse('profiles_add_website_link_object', kwargs={'pk':self.pk})
+    def add_website_object_url(self):
+        return reverse('profiles_add_website_object', kwargs={'pk':self.pk})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
@@ -116,23 +116,23 @@ class Profile(models.Model):
 
 
 
-class WebsiteLink(models.Model):
+class Website(models.Model):
     """
     Localized websites the member wants displayed on the profile.
     See Website Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='website_links')
-    url = models.URLField(null=True, blank=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='websites')
+    name = models.CharField(null=True, blank=True, max_length=50)
     bootstrap_icon = models.CharField(null=True, blank=True, default='globe', max_length=25)
-    # category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_WEBSITE_LINK_CHOICES)
+    # category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_website_CHOICES)
     # label = models.CharField(null=True, blank=True, max_length=100) # if other > label
 
     def update_object_url(self):
-        return reverse('profiles_update_website_link_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_website_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_website_link_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_website_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
 
 
