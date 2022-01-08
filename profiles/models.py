@@ -91,6 +91,12 @@ class Profile(models.Model):
     def add_website_object_url(self):
         return reverse('profiles_add_website_object', kwargs={'pk':self.pk})
 
+    def add_skill_object_url(self):
+        return reverse('profiles_add_skill_object', kwargs={'pk':self.pk})
+
+    def add_language_object_url(self):
+        return reverse('profiles_add_language_object', kwargs={'pk':self.pk})
+
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
             photo_full_copy = ContentFile(self.photo_full.read())
@@ -128,6 +134,9 @@ class Website(models.Model):
     # category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_website_CHOICES)
     # label = models.CharField(null=True, blank=True, max_length=100) # if other > label
 
+    def __str__(self):
+        return self.name
+
     def update_object_url(self):
         return reverse('profiles_update_website_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
@@ -135,7 +144,50 @@ class Website(models.Model):
         return reverse('profiles_delete_website_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
 
+class Skill(models.Model):
+    """
+    An object representing the skills that the member holds.
+    See Skill Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
+    """
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skills')
+    name = models.CharField(max_length=50)
+    level = models.IntegerField(default=50) # Linkedin does not include this
 
+    def __str__(self):
+        return self.name
+
+    def update_object_url(self):
+        return reverse('profiles_update_skill_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+    def delete_object_url(self):
+        return reverse('profiles_delete_skill_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+
+class Language(models.Model):
+    """
+    An object representing the languages that the member holds.
+    """
+    LANGUAGE_LEVEL_CHOICES = [
+        ('A1', _('A1. Very basic')),
+        ('A2', _('A2. Basic')),
+        ('B1', _('B1. Intermediate')),
+        ('B2', _('B2. Advanced')),
+        ('C1', _('C1. Very advanced')),
+        ('Nt', _('Native')),
+    ]
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='languages')
+    name = models.CharField(max_length=50)
+    level = models.IntegerField(default=50, choices=LANGUAGE_LEVEL_CHOICES)
+
+    def __str__(self):
+        return self.name
+
+    def update_object_url(self):
+        return reverse('profiles_update_language_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+    def delete_object_url(self):
+        return reverse('profiles_delete_language_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
 class Certification(models.Model):
     """
@@ -290,18 +342,7 @@ class Publication(models.Model):
         return self.name
 
 
-class Skill(models.Model):
-    """
-    An object representing the skills that the member holds.
-    See Skill Fields for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
-    """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skills')
-    name = models.CharField(max_length=200)
-    level = models.IntegerField(default=50) # Linkedin does not include this
 
-    def __str__(self):
-        return self.name
 
 
 class VolunteeringExperience(models.Model):
