@@ -300,7 +300,7 @@ META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and rel
 
 # profile model settings
 
-# PROFILE_WEBSITE_LINK_CHOICES =  [
+# PROFILE_WEBSITE_CHOICES =  [
 #     ('Linkedin', 'Linkedin'),
 #     ('Github', 'Github'),
 #     ('Twitter', 'Twitter'),
@@ -308,6 +308,16 @@ META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and rel
 #     ('Portfolio', _('Portfolio')),
 #     ('Other', _('Other')),
 # ]
+
+PROFILE_LANGUAGE_LEVEL_CHOICES = [
+    (0, _('Select Level')), # no level indicated!
+    (1, _('Very basic')),
+    (2, _('Basic')),
+    (3, _('Intermediate')),
+    (4, _('Advanced')),
+    (5, _('Very advanced')),
+    (6, _('Native')),
+]
 
 
 # crispy forms

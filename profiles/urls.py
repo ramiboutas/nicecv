@@ -8,6 +8,8 @@ from .views import hx_save_general_and_contact_info_view
 from .views import hx_add_website_object_view, hx_update_website_object_view, hx_delete_website_object_view
 from .views import hx_add_skill_object_view, hx_update_skill_object_view, hx_delete_skill_object_view
 from .views import hx_add_language_object_view, hx_update_language_object_view, hx_delete_language_object_view
+from .views import hx_add_description_view, hx_update_description_view, hx_delete_description_view
+from .views import hx_add_add_description_button_view, hx_delete_add_description_button_view
 
 
 urlpatterns = [
@@ -61,5 +63,20 @@ urlpatterns = [
 
     # htmx - delete language object
     path('hx-delete-language-object/<uuid:pk_parent>/<int:pk>/', hx_delete_language_object_view, name='profiles_delete_language_object_url'),
+
+    # htmx - add description
+    path('hx-add-description/<uuid:pk>/', hx_add_description_view, name='profiles_add_description'),
+
+    # htmx - update description
+    path('hx-update-description/<uuid:pk>/', hx_update_description_view, name='profiles_update_description'),
+
+    # htmx - delete description
+    path('hx-delete-description/<uuid:pk>/', hx_delete_description_view, name='profiles_delete_description'),
+
+    # htmx - add "add description button"
+    path('hx-add-add-description-button/<uuid:pk>/', hx_add_add_description_button_view, name='profiles_add_add_description_button'),
+
+    # htmx - delete "add description button"
+    path('hx-delete-add-description-button/<uuid:pk>/', hx_delete_add_description_button_view, name='profiles_delete_add_description_button'),
 
 ]

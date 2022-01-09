@@ -5,48 +5,65 @@
 <div id="modals-here"></div>
 
 <!-- htmx server triggers -->
+
+<!-- when the full photo is uploaded to the server, get the modal to edit the photo -->
 <div hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
 hx-trigger="fullPhotoUploadedEvent from:body"
 _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop"></div>
 
+<!-- when the photo is cropped (= cropping data is submitted to the server), remove the the modal -->
 <div hx-get="{{ object.remove_photo_modal_url }}" hx-target="#photo-modal-content" hx-swap="outerHTML"
 hx-trigger="photoCroppedEvent from:body"></div>
 
 
-<div class="container border my-3">
-  <div class="row justify-content-md-center my-3">
-    <div class="col-md-4 col-sm-12 border">
-      <div class="card border-0">
-                <div class="card-body">
-                  <div class="d-flex flex-column ">
-                    <div id="photo-box" class="my-3 align-items-center text-center">
-                      {% if object.photo %}
-                        {% include "profiles/partials/photo_cropped.html" %}
-                      {% endif %}
-                    </div>
-                    <div class="align-items-center text-center my-1">
-                      <form>
-                        {% csrf_token %}
-                        <label class="btn btn-outline-secondary border-0 mx-2" for="file-input">
-                        <i class="bi bi-camera"></i>  {% trans "Select photo" %}</label>
-                        <input id="file-input" type="file" name="photo" onchange="pollImageToCrop()"  style="visibility: hidden;"
-                        hx-post="{{object.upload_full_photo_url}}" hx-encoding='multipart/form-data'
-                        hx-trigger="change" hx-swap="none">
-                      </form>
-                    </div>
-                    <div class="mt-0">
-                      {% include "profiles/partials/general_and_contact_info.html" %}
-                      {% include "profiles/partials/websites.html" %}
-                      {% include "profiles/partials/skills.html" %}
-                      {% include "profiles/partials/languages.html" %}
-                    </div>
-                  </div>
-                </div>
-              </div>
+<!-- when description is deleted, add the button "add description" -->
+<div hx-get="{{ object.add_add_description_button_url }}" hx-target="#add-description-button-box" hx-swap="innerHTML"
+hx-trigger="descriptionDeletedEvent from:body"></div>
 
+<!-- when description is added, remove the button "add description" -->
+<div hx-get="{{ object.delete_add_description_button_url }}" hx-target="#add-description-button-box" hx-swap="innerHTML"
+hx-trigger="descriptionAddedEvent from:body"></div>
+
+
+<div class="container my-5 ">
+  <div class="row justify-content-md-center my-3">
+    <div class="col-md-4 col-sm-12">
+      <div class="card border-0">
+        <div class="card-body">
+          <div class="d-flex flex-column ">
+            <div id="photo-box" class="align-items-center text-center">
+              {% if object.photo %}
+                {% include "profiles/partials/photo_cropped.html" %}
+              {% endif %}
+            </div>
+            <div class="align-items-center text-center">
+              <form>
+                {% csrf_token %}
+                <label class="btn btn-outline-secondary border-0 mx-2" for="file-input">
+                <i class="bi bi-camera"></i>  {% trans "Select photo" %}</label>
+                <input id="file-input" type="file" name="photo" onchange="pollImageToCrop()"  style="visibility: hidden;"
+                hx-post="{{object.upload_full_photo_url}}" hx-encoding='multipart/form-data'
+                hx-trigger="change" hx-swap="none">
+              </form>
+            </div>
+            <div class="mt-0">
+              {% include "profiles/partials/general_and_contact_info.html" %}
+              {% include "profiles/partials/websites.html" %}
+              {% include "profiles/partials/skills.html" %}
+              {% include "profiles/partials/languages.html" %}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-8 col-sm-12 text-center border">
-      Here come the following: description, experience, education, and more optional fields.
+    <div class="col-md-8 col-sm-12">
+      {% include "profiles/partials/description.html" %}
+
+
+      {% include "profiles/partials/stuff_to_add.html" %}
+
+
+
     </div>
   </div>
 </div>

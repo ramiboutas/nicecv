@@ -236,7 +236,9 @@ def hx_update_language_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     language_object = get_object_or_404(Language, pk=pk, profile=object)
     name = request.POST.get("language_name")
+    level = request.POST.get("language_level")
     language_object.name = name
+    language_object.level = level
     language_object.save()
     return HttpResponse(status=200)
 
@@ -247,4 +249,53 @@ def hx_delete_language_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     language_object = get_object_or_404(Language, pk=pk, profile=object)
     language_object.delete()
+    return HttpResponse(status=200)
+
+
+# htmx - profile - add description
+@login_required
+@require_POST
+def hx_add_description_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.description_visible = True
+    object.save()
+    context = {'object': object}
+    response = render(request, 'profiles/partials/description.html', context)
+    trigger_client_event(response, "descriptionAddedEvent", { },)
+    return response
+
+
+# htmx - profile - update description
+@login_required
+@require_POST
+def hx_update_description_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    description = request.POST.get("description")
+    object.description = description
+    object.save()
+    return HttpResponse(status=200)
+
+# htmx - profile - delete description
+@login_required
+@require_POST
+def hx_delete_description_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.description_visible = False
+    object.save()
+    response = HttpResponse(status=200)
+    trigger_client_event(response, "descriptionDeletedEvent", { },)
+    return response
+
+# htmx - profile - add "add description button"
+@login_required
+def hx_add_add_description_button_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return render(request, 'profiles/partials/add_description_button.html', context)
+
+
+# htmx - profile - delete "add description button"
+@login_required
+def hx_delete_add_description_button_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
     return HttpResponse(status=200)

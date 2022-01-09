@@ -46,8 +46,9 @@ class Profile(models.Model):
     email = models.CharField(max_length=50)
 
     # description & interests
-    description = models.TextField(max_length=1000)
-    interests = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True, max_length=1000)
+    description_visible = models.IntegerField(default=True)
+    interests = models.CharField(null=True, blank=True, max_length=200)
 
     # labels
     skill_label = models.CharField(max_length=100, default=_('Skills'))
@@ -97,6 +98,21 @@ class Profile(models.Model):
     def add_language_object_url(self):
         return reverse('profiles_add_language_object', kwargs={'pk':self.pk})
 
+    def add_description_url(self):
+        return reverse('profiles_add_description', kwargs={'pk':self.pk})
+
+    def update_description_url(self):
+        return reverse('profiles_update_description', kwargs={'pk':self.pk})
+
+    def delete_description_url(self):
+        return reverse('profiles_delete_description', kwargs={'pk':self.pk})
+
+    def add_add_description_button_url(self):
+        return reverse('profiles_add_add_description_button', kwargs={'pk':self.pk})
+
+    def delete_add_description_button_url(self):
+        return reverse('profiles_delete_add_description_button', kwargs={'pk':self.pk})
+
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
             photo_full_copy = ContentFile(self.photo_full.read())
@@ -114,11 +130,14 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
         if self.photo_full != None:
-            img = Image.open(self.photo_full)
-            if img.height > 1200 or img.width > 1200:
-                new_size = (1200, 1200) # image proportion is manteined / we dont need to do extra work
-                img.thumbnail(new_size)
-                img.save(self.photo_full.path)
+            try:
+                img = Image.open(self.photo_full)
+                if img.height > 1200 or img.width > 1200:
+                    new_size = (1200, 1200) # image proportion is manteined / we dont need to do extra work
+                    img.thumbnail(new_size)
+                    img.save(self.photo_full.path)
+            except ValueError:
+                pass
 
 
 
@@ -168,17 +187,10 @@ class Language(models.Model):
     """
     An object representing the languages that the member holds.
     """
-    LANGUAGE_LEVEL_CHOICES = [
-        ('A1', _('A1. Very basic')),
-        ('A2', _('A2. Basic')),
-        ('B1', _('B1. Intermediate')),
-        ('B2', _('B2. Advanced')),
-        ('C1', _('C1. Very advanced')),
-        ('Nt', _('Native')),
-    ]
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='languages')
     name = models.CharField(max_length=50)
-    level = models.IntegerField(default=50, choices=LANGUAGE_LEVEL_CHOICES)
+    level = models.IntegerField(default=50, choices=settings.PROFILE_LANGUAGE_LEVEL_CHOICES)
 
     def __str__(self):
         return self.name

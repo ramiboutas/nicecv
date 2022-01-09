@@ -10,18 +10,20 @@
       <input class="form-control border-0 bg-white" spellcheck="false" type="text" name="website_name" value="{{website.name}}"
       hx-post="{{ website.update_object_url }}"  hx-swap="none" hx-trigger="keyup changed delay:1s">
       <button class="btn btn-outline-secondary  border-0"
-       hx-post="{{ website.delete_object_url }}" hx-target="#website-{{website.pk}}" hx-swap="outerHTML"><i class="bi bi-trash"></i></button>
+       hx-post="{{ website.delete_object_url }}" hx-target="#website-{{website.pk}}" hx-swap="outerHTML"
+       data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this link' %}"><i class="bi bi-trash"></i></button>
     </div>
   {% endfor %}
 
   <form hx-post="{{ object.add_website_object_url }}" hx-trigger="submit" hx-swap="outerHTML" hx-target="#websites-box">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <span class="input-group-text border-0" ><i class="bi bi-globe"></i></span>
+        <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
       </div>
-      <input class="form-control border-0 bg-white" placeholder="{% trans 'Add link ...' %}"  type="text" name="website_name_new"
+      <input class="form-control border-0 bg-white" placeholder="{% trans 'Add your link ...' %}"  type="text" name="website_name_new"
          maxlength="100" spellcheck="false">
-      <button class="btn btn-outline-secondary border-0" type="submit" name="button"><i class="bi bi-plus-circle"></i></button>
+      <button class="btn btn-outline-secondary border-0" type="submit" name="button"
+      data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this link' %}"><i class="bi bi-plus-circle"></i></button>
     </div>
   </form>
 </div>
