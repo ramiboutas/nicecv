@@ -1,10 +1,10 @@
 {% load i18n %}
 <div id="description-box" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   {% if object.description_visible %}
-    <h6  class="display-6 fs-6" ><button class="btn btn-outline-secondary float-right border-0"
+    <h6  class="display-6 fs-6" ><button class="btn btn-outline-secondary border-0"
      hx-post="{{ object.delete_description_url }}" hx-target="#description-box" hx-swap="innerHTML"><i class="bi bi-trash"></i></button>
      {% trans "Description" %}  </h6>
-    <textarea class="form-control w-100 h-20 border-0 border-top border-end"
+    <textarea class="form-control w-100 h-20 border-0"
     hx-post="{{ object.update_description_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
     placeholder="{% trans 'Describe yourself, what is that that you do that makes you a good professional, your interests, your ambitions and anything that you think it is relevent for your job applications ...' %}" name="description">{% if object.description %}{{ object.description }}{% endif %}</textarea>
   {% endif %}

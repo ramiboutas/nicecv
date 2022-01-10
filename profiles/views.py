@@ -10,7 +10,7 @@ from django.utils.translation import gettext as _
 
 from django_htmx.http import trigger_client_event
 
-from .models import Profile, Website, Skill, Language
+from .models import Profile, Website, Skill, Language, Education
 from utils.files import delete_path_file
 User = get_user_model()
 
@@ -298,4 +298,48 @@ def hx_add_add_description_button_view(request, pk):
 @login_required
 def hx_delete_add_description_button_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
+    return HttpResponse(status=200)
+
+
+# htmx - profile - add education object
+@login_required
+@require_POST
+def hx_add_education_object_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    title = request.POST.get("education_title_new")
+    subtitle = request.POST.get("education_subtitle_new")
+    grade = request.POST.get("education_grade_new")
+    start_date = request.POST.get("education_start_date_new")
+    end_date = request.POST.get("education_end_date_new")
+    school_name = request.POST.get("education_school_name_new")
+    description = request.POST.get("education_description_new")
+    education_object = Education(profile=object, title=title, subtitle=subtitle, grade=grade, start_date=start_date, end_date=end_date, school_name=school_name, description=description)
+    education_object.save()
+    context = {'object': object}
+    return render(request, 'profiles/partials/education.html', context)
+
+
+# htmx - profile - update education object
+@login_required
+@require_POST
+def hx_update_education_object_view(request, pk_parent, pk):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    education_object = get_object_or_404(Education, pk=pk, profile=object)
+    education_object.title = request.POST.get("education_title")
+    education_object.subtitle = request.POST.get("education_subtitle")
+    education_object.grade = request.POST.get("education_grade")
+    education_object.start_date = request.POST.get("education_start_date")
+    education_object.end_date = request.POST.get("education_end_date")
+    education_object.school_name = request.POST.get("education_school_name")
+    education_object.description = request.POST.get("education_description")
+    education_object.save()
+    return HttpResponse(status=200)
+
+# htmx - profile - delete education object
+@login_required
+@require_POST
+def hx_delete_education_object_view(request, pk_parent, pk):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    education_object = get_object_or_404(Education, pk=pk, profile=object)
+    education_object.delete()
     return HttpResponse(status=200)

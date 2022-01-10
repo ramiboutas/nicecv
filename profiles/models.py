@@ -113,6 +113,9 @@ class Profile(models.Model):
     def delete_add_description_button_url(self):
         return reverse('profiles_delete_add_description_button', kwargs={'pk':self.pk})
 
+    def add_education_object_url(self):
+        return reverse('profiles_add_education_object', kwargs={'pk':self.pk})
+
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
             photo_full_copy = ContentFile(self.photo_full.read())
@@ -157,10 +160,10 @@ class Website(models.Model):
         return self.name
 
     def update_object_url(self):
-        return reverse('profiles_update_website_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_website_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_website_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_website_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
 
 class Skill(models.Model):
@@ -177,10 +180,10 @@ class Skill(models.Model):
         return self.name
 
     def update_object_url(self):
-        return reverse('profiles_update_skill_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_skill_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_skill_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_skill_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
 
 class Language(models.Model):
@@ -196,10 +199,36 @@ class Language(models.Model):
         return self.name
 
     def update_object_url(self):
-        return reverse('profiles_update_language_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_language_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_language_object_url', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_language_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+
+class Education(models.Model):
+    """
+    An object representing the member's educational background.
+    See Education Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
+    """
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='education_set')
+    title = models.CharField(null=True, blank=True, max_length=100)
+    subtitle = models.CharField(null=True, blank=True, max_length=100)
+    grade = models.CharField(null=True, blank=True, max_length=20)
+    start_date = models.CharField(null=True, blank=True, max_length=50)
+    end_date = models.CharField(null=True, blank=True, max_length=50)
+    school_name = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True, max_length=300)
+
+    def __str__(self):
+        return self.degree_name
+
+    def update_object_url(self):
+        return reverse('profiles_update_education_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+    def delete_object_url(self):
+        return reverse('profiles_delete_education_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
 
 class Certification(models.Model):
     """
@@ -228,23 +257,7 @@ class Course(models.Model):
     number = models.CharField(null=True, blank=True, max_length=100)
     occupation = models.CharField(null=True, blank=True, max_length=100)
 
-class Education(models.Model):
-    """
-    An object representing the member's educational background.
-    See Education Fields for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
-    """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='educations')
-    degree_name = models.CharField(null=True, blank=True, max_length=100)
-    program = models.CharField(null=True, blank=True, max_length=100)
-    grade = models.CharField(null=True, blank=True, max_length=20)
-    start_date = models.CharField(null=True, blank=True, max_length=50)
-    end_date = models.CharField(null=True, blank=True, max_length=50)
-    school_name = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True, max_length=300)
 
-    def __str__(self):
-        return self.degree_name
 
 
 class Honor(models.Model):

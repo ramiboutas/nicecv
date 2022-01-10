@@ -10,7 +10,7 @@ from .views import hx_add_skill_object_view, hx_update_skill_object_view, hx_del
 from .views import hx_add_language_object_view, hx_update_language_object_view, hx_delete_language_object_view
 from .views import hx_add_description_view, hx_update_description_view, hx_delete_description_view
 from .views import hx_add_add_description_button_view, hx_delete_add_description_button_view
-
+from .views import hx_add_education_object_view, hx_update_education_object_view, hx_delete_education_object_view
 
 urlpatterns = [
     # general
@@ -41,28 +41,28 @@ urlpatterns = [
     path('hx-add-website-object/<uuid:pk>/', hx_add_website_object_view, name='profiles_add_website_object'),
 
     # htmx - update website object
-    path('hx-update-website-object/<uuid:pk_parent>/<int:pk>/', hx_update_website_object_view, name='profiles_update_website_object_url'),
+    path('hx-update-website-object/<uuid:pk_parent>/<int:pk>/', hx_update_website_object_view, name='profiles_update_website_object'),
 
     # htmx - delete website object
-    path('hx-delete-website-object/<uuid:pk_parent>/<int:pk>/', hx_delete_website_object_view, name='profiles_delete_website_object_url'),
+    path('hx-delete-website-object/<uuid:pk_parent>/<int:pk>/', hx_delete_website_object_view, name='profiles_delete_website_object'),
 
     # htmx - add skill object
     path('hx-add-skill-link-object/<uuid:pk>/', hx_add_skill_object_view, name='profiles_add_skill_object'),
 
     # htmx - update skill object
-    path('hx-update-skill-object/<uuid:pk_parent>/<int:pk>/', hx_update_skill_object_view, name='profiles_update_skill_object_url'),
+    path('hx-update-skill-object/<uuid:pk_parent>/<int:pk>/', hx_update_skill_object_view, name='profiles_update_skill_object'),
 
     # htmx - delete skill object
-    path('hx-delete-skill-object/<uuid:pk_parent>/<int:pk>/', hx_delete_skill_object_view, name='profiles_delete_skill_object_url'),
+    path('hx-delete-skill-object/<uuid:pk_parent>/<int:pk>/', hx_delete_skill_object_view, name='profiles_delete_skill_object'),
 
     # htmx - add language object
     path('hx-add-language-link-object/<uuid:pk>/', hx_add_language_object_view, name='profiles_add_language_object'),
 
     # htmx - update language object
-    path('hx-update-language-object/<uuid:pk_parent>/<int:pk>/', hx_update_language_object_view, name='profiles_update_language_object_url'),
+    path('hx-update-language-object/<uuid:pk_parent>/<int:pk>/', hx_update_language_object_view, name='profiles_update_language_object'),
 
     # htmx - delete language object
-    path('hx-delete-language-object/<uuid:pk_parent>/<int:pk>/', hx_delete_language_object_view, name='profiles_delete_language_object_url'),
+    path('hx-delete-language-object/<uuid:pk_parent>/<int:pk>/', hx_delete_language_object_view, name='profiles_delete_language_object'),
 
     # htmx - add description
     path('hx-add-description/<uuid:pk>/', hx_add_description_view, name='profiles_add_description'),
@@ -78,5 +78,15 @@ urlpatterns = [
 
     # htmx - delete "add description button"
     path('hx-delete-add-description-button/<uuid:pk>/', hx_delete_add_description_button_view, name='profiles_delete_add_description_button'),
+
+    # htmx - add education object
+    path('hx-add-education-link-object/<uuid:pk>/', hx_add_education_object_view, name='profiles_add_education_object'),
+
+    # htmx - update education object
+    path('hx-update-education-object/<uuid:pk_parent>/<int:pk>/', hx_update_education_object_view, name='profiles_update_education_object'),
+
+    # htmx - delete education object
+    path('hx-delete-education-object/<uuid:pk_parent>/<int:pk>/', hx_delete_education_object_view, name='profiles_delete_education_object'),
+
 
 ]
