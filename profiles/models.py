@@ -116,6 +116,12 @@ class Profile(models.Model):
     def add_education_object_url(self):
         return reverse('profiles_add_education_object', kwargs={'pk':self.pk})
 
+    def add_education_new_form_url(self):
+        return reverse('profiles_add_education_new_form', kwargs={'pk':self.pk})
+
+    def delete_education_new_form_url(self):
+        return reverse('profiles_delete_education_new_form', kwargs={'pk':self.pk})
+
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
             photo_full_copy = ContentFile(self.photo_full.read())
@@ -212,12 +218,12 @@ class Education(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='education_set')
-    title = models.CharField(null=True, blank=True, max_length=100)
-    subtitle = models.CharField(null=True, blank=True, max_length=100)
-    grade = models.CharField(null=True, blank=True, max_length=20)
     start_date = models.CharField(null=True, blank=True, max_length=50)
     end_date = models.CharField(null=True, blank=True, max_length=50)
-    school_name = models.CharField(null=True, blank=True, max_length=100)
+    grade = models.CharField(null=True, blank=True, max_length=20)
+    title = models.CharField(null=True, blank=True, max_length=100)
+    subtitle = models.CharField(null=True, blank=True, max_length=100)
+    institution = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=300)
 
     def __str__(self):

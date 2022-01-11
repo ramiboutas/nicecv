@@ -11,6 +11,7 @@ from .views import hx_add_language_object_view, hx_update_language_object_view, 
 from .views import hx_add_description_view, hx_update_description_view, hx_delete_description_view
 from .views import hx_add_add_description_button_view, hx_delete_add_description_button_view
 from .views import hx_add_education_object_view, hx_update_education_object_view, hx_delete_education_object_view
+from .views import hx_add_education_new_form_view, hx_delete_education_new_form_view
 
 urlpatterns = [
     # general
@@ -87,6 +88,12 @@ urlpatterns = [
 
     # htmx - delete education object
     path('hx-delete-education-object/<uuid:pk_parent>/<int:pk>/', hx_delete_education_object_view, name='profiles_delete_education_object'),
+
+    # htmx - add "new education form"
+    path('hx-add-education-new-form/<uuid:pk>/', hx_add_education_new_form_view, name='profiles_add_education_new_form'),
+
+    # htmx - delete "new education form"
+    path('hx-delete-education-new-form/<uuid:pk>/', hx_delete_education_new_form_view, name='profiles_delete_education_new_form'),
 
 
 ]

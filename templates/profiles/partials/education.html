@@ -15,64 +15,7 @@
     </div>
   {% endfor %}
 
-
-  <form class="border" hx-post="{{ object.add_education_object_url }}" hx-trigger="submit" hx-swap="outerHTML" hx-target="#education-box">
-      <div class="row">
-        <div class="col">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
-            </div>
-            <input class="form-control border-0 bg-white" placeholder="{% trans 'Start date, Mar 2019' %}"  type="text" name="education_title_new" maxlength="25" spellcheck="false">
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
-            </div>
-            <input class="form-control border-0 bg-white" placeholder="{% trans 'Start date, Mar 2019' %}"  type="text" name="education_title_new" maxlength="25" spellcheck="false">
-          </div>
-        </div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text border-0" ><i class="bi bi-check2-circle"></i></span>
-            </div>
-            <input class="form-control border-0 bg-white" placeholder="{% trans 'Grade, 3.4' %}"  type="text" name="education_title_new" maxlength="25" spellcheck="false">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text border-0" ><i class="bi bi-mortarboard"></i></span>
-            </div>
-            <input class="form-control border-0 bg-white" placeholder="{% trans 'Title. Example: Graduate as mecanical engineer' %}"  type="text" name="education_title_new" maxlength="100" spellcheck="false">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text border-0" ><i class="bi bi-award"></i></span>
-            </div>
-            <input class="form-control border-0 bg-white" placeholder="{% trans 'Subtitle. Add something extraordinary. Example: One of the best records from my promotion' %}"  type="text" name="education_title_new" maxlength="100" spellcheck="false">
-          </div>
-        </div>
-      </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text border-0" ><i class="bi bi-mortarboard"></i></span>
-      </div>
-      <input class="form-control border-0 bg-white" placeholder="{% trans 'Type your education ...' %}"  type="text" name="education_title_new"
-         maxlength="100" spellcheck="false">
-      <button class="btn btn-outline-secondary border-0" type="submit" name="button"
-      data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this education' %}"><i class="bi bi-plus-circle"></i></button>
-
-    </div>
-
-  </form>
+  <div id="new-education-box">
+    {% include "profiles/partials/education_new_button.html" %}
+  </div>
 </div>

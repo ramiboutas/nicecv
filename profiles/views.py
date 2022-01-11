@@ -311,9 +311,9 @@ def hx_add_education_object_view(request, pk):
     grade = request.POST.get("education_grade_new")
     start_date = request.POST.get("education_start_date_new")
     end_date = request.POST.get("education_end_date_new")
-    school_name = request.POST.get("education_school_name_new")
+    institution = request.POST.get("education_institution_new")
     description = request.POST.get("education_description_new")
-    education_object = Education(profile=object, title=title, subtitle=subtitle, grade=grade, start_date=start_date, end_date=end_date, school_name=school_name, description=description)
+    education_object = Education(profile=object, title=title, subtitle=subtitle, grade=grade, start_date=start_date, end_date=end_date, institution=institution, description=description)
     education_object.save()
     context = {'object': object}
     return render(request, 'profiles/partials/education.html', context)
@@ -325,12 +325,12 @@ def hx_add_education_object_view(request, pk):
 def hx_update_education_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
-    education_object.title = request.POST.get("education_title")
-    education_object.subtitle = request.POST.get("education_subtitle")
-    education_object.grade = request.POST.get("education_grade")
     education_object.start_date = request.POST.get("education_start_date")
     education_object.end_date = request.POST.get("education_end_date")
-    education_object.school_name = request.POST.get("education_school_name")
+    education_object.grade = request.POST.get("education_grade")
+    education_object.title = request.POST.get("education_title")
+    education_object.subtitle = request.POST.get("education_subtitle")
+    education_object.institution = request.POST.get("education_institution_new")
     education_object.description = request.POST.get("education_description")
     education_object.save()
     return HttpResponse(status=200)
@@ -343,3 +343,13 @@ def hx_delete_education_object_view(request, pk_parent, pk):
     education_object = get_object_or_404(Education, pk=pk, profile=object)
     education_object.delete()
     return HttpResponse(status=200)
+
+def hx_add_education_new_form_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return render(request, 'profiles/partials/education_new_form.html', context)
+
+def hx_delete_education_new_form_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return render(request, 'profiles/partials/education_new_button.html', context)
