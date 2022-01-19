@@ -9,9 +9,9 @@
   <div class="input-group-prepend">
       <span class="input-group-text border-0" ><i class="bi bi-person-circle"></i></span>
   </div>
-  <input class="form-control border-0 bg-white" placeholder="{% trans 'First name' %}"  type="text" name="first_name" {% if object.first_name %} value="{{object.first_name}}" {% endif %} maxlength="50" spellcheck="false">
+  <input class="form-control border-0 bg-white" placeholder="{% trans 'First name' %}"  type="text" name="first_name" {% if object.first_name %} value="{{object.first_name}}" {% endif %} maxlength="50" >
 
-  <input class="form-control  border-0 bg-white" placeholder="{% trans 'Last name' %}"  type="text" name="last_name" {% if object.last_name %} value="{{object.last_name}}" {% endif %} maxlength="50" spellcheck="false">
+  <input class="form-control  border-0 bg-white" placeholder="{% trans 'Last name' %}"  type="text" name="last_name" {% if object.last_name %} value="{{object.last_name}}" {% endif %} maxlength="50" >
 </div>
 
 
@@ -20,7 +20,7 @@
   <div class="input-group-prepend">
     <span class="input-group-text border-0" ><i class="bi bi-briefcase"></i></span>
   </div>
-  <input class="form-control border-0 bg-white" placeholder="{% trans 'Job title' %}"  type="text" name="jobtitle" {% if object.jobtitle %} value="{{object.jobtitle}}" {% endif %} maxlength="50" spellcheck="false">
+  <input class="form-control border-0 bg-white" placeholder="{% trans 'Job title' %}"  type="text" name="jobtitle" {% if object.jobtitle %} value="{{object.jobtitle}}" {% endif %} maxlength="50" >
 </div>
 
 <!-- location -->
@@ -28,7 +28,7 @@
   <div class="input-group-prepend">
     <span class="input-group-text border-0" ><i class="bi bi-geo-alt"></i></span>
   </div>
-  <input class="form-control border-0 bg-white" placeholder="{% trans 'Location' %}" type="text" name="location" {% if object.location %} value="{{object.location}}" {% endif %} maxlength="50" spellcheck="false">
+  <input class="form-control border-0 bg-white" placeholder="{% trans 'Location' %}" type="text" name="location" {% if object.location %} value="{{object.location}}" {% endif %} maxlength="50" >
 </div>
 
 
@@ -37,7 +37,7 @@
   <div class="input-group-prepend">
     <span class="input-group-text border-0" ><i class="bi bi-calendar-event"></i></span>
   </div>
-  <input class="form-control border-0 bg-white" placeholder="{% trans 'Date of birth' %}" type="text" name="date_of_birth" {% if object.date_of_birth %} value="{{object.date_of_birth}}" {% endif %} maxlength="25" spellcheck="false">
+  <input class="form-control border-0 bg-white" placeholder="{% trans 'Date of birth' %}" type="text" name="date_of_birth" {% if object.date_of_birth %} value="{{object.date_of_birth}}" {% endif %} maxlength="25" >
 </div>
 
 
@@ -47,7 +47,7 @@
     <span class="input-group-text border-0" ><i class="bi bi-telephone"></i></span>
   </div>
   <input
-  class="form-control border-0 bg-white" placeholder="{% trans 'Phone number' %}"  type="text" name="phone" {% if object.phone %} value="{{object.phone}}" {% endif %} maxlength="50" spellcheck="false">
+  class="form-control border-0 bg-white" placeholder="{% trans 'Phone number' %}"  type="text" name="phone" {% if object.phone %} value="{{object.phone}}" {% endif %} maxlength="50" >
 </div>
 
 <!-- email -->
@@ -55,6 +55,6 @@
   <div class="input-group-prepend">
     <span class="input-group-text border-0"><i class="bi bi-envelope"></i></span>
   </div>
-  <input class="form-control border-0 bg-white" placeholder="{% trans 'Email' %}"  type="text" name="email" {% if object.email %} value="{{object.email}}" {% endif %} maxlength="50" spellcheck="false">
+  <input class="form-control border-0 bg-white" placeholder="{% trans 'Email' %}"  type="text" name="email" {% if object.email %} value="{{object.email}}" {% endif %} maxlength="50" >
 </div>
 </form>

@@ -7,7 +7,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text border-0" ><i class="bi bi-gear"></i></i></span>
       </div>
-      <input class="form-control border-0 bg-white" spellcheck="false" type="text" name="skill_name" value="{{skill.name}}"
+      <input class="form-control border-0 bg-white"  type="text" name="skill_name" value="{{skill.name}}"
       hx-post="{{ skill.update_object_url }}"  hx-swap="none" hx-trigger="keyup changed delay:1s">
       <button class="btn btn-outline-secondary  border-0"
        hx-post="{{ skill.delete_object_url }}" hx-target="#skill-{{skill.pk}}" hx-swap="outerHTML"
@@ -21,7 +21,7 @@
         <span class="input-group-text border-0" ><i class="bi bi-gear"></i></span>
       </div>
       <input class="form-control border-0 bg-white" placeholder="{% trans 'Type your skill ...' %}"  type="text" name="skill_name_new"
-         maxlength="100" spellcheck="false">
+         maxlength="100" >
       <button class="btn btn-outline-primary border-0" type="submit" name="button"
       data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this skill' %}"><i class="bi bi-plus-circle"></i></button>
     </div>

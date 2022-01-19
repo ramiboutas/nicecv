@@ -8,7 +8,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text border-0" ><i class="bi bi-chat-quote"></i></i></span>
         </div>
-        <input class="form-control border-0 bg-white" spellcheck="false" type="text" name="language_name" value="{{language.name}}">
+        <input class="form-control border-0 bg-white"  type="text" name="language_name" value="{{language.name}}">
         <select class="form-control form-select border-0" name="language_level" >
            {% for value, showing_name in profile_language_level_choices %}
             <option value="{{value}}" {% if language.level == value %} selected {% endif %}>{{showing_name}}</option>
@@ -27,7 +27,7 @@
         <span class="input-group-text border-0" ><i class="bi bi-chat-quote"></i></span>
       </div>
       <input class="form-control border-0 bg-white" placeholder="{% trans 'Add language ...' %}"  type="text" name="language_name_new"
-         maxlength="100" spellcheck="false">
+         maxlength="100" >
       <select class="form-control form-select border-0" name="language_level_new">
          {% for value, showing_name in profile_language_level_choices %}
           <option value="{{value}}">{{showing_name}}</option>

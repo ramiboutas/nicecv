@@ -7,7 +7,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text border-0" ><i class="bi bi-{{website.bootstrap_icon}}"></i></span>
       </div>
-      <input class="form-control border-0 bg-white" spellcheck="false" type="text" name="website_name" value="{{website.name}}"
+      <input class="form-control border-0 bg-white"  type="text" name="website_name" value="{{website.name}}"
       hx-post="{{ website.update_object_url }}"  hx-swap="none" hx-trigger="keyup changed delay:1s">
       <button class="btn btn-outline-secondary  border-0"
        hx-post="{{ website.delete_object_url }}" hx-target="#website-{{website.pk}}" hx-swap="outerHTML"
@@ -21,7 +21,7 @@
         <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
       </div>
       <input class="form-control border-0 bg-white" placeholder="{% trans 'Add your link ...' %}"  type="text" name="website_name_new"
-         maxlength="100" spellcheck="false">
+         maxlength="100" >
       <button class="btn btn-outline-secondary border-0" type="submit" name="button"
       data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this link' %}"><i class="bi bi-plus-circle"></i></button>
     </div>

@@ -1,0 +1,10 @@
+{% load i18n %}
+<div id="activate-description-button">
+
+{% if not object.description_active %}
+  <button class="btn btn-outline-secondary  border-0"
+   hx-post="{{ object.activate_description_url }}" hx-target="#description-box" hx-swap="outerHTML"
+   data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate description' %}"><i class="bi bi-check2"></i> {% trans 'Description' %}  <i class="bi bi-card-text"></i></button>
+{% endif %}
+
+</div>

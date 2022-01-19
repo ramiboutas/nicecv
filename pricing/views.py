@@ -17,7 +17,7 @@ def pricing_view(request):
     return render(request, 'pricing/main.html', context)
 
 @login_required
-def hx_get_payment_methods_view(request):
+def get_payment_methods_view(request):
     """
     This will be called just if the user is logged in (this logic is in the templates).
     We will return a partial of the payments methods
@@ -35,7 +35,7 @@ def get_payment_methods_view(request):
     return redirect('pricing_main')
 
 
-def hx_update_price_view(request):
+def update_price_view(request):
     if request.htmx:
         months = request.GET.get('months')
         plan = Plan.objects.filter(months=int(months)).first()

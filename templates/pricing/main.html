@@ -43,7 +43,7 @@
             <div class="form-check form-check-inline">
                 <p class="text-capitalize h5 text-muted">
                 <input class="form-check-input" type="radio" name="months" id="inlineRadio{{month}}" value="{{month}}"
-                hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML"
+                hx-get="{% url 'pricing_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML"
                 {% if month == plan.months %}checked{% endif %}>
                 <label class="form-check-label" for="inlineRadio{{month}}">
                   {{ month }} month{{ month|pluralize }}
@@ -74,12 +74,12 @@
                     You already have a premium plan valid until {{ expire_date }}.
                     {% endblocktranslate %}
                   </p>
-                    <button hx-get="{% url 'pricing_hx_get_payment_methods' %}"
+                    <button hx-get="{% url 'pricing_get_payment_methods' %}"
                       hx-target="#proceed-with-payment" class="w-100 btn btn-lg btn-primary">
                       {% translate "Want to extend it anyways?" %}
                   </button>
                 {% else %}
-                  <button hx-get="{% url 'pricing_hx_get_payment_methods' %}"
+                  <button hx-get="{% url 'pricing_get_payment_methods' %}"
                     hx-target="#proceed-with-payment" class="w-100 btn btn-lg btn-primary">
                     {% translate "Select plan" %}
                   </button>

@@ -1,99 +1,163 @@
 from django.urls import path
 
 from .views import ProfileListView, ProfileUpdateView, ProfileCreateView
-from .views import hx_create_object_view, hx_delete_object_view
-from .views import hx_upload_full_photo_view, hx_crop_photo_view, hx_delete_photos_view
-from .views import hx_get_photo_modal_view, hx_remove_photo_modal_view
-from .views import hx_save_general_and_contact_info_view
-from .views import hx_add_website_object_view, hx_update_website_object_view, hx_delete_website_object_view
-from .views import hx_add_skill_object_view, hx_update_skill_object_view, hx_delete_skill_object_view
-from .views import hx_add_language_object_view, hx_update_language_object_view, hx_delete_language_object_view
-from .views import hx_add_description_view, hx_update_description_view, hx_delete_description_view
-from .views import hx_add_add_description_button_view, hx_delete_add_description_button_view
-from .views import hx_add_education_object_view, hx_update_education_object_view, hx_delete_education_object_view
-from .views import hx_add_education_new_form_view, hx_delete_education_new_form_view
+from .views import create_object_view, delete_object_view
+from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
+from .views import get_photo_modal_view, remove_photo_modal_view
+from .views import save_general_and_contact_info_view
+from .views import add_website_object_view, update_website_object_view, delete_website_object_view
+from .views import add_skill_object_view, update_skill_object_view, delete_skill_object_view
+from .views import add_language_object_view, update_language_object_view, delete_language_object_view
+
+
+
+
+# general
 
 urlpatterns = [
-    # general
     path('', ProfileListView.as_view(), name='profiles_list'),
     path('list/', ProfileListView.as_view(), name='profiles_list'),
     path('new/', ProfileCreateView.as_view(), name='profiles_new'),
     path('profile/<uuid:pk>/', ProfileUpdateView.as_view(), name='profiles_update'),
 
     # htmx - object - create
-    path('hx-create-object/', hx_create_object_view, name='profiles_create_object'),
+    path('create-object/profile/', create_object_view, name='profiles_create_object'),
 
     # htmx - object - delete
-    path('hx-delete-object/<uuid:pk>/', hx_delete_object_view, name='profiles_delete_object'),
+    path('delete-object/profile/<uuid:pk>/', delete_object_view, name='profiles_delete_object'),
+]
 
-    # htmx - photo
-    path('hx-upload-full-photo/<uuid:pk>/', hx_upload_full_photo_view, name='profiles_upload_full_photo'),
-    path('hx-crop-photo/<uuid:pk>/', hx_crop_photo_view, name='profiles_crop_photo'),
-    path('hx-delete-photos/<uuid:pk>/', hx_delete_photos_view, name='profiles_delete_photos'),
 
-    # htmx - photo modal
-    path('hx-get-photo-modal/<uuid:pk>/', hx_get_photo_modal_view, name='profiles_get_photo_modal'),
-    path('hx-remove-photo-modal/<uuid:pk>/', hx_remove_photo_modal_view, name='profiles_remove_photo_modal'),
+# photo
+urlpatterns += [
+        # htmx - photo
+        path('upload-full-photo/<uuid:pk>/', upload_full_photo_view, name='profiles_upload_full_photo'),
+        path('crop-photo/<uuid:pk>/', crop_photo_view, name='profiles_crop_photo'),
+        path('delete-photos/<uuid:pk>/', delete_photos_view, name='profiles_delete_photos'),
 
-    # htmx - general_and_contact_info
-    path('hx-save-general-and-contact-info/<uuid:pk>/', hx_save_general_and_contact_info_view, name='profiles_save_general_and_contact_info'),
+        # htmx - photo modal
+        path('get-photo-modal/<uuid:pk>/', get_photo_modal_view, name='profiles_get_photo_modal'),
+        path('remove-photo-modal/<uuid:pk>/', remove_photo_modal_view, name='profiles_remove_photo_modal'),
+]
 
-    # htmx - add website object
-    path('hx-add-website-object/<uuid:pk>/', hx_add_website_object_view, name='profiles_add_website_object'),
 
-    # htmx - update website object
-    path('hx-update-website-object/<uuid:pk_parent>/<int:pk>/', hx_update_website_object_view, name='profiles_update_website_object'),
+# general_and_contact_info
+urlpatterns += [
+        # htmx - general_and_contact_info
+        path('save-general-and-contact-info/<uuid:pk>/',
+        save_general_and_contact_info_view,
+        name='profiles_save_general_and_contact_info'),
+]
 
-    # htmx - delete website object
-    path('hx-delete-website-object/<uuid:pk_parent>/<int:pk>/', hx_delete_website_object_view, name='profiles_delete_website_object'),
 
-    # htmx - add skill object
-    path('hx-add-skill-link-object/<uuid:pk>/', hx_add_skill_object_view, name='profiles_add_skill_object'),
 
-    # htmx - update skill object
-    path('hx-update-skill-object/<uuid:pk_parent>/<int:pk>/', hx_update_skill_object_view, name='profiles_update_skill_object'),
+# websites
+urlpatterns += [
 
-    # htmx - delete skill object
-    path('hx-delete-skill-object/<uuid:pk_parent>/<int:pk>/', hx_delete_skill_object_view, name='profiles_delete_skill_object'),
+        # htmx - add website object
+        path('add-website-object/<uuid:pk>/', add_website_object_view, name='profiles_add_website_object'),
 
-    # htmx - add language object
-    path('hx-add-language-link-object/<uuid:pk>/', hx_add_language_object_view, name='profiles_add_language_object'),
+        # htmx - update website object
+        path('update-website-object/<uuid:pk_parent>/<int:pk>/', update_website_object_view, name='profiles_update_website_object'),
 
-    # htmx - update language object
-    path('hx-update-language-object/<uuid:pk_parent>/<int:pk>/', hx_update_language_object_view, name='profiles_update_language_object'),
+        # htmx - delete website object
+        path('delete-website-object/<uuid:pk_parent>/<int:pk>/', delete_website_object_view, name='profiles_delete_website_object'),
 
-    # htmx - delete language object
-    path('hx-delete-language-object/<uuid:pk_parent>/<int:pk>/', hx_delete_language_object_view, name='profiles_delete_language_object'),
+]
 
-    # htmx - add description
-    path('hx-add-description/<uuid:pk>/', hx_add_description_view, name='profiles_add_description'),
 
-    # htmx - update description
-    path('hx-update-description/<uuid:pk>/', hx_update_description_view, name='profiles_update_description'),
 
-    # htmx - delete description
-    path('hx-delete-description/<uuid:pk>/', hx_delete_description_view, name='profiles_delete_description'),
+# skills
+urlpatterns += [
+        # htmx - add skill object
+        path('add-skill-object/<uuid:pk>/', add_skill_object_view, name='profiles_add_skill_object'),
 
-    # htmx - add "add description button"
-    path('hx-add-add-description-button/<uuid:pk>/', hx_add_add_description_button_view, name='profiles_add_add_description_button'),
+        # htmx - update skill object
+        path('update-skill-object/<uuid:pk_parent>/<int:pk>/', update_skill_object_view, name='profiles_update_skill_object'),
 
-    # htmx - delete "add description button"
-    path('hx-delete-add-description-button/<uuid:pk>/', hx_delete_add_description_button_view, name='profiles_delete_add_description_button'),
+        # htmx - delete skill object
+        path('delete-skill-object/<uuid:pk_parent>/<int:pk>/', delete_skill_object_view, name='profiles_delete_skill_object'),
 
-    # htmx - add education object
-    path('hx-add-education-link-object/<uuid:pk>/', hx_add_education_object_view, name='profiles_add_education_object'),
+]
 
-    # htmx - update education object
-    path('hx-update-education-object/<uuid:pk_parent>/<int:pk>/', hx_update_education_object_view, name='profiles_update_education_object'),
 
-    # htmx - delete education object
-    path('hx-delete-education-object/<uuid:pk_parent>/<int:pk>/', hx_delete_education_object_view, name='profiles_delete_education_object'),
 
-    # htmx - add "new education form"
-    path('hx-add-education-new-form/<uuid:pk>/', hx_add_education_new_form_view, name='profiles_add_education_new_form'),
+# languages
+urlpatterns += [
 
-    # htmx - delete "new education form"
-    path('hx-delete-education-new-form/<uuid:pk>/', hx_delete_education_new_form_view, name='profiles_delete_education_new_form'),
+        # htmx - add language object
+        path('add-language-object/<uuid:pk>/', add_language_object_view, name='profiles_add_language_object'),
 
+        # htmx - update language object
+        path('update-language-object/<uuid:pk_parent>/<int:pk>/', update_language_object_view, name='profiles_update_language_object'),
+
+        # htmx - delete language object
+        path('delete-language-object/<uuid:pk_parent>/<int:pk>/', delete_language_object_view, name='profiles_delete_language_object'),
+
+]
+
+
+from .views import activate_description_view, update_description_view, deactivate_description_view
+from .views import insert_description_button_view, remove_description_button_view
+
+# description
+urlpatterns += [
+        # htmx - activate description
+        path('activate-description/<uuid:pk>/', activate_description_view, name='profiles_activate_description'),
+
+        # htmx - update description
+        path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
+
+        # htmx - deactivate description
+        path('deactivate-description/<uuid:pk>/', deactivate_description_view, name='profiles_deactivate_description'),
+
+        # htmx - add "add description button"
+        path('insert-description-button/<uuid:pk>/', insert_description_button_view, name='profiles_insert_description_button'),
+
+        # htmx - delete "add description button"
+        path('remove-description-button/<uuid:pk>/', remove_description_button_view, name='profiles_remove_description_button'),
+
+]
+
+
+
+from .views import create_child_object_view, update_child_object_view, delete_child_object_view, copy_child_object_view
+from .views import insert_child_new_form_view, remove_child_new_form_view
+from .views import move_up_child_object_view, move_down_child_object_view
+from .views import activate_child_object_view, deactivate_child_object_view
+
+# any child object
+urlpatterns += [
+        # htmx - insert child new form
+        path('insert-new-form/<str:obj>/<uuid:pk>/', insert_child_new_form_view, name='profiles_insert_child_new_form'),
+
+        # htmx - remove child new form
+        path('remove-new-form/<str:obj>/<uuid:pk>/', remove_child_new_form_view, name='profiles_remove_child_new_form'),
+
+        # htmx - create child object
+        path('create-object/<str:obj>/<uuid:pk>/', create_child_object_view, name='profiles_create_child_object'),
+
+        # htmx - update child object
+        path('update-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', update_child_object_view, name='profiles_update_child_object'),
+
+
+        # htmx - move up child object
+        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', move_up_child_object_view, name='profiles_move_up_child_object'),
+
+        # htmx - move down child object
+        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', move_down_child_object_view, name='profiles_move_down_child_object'),
+
+        # htmx - copy child object
+        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', copy_child_object_view, name='profiles_copy_child_object'),
+
+        # htmx - delete child object
+        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),
+
+
+        # htmx - activate object
+        path('activate-object/<str:obj>/<uuid:pk>/', activate_child_object_view, name='profiles_activate_child_object'),
+
+        # htmx - deactivate object
+        path('deactivate-object/<str:obj>/<uuid:pk>/', deactivate_child_object_view, name='profiles_deactivate_delete_child_object'),
 
 ]

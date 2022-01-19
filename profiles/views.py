@@ -51,7 +51,7 @@ class ProfileCreateView(LoginRequiredMixin, CreateView):
 # htmx - profile - create object
 @login_required
 @require_POST
-def hx_create_object_view(request):
+def create_object_view(request):
     first_name = request.POST.get("first_name")
     last_name = request.POST.get("last_name")
     email = request.POST.get("email")
@@ -64,7 +64,7 @@ def hx_create_object_view(request):
 # htmx - profile - delete object
 @login_required
 @require_POST
-def hx_delete_object_view(request, pk):
+def delete_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     object.delete()
     return HttpResponse(status=200)
@@ -73,7 +73,7 @@ def hx_delete_object_view(request, pk):
 # htmx - profile - upload full photo
 @login_required
 @require_POST
-def hx_upload_full_photo_view(request, pk):
+def upload_full_photo_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     photo_full = request.FILES.get("photo")
     object.photo_full.save(photo_full.name, photo_full)
@@ -85,7 +85,7 @@ def hx_upload_full_photo_view(request, pk):
 
 # htmx - profile - get photo modal
 @login_required
-def hx_get_photo_modal_view(request, pk):
+def get_photo_modal_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
     return render(request, 'profiles/partials/photo_modal.html', context)
@@ -93,14 +93,14 @@ def hx_get_photo_modal_view(request, pk):
 
 # htmx - profile - remove photo modal
 @login_required
-def hx_remove_photo_modal_view(request, pk):
+def remove_photo_modal_view(request, pk):
     return HttpResponse(status=200)
 
 
 # htmx - profile - crop photo
 @login_required
 @require_POST
-def hx_crop_photo_view(request, pk):
+def crop_photo_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     x = int(request.POST.get("cropX"))
     y = int(request.POST.get("cropY"))
@@ -115,7 +115,7 @@ def hx_crop_photo_view(request, pk):
 # htmx - profile - delete photos
 @login_required
 @require_POST
-def hx_delete_photos_view(request, pk):
+def delete_photos_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     delete_path_file(object.photo_full.path)
     delete_path_file(object.photo.path)
@@ -127,7 +127,7 @@ def hx_delete_photos_view(request, pk):
 # htmx - profile - save general & contact info
 @login_required
 @require_POST
-def hx_save_general_and_contact_info_view(request, pk):
+def save_general_and_contact_info_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     object.first_name = request.POST.get("first_name")
     object.last_name = request.POST.get("last_name")
@@ -152,7 +152,7 @@ def get_website_boostrap_icon(text):
 # htmx - profile - add website object
 @login_required
 @require_POST
-def hx_add_website_object_view(request, pk):
+def add_website_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     name = request.POST.get("website_name_new")
     bootstrap_icon = get_website_boostrap_icon(str(name))
@@ -165,7 +165,7 @@ def hx_add_website_object_view(request, pk):
 # htmx - profile - update website object
 @login_required
 @require_POST
-def hx_update_website_object_view(request, pk_parent, pk):
+def update_website_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     website_object = get_object_or_404(Website, pk=pk, profile=object)
     name = request.POST.get("website_name")
@@ -176,7 +176,7 @@ def hx_update_website_object_view(request, pk_parent, pk):
 # htmx - profile - delete website object
 @login_required
 @require_POST
-def hx_delete_website_object_view(request, pk_parent, pk):
+def delete_website_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     website_object = get_object_or_404(Website, pk=pk, profile=object)
     website_object.delete()
@@ -186,7 +186,7 @@ def hx_delete_website_object_view(request, pk_parent, pk):
 # htmx - profile - add skill object
 @login_required
 @require_POST
-def hx_add_skill_object_view(request, pk):
+def add_skill_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     name = request.POST.get("skill_name_new")
     skill_object = Skill(name=name, profile=object)
@@ -198,7 +198,7 @@ def hx_add_skill_object_view(request, pk):
 # htmx - profile - update skill object
 @login_required
 @require_POST
-def hx_update_skill_object_view(request, pk_parent, pk):
+def update_skill_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     skill_object = get_object_or_404(Skill, pk=pk, profile=object)
     name = request.POST.get("skill_name")
@@ -209,7 +209,7 @@ def hx_update_skill_object_view(request, pk_parent, pk):
 # htmx - profile - delete skill object
 @login_required
 @require_POST
-def hx_delete_skill_object_view(request, pk_parent, pk):
+def delete_skill_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     skill_object = get_object_or_404(Skill, pk=pk, profile=object)
     skill_object.delete()
@@ -219,7 +219,7 @@ def hx_delete_skill_object_view(request, pk_parent, pk):
 # htmx - profile - add language object
 @login_required
 @require_POST
-def hx_add_language_object_view(request, pk):
+def add_language_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     name = request.POST.get("language_name_new")
     level = request.POST.get("language_level_new")
@@ -232,7 +232,7 @@ def hx_add_language_object_view(request, pk):
 # htmx - profile - update language object
 @login_required
 @require_POST
-def hx_update_language_object_view(request, pk_parent, pk):
+def update_language_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     language_object = get_object_or_404(Language, pk=pk, profile=object)
     name = request.POST.get("language_name")
@@ -245,58 +245,64 @@ def hx_update_language_object_view(request, pk_parent, pk):
 # htmx - profile - delete language object
 @login_required
 @require_POST
-def hx_delete_language_object_view(request, pk_parent, pk):
+def delete_language_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     language_object = get_object_or_404(Language, pk=pk, profile=object)
     language_object.delete()
     return HttpResponse(status=200)
 
 
+
+
 # htmx - profile - add description
 @login_required
 @require_POST
-def hx_add_description_view(request, pk):
+def activate_description_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.description_visible = True
+    object.description_active = True
     object.save()
     context = {'object': object}
     response = render(request, 'profiles/partials/description.html', context)
-    trigger_client_event(response, "descriptionAddedEvent", { },)
+    trigger_client_event(response, "descriptionActivatedEvent", { },)
     return response
+
+
+# htmx - profile - deactivate description
+@login_required
+@require_POST
+def deactivate_description_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.description_active = False
+    object.save()
+    response = HttpResponse(status=200)
+    trigger_client_event(response, "descriptionDeactivatedEvent", { },)
+    return response
+
 
 
 # htmx - profile - update description
 @login_required
 @require_POST
-def hx_update_description_view(request, pk):
+def update_description_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     description = request.POST.get("description")
     object.description = description
     object.save()
     return HttpResponse(status=200)
 
-# htmx - profile - delete description
-@login_required
-@require_POST
-def hx_delete_description_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.description_visible = False
-    object.save()
-    response = HttpResponse(status=200)
-    trigger_client_event(response, "descriptionDeletedEvent", { },)
-    return response
+
 
 # htmx - profile - add "add description button"
 @login_required
-def hx_add_add_description_button_view(request, pk):
+def insert_description_button_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
-    return render(request, 'profiles/partials/add_description_button.html', context)
+    return render(request, 'profiles/partials/description_activate_button.html', context)
 
 
 # htmx - profile - delete "add description button"
 @login_required
-def hx_delete_add_description_button_view(request, pk):
+def remove_description_button_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     return HttpResponse(status=200)
 
@@ -304,8 +310,11 @@ def hx_delete_add_description_button_view(request, pk):
 # htmx - profile - add education object
 @login_required
 @require_POST
-def hx_add_education_object_view(request, pk):
+def create_child_object_view(request, obj, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
+
+    # create_child_object(child_label=obj, post_dict=request.POST, profile=object) # include this function in models.py
+
     title = request.POST.get("education_title_new")
     subtitle = request.POST.get("education_subtitle_new")
     grade = request.POST.get("education_grade_new")
@@ -315,6 +324,7 @@ def hx_add_education_object_view(request, pk):
     description = request.POST.get("education_description_new")
     education_object = Education(profile=object, title=title, subtitle=subtitle, grade=grade, start_date=start_date, end_date=end_date, institution=institution, description=description)
     education_object.save()
+
     context = {'object': object}
     return render(request, 'profiles/partials/education.html', context)
 
@@ -322,7 +332,7 @@ def hx_add_education_object_view(request, pk):
 # htmx - profile - update education object
 @login_required
 @require_POST
-def hx_update_education_object_view(request, pk_parent, pk):
+def update_child_object_view(request, obj, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
     education_object.start_date = request.POST.get("education_start_date")
@@ -338,20 +348,63 @@ def hx_update_education_object_view(request, pk_parent, pk):
 # htmx - profile - delete education object
 @login_required
 @require_POST
-def hx_delete_education_object_view(request, pk_parent, pk):
+def delete_child_object_view(request, obj, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
     education_object.delete()
     return HttpResponse(status=200)
 
 @login_required
-@require_POST
-def hx_add_education_new_form_view(request, pk):
+def insert_child_new_form_view(request, obj, pk):
+    print(obj)
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
     return render(request, 'profiles/partials/education_new_form.html', context)
 
-def hx_delete_education_new_form_view(request, pk):
+@login_required
+def remove_child_new_form_view(request, obj, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
     return render(request, 'profiles/partials/education_new_button.html', context)
+
+
+@login_required
+def remove_child_new_form_view(request, obj, pk_parent, pk):
+    pass
+
+
+@login_required
+def copy_child_object_view(request, obj, pk_parent, pk):
+    pass
+
+
+@login_required
+def move_up_child_object_view(request, obj, pk_parent, pk):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    child_object = get_object_or_404(Education, profile=object, pk=pk)
+    above_order = child_object.order-1
+    object_order = child_object.order
+    above_child_object = Education.objects.get(order=above_order, profile=object)
+    above_child_object.order = object_order
+    child_object.order = above_order
+    above_child_object.save()
+    child_object.save()
+    return  HttpResponse("ordered")
+
+
+
+
+
+@login_required
+def move_down_child_object_view(request, obj, pk_parent, pk):
+    pass
+
+
+@login_required
+def activate_child_object_view(request, obj, pk):
+    pass
+
+
+@login_required
+def deactivate_child_object_view(request, obj, pk):
+    pass

@@ -40,7 +40,7 @@
           <form class="mt-4 mb-2" action="{% url 'pricing_proceed_with_payment' %}" method="post">
             {% csrf_token %}
             <input name="months" type="range" class="form-range" min="1" max="12" value="{{ plan.months }}"
-                 hx-get="{% url 'pricing_hx_update_price' %}"  hx-target="#pro-price-months" hx-swap="innerHTML">
+                 hx-get="{% url 'pricing_update_price' %}"  hx-target="#pro-price-months" hx-swap="innerHTML">
 
             <div id="pro-price-months">
               {% include "pricing/partials/price_months.html" %}
@@ -57,9 +57,9 @@
                 {% if user.has_paid %}
                   <p>{% blocktranslate with days=user.pro_days_left %} You already have {{ days }} days remaining to use the premium plan.
                     {% endblocktranslate %}</p>
-                    <button hx-get="{% url 'pricing_hx_get_payment_methods' %}" hx-target="#proceed-with-payment"> {% translate "Want to extend it anyways?" %}</button>
+                    <button hx-get="{% url 'pricing_get_payment_methods' %}" hx-target="#proceed-with-payment"> {% translate "Want to extend it anyways?" %}</button>
                 {% else %}
-                  <button hx-get="{% url 'pricing_hx_get_payment_methods' %}" hx-target="#proceed-with-payment">{% translate "Select plan" %}</button>
+                  <button hx-get="{% url 'pricing_get_payment_methods' %}" hx-target="#proceed-with-payment">{% translate "Select plan" %}</button>
                 {% endif %}
               {% else %}
                 <a href="{% url 'pricing_get_payment_methods' %}" class="btn btn-primary">{% translate "Start by sign in" %}</a>

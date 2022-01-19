@@ -20,6 +20,10 @@ def user_directory_path(instance, filename):
     return '{0}/{1}'.format(instance.username.id, filename)
 
 
+EDUCATION_URL_LABEL = 'education'
+
+
+
 class Profile(models.Model):
     """
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
@@ -47,8 +51,11 @@ class Profile(models.Model):
 
     # description & interests
     description = models.TextField(null=True, blank=True, max_length=1000)
-    description_visible = models.IntegerField(default=True)
     interests = models.CharField(null=True, blank=True, max_length=200)
+
+    # activation of Fields
+    description_active = models.IntegerField(default=True)
+    education_active = models.IntegerField(default=True)
 
     # labels
     skill_label = models.CharField(max_length=100, default=_('Skills'))
@@ -98,29 +105,29 @@ class Profile(models.Model):
     def add_language_object_url(self):
         return reverse('profiles_add_language_object', kwargs={'pk':self.pk})
 
-    def add_description_url(self):
-        return reverse('profiles_add_description', kwargs={'pk':self.pk})
+    def activate_description_url(self):
+        return reverse('profiles_activate_description', kwargs={'pk':self.pk})
 
     def update_description_url(self):
         return reverse('profiles_update_description', kwargs={'pk':self.pk})
 
-    def delete_description_url(self):
-        return reverse('profiles_delete_description', kwargs={'pk':self.pk})
+    def deactivate_description_url(self):
+        return reverse('profiles_deactivate_description', kwargs={'pk':self.pk})
 
-    def add_add_description_button_url(self):
-        return reverse('profiles_add_add_description_button', kwargs={'pk':self.pk})
+    def insert_description_button_url(self):
+        return reverse('profiles_insert_description_button', kwargs={'pk':self.pk})
 
-    def delete_add_description_button_url(self):
-        return reverse('profiles_delete_add_description_button', kwargs={'pk':self.pk})
+    def remove_description_button_url(self):
+        return reverse('profiles_remove_description_button', kwargs={'pk':self.pk})
 
-    def add_education_object_url(self):
-        return reverse('profiles_add_education_object', kwargs={'pk':self.pk})
+    def create_education_object_url(self):
+        return reverse('profiles_create_child_object', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
 
-    def add_education_new_form_url(self):
-        return reverse('profiles_add_education_new_form', kwargs={'pk':self.pk})
+    def insert_education_new_form_url(self):
+        return reverse('profiles_insert_child_new_form', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
 
-    def delete_education_new_form_url(self):
-        return reverse('profiles_delete_education_new_form', kwargs={'pk':self.pk})
+    def remove_education_new_form_url(self):
+        return reverse('profiles_remove_child_new_form', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
@@ -218,6 +225,8 @@ class Education(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='education_set')
+    order = models.SmallIntegerField(default=0)
+
     start_date = models.CharField(null=True, blank=True, max_length=50)
     end_date = models.CharField(null=True, blank=True, max_length=50)
     grade = models.CharField(null=True, blank=True, max_length=20)
@@ -230,10 +239,34 @@ class Education(models.Model):
         return self.degree_name
 
     def update_object_url(self):
-        return reverse('profiles_update_education_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_child_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_education_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def move_up_education_object_url(self):
+        return reverse('profiles_move_up_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def move_down_education_object_url(self):
+        return reverse('profiles_move_down_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def copy_education_object_url(self):
+        return reverse('profiles_copy_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def save(self, *args, **kwargs):
+         if self._state.adding:
+             try:
+                 current_maximum_order = __class__.objects.latest('order').order
+                 self.order = current_maximum_order + 1
+             except:
+                 pass # exception if objects do not exist
+         super().save(*args, **kwargs)
+
+
 
 
 class Certification(models.Model):

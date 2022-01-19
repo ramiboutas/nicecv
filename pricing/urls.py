@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (pricing_view, get_payment_methods_view, hx_update_price_view, hx_get_payment_methods_view)
+from .views import (pricing_view, get_payment_methods_view, update_price_view, get_payment_methods_view)
 
 urlpatterns = [
     # standard
@@ -10,6 +10,6 @@ urlpatterns = [
 
 
     # htmx urls
-    path('hx/update-price/', hx_update_price_view, name='pricing_hx_update_price'),
-    path('hx/get-payment-methods/', hx_get_payment_methods_view ,name='pricing_hx_get_payment_methods'),
+    path('hx/update-price/', update_price_view, name='pricing_update_price'),
+    path('hx/get-payment-methods/', get_payment_methods_view ,name='pricing_get_payment_methods'),
 ]

@@ -16,13 +16,13 @@ _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show t
 hx-trigger="photoCroppedEvent from:body"></div>
 
 
-<!-- when description is deleted, add the button "add description" -->
-<div hx-get="{{ object.add_add_description_button_url }}" hx-target="#add-description-button-box" hx-swap="innerHTML"
-hx-trigger="descriptionDeletedEvent from:body"></div>
+<!-- when description is deactivated, insert the description button -->
+<div hx-get="{{ object.insert_description_button_url }}" hx-target="#activate-description-button" hx-swap="innerHTML"
+hx-trigger="descriptionDeactivatedEvent from:body"></div>
 
-<!-- when description is added, remove the button "add description" -->
-<div hx-get="{{ object.delete_add_description_button_url }}" hx-target="#add-description-button-box" hx-swap="innerHTML"
-hx-trigger="descriptionAddedEvent from:body"></div>
+<!-- when description is activated, remove  the description button -->
+<div hx-get="{{ object.remove_description_button_url }}" hx-target="#activate-description-button" hx-swap="innerHTML"
+hx-trigger="descriptionActivatedEvent from:body"></div>
 
 
 <div class="container my-5 ">
