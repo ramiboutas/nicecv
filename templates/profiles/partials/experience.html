@@ -1,0 +1,140 @@
+{% load i18n %}
+<div id="experience-box" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  {% if object.experience_visible %}
+    <h6  class="display-6 fs-6 mt-4" ><button class="btn btn-outline-secondary border-0"
+     hx-post="{{ object.delete_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML"><i class="bi bi-trash"></i></button>{% trans "Work Experience" %}</h6>
+    <hr>
+    {% for experience in object.experience_set.all %}
+      <form hx-post="{{ experience.update_object_url }}" hx-trigger="change" hx-swap="none">
+        <div id="experience-{{ experience.pk }}"  class="border border-secondary my-4">
+          <!--buttons -->
+          <div class="row">
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              hx-post="{{ experience.move_up_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              {% if forloop.first %}disabled{% endif %}>
+              <i class="bi bi-arrow-up"></i></button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              hx-post="{{ experience.move_down_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              {% if forloop.last %}disabled{% endif %}>
+              <i class="bi bi-arrow-down"></i></button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              hx-post="{{ experience.duplicate_object_url }}" hx-target="#new-experience-box" hx-swap="innerHTML"
+              ><i class="bi bi-files"></i></button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              hx-post="{{ experience.delete_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              ><i class="bi bi-trash"></i></button>
+            </div>
+          </div>
+
+          <!--title and location -->
+          <div class="row">
+            <div class="col-7">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-briefcase"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" spellcheck="false" type="text"
+                  placeholder="{% trans 'Job title, e.g: Project manager' %}"
+                  name="experience_title" maxlength="{{max_length_normal}}"
+                  {% if experience.title %}value="{{ experience.title }}"{% endif %}>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-geo-alt"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text" spellcheck="false"
+                  placeholder="{% trans 'Location, e.g. Miami' %}"
+                  name="experience_location" maxlength="{{max_length_short}}"
+                  {% if experience.location %}value="{{ experience.location }}"{% endif %}>
+              </div>
+            </div>
+          </div>
+
+          <!--company and link -->
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text" spellcheck="false"
+                  placeholder="{% trans 'Company, e.g: NASA' %}"
+                  name="experience_company" maxlength="{{max_length_short}}"
+                  {% if experience.company %}value="{{ experience.company }}"{% endif %}>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text" spellcheck="false"
+                  placeholder="{% trans 'Company link, e.g: www.nasa.gov (optional)' %}"
+                  name="experience_company_link" maxlength="{{max_length_normal}}"
+                  {% if experience.company_link %}value="{{ experience.company_link }}"{% endif %}>
+              </div>
+            </div>
+          </div>
+
+          <!--start date and end date -->
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" spellcheck="false" type="text"
+                  placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
+                  name="experience_start_date" maxlength="{{max_length_super_short}}"
+                  {% if experience.start_date %}value="{{ experience.start_date }}"{% endif %}>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" spellcheck="false" type="text"
+                  placeholder="{% trans 'End date, e.g. Feb 2022, Present, ...' %}"
+                  name="experience_end_date" maxlength="{{max_length_super_short}}"
+                  {% if experience.end_date %}value="{{ experience.end_date }}"{% endif %}>
+              </div>
+            </div>
+          </div>
+
+          <!--description -->
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0" ><i class="bi bi-justify-left"></i></i></span>
+                </div>
+                <textarea class="form-control border-0 bg-white" spellcheck="false" type="text"
+                  placeholder="{% trans 'Description' %}" name="experience_description"
+                  maxlength="{{max_length_super_large}}">{% if experience.description %}{{ experience.description }}{% endif %}</textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    {% endfor %}
+
+    <div id="new-experience-box">
+      {% include "profiles/partials/experience_new_button.html" %}
+    </div>
+  {% endif %}
+</div>

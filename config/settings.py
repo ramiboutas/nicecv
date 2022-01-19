@@ -132,11 +132,15 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                # django context processors
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # my own context processors
                 'utils.context_processors.nicecv',
+                'profiles.context_processors.profile_variables',
             ],
         },
     },
@@ -318,6 +322,12 @@ PROFILE_LANGUAGE_LEVEL_CHOICES = [
     (5, _('Very advanced')),
     (6, _('Native')),
 ]
+
+TEXT_MAX_LENGTH_SUPER_SHORT = 15
+TEXT_MAX_LENGTH_SHORT = 50
+TEXT_MAX_LENGTH_NORMAL = 75
+TEXT_MAX_LENGTH_LARGE = 250
+TEXT_MAX_LENGTH_SUPER_LARGE = 500
 
 
 # crispy forms

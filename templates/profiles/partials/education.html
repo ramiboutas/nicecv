@@ -3,15 +3,106 @@
   <h6  class="display-6 fs-6 mt-4" >{% trans "Education" %}</h6>
   <hr>
   {% for education in object.education_set.all %}
-    <div id="education-{{ education.pk }}" class="input-group mb-3"  >
-      <div class="input-group-prepend">
-        <span class="input-group-text border-0" ><i class="bi bi-gear"></i></i></span>
+    <div id="education-{{ education.pk }}"  class="border border-secondary my-4">
+      <!--buttons -->
+      <div class="row">
+        <div class="col-1">
+          <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this education form' %}"
+          hx-post="{{ object.move_up_education_object_url }}" hx-target="#education-{{ education.pk }}" hx-swap="outerHTML"
+          ><i class="bi bi-arrow-up"></i></button>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this education form' %}"
+          hx-post="{{ object.move_down_education_object_url }}" hx-target="#education-{{ education.pk }}" hx-swap="outerHTML"
+          ><i class="bi bi-arrow-down"></i></button>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this education form' %}"
+          hx-post="{{ object.duplicate_education_object_url }}" hx-target="#new-education-box" hx-swap="innerHTML"
+          ><i class="bi bi-files"></i></button>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this education form' %}"
+          hx-post="{{ object.delete_education_object_url }}" hx-target="#education-{{ education.pk }}" hx-swap="outerHTML"
+          ><i class="bi bi-trash"></i></button>
+        </div>
       </div>
-      <input class="form-control border-0 bg-white" spellcheck="false" type="text" name="education_title" value="{{education.title}}"
-      hx-post="{{ education.update_object_url }}"  hx-swap="none" hx-trigger="keyup changed delay:1s">
-      <button class="btn btn-outline-secondary  border-0"
-       hx-post="{{ education.delete_object_url }}" hx-target="#education-{{education.pk}}" hx-swap="outerHTML"
-       data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this education' %}"><i class="bi bi-trash"></i></button>
+      <!--title and grade -->
+      <div class="row">
+        <div class="col-8">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-mortarboard"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" placeholder="{% trans 'Title, e.g: Mechanical Engineering Degree' %}"  type="text" name="education_title_new" maxlength="{{max_length_normal}}" spellcheck="false">
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-check2-circle"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" placeholder="{% trans 'Grade, e.g. 7.1 (optional)' %}"  type="text" name="education_grade_new" maxlength="{{max_length_super_short}}" spellcheck="false">
+          </div>
+        </div>
+      </div>
+
+      <!--institution and link -->
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" placeholder="{% trans 'Institution, e.g: University of Oxford' %}"  type="text" name="education_institution_new" maxlength="{{max_length_normal}}" spellcheck="false">
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" placeholder="{% trans 'Institution link, e.g: www.ox.ac.uk (optional)' %}"  type="text" name="education_institution_link_new" maxlength="{{max_length_normal}}" spellcheck="false">
+          </div>
+        </div>
+      </div>
+
+      <!--start date and end date -->
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" placeholder="{% trans 'Start date, e.g. Mar 2019' %}"  type="text" name="education_start_date_new" maxlength="{{max_length_super_short}}" spellcheck="false">
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" placeholder="{% trans 'End date, e.g. Jan 2021, on going, ...' %}"  type="text" name="education_end_date_new" maxlength="{{max_length_super_short}}" spellcheck="false">
+          </div>
+        </div>
+      </div>
+
+      <!--description -->
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text border-0" ><i class="bi bi-justify-left"></i></i></span>
+            </div>
+            <textarea class="form-control border-0 bg-white" placeholder="{% trans 'Description' %}"  type="text" name="education_description_new" maxlength="{{max_length_super_large}}" spellcheck="false"></textarea>
+          </div>
+        </div>
+      </div>
+
     </div>
   {% endfor %}
 

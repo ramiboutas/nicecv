@@ -344,6 +344,8 @@ def hx_delete_education_object_view(request, pk_parent, pk):
     education_object.delete()
     return HttpResponse(status=200)
 
+@login_required
+@require_POST
 def hx_add_education_new_form_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}

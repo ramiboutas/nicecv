@@ -1,0 +1,10 @@
+{% load i18n %}
+<div id="add-description-button-box">
+
+{% if not object.description_visible %}
+  <button class="btn btn-secondary border-0 m-2"
+   hx-post="{{ object.add_description_url }}" hx-target="#description-box" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+   data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add description' %}"><i class="bi bi-card-text"></i> {% trans 'Description' %}</button>
+{% endif %}
+
+</div>

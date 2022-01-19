@@ -9,7 +9,5 @@ def nicecv(request):
         'site_name': settings.SITE_NAME,
         'meta_keywords': settings.META_KEYWORDS,
         'meta_description': settings.META_DESCRIPTION,
-        # 'profile_website_choices': settings.PROFILE_WEBSITE_CHOICES,
-        'profile_language_level_choices': settings.PROFILE_LANGUAGE_LEVEL_CHOICES,
         'request': request
     }

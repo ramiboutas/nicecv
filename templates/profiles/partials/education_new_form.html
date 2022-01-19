@@ -1,12 +1,15 @@
 {% load i18n %}
-<form  style="border: dashed 2px green; "  hx-post="{{ object.add_education_object_url }}" hx-trigger="submit" hx-swap="outerHTML" hx-target="#education-box">
+<form  style="border: dashed 2px green;"
+  hx-post="{{ object.add_education_object_url }}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  hx-trigger="submit" hx-swap="innerHTML" hx-target="#education-box">
+    <!--title and grade -->
     <div class="row">
       <div class="col-8">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-mortarboard"></i></span>
           </div>
-          <input class="form-control border-0 bg-white" placeholder="{% trans 'Title, e.g: Mechanical Engineering Degree' %}"  type="text" name="education_title_new" maxlength="100" spellcheck="false">
+          <input class="form-control border-0 bg-white" placeholder="{% trans 'Title, e.g: Mechanical Engineering Degree' %}"  type="text" name="education_title_new" maxlength="{{max_length_normal}}" spellcheck="false">
         </div>
       </div>
       <div class="col">
@@ -14,17 +17,19 @@
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-check2-circle"></i></span>
           </div>
-          <input class="form-control border-0 bg-white" placeholder="{% trans 'Grade, e.g. 7.1 (optional)' %}"  type="text" name="education_grade_new" maxlength="25" spellcheck="false">
+          <input class="form-control border-0 bg-white" placeholder="{% trans 'Grade, e.g. 7.1 (optional)' %}"  type="text" name="education_grade_new" maxlength="{{max_length_super_short}}" spellcheck="false">
         </div>
       </div>
     </div>
+
+    <!--institution and link -->
     <div class="row">
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
           </div>
-          <input class="form-control border-0 bg-white" placeholder="{% trans 'Institution, e.g: University of Oxford' %}"  type="text" name="education_institution_new" maxlength="100" spellcheck="false">
+          <input class="form-control border-0 bg-white" placeholder="{% trans 'Institution, e.g: University of Oxford' %}"  type="text" name="education_institution_new" maxlength="{{max_length_normal}}" spellcheck="false">
         </div>
       </div>
       <div class="col">
@@ -32,17 +37,19 @@
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
           </div>
-          <input class="form-control border-0 bg-white" placeholder="{% trans 'Link, e.g: https://www.ox.ac.uk/' %}"  type="text" name="education_title_new" maxlength="100" spellcheck="false">
+          <input class="form-control border-0 bg-white" placeholder="{% trans 'Institution link, e.g: www.ox.ac.uk (optional)' %}"  type="text" name="education_institution_link_new" maxlength="{{max_length_normal}}" spellcheck="false">
         </div>
       </div>
     </div>
+
+    <!--start date and end date -->
     <div class="row">
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
           </div>
-          <input class="form-control border-0 bg-white" placeholder="{% trans 'Start date, e.g. Mar 2019' %}"  type="text" name="education_start_date_new" maxlength="25" spellcheck="false">
+          <input class="form-control border-0 bg-white" placeholder="{% trans 'Start date, e.g. Mar 2019' %}"  type="text" name="education_start_date_new" maxlength="{{max_length_super_short}}" spellcheck="false">
         </div>
       </div>
       <div class="col">
@@ -50,21 +57,25 @@
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
           </div>
-          <input class="form-control border-0 bg-white" placeholder="{% trans 'End date, e.g. Jan 2021' %}"  type="text" name="education_end_date_new" maxlength="25" spellcheck="false">
+          <input class="form-control border-0 bg-white" placeholder="{% trans 'End date, e.g. Jan 2021, on going, ...' %}"  type="text" name="education_end_date_new" maxlength="{{max_length_super_short}}" spellcheck="false">
         </div>
       </div>
     </div>
     </div>
+
+    <!--description -->
     <div class="row">
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text border-0" ><i class="bi bi-justify-left"></i></i></span>
           </div>
-          <textarea class="form-control border-0 bg-white" placeholder="{% trans 'Description' %}"  type="text" name="education_description_new" maxlength="100" spellcheck="false"></textarea>
+          <textarea class="form-control border-0 bg-white" placeholder="{% trans 'Description' %}"  type="text" name="education_description_new" maxlength="{{max_length_super_large}}" spellcheck="false"></textarea>
         </div>
       </div>
     </div>
+
+    <!--buttons -->
     <div class="row">
       <div class="col-1">
         <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
