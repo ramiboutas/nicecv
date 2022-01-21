@@ -227,16 +227,19 @@ class Education(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='education_set')
     order = models.SmallIntegerField(default=0)
 
+    title = models.CharField(null=True, blank=True, max_length=100)
+    grade = models.CharField(null=True, blank=True, max_length=20)
+    institution = models.CharField(null=True, blank=True, max_length=100)
+    institution_link = models.CharField(null=True, blank=True, max_length=200)
     start_date = models.CharField(null=True, blank=True, max_length=50)
     end_date = models.CharField(null=True, blank=True, max_length=50)
-    grade = models.CharField(null=True, blank=True, max_length=20)
-    title = models.CharField(null=True, blank=True, max_length=100)
-    subtitle = models.CharField(null=True, blank=True, max_length=100)
-    institution = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=300)
 
+    class Meta:
+        ordering = ('order', 'id', )
+
     def __str__(self):
-        return self.degree_name
+        return self.title
 
     def update_object_url(self):
         return reverse('profiles_update_child_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
@@ -267,6 +270,35 @@ class Education(models.Model):
          super().save(*args, **kwargs)
 
 
+class Experience(models.Model):
+    """
+    Employment history. See Positions for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
+    """
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='experience_set')
+    order = models.SmallIntegerField(default=0)
+
+    title = models.CharField(null=True, blank=True, max_length=100)
+    start_date = models.CharField(null=True, blank=True, max_length=100)
+    end_date = models.CharField(null=True, blank=True, max_length=100)
+    company_name = models.CharField(null=True, blank=True, max_length=100)
+    location_name = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True, max_length=1000)
+
+    class Meta:
+        ordering = ('order', 'id', )
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+         if self._state.adding:
+             try:
+                 current_maximum_order = __class__.objects.latest('order').order
+                 self.order = current_maximum_order + 1
+             except:
+                 pass # exception if objects do not exist
+         super().save(*args, **kwargs)
 
 
 class Certification(models.Model):
@@ -347,24 +379,6 @@ class Patent(models.Model):
     filling_date = models.CharField(null=True, blank=True, max_length=100) # when pending = True
     number = models.IntegerField(null=True, blank=True) # when pending = False
     url = models.URLField(null=True, blank=True)
-
-
-
-class Position(models.Model):
-    """
-    Employment history. See Positions for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
-    """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='positions')
-    title = models.CharField(null=True, blank=True, max_length=100)
-    start_date = models.CharField(null=True, blank=True, max_length=100)
-    end_date = models.CharField(null=True, blank=True, max_length=100)
-    company_name = models.CharField(null=True, blank=True, max_length=100)
-    location_name = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True, max_length=1000)
-
-    def __str__(self):
-        return self.title
 
 
 class Project(models.Model):

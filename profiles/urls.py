@@ -142,13 +142,13 @@ urlpatterns += [
 
 
         # htmx - move up child object
-        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', move_up_child_object_view, name='profiles_move_up_child_object'),
+        path('move-up-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', move_up_child_object_view, name='profiles_move_up_child_object'),
 
         # htmx - move down child object
-        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', move_down_child_object_view, name='profiles_move_down_child_object'),
+        path('move-down-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', move_down_child_object_view, name='profiles_move_down_child_object'),
 
         # htmx - copy child object
-        path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', copy_child_object_view, name='profiles_copy_child_object'),
+        path('copy-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', copy_child_object_view, name='profiles_copy_child_object'),
 
         # htmx - delete child object
         path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),

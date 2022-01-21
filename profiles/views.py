@@ -316,13 +316,13 @@ def create_child_object_view(request, obj, pk):
     # create_child_object(child_label=obj, post_dict=request.POST, profile=object) # include this function in models.py
 
     title = request.POST.get("education_title_new")
-    subtitle = request.POST.get("education_subtitle_new")
     grade = request.POST.get("education_grade_new")
+    institution = request.POST.get("education_institution_new")
+    institution_link = request.POST.get("education_institution_link_new")
     start_date = request.POST.get("education_start_date_new")
     end_date = request.POST.get("education_end_date_new")
-    institution = request.POST.get("education_institution_new")
     description = request.POST.get("education_description_new")
-    education_object = Education(profile=object, title=title, subtitle=subtitle, grade=grade, start_date=start_date, end_date=end_date, institution=institution, description=description)
+    education_object = Education(profile=object, title=title, grade=grade, start_date=start_date, end_date=end_date, institution=institution, institution_link=institution_link, description=description)
     education_object.save()
 
     context = {'object': object}
@@ -368,10 +368,6 @@ def remove_child_new_form_view(request, obj, pk):
     return render(request, 'profiles/partials/education_new_button.html', context)
 
 
-@login_required
-def remove_child_new_form_view(request, obj, pk_parent, pk):
-    pass
-
 
 @login_required
 def copy_child_object_view(request, obj, pk_parent, pk):
@@ -382,16 +378,15 @@ def copy_child_object_view(request, obj, pk_parent, pk):
 def move_up_child_object_view(request, obj, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = get_object_or_404(Education, profile=object, pk=pk)
-    above_order = child_object.order-1
+    above_order = child_object.order - 1
     object_order = child_object.order
     above_child_object = Education.objects.get(order=above_order, profile=object)
     above_child_object.order = object_order
     child_object.order = above_order
     above_child_object.save()
     child_object.save()
-    return  HttpResponse("ordered")
-
-
+    context = {'object': object}
+    return render(request, 'profiles/partials/education.html', context)
 
 
 
