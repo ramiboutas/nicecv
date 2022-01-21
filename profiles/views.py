@@ -154,7 +154,7 @@ def get_website_boostrap_icon(text):
 @require_POST
 def add_website_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    name = request.POST.get("website_name_new")
+    name = request.POST.get("name")
     bootstrap_icon = get_website_boostrap_icon(str(name))
     website_object = Website(name=name, profile=object, bootstrap_icon=bootstrap_icon)
     website_object.save()
@@ -168,7 +168,7 @@ def add_website_object_view(request, pk):
 def update_website_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     website_object = get_object_or_404(Website, pk=pk, profile=object)
-    name = request.POST.get("website_name")
+    name = request.POST.get("name")
     website_object.name = name
     website_object.save()
     return HttpResponse(status=200)
@@ -188,7 +188,7 @@ def delete_website_object_view(request, pk_parent, pk):
 @require_POST
 def add_skill_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    name = request.POST.get("skill_name_new")
+    name = request.POST.get("name")
     skill_object = Skill(name=name, profile=object)
     skill_object.save()
     context = {'object': object}
@@ -201,7 +201,7 @@ def add_skill_object_view(request, pk):
 def update_skill_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     skill_object = get_object_or_404(Skill, pk=pk, profile=object)
-    name = request.POST.get("skill_name")
+    name = request.POST.get("name")
     skill_object.name = name
     skill_object.save()
     return HttpResponse(status=200)
@@ -221,8 +221,8 @@ def delete_skill_object_view(request, pk_parent, pk):
 @require_POST
 def add_language_object_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    name = request.POST.get("language_name_new")
-    level = request.POST.get("language_level_new")
+    name = request.POST.get("name")
+    level = request.POST.get("level")
     language_object = Language(name=name, level=level, profile=object)
     language_object.save()
     context = {'object': object}
@@ -235,8 +235,8 @@ def add_language_object_view(request, pk):
 def update_language_object_view(request, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     language_object = get_object_or_404(Language, pk=pk, profile=object)
-    name = request.POST.get("language_name")
-    level = request.POST.get("language_level")
+    name = request.POST.get("name")
+    level = request.POST.get("level")
     language_object.name = name
     language_object.level = level
     language_object.save()
@@ -297,7 +297,7 @@ def update_description_view(request, pk):
 def insert_description_button_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
-    return render(request, 'profiles/partials/description_activate_button.html', context)
+    return render(request, 'profiles/partials/description_activation_button.html', context)
 
 
 # htmx - profile - delete "add description button"
@@ -315,13 +315,13 @@ def create_child_object_view(request, obj, pk):
 
     # create_child_object(child_label=obj, post_dict=request.POST, profile=object) # include this function in models.py
 
-    title = request.POST.get("education_title_new")
-    grade = request.POST.get("education_grade_new")
-    institution = request.POST.get("education_institution_new")
-    institution_link = request.POST.get("education_institution_link_new")
-    start_date = request.POST.get("education_start_date_new")
-    end_date = request.POST.get("education_end_date_new")
-    description = request.POST.get("education_description_new")
+    title = request.POST.get("title")
+    grade = request.POST.get("grade")
+    institution = request.POST.get("institution")
+    institution_link = request.POST.get("institution_link")
+    start_date = request.POST.get("start_date")
+    end_date = request.POST.get("end_date")
+    description = request.POST.get("description")
     education_object = Education(profile=object, title=title, grade=grade, start_date=start_date, end_date=end_date, institution=institution, institution_link=institution_link, description=description)
     education_object.save()
 
@@ -335,13 +335,13 @@ def create_child_object_view(request, obj, pk):
 def update_child_object_view(request, obj, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
-    education_object.start_date = request.POST.get("education_start_date")
-    education_object.end_date = request.POST.get("education_end_date")
-    education_object.grade = request.POST.get("education_grade")
-    education_object.title = request.POST.get("education_title")
-    education_object.subtitle = request.POST.get("education_subtitle")
-    education_object.institution = request.POST.get("education_institution_new")
-    education_object.description = request.POST.get("education_description")
+    education_object.start_date = request.POST.get("start_date")
+    education_object.end_date = request.POST.get("end_date")
+    education_object.grade = request.POST.get("grade")
+    education_object.title = request.POST.get("title")
+    education_object.subtitle = request.POST.get("subtitle")
+    education_object.institution = request.POST.get("institution")
+    education_object.description = request.POST.get("description")
     education_object.save()
     return HttpResponse(status=200)
 
@@ -352,11 +352,11 @@ def delete_child_object_view(request, obj, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
     education_object.delete()
-    return HttpResponse(status=200)
+    context = {'object': object}
+    return render(request, 'profiles/partials/education.html', context)
 
 @login_required
 def insert_child_new_form_view(request, obj, pk):
-    print(obj)
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
     return render(request, 'profiles/partials/education_new_form.html', context)
@@ -371,7 +371,12 @@ def remove_child_new_form_view(request, obj, pk):
 
 @login_required
 def copy_child_object_view(request, obj, pk_parent, pk):
-    pass
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+
+    education_object = get_object_or_404(Education, pk=pk, profile=object)
+
+    context = {'object': object, 'education': education_object}
+    return render(request, 'profiles/partials/education_new_form.html', context)
 
 
 @login_required
@@ -392,14 +397,51 @@ def move_up_child_object_view(request, obj, pk_parent, pk):
 
 @login_required
 def move_down_child_object_view(request, obj, pk_parent, pk):
-    pass
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    child_object = get_object_or_404(Education, profile=object, pk=pk)
+    below_order = child_object.order + 1
+    object_order = child_object.order
+    below_child_object = Education.objects.get(order=below_order, profile=object)
+    below_child_object.order = object_order
+    child_object.order = below_order
+    below_child_object.save()
+    child_object.save()
+    context = {'object': object}
+    return render(request, 'profiles/partials/education.html', context)
 
 
 @login_required
 def activate_child_object_view(request, obj, pk):
-    pass
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.education_active = True
+    object.save()
+    context = {'object': object}
+    response = render(request, 'profiles/partials/education.html', context)
+    trigger_client_event(response, "educationActivatedEvent", { },)
+    return response
 
 
 @login_required
 def deactivate_child_object_view(request, obj, pk):
-    pass
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.education_active = False
+    object.save()
+    response = HttpResponse(status=200)
+    trigger_client_event(response, "educationDeactivatedEvent", { },)
+    return response
+
+# htmx - profile - add "add description button"
+@login_required
+def insert_child_activation_button_view(request, obj, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    print("insert_child_activation_button_view was called")
+    return render(request, 'profiles/partials/education_activation_button.html', context)
+
+
+# htmx - profile - delete "add description button"
+@login_required
+def remove_child_activation_button_view(request, obj, pk):
+    # object = get_object_or_404(Profile, pk=pk, user=request.user)
+    print("remove_child_activation_button_view was called")
+    return HttpResponse(status=200)

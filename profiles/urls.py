@@ -112,10 +112,10 @@ urlpatterns += [
         path('deactivate-description/<uuid:pk>/', deactivate_description_view, name='profiles_deactivate_description'),
 
         # htmx - add "add description button"
-        path('insert-description-button/<uuid:pk>/', insert_description_button_view, name='profiles_insert_description_button'),
+        path('insert-description-button/<uuid:pk>/', insert_description_button_view, name='profiles_insert_description_activation_button'),
 
         # htmx - delete "add description button"
-        path('remove-description-button/<uuid:pk>/', remove_description_button_view, name='profiles_remove_description_button'),
+        path('remove-description-button/<uuid:pk>/', remove_description_button_view, name='profiles_remove_description_activation_button'),
 
 ]
 
@@ -125,6 +125,7 @@ from .views import create_child_object_view, update_child_object_view, delete_ch
 from .views import insert_child_new_form_view, remove_child_new_form_view
 from .views import move_up_child_object_view, move_down_child_object_view
 from .views import activate_child_object_view, deactivate_child_object_view
+from .views import insert_child_activation_button_view, remove_child_activation_button_view
 
 # any child object
 urlpatterns += [
@@ -154,10 +155,18 @@ urlpatterns += [
         path('delete-object/<str:obj>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),
 
 
+
         # htmx - activate object
-        path('activate-object/<str:obj>/<uuid:pk>/', activate_child_object_view, name='profiles_activate_child_object'),
+        path('activate-child-object/<str:obj>/<uuid:pk>/', activate_child_object_view, name='profiles_activate_child_object'),
 
         # htmx - deactivate object
-        path('deactivate-object/<str:obj>/<uuid:pk>/', deactivate_child_object_view, name='profiles_deactivate_delete_child_object'),
+        path('deactivate-child-object/<str:obj>/<uuid:pk>/', deactivate_child_object_view, name='profiles_deactivate_child_object'),
+
+
+        # htmx - insert_child_activation_button
+        path('insert-activation-button/<str:obj>/<uuid:pk>/', insert_child_activation_button_view, name='profiles_insert_child_activation_button'),
+
+        # htmx - remove_child_activation_button
+        path('remove-activation-button/<str:obj>/<uuid:pk>/', remove_child_activation_button_view, name='profiles_remove_child_activation_button'),
 
 ]

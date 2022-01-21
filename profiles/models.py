@@ -114,11 +114,11 @@ class Profile(models.Model):
     def deactivate_description_url(self):
         return reverse('profiles_deactivate_description', kwargs={'pk':self.pk})
 
-    def insert_description_button_url(self):
-        return reverse('profiles_insert_description_button', kwargs={'pk':self.pk})
+    def insert_description_activation_button_url(self):
+        return reverse('profiles_insert_description_activation_button', kwargs={'pk':self.pk})
 
-    def remove_description_button_url(self):
-        return reverse('profiles_remove_description_button', kwargs={'pk':self.pk})
+    def remove_description_activation_button_url(self):
+        return reverse('profiles_remove_description_activation_button', kwargs={'pk':self.pk})
 
     def create_education_object_url(self):
         return reverse('profiles_create_child_object', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
@@ -128,6 +128,22 @@ class Profile(models.Model):
 
     def remove_education_new_form_url(self):
         return reverse('profiles_remove_child_new_form', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def activate_education_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def deactivate_education_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def insert_education_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+
+    def remove_education_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
@@ -242,21 +258,22 @@ class Education(models.Model):
         return self.title
 
     def update_object_url(self):
-        return reverse('profiles_update_child_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
 
-    def move_up_education_object_url(self):
+    def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
 
-    def move_down_education_object_url(self):
+    def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
 
-    def copy_education_object_url(self):
+    def copy_object_url(self):
         return reverse('profiles_copy_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
 

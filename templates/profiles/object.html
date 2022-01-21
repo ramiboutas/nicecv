@@ -10,19 +10,31 @@
 <div hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
 hx-trigger="fullPhotoUploadedEvent from:body"
 _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop"></div>
-
 <!-- when the photo is cropped (= cropping data is submitted to the server), remove the the modal -->
 <div hx-get="{{ object.remove_photo_modal_url }}" hx-target="#photo-modal-content" hx-swap="outerHTML"
 hx-trigger="photoCroppedEvent from:body"></div>
 
 
 <!-- when description is deactivated, insert the description button -->
-<div hx-get="{{ object.insert_description_button_url }}" hx-target="#activate-description-button" hx-swap="innerHTML"
+<div hx-get="{{ object.insert_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
 hx-trigger="descriptionDeactivatedEvent from:body"></div>
-
 <!-- when description is activated, remove  the description button -->
-<div hx-get="{{ object.remove_description_button_url }}" hx-target="#activate-description-button" hx-swap="innerHTML"
+<div hx-get="{{ object.remove_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
 hx-trigger="descriptionActivatedEvent from:body"></div>
+
+
+
+<!-- when education is deactivated, insert the education button -->
+<div hx-get="{{ object.insert_education_activation_button_url }}" hx-target="#education-activation-button" hx-swap="innerHTML"
+hx-trigger="educationDeactivatedEvent from:body"></div>
+<!-- when education is activated, remove  the education button -->
+<div hx-get="{{ object.remove_education_activation_button_url }}" hx-target="#education-activation-button" hx-swap="innerHTML"
+hx-trigger="educationActivatedEvent from:body"></div>
+
+
+
+
+
 
 
 <div class="container my-5 ">

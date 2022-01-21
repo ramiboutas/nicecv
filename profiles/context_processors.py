@@ -6,7 +6,7 @@ from django.conf import settings
 def profile_variables(request):
     return {
         # 'profile_website_choices': settings.PROFILE_WEBSITE_CHOICES,
-        'profile_language_level_choices': settings.PROFILE_LANGUAGE_LEVEL_CHOICES,
+        'profile_level_choices': settings.PROFILE_LANGUAGE_LEVEL_CHOICES,
 
         # text max_length (for db & html forms)
         'max_length_super_short': settings.TEXT_MAX_LENGTH_SUPER_SHORT,
