@@ -3,6 +3,7 @@ import uuid
 from io import BytesIO
 from PIL import Image
 
+from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
 from django.core.files import File
 from django.db import models
@@ -17,10 +18,37 @@ User = get_user_model()
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    """
+
+    """
     return '{0}/{1}'.format(instance.username.id, filename)
 
 
-EDUCATION_URL_LABEL = 'education'
+def manage_instance_ordering(self):
+    """
+    This function manages the ordering of an instance when its created
+    new_instance.order > max_order_of_objects + 1
+    """
+    if self._state.adding:
+        try:
+            current_maximum_order = self.__class__.objects.latest('order').order
+            self.order = current_maximum_order + 1
+        except:
+            pass # exception if objects do not exist
+
+CHILD_OBJECT_LABEL_FOR_WEBSITES = 'websites'
+CHILD_OBJECT_LABEL_FOR_SKILLS = 'skills'
+CHILD_OBJECT_LABEL_FOR_LANGUAGES = 'languages'
+CHILD_OBJECT_LABEL_FOR_EDUCATION = 'education'
+CHILD_OBJECT_LABEL_FOR_EXPERIENCE = 'experience'
+CHILD_OBJECT_LABEL_FOR_CERTIFICATIONS = 'certifications'
+CHILD_OBJECT_LABEL_FOR_COURSES = 'courses'
+CHILD_OBJECT_LABEL_FOR_HONORS = 'honors'
+CHILD_OBJECT_LABEL_FOR_ORGANIZATIONS = 'organizations'
+CHILD_OBJECT_LABEL_FOR_PATENTS = 'patens'
+CHILD_OBJECT_LABEL_FOR_PROJECTS = 'projects'
+CHILD_OBJECT_LABEL_FOR_PUBLICATIONS = 'publications'
+CHILD_OBJECT_LABEL_FOR_VOLUNTEERING = 'volunteering'
 
 
 
@@ -121,29 +149,29 @@ class Profile(models.Model):
         return reverse('profiles_remove_description_activation_button', kwargs={'pk':self.pk})
 
     def create_education_object_url(self):
-        return reverse('profiles_create_child_object', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+        return reverse('profiles_create_child_object', kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def insert_education_new_form_url(self):
-        return reverse('profiles_insert_child_new_form', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+        return reverse('profiles_insert_child_new_form', kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def remove_education_new_form_url(self):
-        return reverse('profiles_remove_child_new_form', kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+        return reverse('profiles_remove_child_new_form', kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def activate_education_url(self):
         return reverse('profiles_activate_child_object',
-                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def deactivate_education_url(self):
         return reverse('profiles_deactivate_child_object',
-                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def insert_education_activation_button_url(self):
         return reverse('profiles_insert_child_activation_button',
-                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def remove_education_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
-                        kwargs={'pk':self.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
@@ -259,32 +287,27 @@ class Education(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'obj': EDUCATION_URL_LABEL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def save(self, *args, **kwargs):
-         if self._state.adding:
-             try:
-                 current_maximum_order = __class__.objects.latest('order').order
-                 self.order = current_maximum_order + 1
-             except:
-                 pass # exception if objects do not exist
-         super().save(*args, **kwargs)
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
 
 
 class Experience(models.Model):
@@ -309,13 +332,8 @@ class Experience(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-         if self._state.adding:
-             try:
-                 current_maximum_order = __class__.objects.latest('order').order
-                 self.order = current_maximum_order + 1
-             except:
-                 pass # exception if objects do not exist
-         super().save(*args, **kwargs)
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
 
 
 class Certification(models.Model):
@@ -325,6 +343,8 @@ class Certification(models.Model):
     https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/certification
     """
     profile = models.ForeignKey(Profile, related_name='certifications', on_delete=models.CASCADE)
+    order = models.SmallIntegerField(default=0)
+
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
     name = models.CharField(null=True, blank=True, max_length=100)
@@ -332,6 +352,10 @@ class Certification(models.Model):
     company = models.CharField(null=True, blank=True, max_length=100)
     license = models.CharField(null=True, blank=True, max_length=100)
     url = models.URLField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
 
 
 class Course(models.Model):
@@ -341,9 +365,15 @@ class Course(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/course
     """
     profile = models.ForeignKey(Profile, related_name='courses', on_delete=models.CASCADE)
+    order = models.SmallIntegerField(default=0)
+
     name = models.JSONField(null=True, blank=True)
     number = models.CharField(null=True, blank=True, max_length=100)
     occupation = models.CharField(null=True, blank=True, max_length=100)
+
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
 
 
 
@@ -355,20 +385,28 @@ class Honor(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/honor
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='honors')
+    order = models.SmallIntegerField(default=0)
+
     title = models.CharField(null=True, blank=True, max_length=100)
     issue_date = models.CharField(null=True, blank=True, max_length=100)
     issuer = models.CharField(null=True, blank=True, max_length=100)
     occupation = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
 
-class OrganizationMember(models.Model):
+
+class Organization(models.Model):
     """
     An object representing the organizations that the member is in.
     See Organization Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/organization
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='organizations')
+    order = models.SmallIntegerField(default=0)
+
     linkedin_id = models.BigIntegerField(null=True, blank=True)
     name = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
@@ -378,6 +416,11 @@ class OrganizationMember(models.Model):
     position = models.CharField(null=True, blank=True, max_length=100)
 
 
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
+
+
 class Patent(models.Model):
     """
     An object representing the various patents associated with the member.
@@ -385,6 +428,8 @@ class Patent(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/patent
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='patents')
+    order = models.SmallIntegerField(default=0)
+
     linkedin_id = models.BigIntegerField(null=True, blank=True)
     title = models.CharField(null=True, blank=True, max_length=100)
     inventors = models.CharField(null=True, blank=True, max_length=200)
@@ -397,6 +442,10 @@ class Patent(models.Model):
     number = models.IntegerField(null=True, blank=True) # when pending = False
     url = models.URLField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
+
 
 class Project(models.Model):
     """
@@ -405,6 +454,8 @@ class Project(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
+    order = models.SmallIntegerField(default=0)
+
     title = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
     start_date = models.CharField(null=True, blank=True, max_length=100)
@@ -418,6 +469,10 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
+
 
 class Publication(models.Model):
     """
@@ -426,6 +481,8 @@ class Publication(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='publications')
+    order = models.SmallIntegerField(default=0)
+
     name = models.CharField(null=True, blank=True, max_length=200)
     date = models.CharField(null=True, blank=True, max_length=20)
     description = models.TextField(null=True, blank=True, max_length=1000)
@@ -436,17 +493,23 @@ class Publication(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
 
 
 
 
-class VolunteeringExperience(models.Model):
+
+class Volunteering(models.Model):
     """
     An object representing the member's volunteering experience.
     See Volunteering Experience Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/volunteering-experience
     """
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='volunteering_experiences')
+    order = models.SmallIntegerField(default=0)
+
     title = models.CharField(null=True, blank=True, max_length=100)
     role = models.CharField(null=True, blank=True, max_length=100)
     organization = models.CharField(null=True, blank=True, max_length=100)
@@ -455,3 +518,67 @@ class VolunteeringExperience(models.Model):
     description = models.TextField(null=True, blank=True, max_length=1000)
     cause = models.CharField(null=True, blank=True, max_length=100)
     ongoing = models.BooleanField(null=True, blank=True) # singleDate
+
+    def save(self, *args, **kwargs):
+        manage_instance_ordering(self)
+        super().save(*args, **kwargs)
+
+
+def get_child_class(child_label):
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_WEBSITES:
+        return Website
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_SKILLS:
+        return Skill
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_LANGUAGES:
+        return Language
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_EDUCATION:
+        return Education
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_EXPERIENCE:
+        return Experience
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_CERTIFICATIONS:
+        return Certification
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_COURSES:
+        return Course
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_HONORS:
+        return Honor
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_ORGANIZATIONS:
+        return Organization
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_PATENTS:
+        return Patent
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_PROJECTS:
+        return Project
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_PUBLICATIONS:
+        return Publication
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_VOLUNTEERING:
+        return Volunteering
+
+
+
+# util functions
+def get_child_object(child_label=None, pk=None, profile=None):
+    """
+    This function gets an instance object
+    """
+    Klass = get_child_class(child_label)
+    return get_object_or_404(Klass, profile=profile, pk=pk)
+
+
+def get_above_child_object(child_label=None, child_object=None, profile=None):
+    """
+    This function gets an instance object that is located before the "child_object"
+    """
+    Klass = get_child_class(child_label)
+    return Klass.objects.filter(order__lt=child_object.order, profile=profile).last()

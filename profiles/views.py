@@ -310,7 +310,7 @@ def remove_description_button_view(request, pk):
 # htmx - profile - add education object
 @login_required
 @require_POST
-def create_child_object_view(request, obj, pk):
+def create_child_object_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
 
     # create_child_object(child_label=obj, post_dict=request.POST, profile=object) # include this function in models.py
@@ -326,13 +326,13 @@ def create_child_object_view(request, obj, pk):
     education_object.save()
 
     context = {'object': object}
-    return render(request, 'profiles/partials/education.html', context)
+    return render(request, 'profiles/partials/education/main.html', context)
 
 
 # htmx - profile - update education object
 @login_required
 @require_POST
-def update_child_object_view(request, obj, pk_parent, pk):
+def update_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
     education_object.start_date = request.POST.get("start_date")
@@ -348,58 +348,63 @@ def update_child_object_view(request, obj, pk_parent, pk):
 # htmx - profile - delete education object
 @login_required
 @require_POST
-def delete_child_object_view(request, obj, pk_parent, pk):
+def delete_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     education_object = get_object_or_404(Education, pk=pk, profile=object)
     education_object.delete()
     context = {'object': object}
-    return render(request, 'profiles/partials/education.html', context)
+    return render(request, 'profiles/partials/education/main.html', context)
 
 @login_required
-def insert_child_new_form_view(request, obj, pk):
+def insert_child_new_form_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
-    return render(request, 'profiles/partials/education_new_form.html', context)
+    return render(request, 'profiles/partials/education/new_form.html', context)
 
 @login_required
-def remove_child_new_form_view(request, obj, pk):
+def remove_child_new_form_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
-    return render(request, 'profiles/partials/education_new_button.html', context)
+    return render(request, 'profiles/partials/education/new_button.html', context)
 
 
 
 @login_required
-def copy_child_object_view(request, obj, pk_parent, pk):
+def copy_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
 
     education_object = get_object_or_404(Education, pk=pk, profile=object)
 
     context = {'object': object, 'education': education_object}
-    return render(request, 'profiles/partials/education_new_form.html', context)
+    return render(request, 'profiles/partials/education/new_form.html', context)
 
+
+from .models import get_child_object, get_above_child_object
 
 @login_required
-def move_up_child_object_view(request, obj, pk_parent, pk):
+def move_up_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_object_or_404(Education, profile=object, pk=pk)
-    above_order = child_object.order - 1
-    object_order = child_object.order
-    above_child_object = Education.objects.get(order=above_order, profile=object)
-    above_child_object.order = object_order
+
+    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
+    above_child_object = get_above_child_object(child_label=child_label, child_object=child_object, profile=object)
+    # child_object = get_object_or_404(Education, profile=object, pk=pk)
+    # above_child_object = Education.objects.filter(order__lt=child_object.order, profile=object).last()
+
+
+    above_order = above_child_object.order
+    above_child_object.order = child_object.order
     child_object.order = above_order
     above_child_object.save()
     child_object.save()
     context = {'object': object}
-    return render(request, 'profiles/partials/education.html', context)
+    return render(request, 'profiles/partials/education/main.html', context)
 
 
 
 @login_required
-def move_down_child_object_view(request, obj, pk_parent, pk):
+def move_down_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = get_object_or_404(Education, profile=object, pk=pk)
-    below_order = child_object.order + 1
     object_order = child_object.order
     below_child_object = Education.objects.get(order=below_order, profile=object)
     below_child_object.order = object_order
@@ -407,22 +412,22 @@ def move_down_child_object_view(request, obj, pk_parent, pk):
     below_child_object.save()
     child_object.save()
     context = {'object': object}
-    return render(request, 'profiles/partials/education.html', context)
+    return render(request, 'profiles/partials/education/main.html', context)
 
 
 @login_required
-def activate_child_object_view(request, obj, pk):
+def activate_child_object_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     object.education_active = True
     object.save()
     context = {'object': object}
-    response = render(request, 'profiles/partials/education.html', context)
+    response = render(request, 'profiles/partials/education/main.html', context)
     trigger_client_event(response, "educationActivatedEvent", { },)
     return response
 
 
 @login_required
-def deactivate_child_object_view(request, obj, pk):
+def deactivate_child_object_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     object.education_active = False
     object.save()
@@ -432,16 +437,16 @@ def deactivate_child_object_view(request, obj, pk):
 
 # htmx - profile - add "add description button"
 @login_required
-def insert_child_activation_button_view(request, obj, pk):
+def insert_child_activation_button_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
     print("insert_child_activation_button_view was called")
-    return render(request, 'profiles/partials/education_activation_button.html', context)
+    return render(request, 'profiles/partials/education/activation_button.html', context)
 
 
 # htmx - profile - delete "add description button"
 @login_required
-def remove_child_activation_button_view(request, obj, pk):
+def remove_child_activation_button_view(request, child_label, pk):
     # object = get_object_or_404(Profile, pk=pk, user=request.user)
     print("remove_child_activation_button_view was called")
     return HttpResponse(status=200)

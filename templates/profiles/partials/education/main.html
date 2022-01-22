@@ -1,9 +1,13 @@
 {% load i18n %}
 <div id="education-box">
   {% if object.education_active %}
-    <h6 class="display-6 fs-6 mt-4" ><button class="btn btn-outline-secondary border-0"
-      hx-post="{{ object.deactivate_education_url }}" hx-target="#education-box" hx-swap="innerHTML">
-     <i class="bi bi-x-lg"></i></button>{% trans "Education" %}
+    <h6 class="display-6 fs-6 mt-4" >
+      <button class="btn btn-outline-secondary border-0"
+        hx-post="{{ object.deactivate_education_url }}" hx-target="#education-box" hx-swap="innerHTML"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate education' %}">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      {% trans "Education" %}
     </h6>
     <hr>
     {% for education in object.education_set.all %}
@@ -35,6 +39,9 @@
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
               hx-post="{{ education.delete_object_url }}" hx-target="#education-box" hx-swap="outerHTML"
               ><i class="bi bi-trash"></i></button>
+            </div>
+            <div class="col">
+              Order = {{education.order}}
             </div>
           </div>
 
@@ -135,7 +142,7 @@
     {% endfor %}
 
     <div id="education-new">
-      {% include "profiles/partials/education_new_button.html" %}
+      {% include "profiles/partials/education/new_button.html" %}
     </div>
   {% endif %}
 </div>
