@@ -15,6 +15,8 @@ from django.urls import reverse, reverse_lazy
 User = get_user_model()
 
 # used in urls (child_label) & in templates  (profiles/partials/child_label/file.html)
+PROFILE_FIELD_LABEL_FOR_DESCRIPTION = 'description'
+
 CHILD_OBJECT_LABEL_FOR_WEBSITES = 'websites'
 CHILD_OBJECT_LABEL_FOR_SKILLS = 'skills'
 CHILD_OBJECT_LABEL_FOR_LANGUAGES = 'languages'
@@ -112,6 +114,9 @@ class Profile(models.Model):
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    def activate_child_or_field(self, child_label=None):
+        pass
+
     def get_update_url(self):
         return reverse('profiles_update', kwargs={'pk':self.pk})
 
@@ -162,31 +167,31 @@ class Profile(models.Model):
 
     def create_education_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def insert_education_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def remove_education_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def activate_education_url(self):
         return reverse('profiles_activate_child_object',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def deactivate_education_url(self):
         return reverse('profiles_deactivate_child_object',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def insert_education_activation_button_url(self):
         return reverse('profiles_insert_child_activation_button',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def remove_education_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
-                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
@@ -539,6 +544,9 @@ class Volunteering(models.Model):
         super().save(*args, **kwargs)
 
 
+# util functions
+
+
 def get_child_class(child_label):
 
     if child_label == CHILD_OBJECT_LABEL_FOR_WEBSITES:
@@ -582,13 +590,122 @@ def get_child_class(child_label):
 
 
 
-# util functions
+def update_child_object(child_label=None, child_object=None, request=None):
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_WEBSITES:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_SKILLS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_LANGUAGES:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_EDUCATION:
+        # education
+        child_object.title = request.POST.get("title")
+        child_object.grade = request.POST.get("grade")
+        child_object.start_date = request.POST.get("start_date")
+        child_object.end_date = request.POST.get("end_date")
+        child_object.institution = request.POST.get("institution")
+        child_object.institution_link = request.POST.get("institution_link")
+        child_object.description = request.POST.get("description")
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_EXPERIENCE:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_CERTIFICATIONS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_COURSES:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_HONORS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_ORGANIZATIONS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_PATENTS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_PROJECTS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_PUBLICATIONS:
+        pass
+
+    if child_label == CHILD_OBJECT_LABEL_FOR_VOLUNTEERING:
+        pass
+
+    child_object.save()
+
+
+def set_activation_state(label=None, object=None, active=True):
+
+    if label == PROFILE_FIELD_LABEL_FOR_DESCRIPTION:
+        object.description_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_WEBSITES:
+        object.websites_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_SKILLS:
+        object.skills_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_LANGUAGES:
+        object.languages_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_EDUCATION:
+        object.education_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_EXPERIENCE:
+        object.experience_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_CERTIFICATIONS:
+        object.certifications_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_COURSES:
+        object.courses_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_HONORS:
+        object.honors_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_ORGANIZATIONS:
+        object.organizations_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_PATENTS:
+        object.patents_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_PROJECTS:
+        object.projects_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_PUBLICATIONS:
+        object.publications_active = active
+
+    if label == CHILD_OBJECT_LABEL_FOR_VOLUNTEERING:
+        object.volunteering_active = active
+
+    object.save()
+
+
+
+
+
+
 def get_child_object(child_label=None, pk=None, profile=None):
     """
     This function gets an instance object
     """
     Klass = get_child_class(child_label)
     return get_object_or_404(Klass, profile=profile, pk=pk)
+
+
+def create_empty_child_object(child_label=None, profile=None):
+    """
+    This function creates an empty object associated with a profile instance
+    """
+    Klass = get_child_class(child_label)
+    return Klass(profile=profile)
 
 
 def get_above_child_object(child_label=None, child_object=None, profile=None):

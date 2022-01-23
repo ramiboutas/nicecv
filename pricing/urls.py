@@ -6,7 +6,7 @@ urlpatterns = [
     # standard
     path('', pricing_view, name='pricing_main'),
     # this is used when the user is not logged in so we redirect him to login
-    path('get-payment-methods/', get_payment_methods_view ,name='pricing_get_payment_methods'),
+    # path('get-payment-methods/', get_payment_methods_view ,name='pricing_get_payment_methods'),
 
 
     # htmx urls

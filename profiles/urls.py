@@ -124,19 +124,19 @@ urlpatterns += [
 from .views import create_child_object_view, update_child_object_view, delete_child_object_view, copy_child_object_view
 from .views import insert_child_new_form_view, remove_child_new_form_view
 from .views import move_up_child_object_view, move_down_child_object_view
-from .views import activate_child_object_view, deactivate_child_object_view
+from .views import activate_child_or_field_view, deactivate_child_or_field_view
 from .views import insert_child_activation_button_view, remove_child_activation_button_view
 
 # any child object
 urlpatterns += [
         # htmx - insert child new form
-        path('insert-new-form/<str:child_label>/<uuid:pk>/', insert_child_new_form_view, name='profiles_insert_child_new_form'),
+        path('insert-new-form/<str:child_label>/<uuid:pk_parent>/', insert_child_new_form_view, name='profiles_insert_child_new_form'),
 
         # htmx - remove child new form
-        path('remove-new-form/<str:child_label>/<uuid:pk>/', remove_child_new_form_view, name='profiles_remove_child_new_form'),
+        path('remove-new-form/<str:child_label>/<uuid:pk_parent>/', remove_child_new_form_view, name='profiles_remove_child_new_form'),
 
         # htmx - create child object
-        path('create-object/<str:child_label>/<uuid:pk>/', create_child_object_view, name='profiles_create_child_object'),
+        path('create-object/<str:child_label>/<uuid:pk_parent>/', create_child_object_view, name='profiles_create_child_object'),
 
         # htmx - update child object
         path('update-object/<str:child_label>/<uuid:pk_parent>/<int:pk>/', update_child_object_view, name='profiles_update_child_object'),
@@ -156,16 +156,16 @@ urlpatterns += [
 
 
         # htmx - activate object
-        path('activate-child/<str:child_label>/<uuid:pk>/', activate_child_object_view, name='profiles_activate_child_object'),
+        path('activate-child/<str:label>/<uuid:pk_parent>/', activate_child_or_field_view, name='profiles_activate_child_object'),
 
         # htmx - deactivate object
-        path('deactivate-child/<str:child_label>/<uuid:pk>/', deactivate_child_object_view, name='profiles_deactivate_child_object'),
+        path('deactivate-child/<str:label>/<uuid:pk_parent>/', deactivate_child_or_field_view, name='profiles_deactivate_child_object'),
 
 
         # htmx - insert_child_activation_button
-        path('insert-child-activation-button/<str:child_label>/<uuid:pk>/', insert_child_activation_button_view, name='profiles_insert_child_activation_button'),
+        path('insert-child-activation-button/<str:label>/<uuid:pk_parent>/', insert_child_activation_button_view, name='profiles_insert_child_activation_button'),
 
         # htmx - remove_child_activation_button
-        path('remove-child-activation-button/<str:child_label>/<uuid:pk>/', remove_child_activation_button_view, name='profiles_remove_child_activation_button'),
+        path('remove-child-activation-button/<str:label>/<uuid:pk_parent>/', remove_child_activation_button_view, name='profiles_remove_child_activation_button'),
 
 ]

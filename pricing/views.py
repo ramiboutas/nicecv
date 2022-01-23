@@ -22,17 +22,17 @@ def get_payment_methods_view(request):
     This will be called just if the user is logged in (this logic is in the templates).
     We will return a partial of the payments methods
     """
-    if request.htmx:
-        return render(request, 'pricing/partials/payment-methods.html')
-    return redirect('pricing_main')
+    # if request.htmx:
+    return render(request, 'pricing/partials/payment-methods.html')
+    # return redirect('pricing_main')
 
 
-@login_required
-def get_payment_methods_view(request):
-    """
-    This function + the login_required decorator will be called when the user is not logged in. After loggin in, we redirect to the pricing page
-    """
-    return redirect('pricing_main')
+# @login_required
+# def get_payment_methods_view(request):
+#     """
+#     This function + the login_required decorator will be called when the user is not logged in. After loggin in, we redirect to the pricing page
+#     """
+#     return redirect('pricing_main')
 
 
 def update_price_view(request):

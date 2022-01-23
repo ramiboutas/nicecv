@@ -18,30 +18,33 @@
           <div class="row">
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
-              hx-post="{{ education.move_up_object_url }}" hx-target="#education-box" hx-swap="outerHTML"
-              {% if forloop.first %}disabled{% endif %}><i class="bi bi-arrow-up"></i></button>
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
+                hx-post="{{ education.move_up_object_url }}" hx-target="#education-box" hx-swap="outerHTML"
+                {% if forloop.first %}disabled{% endif %}>
+                <i class="bi bi-arrow-up"></i>
+              </button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
-              hx-post="{{ education.move_down_object_url }}" hx-target="#education-box" hx-swap="outerHTML"
-              {% if forloop.last %}disabled{% endif %}><i class="bi bi-arrow-down"></i></button>
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
+                hx-post="{{ education.move_down_object_url }}" hx-target="#education-box" hx-swap="outerHTML"
+                {% if forloop.last %}disabled{% endif %}>
+                <i class="bi bi-arrow-down"></i>
+              </button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
-              hx-post="{{ education.copy_object_url }}" hx-target="#education-new" hx-swap="innerHTML"
-              ><i class="bi bi-files"></i></button>
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
+                hx-post="{{ education.copy_object_url }}" hx-target="#education-new" hx-swap="innerHTML">
+                <i class="bi bi-files"></i>
+              </button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
-              hx-post="{{ education.delete_object_url }}" hx-target="#education-box" hx-swap="outerHTML"
-              ><i class="bi bi-trash"></i></button>
-            </div>
-            <div class="col">
-              Order = {{education.order}}
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
+                hx-post="{{ education.delete_object_url }}" hx-target="#education-box" hx-swap="outerHTML">
+                <i class="bi bi-trash"></i>
+              </button>
             </div>
           </div>
 
