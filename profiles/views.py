@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+
 from django.views.decorators.http import require_POST
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
@@ -11,6 +12,7 @@ from django.utils.translation import gettext as _
 from django_htmx.http import trigger_client_event
 
 from .models import Profile, Website, Skill, Language, Education
+from .models import get_child_object, get_above_child_object, get_below_child_object
 from utils.files import delete_path_file
 User = get_user_model()
 
@@ -379,40 +381,35 @@ def copy_child_object_view(request, child_label, pk_parent, pk):
     return render(request, 'profiles/partials/education/new_form.html', context)
 
 
-from .models import get_child_object, get_above_child_object
+
 
 @login_required
 def move_up_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-
     child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
     above_child_object = get_above_child_object(child_label=child_label, child_object=child_object, profile=object)
-    # child_object = get_object_or_404(Education, profile=object, pk=pk)
-    # above_child_object = Education.objects.filter(order__lt=child_object.order, profile=object).last()
-
-
     above_order = above_child_object.order
     above_child_object.order = child_object.order
     child_object.order = above_order
     above_child_object.save()
     child_object.save()
     context = {'object': object}
-    return render(request, 'profiles/partials/education/main.html', context)
+    return render(request, f'profiles/partials/{child_label}/main.html', context)
 
 
 
 @login_required
 def move_down_child_object_view(request, child_label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_object_or_404(Education, profile=object, pk=pk)
-    object_order = child_object.order
-    below_child_object = Education.objects.get(order=below_order, profile=object)
-    below_child_object.order = object_order
+    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
+    below_child_object = get_below_child_object(child_label=child_label, child_object=child_object, profile=object)
+    below_order = below_child_object.order
+    below_child_object.order = child_object.order
     child_object.order = below_order
     below_child_object.save()
     child_object.save()
     context = {'object': object}
-    return render(request, 'profiles/partials/education/main.html', context)
+    return render(request, f'profiles/partials/{child_label}/main.html', context)
 
 
 @login_required
@@ -422,7 +419,7 @@ def activate_child_object_view(request, child_label, pk):
     object.save()
     context = {'object': object}
     response = render(request, 'profiles/partials/education/main.html', context)
-    trigger_client_event(response, "educationActivatedEvent", { },)
+    trigger_client_event(response, f'{child_label}ActivatedEvent', { },)
     return response
 
 
@@ -432,21 +429,22 @@ def deactivate_child_object_view(request, child_label, pk):
     object.education_active = False
     object.save()
     response = HttpResponse(status=200)
-    trigger_client_event(response, "educationDeactivatedEvent", { },)
+    trigger_client_event(response, f'{child_label}DeactivatedEvent', { },)
     return response
 
-# htmx - profile - add "add description button"
+# htmx - insert activation button
 @login_required
 def insert_child_activation_button_view(request, child_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
-    print("insert_child_activation_button_view was called")
-    return render(request, 'profiles/partials/education/activation_button.html', context)
+    try:
+        return render(request, f'profiles/partials/{child_label}/activation_button.html', context)
+    except:
+        return HttpResponseServerError()
 
 
-# htmx - profile - delete "add description button"
+# htmx - remove the activation button
 @login_required
 def remove_child_activation_button_view(request, child_label, pk):
     # object = get_object_or_404(Profile, pk=pk, user=request.user)
-    print("remove_child_activation_button_view was called")
     return HttpResponse(status=200)

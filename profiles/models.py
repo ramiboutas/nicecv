@@ -12,14 +12,27 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
-
-
 User = get_user_model()
 
-def user_directory_path(instance, filename):
+# used in urls (child_label) & in templates  (profiles/partials/child_label/file.html)
+CHILD_OBJECT_LABEL_FOR_WEBSITES = 'websites'
+CHILD_OBJECT_LABEL_FOR_SKILLS = 'skills'
+CHILD_OBJECT_LABEL_FOR_LANGUAGES = 'languages'
+CHILD_OBJECT_LABEL_FOR_EDUCATION = 'education'
+CHILD_OBJECT_LABEL_FOR_EXPERIENCE = 'experience'
+CHILD_OBJECT_LABEL_FOR_CERTIFICATIONS = 'certifications'
+CHILD_OBJECT_LABEL_FOR_COURSES = 'courses'
+CHILD_OBJECT_LABEL_FOR_HONORS = 'honors'
+CHILD_OBJECT_LABEL_FOR_ORGANIZATIONS = 'organizations'
+CHILD_OBJECT_LABEL_FOR_PATENTS = 'patents'
+CHILD_OBJECT_LABEL_FOR_PROJECTS = 'projects'
+CHILD_OBJECT_LABEL_FOR_PUBLICATIONS = 'publications'
+CHILD_OBJECT_LABEL_FOR_VOLUNTEERING = 'volunteering'
+
+def user_directory_path(instance, filename): # not used // 22.01.2022
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     """
-
+    This function saves the user uploads to a specific folder in media
     """
     return '{0}/{1}'.format(instance.username.id, filename)
 
@@ -35,21 +48,6 @@ def manage_instance_ordering(self):
             self.order = current_maximum_order + 1
         except:
             pass # exception if objects do not exist
-
-CHILD_OBJECT_LABEL_FOR_WEBSITES = 'websites'
-CHILD_OBJECT_LABEL_FOR_SKILLS = 'skills'
-CHILD_OBJECT_LABEL_FOR_LANGUAGES = 'languages'
-CHILD_OBJECT_LABEL_FOR_EDUCATION = 'education'
-CHILD_OBJECT_LABEL_FOR_EXPERIENCE = 'experience'
-CHILD_OBJECT_LABEL_FOR_CERTIFICATIONS = 'certifications'
-CHILD_OBJECT_LABEL_FOR_COURSES = 'courses'
-CHILD_OBJECT_LABEL_FOR_HONORS = 'honors'
-CHILD_OBJECT_LABEL_FOR_ORGANIZATIONS = 'organizations'
-CHILD_OBJECT_LABEL_FOR_PATENTS = 'patens'
-CHILD_OBJECT_LABEL_FOR_PROJECTS = 'projects'
-CHILD_OBJECT_LABEL_FOR_PUBLICATIONS = 'publications'
-CHILD_OBJECT_LABEL_FOR_VOLUNTEERING = 'volunteering'
-
 
 
 class Profile(models.Model):
@@ -83,7 +81,21 @@ class Profile(models.Model):
 
     # activation of Fields
     description_active = models.IntegerField(default=True)
+    websites_active = models.IntegerField(default=True)
+    skills_active = models.IntegerField(default=True)
+    languages_active = models.IntegerField(default=True)
     education_active = models.IntegerField(default=True)
+    experience_active = models.IntegerField(default=True)
+    certifications_active = models.IntegerField(default=False)
+    courses_active = models.IntegerField(default=True)
+    honors_active = models.IntegerField(default=False)
+    organizations_active = models.IntegerField(default=False)
+    honors_active = models.IntegerField(default=False)
+    patents_active = models.IntegerField(default=False)
+    projects_active = models.IntegerField(default=False)
+    publications_active = models.IntegerField(default=False)
+    volunteering_active = models.IntegerField(default=False)
+
 
     # labels
     skill_label = models.CharField(max_length=100, default=_('Skills'))
@@ -149,13 +161,16 @@ class Profile(models.Model):
         return reverse('profiles_remove_description_activation_button', kwargs={'pk':self.pk})
 
     def create_education_object_url(self):
-        return reverse('profiles_create_child_object', kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+        return reverse('profiles_create_child_object',
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def insert_education_new_form_url(self):
-        return reverse('profiles_insert_child_new_form', kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+        return reverse('profiles_insert_child_new_form',
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def remove_education_new_form_url(self):
-        return reverse('profiles_remove_child_new_form', kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
+        return reverse('profiles_remove_child_new_form',
+                        kwargs={'pk':self.pk, 'child_label': CHILD_OBJECT_LABEL_FOR_EDUCATION})
 
     def activate_education_url(self):
         return reverse('profiles_activate_child_object',
@@ -582,3 +597,11 @@ def get_above_child_object(child_label=None, child_object=None, profile=None):
     """
     Klass = get_child_class(child_label)
     return Klass.objects.filter(order__lt=child_object.order, profile=profile).last()
+
+
+def get_below_child_object(child_label=None, child_object=None, profile=None):
+    """
+    This function gets an instance object that is located after the "child_object"
+    """
+    Klass = get_child_class(child_label)
+    return Klass.objects.filter(order__gt=child_object.order, profile=profile).first()
