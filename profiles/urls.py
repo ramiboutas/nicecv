@@ -2,9 +2,8 @@ from django.urls import path
 
 from .views import ProfileListView, ProfileUpdateView, ProfileCreateView
 from .views import create_object_view, delete_object_view
-from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
-from .views import get_photo_modal_view, remove_photo_modal_view
-from .views import save_general_and_contact_info_view
+
+from .views import save_personal_information_view, update_description_view
 
 
 # general
@@ -20,8 +19,17 @@ urlpatterns = [
 
     # htmx - object - delete
     path('delete-object/profile/<uuid:pk>/', delete_object_view, name='profiles_delete_object'),
+
+    # htmx - save personal information
+    path('save-personal-information/<uuid:pk>/', save_personal_information_view, name='profiles_save_personal_information'),
+
+    # htmx - update description
+    path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
 ]
 
+
+from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
+from .views import get_photo_modal_view, remove_photo_modal_view
 
 # photo
 urlpatterns += [
@@ -36,46 +44,11 @@ urlpatterns += [
 ]
 
 
-# general_and_contact_info
-urlpatterns += [
-        # htmx - general_and_contact_info
-        path('save-general-and-contact-info/<uuid:pk>/',
-        save_general_and_contact_info_view,
-        name='profiles_save_general_and_contact_info'),
-]
-
-
-
-
-from .views import activate_description_view, update_description_view, deactivate_description_view
-from .views import insert_description_button_view, remove_description_button_view
-
-# description
-urlpatterns += [
-        # htmx - activate description
-        path('activate-description/<uuid:pk>/', activate_description_view, name='profiles_activate_description'),
-
-        # htmx - update description
-        path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
-
-        # htmx - deactivate description
-        path('deactivate-description/<uuid:pk>/', deactivate_description_view, name='profiles_deactivate_description'),
-
-        # htmx - add "add description button"
-        path('insert-description-button/<uuid:pk>/', insert_description_button_view, name='profiles_insert_description_activation_button'),
-
-        # htmx - delete "add description button"
-        path('remove-description-button/<uuid:pk>/', remove_description_button_view, name='profiles_remove_description_activation_button'),
-
-]
-
-
 
 from .views import create_child_object_view, update_child_object_view, delete_child_object_view, copy_child_object_view
 from .views import insert_child_new_form_view, remove_child_new_form_view
 from .views import move_up_child_object_view, move_down_child_object_view
-from .views import activate_child_or_field_view, deactivate_child_or_field_view
-from .views import insert_child_activation_button_view, remove_child_activation_button_view
+
 
 # any child object
 urlpatterns += [
@@ -105,6 +78,9 @@ urlpatterns += [
         path('delete-child/<str:child_label>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),
 
 ]
+
+from .views import activate_child_or_field_view, deactivate_child_or_field_view
+from .views import insert_child_activation_button_view, remove_child_activation_button_view
 
 # activate or deactivate of childs or fields
 urlpatterns += [

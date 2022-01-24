@@ -136,32 +136,29 @@ class Profile(models.Model):
     def crop_photo_url(self):
         return reverse('profiles_crop_photo', kwargs={'pk':self.pk})
 
-    def save_general_and_contact_info_url(self):
-        return reverse('profiles_save_general_and_contact_info', kwargs={'pk':self.pk})
+    def save_personal_information_url(self):
+        return reverse('profiles_save_personal_information', kwargs={'pk':self.pk})
 
-    def add_website_object_url(self):
-        return reverse('profiles_add_website_object', kwargs={'pk':self.pk})
-
-    def add_skill_object_url(self):
-        return reverse('profiles_add_skill_object', kwargs={'pk':self.pk})
-
-    def add_language_object_url(self):
-        return reverse('profiles_add_language_object', kwargs={'pk':self.pk})
-
-    def activate_description_url(self):
-        return reverse('profiles_activate_description', kwargs={'pk':self.pk})
-
+    # description
     def update_description_url(self):
         return reverse('profiles_update_description', kwargs={'pk':self.pk})
 
+    def activate_description_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
+
     def deactivate_description_url(self):
-        return reverse('profiles_deactivate_description', kwargs={'pk':self.pk})
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
     def insert_description_activation_button_url(self):
-        return reverse('profiles_insert_description_activation_button', kwargs={'pk':self.pk})
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
     def remove_description_activation_button_url(self):
-        return reverse('profiles_remove_description_activation_button', kwargs={'pk':self.pk})
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
+
 
     # _website_
     def create_website_object_url(self):
@@ -220,7 +217,6 @@ class Profile(models.Model):
     def remove_skill_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
-
 
     # _language_
     def create_language_object_url(self):
@@ -308,6 +304,7 @@ class Profile(models.Model):
     def remove_experience_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+
     # _certification_
     def create_certification_object_url(self):
         return reverse('profiles_create_child_object',
@@ -1125,7 +1122,6 @@ def get_child_class(child_label):
 
     if child_label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
         return Volunteering
-
 
 
 def update_child_object(child_label=None, child_object=None, request=None):

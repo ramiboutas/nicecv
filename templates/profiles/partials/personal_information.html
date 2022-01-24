@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form hx-post="{{ object.save_general_and_contact_info_url }}" hx-trigger="change" hx-swap="none" >
+<form hx-post="{{ object.save_personal_information_url }}" hx-trigger="change" hx-swap="none" >
 
 {% csrf_token %}
 

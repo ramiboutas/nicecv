@@ -117,6 +117,7 @@ def crop_photo_view(request, pk):
     trigger_client_event(response, "photoCroppedEvent", { },)
     return response
 
+
 # htmx - profile - delete photos
 @login_required
 @require_POST
@@ -132,7 +133,7 @@ def delete_photos_view(request, pk):
 # htmx - profile - save general & contact info
 @login_required
 @require_POST
-def save_general_and_contact_info_view(request, pk):
+def save_personal_information_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     object.first_name = request.POST.get("first_name")
     object.last_name = request.POST.get("last_name")
@@ -141,34 +142,9 @@ def save_general_and_contact_info_view(request, pk):
     object.date_of_birth = request.POST.get("date_of_birth")
     object.phone = request.POST.get("phone")
     object.email = request.POST.get("email")
+    print(request.POST.get("description"))
     object.save()
     return HttpResponse(status=200)
-
-
-# htmx - profile - add description
-@login_required
-@require_POST
-def activate_description_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.description_active = True
-    object.save()
-    context = {'object': object}
-    response = render(request, 'profiles/partials/description.html', context)
-    trigger_client_event(response, "descriptionActivatedEvent", { },)
-    return response
-
-
-# htmx - profile - deactivate description
-@login_required
-@require_POST
-def deactivate_description_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.description_active = False
-    object.save()
-    response = HttpResponse(status=200)
-    trigger_client_event(response, "descriptionDeactivatedEvent", { },)
-    return response
-
 
 
 # htmx - profile - update description
@@ -179,22 +155,6 @@ def update_description_view(request, pk):
     description = request.POST.get("description")
     object.description = description
     object.save()
-    return HttpResponse(status=200)
-
-
-
-# htmx - profile - add "add description button"
-@login_required
-def insert_description_button_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    context = {'object': object}
-    return render(request, 'profiles/partials/description_activation_button.html', context)
-
-
-# htmx - profile - delete "add description button"
-@login_required
-def remove_description_button_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
     return HttpResponse(status=200)
 
 
@@ -305,6 +265,7 @@ def move_down_child_object_view(request, child_label, pk_parent, pk):
     except:
         return HttpResponseServerError()
 
+
 # htmx - activate child or profile field
 @login_required
 def activate_child_or_field_view(request, label, pk_parent):
@@ -318,7 +279,6 @@ def activate_child_or_field_view(request, label, pk_parent):
         return response
     except:
         return HttpResponseServerError()
-
 
 
 # htmx - deactivate child or profile field
@@ -345,5 +305,5 @@ def insert_child_activation_button_view(request, label, pk_parent):
 # htmx - remove the activation button
 @login_required
 def remove_child_activation_button_view(request, label, pk_parent):
-    # object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     return HttpResponse(status=200)
