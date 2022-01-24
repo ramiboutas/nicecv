@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="website-activation-button">
+
+{% if not object.website_active %}
+  <button class="btn btn-outline-secondary  border-0"
+    hx-post="{{ object.activate_website_url }}" hx-target="#website-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate websites' %}">
+    <i class="bi bi-check2"></i> {% trans 'Websites' %}  <i class="bi bi-globe"></i></button>
+{% endif %}
+
+</div>

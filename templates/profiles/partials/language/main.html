@@ -1,6 +1,6 @@
 {% load i18n %}
 <div id="language-box">
-  {% if object.education_active %}
+  {% if object.language_active %}
     <h6 class="display-6 fs-6 mt-4" >
       <button class="btn btn-outline-secondary border-0"
         hx-post="{{ object.deactivate_language_url }}" hx-target="#language-box" hx-swap="innerHTML"

@@ -83,21 +83,20 @@ class Profile(models.Model):
 
     # activation of Fields
     description_active = models.BooleanField(default=True)
-    websites_active = models.BooleanField(default=True)
-    skills_active = models.BooleanField(default=True)
-    languages_active = models.BooleanField(default=True)
+    website_active = models.BooleanField(default=True)
+    skill_active = models.BooleanField(default=True)
+    language_active = models.BooleanField(default=True)
     education_active = models.BooleanField(default=True)
     experience_active = models.BooleanField(default=True)
-    certifications_active = models.BooleanField(default=False)
-    courses_active = models.BooleanField(default=True)
-    honors_active = models.BooleanField(default=False)
-    organizations_active = models.BooleanField(default=False)
-    honors_active = models.BooleanField(default=False)
-    patents_active = models.BooleanField(default=False)
-    projects_active = models.BooleanField(default=False)
-    publications_active = models.BooleanField(default=False)
+    certification_active = models.BooleanField(default=False)
+    course_active = models.BooleanField(default=True)
+    honor_active = models.BooleanField(default=False)
+    organization_active = models.BooleanField(default=False)
+    honor_active = models.BooleanField(default=False)
+    patent_active = models.BooleanField(default=False)
+    project_active = models.BooleanField(default=False)
+    publication_active = models.BooleanField(default=False)
     volunteering_active = models.BooleanField(default=False)
-
 
     # labels
     skill_label = models.CharField(max_length=100, default=_('Skills'))
@@ -586,10 +585,13 @@ class Website(models.Model):
         return self.name
 
     def update_object_url(self):
-        return reverse('profiles_update_website_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_website_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
+
 
 
 class Skill(models.Model):
@@ -606,10 +608,12 @@ class Skill(models.Model):
         return self.name
 
     def update_object_url(self):
-        return reverse('profiles_update_skill_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_skill_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
 
 class Language(models.Model):
@@ -625,10 +629,13 @@ class Language(models.Model):
         return self.name
 
     def update_object_url(self):
-        return reverse('profiles_update_language_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_update_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
     def delete_object_url(self):
-        return reverse('profiles_delete_language_object', kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+        return reverse('profiles_delete_child_object',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+
 
 
 class Education(models.Model):
@@ -1068,6 +1075,15 @@ class Volunteering(models.Model):
 
 # util functions
 
+def get_website_boostrap_icon(text):
+    icon_list = ['github', 'facebook', 'instagram', 'linkedin', 'medium', 'quora', 'reddit', 'skype', 'slack', 'stack-overflow', 'telegram', 'twitch', 'twitter', 'vimeo', 'youtube']
+
+    # use list comprehension!!!
+    for index, icon in enumerate(icon_list):
+        if icon.replace("-", "") in text:
+            return icon_list[index]
+    return 'globe'
+
 
 def get_child_class(child_label):
 
@@ -1115,13 +1131,16 @@ def get_child_class(child_label):
 def update_child_object(child_label=None, child_object=None, request=None):
 
     if child_label == LABEL_FOR_CHILD_OBJECT_WEBSITE:
-        pass
+        name = request.POST.get("name")
+        child_object.name = name
+        child_object.bootstrap_icon = get_website_boostrap_icon(str(name))
 
     if child_label == LABEL_FOR_CHILD_OBJECT_SKILL:
-        pass
+        child_object.name = request.POST.get("name")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
-        pass
+        child_object.name = request.POST.get("name")
+        child_object.level = request.POST.get("level")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_EDUCATION: # education
         child_object.title = request.POST.get("title")
@@ -1168,13 +1187,13 @@ def set_activation_state(label=None, object=None, active=True):
         object.description_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_WEBSITE:
-        object.websites_active = active
+        object.website_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_SKILL:
-        object.skills_active = active
+        object.skill_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
-        object.languages_active = active
+        object.language_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_EDUCATION:
         object.education_active = active
@@ -1183,25 +1202,25 @@ def set_activation_state(label=None, object=None, active=True):
         object.experience_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
-        object.certifications_active = active
+        object.certification_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_COURSE:
-        object.courses_active = active
+        object.course_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_HONOR:
-        object.honors_active = active
+        object.honor_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
-        object.organizations_active = active
+        object.organization_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_PATENT:
-        object.patents_active = active
+        object.patent_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
-        object.projects_active = active
+        object.project_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
-        object.publications_active = active
+        object.publication_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
         object.volunteering_active = active

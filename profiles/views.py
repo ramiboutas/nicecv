@@ -145,120 +145,6 @@ def save_general_and_contact_info_view(request, pk):
     return HttpResponse(status=200)
 
 
-def get_website_boostrap_icon(text):
-    icon_list = ['github', 'facebook', 'instagram', 'linkedin', 'medium', 'quora', 'reddit', 'skype', 'slack', 'stack-overflow', 'telegram', 'twitch', 'twitter', 'vimeo', 'youtube']
-
-    # use list comprehension!!!
-    for index, icon in enumerate(icon_list):
-        if icon.replace("-", "") in text:
-            return icon_list[index]
-    return 'globe'
-
-# htmx - profile - add website object
-@login_required
-@require_POST
-def add_website_object_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    name = request.POST.get("name")
-    bootstrap_icon = get_website_boostrap_icon(str(name))
-    website_object = Website(name=name, profile=object, bootstrap_icon=bootstrap_icon)
-    website_object.save()
-    context = {'object': object}
-    return render(request, 'profiles/partials/websites.html', context)
-
-
-# htmx - profile - update website object
-@login_required
-@require_POST
-def update_website_object_view(request, pk_parent, pk):
-    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    website_object = get_object_or_404(Website, pk=pk, profile=object)
-    name = request.POST.get("name")
-    website_object.name = name
-    website_object.save()
-    return HttpResponse(status=200)
-
-# htmx - profile - delete website object
-@login_required
-@require_POST
-def delete_website_object_view(request, pk_parent, pk):
-    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    website_object = get_object_or_404(Website, pk=pk, profile=object)
-    website_object.delete()
-    return HttpResponse(status=200)
-
-
-# htmx - profile - add skill object
-@login_required
-@require_POST
-def add_skill_object_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    name = request.POST.get("name")
-    skill_object = Skill(name=name, profile=object)
-    skill_object.save()
-    context = {'object': object}
-    return render(request, 'profiles/partials/skills.html', context)
-
-
-# htmx - profile - update skill object
-@login_required
-@require_POST
-def update_skill_object_view(request, pk_parent, pk):
-    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    skill_object = get_object_or_404(Skill, pk=pk, profile=object)
-    name = request.POST.get("name")
-    skill_object.name = name
-    skill_object.save()
-    return HttpResponse(status=200)
-
-# htmx - profile - delete skill object
-@login_required
-@require_POST
-def delete_skill_object_view(request, pk_parent, pk):
-    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    skill_object = get_object_or_404(Skill, pk=pk, profile=object)
-    skill_object.delete()
-    return HttpResponse(status=200)
-
-
-# htmx - profile - add language object
-@login_required
-@require_POST
-def add_language_object_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    name = request.POST.get("name")
-    level = request.POST.get("level")
-    language_object = Language(name=name, level=level, profile=object)
-    language_object.save()
-    context = {'object': object}
-    return render(request, 'profiles/partials/languages.html', context)
-
-
-# htmx - profile - update language object
-@login_required
-@require_POST
-def update_language_object_view(request, pk_parent, pk):
-    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    language_object = get_object_or_404(Language, pk=pk, profile=object)
-    name = request.POST.get("name")
-    level = request.POST.get("level")
-    language_object.name = name
-    language_object.level = level
-    language_object.save()
-    return HttpResponse(status=200)
-
-# htmx - profile - delete language object
-@login_required
-@require_POST
-def delete_language_object_view(request, pk_parent, pk):
-    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    language_object = get_object_or_404(Language, pk=pk, profile=object)
-    language_object.delete()
-    return HttpResponse(status=200)
-
-
-
-
 # htmx - profile - add description
 @login_required
 @require_POST
@@ -428,6 +314,7 @@ def activate_child_or_field_view(request, label, pk_parent):
     try:
         response = render(request, f'profiles/partials/{label}/main.html', context)
         trigger_client_event(response, f'{label}ActivatedEvent', { },)
+        print(f'{label}ActivatedEvent')
         return response
     except:
         return HttpResponseServerError()

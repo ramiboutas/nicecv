@@ -5,11 +5,6 @@ from .views import create_object_view, delete_object_view
 from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
 from .views import get_photo_modal_view, remove_photo_modal_view
 from .views import save_general_and_contact_info_view
-from .views import add_website_object_view, update_website_object_view, delete_website_object_view
-from .views import add_skill_object_view, update_skill_object_view, delete_skill_object_view
-from .views import add_language_object_view, update_language_object_view, delete_language_object_view
-
-
 
 
 # general
@@ -50,51 +45,6 @@ urlpatterns += [
 ]
 
 
-
-# websites
-urlpatterns += [
-
-        # htmx - add website object
-        path('add-website-object/<uuid:pk>/', add_website_object_view, name='profiles_add_website_object'),
-
-        # htmx - update website object
-        path('update-website-object/<uuid:pk_parent>/<int:pk>/', update_website_object_view, name='profiles_update_website_object'),
-
-        # htmx - delete website object
-        path('delete-website-object/<uuid:pk_parent>/<int:pk>/', delete_website_object_view, name='profiles_delete_website_object'),
-
-]
-
-
-
-# skills
-urlpatterns += [
-        # htmx - add skill object
-        path('add-skill-object/<uuid:pk>/', add_skill_object_view, name='profiles_add_skill_object'),
-
-        # htmx - update skill object
-        path('update-skill-object/<uuid:pk_parent>/<int:pk>/', update_skill_object_view, name='profiles_update_skill_object'),
-
-        # htmx - delete skill object
-        path('delete-skill-object/<uuid:pk_parent>/<int:pk>/', delete_skill_object_view, name='profiles_delete_skill_object'),
-
-]
-
-
-
-# languages
-urlpatterns += [
-
-        # htmx - add language object
-        path('add-language-object/<uuid:pk>/', add_language_object_view, name='profiles_add_language_object'),
-
-        # htmx - update language object
-        path('update-language-object/<uuid:pk_parent>/<int:pk>/', update_language_object_view, name='profiles_update_language_object'),
-
-        # htmx - delete language object
-        path('delete-language-object/<uuid:pk_parent>/<int:pk>/', delete_language_object_view, name='profiles_delete_language_object'),
-
-]
 
 
 from .views import activate_description_view, update_description_view, deactivate_description_view
@@ -154,18 +104,23 @@ urlpatterns += [
         # htmx - delete child object
         path('delete-child/<str:child_label>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),
 
+]
+
+# activate or deactivate of childs or fields
+urlpatterns += [
 
         # htmx - activate object
-        path('activate-child/<str:label>/<uuid:pk_parent>/', activate_child_or_field_view, name='profiles_activate_child_object'),
+        path('activate-child-or-field/<str:label>/<uuid:pk_parent>/', activate_child_or_field_view, name='profiles_activate_child_object'),
 
         # htmx - deactivate object
-        path('deactivate-child/<str:label>/<uuid:pk_parent>/', deactivate_child_or_field_view, name='profiles_deactivate_child_object'),
+        path('deactivate-child-or-field/<str:label>/<uuid:pk_parent>/', deactivate_child_or_field_view, name='profiles_deactivate_child_object'),
 
 
         # htmx - insert_child_activation_button
-        path('insert-child-activation-button/<str:label>/<uuid:pk_parent>/', insert_child_activation_button_view, name='profiles_insert_child_activation_button'),
+        path('insert-activation-button/<str:label>/<uuid:pk_parent>/', insert_child_activation_button_view, name='profiles_insert_child_activation_button'),
 
         # htmx - remove_child_activation_button
-        path('remove-child-activation-button/<str:label>/<uuid:pk_parent>/', remove_child_activation_button_view, name='profiles_remove_child_activation_button'),
+        path('remove-activation-button/<str:label>/<uuid:pk_parent>/', remove_child_activation_button_view, name='profiles_remove_child_activation_button'),
+
 
 ]
