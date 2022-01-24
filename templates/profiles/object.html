@@ -23,12 +23,30 @@ hx-trigger="descriptionDeactivatedEvent from:body"></div>
 hx-trigger="descriptionActivatedEvent from:body"></div>
 
 
+<!-- when website is deactivated, insert the website button -->
+<div hx-get="{{ object.insert_website_activation_button_url }}" hx-target="#website-activation-button" hx-swap="innerHTML"
+hx-trigger="websiteDeactivatedEvent from:body"></div>
+<!-- when website is activated, remove  the website button -->
+<div hx-get="{{ object.remove_website_activation_button_url }}" hx-target="#website-activation-button" hx-swap="innerHTML"
+hx-trigger="websiteActivatedEvent from:body"></div>
+
+
+<!-- when skill is deactivated, insert the skill button -->
+<div hx-get="{{ object.insert_skill_activation_button_url }}" hx-target="#skill-activation-button" hx-swap="innerHTML"
+hx-trigger="skillDeactivatedEvent from:body"></div>
+<!-- when skill is activated, remove  the skill button -->
+<div hx-get="{{ object.remove_skill_activation_button_url }}" hx-target="#skill-activation-button" hx-swap="innerHTML"
+hx-trigger="skillActivatedEvent from:body"></div>
+
+
+
 <!-- when language is deactivated, insert the language button -->
 <div hx-get="{{ object.insert_language_activation_button_url }}" hx-target="#language-activation-button" hx-swap="innerHTML"
 hx-trigger="languageDeactivatedEvent from:body"></div>
 <!-- when language is activated, remove  the language button -->
 <div hx-get="{{ object.remove_language_activation_button_url }}" hx-target="#language-activation-button" hx-swap="innerHTML"
 hx-trigger="languageActivatedEvent from:body"></div>
+
 
 <!-- when education is deactivated, insert the education button -->
 <div hx-get="{{ object.insert_education_activation_button_url }}" hx-target="#education-activation-button" hx-swap="innerHTML"
@@ -38,9 +56,76 @@ hx-trigger="educationDeactivatedEvent from:body"></div>
 hx-trigger="educationActivatedEvent from:body"></div>
 
 
+<!-- when experience is deactivated, insert the experience button -->
+<div hx-get="{{ object.insert_experience_activation_button_url }}" hx-target="#experience-activation-button" hx-swap="innerHTML"
+hx-trigger="experienceDeactivatedEvent from:body"></div>
+<!-- when experience is activated, remove  the experience button -->
+<div hx-get="{{ object.remove_experience_activation_button_url }}" hx-target="#experience-activation-button" hx-swap="innerHTML"
+hx-trigger="experienceActivatedEvent from:body"></div>
 
 
+<!-- when certification is deactivated, insert the certification button -->
+<div hx-get="{{ object.insert_certification_activation_button_url }}" hx-target="#certification-activation-button" hx-swap="innerHTML"
+hx-trigger="certificationDeactivatedEvent from:body"></div>
+<!-- when certification is activated, remove  the certification button -->
+<div hx-get="{{ object.remove_certification_activation_button_url }}" hx-target="#certification-activation-button" hx-swap="innerHTML"
+hx-trigger="certificationActivatedEvent from:body"></div>
 
+
+<!-- when course is deactivated, insert the course button -->
+<div hx-get="{{ object.insert_course_activation_button_url }}" hx-target="#course-activation-button" hx-swap="innerHTML"
+hx-trigger="courseDeactivatedEvent from:body"></div>
+<!-- when course is activated, remove  the course button -->
+<div hx-get="{{ object.remove_course_activation_button_url }}" hx-target="#course-activation-button" hx-swap="innerHTML"
+hx-trigger="courseActivatedEvent from:body"></div>
+
+
+<!-- when honor is deactivated, insert the honor button -->
+<div hx-get="{{ object.insert_honor_activation_button_url }}" hx-target="#honor-activation-button" hx-swap="innerHTML"
+hx-trigger="honorDeactivatedEvent from:body"></div>
+<!-- when honor is activated, remove  the honor button -->
+<div hx-get="{{ object.remove_honor_activation_button_url }}" hx-target="#honor-activation-button" hx-swap="innerHTML"
+hx-trigger="honorActivatedEvent from:body"></div>
+
+
+<!-- when organization is deactivated, insert the organization button -->
+<div hx-get="{{ object.insert_organization_activation_button_url }}" hx-target="#organization-activation-button" hx-swap="innerHTML"
+hx-trigger="organizationDeactivatedEvent from:body"></div>
+<!-- when organization is activated, remove  the organization button -->
+<div hx-get="{{ object.remove_organization_activation_button_url }}" hx-target="#organization-activation-button" hx-swap="innerHTML"
+hx-trigger="organizationActivatedEvent from:body"></div>
+
+
+<!-- when patent is deactivated, insert the patent button -->
+<div hx-get="{{ object.insert_patent_activation_button_url }}" hx-target="#patent-activation-button" hx-swap="innerHTML"
+hx-trigger="patentDeactivatedEvent from:body"></div>
+<!-- when patent is activated, remove  the patent button -->
+<div hx-get="{{ object.remove_patent_activation_button_url }}" hx-target="#patent-activation-button" hx-swap="innerHTML"
+hx-trigger="patentActivatedEvent from:body"></div>
+
+
+<!-- when project is deactivated, insert the project button -->
+<div hx-get="{{ object.insert_project_activation_button_url }}" hx-target="#project-activation-button" hx-swap="innerHTML"
+hx-trigger="projectDeactivatedEvent from:body"></div>
+<!-- when project is activated, remove  the project button -->
+<div hx-get="{{ object.remove_project_activation_button_url }}" hx-target="#project-activation-button" hx-swap="innerHTML"
+hx-trigger="projectActivatedEvent from:body"></div>
+
+
+<!-- when publication is deactivated, insert the publication button -->
+<div hx-get="{{ object.insert_publication_activation_button_url }}" hx-target="#publication-activation-button" hx-swap="innerHTML"
+hx-trigger="publicationDeactivatedEvent from:body"></div>
+<!-- when publication is activated, remove  the publication button -->
+<div hx-get="{{ object.remove_publication_activation_button_url }}" hx-target="#publication-activation-button" hx-swap="innerHTML"
+hx-trigger="publicationActivatedEvent from:body"></div>
+
+
+<!-- when volunteering is deactivated, insert the volunteering button -->
+<div hx-get="{{ object.insert_volunteering_activation_button_url }}" hx-target="#volunteering-activation-button" hx-swap="innerHTML"
+hx-trigger="volunteeringDeactivatedEvent from:body"></div>
+<!-- when volunteering is activated, remove  the volunteering button -->
+<div hx-get="{{ object.remove_volunteering_activation_button_url }}" hx-target="#volunteering-activation-button" hx-swap="innerHTML"
+hx-trigger="volunteeringActivatedEvent from:body"></div>
 
 
 <div class="container my-5 ">
