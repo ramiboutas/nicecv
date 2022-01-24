@@ -1,9 +1,9 @@
 {% load i18n %}
-<div id="languages-box">
+<div id="language-box">
   {% if object.education_active %}
     <h6 class="display-6 fs-6 mt-4" >
       <button class="btn btn-outline-secondary border-0"
-        hx-post="{{ object.deactivate_languages_url }}" hx-target="#languages-box" hx-swap="innerHTML"
+        hx-post="{{ object.deactivate_language_url }}" hx-target="#language-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate languages' %}">
         <i class="bi bi-x-lg"></i>
       </button>
@@ -29,8 +29,8 @@
       </form>
     {% endfor %}
 
-    <div id="education-new">
-      {% include "profiles/partials/languages/new_form.html" %}
+    <div id="language-new">
+      {% include "profiles/partials/language/new_form.html" %}
     </div>
   {% endif %}
 </div>

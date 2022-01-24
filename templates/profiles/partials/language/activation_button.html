@@ -3,7 +3,7 @@
 
 {% if not object.languages_active %}
   <button class="btn btn-outline-secondary  border-0"
-    hx-post="{{ object.activate_languages_url }}" hx-target="#languages-box" hx-swap="outerHTML"
+    hx-post="{{ object.activate_language_url }}" hx-target="#language-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate languages' %}">
     <i class="bi bi-check2"></i> {% trans 'Languages' %}  <i class="bi bi-chat-quote"></i></button>
 {% endif %}

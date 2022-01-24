@@ -23,6 +23,12 @@ hx-trigger="descriptionDeactivatedEvent from:body"></div>
 hx-trigger="descriptionActivatedEvent from:body"></div>
 
 
+<!-- when language is deactivated, insert the language button -->
+<div hx-get="{{ object.insert_language_activation_button_url }}" hx-target="#language-activation-button" hx-swap="innerHTML"
+hx-trigger="languageDeactivatedEvent from:body"></div>
+<!-- when language is activated, remove  the language button -->
+<div hx-get="{{ object.remove_language_activation_button_url }}" hx-target="#language-activation-button" hx-swap="innerHTML"
+hx-trigger="languageActivatedEvent from:body"></div>
 
 <!-- when education is deactivated, insert the education button -->
 <div hx-get="{{ object.insert_education_activation_button_url }}" hx-target="#education-activation-button" hx-swap="innerHTML"
@@ -62,7 +68,8 @@ hx-trigger="educationActivatedEvent from:body"></div>
               {% include "profiles/partials/general_and_contact_info.html" %}
               {% include "profiles/partials/websites.html" %}
               {% include "profiles/partials/skills.html" %}
-              {% include "profiles/partials/languages.html" %}
+
+              {% include "profiles/partials/language/main.html" %}
             </div>
           </div>
         </div>
