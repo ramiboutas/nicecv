@@ -1,10 +1,11 @@
 {% load i18n %}
-<div id="add-experience-button-box" >
+<div id="experience-activation-button">
 
-{% if not object.experience_visible %}
-  <button class="btn btn-secondary border-0 m-2"
-   hx-post="{{ object.add_experience_url }}" hx-target="#experience-box" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-   data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add experience' %}"><i class="bi bi-card-text"></i>{% trans 'Work experience' %}</button>
+{% if not object.experience_active %}
+  <button class="btn btn-outline-secondary  border-0"
+    hx-post="{{ object.activate_experience_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate experience' %}">
+    <i class="bi bi-check2"></i> {% trans 'Experience' %}  <i class="bi bi-mortarboard"></i></button>
 {% endif %}
 
 </div>

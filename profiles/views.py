@@ -93,7 +93,7 @@ def upload_full_photo_view(request, pk):
 def get_photo_modal_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     context = {'object': object}
-    return render(request, 'profiles/partials/photo_modal.html', context)
+    return render(request, 'profiles/partials/photo/modal.html', context)
 
 
 # htmx - profile - remove photo modal
@@ -113,7 +113,7 @@ def crop_photo_view(request, pk):
     height = int(request.POST.get("cropHeigth"))
     object = object.crop_and_save_photo(x, y, width, height)
     context = {'object': object}
-    response = render(request, 'profiles/partials/photo_cropped.html', context)
+    response = render(request, 'profiles/partials/photo/cropped.html', context)
     trigger_client_event(response, "photoCroppedEvent", { },)
     return response
 

@@ -9,7 +9,7 @@
       </button>
       {% trans "Description" %}
    </h6>
-    <textarea class="form-control w-100 h-20 border-0"
+    <textarea class="form-control w-100 h-20 border-0 bg-light"
     hx-post="{{ object.update_description_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
     placeholder="{% trans 'Describe yourself, what is that that you do that makes you a good professional, your interests, your ambitions and anything that you think it is relevent for your job applications ...' %}" name="description">{% if object.description %}{{ object.description }}{% endif %}</textarea>
   {% endif %}

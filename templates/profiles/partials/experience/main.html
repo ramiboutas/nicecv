@@ -1,12 +1,18 @@
 {% load i18n %}
-<div id="experience-box" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-  {% if object.experience_visible %}
-    <h6  class="display-6 fs-6 mt-4" ><button class="btn btn-outline-secondary border-0"
-     hx-post="{{ object.delete_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML"><i class="bi bi-trash"></i></button>{% trans "Work Experience" %}</h6>
+<div id="experience-box" >
+  {% if object.experience_active %}
+    <h6  class="display-6 fs-6 mt-4">
+      <button class="btn btn-outline-secondary border-0"
+        hx-post="{{ object.deactivate_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      {% trans "Work Experience" %}
+    </h6>
     <hr>
+
     {% for experience in object.experience_set.all %}
       <form hx-post="{{ experience.update_object_url }}" hx-trigger="change" hx-swap="none">
-        <div id="experience-{{ experience.pk }}"  class="border border-secondary my-4">
+        <div id="experience-{{ experience.pk }}"  class="border border-secondary my-4 bg-light">
           <!--buttons -->
           <div class="row">
             <div class="col-1">
@@ -26,7 +32,7 @@
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
-              hx-post="{{ experience.duplicate_object_url }}" hx-target="#new-experience-box" hx-swap="innerHTML"
+              hx-post="{{ experience.copy_object_url }}" hx-target="#experience-new" hx-swap="innerHTML"
               ><i class="bi bi-files"></i></button>
             </div>
             <div class="col-1">
@@ -44,9 +50,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-briefcase"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text"
+                <input class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'Job title, e.g: Project manager' %}"
-                  name="experience_title" maxlength="{{max_length_normal}}"
+                  name="title" maxlength="{{max_length_normal}}"
                   {% if experience.title %}value="{{ experience.title }}"{% endif %}>
               </div>
             </div>
@@ -55,9 +61,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-geo-alt"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text" 
+                <input class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Location, e.g. Miami' %}"
-                  name="experience_location" maxlength="{{max_length_short}}"
+                  name="location" maxlength="{{max_length_short}}"
                   {% if experience.location %}value="{{ experience.location }}"{% endif %}>
               </div>
             </div>
@@ -70,9 +76,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text" 
+                <input class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Company, e.g: NASA' %}"
-                  name="experience_company" maxlength="{{max_length_short}}"
+                  name="company" maxlength="{{max_length_short}}"
                   {% if experience.company %}value="{{ experience.company }}"{% endif %}>
               </div>
             </div>
@@ -81,9 +87,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text" 
+                <input class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Company link, e.g: www.nasa.gov (optional)' %}"
-                  name="experience_company_link" maxlength="{{max_length_normal}}"
+                  name="company_link" maxlength="{{max_length_normal}}"
                   {% if experience.company_link %}value="{{ experience.company_link }}"{% endif %}>
               </div>
             </div>
@@ -96,9 +102,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text"
+                <input class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
-                  name="experience_start_date" maxlength="{{max_length_super_short}}"
+                  name="start_date" maxlength="{{max_length_super_short}}"
                   {% if experience.start_date %}value="{{ experience.start_date }}"{% endif %}>
               </div>
             </div>
@@ -107,9 +113,9 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text"
+                <input class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'End date, e.g. Feb 2022, Present, ...' %}"
-                  name="experience_end_date" maxlength="{{max_length_super_short}}"
+                  name="end_date" maxlength="{{max_length_super_short}}"
                   {% if experience.end_date %}value="{{ experience.end_date }}"{% endif %}>
               </div>
             </div>
@@ -122,8 +128,8 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text border-0" ><i class="bi bi-justify-left"></i></i></span>
                 </div>
-                <textarea class="form-control border-0 bg-white"  type="text"
-                  placeholder="{% trans 'Description' %}" name="experience_description"
+                <textarea class="form-control border-0 bg-light"  type="text"
+                  placeholder="{% trans 'Description' %}" name="description"
                   maxlength="{{max_length_super_large}}">{% if experience.description %}{{ experience.description }}{% endif %}</textarea>
               </div>
             </div>
@@ -133,8 +139,8 @@
       </form>
     {% endfor %}
 
-    <div id="new-experience-box">
-      {% include "profiles/partials/experience_new_button.html" %}
+    <div id="experience-new">
+      {% include "profiles/partials/experience/new_button.html" %}
     </div>
   {% endif %}
 </div>

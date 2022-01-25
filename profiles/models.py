@@ -692,10 +692,11 @@ class Experience(models.Model):
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
+    location = models.CharField(null=True, blank=True, max_length=100)
+    company = models.CharField(null=True, blank=True, max_length=100)
+    company_link = models.CharField(null=True, blank=True, max_length=100)
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
-    company_name = models.CharField(null=True, blank=True, max_length=100)
-    location_name = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
 
     class Meta:
@@ -1148,7 +1149,13 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.description = request.POST.get("description")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.location = request.POST.get("location")
+        child_object.company = request.POST.get("company")
+        child_object.company_link = request.POST.get("company_link")
+        child_object.start_date = request.POST.get("start_date")
+        child_object.end_date = request.POST.get("end_date")
+        child_object.description = request.POST.get("description")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
         pass

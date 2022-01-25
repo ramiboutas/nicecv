@@ -23,7 +23,7 @@
              {% endfor %}
           </select>
           <button class="btn btn-outline-secondary  border-0"
-           hx-post="{{ language.delete_object_url }}" hx-target="#language-{{language.pk}}" hx-swap="outerHTML"
+           hx-post="{{ language.delete_object_url }}" hx-target="#language-box" hx-swap="outerHTML"
            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this language' %}"><i class="bi bi-trash"></i></button>
         </div>
       </form>
