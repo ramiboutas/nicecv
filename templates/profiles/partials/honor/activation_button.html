@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="honor-activation-button">
+
+{% if not object.honor_active %}
+  <button class="btn btn-outline-secondary  border-0"
+    hx-post="{{ object.activate_honor_url }}" hx-target="#honor-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate honor' %}">
+    <i class="bi bi-eye"></i> {% trans 'Honors and awards' %}  <i class="bi bi-award"></i></button>
+{% endif %}
+
+</div>

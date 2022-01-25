@@ -1,17 +1,18 @@
 {% load i18n %}
-<div id="description-box">
+<div id="description-box" class="mt-5">
   {% if object.description_active %}
     <h6  class="display-6 fs-6" >
       <button class="btn btn-outline-secondary border-0"
         hx-post="{{ object.deactivate_description_url }}" hx-target="#description-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate description' %}">
-        <i class="bi bi-x-lg"></i>
+        <i class="bi bi-eye-slash"></i>
       </button>
       {% trans "Description" %}
    </h6>
-    <textarea class="form-control w-100 h-20 border-0 bg-light"
+  <textarea class="form-control w-90 border-0 bg-white" rows="10"
     hx-post="{{ object.update_description_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
-    placeholder="{% trans 'Describe yourself, what is that that you do that makes you a good professional, your interests, your ambitions and anything that you think it is relevent for your job applications ...' %}" name="description">{% if object.description %}{{ object.description }}{% endif %}</textarea>
+    placeholder="{% trans 'Describe yourself, what is that that you do that makes you a good professional, your interests, your ambitions and anything that you think it is relevent for your job applications ...' %}"
+    name="description">{% if object.description %}{{ object.description }}{% endif %}</textarea>
   {% endif %}
 
 </div>

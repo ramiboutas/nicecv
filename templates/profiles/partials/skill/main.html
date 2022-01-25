@@ -1,20 +1,20 @@
 {% load i18n %}
-<div id="skill-box">
+<div id="skill-box" class="mt-5">
   {% if object.skill_active %}
-    <h6 class="display-6 fs-6 mt-4" >
+    <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom">
       <button class="btn btn-outline-secondary border-0"
         hx-post="{{ object.deactivate_skill_url }}" hx-target="#skill-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate skills' %}">
-        <i class="bi bi-x-lg"></i>
+        <i class="bi bi-eye-slash"></i>
       </button>
       {% trans "Skills" %}
     </h6>
-    <hr>
+
     {% for skill in object.skills.all %}
       <form hx-post="{{ skill.update_object_url }}" hx-trigger="change" hx-swap="none">
-        <div id="skill-{{ skill.pk }}" class="input-group mb-3"  >
+        <div id="skill-{{ skill.pk }}" class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-gear"></i></i></span>
+            <span class="input-group-text border-0" ><i class="bi bi-gear"></i></span>
           </div>
           <input class="form-control border-0 bg-white"  type="text" name="name" value="{{skill.name}}">
           <button class="btn btn-outline-secondary  border-0"

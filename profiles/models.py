@@ -65,15 +65,13 @@ class Profile(models.Model):
     photo = models.ImageField(null=True, blank=True, upload_to='profiles/cropped_photos/')
     photo_full = models.ImageField(null=True, blank=True, upload_to='profiles/full_photos/')
 
-    # personal info
+    # personal information
     first_name = models.CharField(null=True, blank=True, max_length=50)
     last_name = models.CharField(null=True, blank=True, max_length=50)
     maiden_name = models.CharField(null=True, blank=True, max_length=50)
+    jobtitle = models.CharField(max_length=50)
     location = models.CharField(null=True, blank=True, max_length=50)
     date_of_birth = models.CharField(null=True, blank=True, max_length=50)
-    jobtitle = models.CharField(max_length=50)
-
-    # contact info
     phone = models.CharField(null=True, blank=True, max_length=50)
     email = models.CharField(max_length=50)
 
@@ -92,7 +90,6 @@ class Profile(models.Model):
     course_active = models.BooleanField(default=True)
     honor_active = models.BooleanField(default=False)
     organization_active = models.BooleanField(default=False)
-    honor_active = models.BooleanField(default=False)
     patent_active = models.BooleanField(default=False)
     project_active = models.BooleanField(default=False)
     publication_active = models.BooleanField(default=False)
@@ -112,12 +109,14 @@ class Profile(models.Model):
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    # profile object
     def get_update_url(self):
         return reverse('profiles_update', kwargs={'pk':self.pk})
 
     def delete_object_url(self):
         return reverse('profiles_delete_object', kwargs={'pk':self.pk})
 
+    # photo
     def upload_full_photo_url(self):
         return reverse('profiles_upload_full_photo', kwargs={'pk':self.pk})
 
@@ -133,6 +132,7 @@ class Profile(models.Model):
     def crop_photo_url(self):
         return reverse('profiles_crop_photo', kwargs={'pk':self.pk})
 
+    # personal information
     def save_personal_information_url(self):
         return reverse('profiles_save_personal_information', kwargs={'pk':self.pk})
 
@@ -157,7 +157,7 @@ class Profile(models.Model):
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
 
-    # _website_
+    # website
     def create_website_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
@@ -186,7 +186,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
 
-    # _skill_
+    # skill
     def create_skill_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
@@ -215,7 +215,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
-    # _language_
+    # language
     def create_language_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
@@ -302,7 +302,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
-    # _certification_
+    # certification
     def create_certification_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
@@ -331,7 +331,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
-    # _course_
+    # course
     def create_course_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
@@ -360,7 +360,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
-    # _honor_
+    # honor
     def create_honor_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
@@ -389,7 +389,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
-    # _organization_
+    # organization
     def create_organization_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
@@ -418,7 +418,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
-    # _patent_
+    # patent
     def create_patent_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
@@ -447,7 +447,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
-    # _project_
+    # project
     def create_project_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
@@ -476,7 +476,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
-    # _publication_
+    # publication
     def create_publication_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
@@ -505,7 +505,7 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
-    # _volunteering_
+    # volunteering
     def create_volunteering_object_url(self):
         return reverse('profiles_create_child_object',
                         kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
@@ -560,7 +560,6 @@ class Profile(models.Model):
                     img.save(self.photo_full.path)
             except:
                 pass
-
 
 
 class Website(models.Model):
@@ -823,8 +822,8 @@ class Honor(models.Model):
     title = models.CharField(null=True, blank=True, max_length=100)
     issuing_date = models.CharField(null=True, blank=True, max_length=100)
     issuer = models.CharField(null=True, blank=True, max_length=100)
-    issuer_link = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    # description = models.TextField(null=True, blank=True)
 
 
     class Meta:
@@ -864,12 +863,11 @@ class Organization(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='organizations')
     order = models.SmallIntegerField(default=0)
 
-    name = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True)
+    role = models.CharField(null=True, blank=True, max_length=100)
+    organization = models.CharField(null=True, blank=True, max_length=100)
     start_date = models.CharField(null=True, blank=True, max_length=50)
     end_date = models.CharField(null=True, blank=True, max_length=50)
-    occupation = models.CharField(null=True, blank=True, max_length=100)
-    position = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ('order', 'id', )
@@ -909,15 +907,16 @@ class Patent(models.Model):
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
-    inventors = models.CharField(null=True, blank=True, max_length=200)
-    pending = models.BooleanField(null=True, blank=True)
+    number = models.IntegerField(null=True, blank=True)
     issuer = models.CharField(null=True, blank=True, max_length=100)
-    issue_date = models.CharField(null=True, blank=True, max_length=100) # when pending = False
-    application_number = models.IntegerField(null=True, blank=True) # when pending = True
-    description = models.TextField(null=True, blank=True)
-    filling_date = models.CharField(null=True, blank=True, max_length=100) # when pending = True
-    number = models.IntegerField(null=True, blank=True) # when pending = False
-    url = models.URLField(null=True, blank=True)
+    issuing_date = models.CharField(null=True, blank=True, max_length=100) # when pending = False
+    inventors = models.CharField(null=True, blank=True, max_length=200)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True) # suggest to use to include if the patent is patent is pending and more relevant info
+
+    # pending = models.BooleanField(null=True, blank=True)
+    # application_date = models.CharField(null=True, blank=True, max_length=100)
+
 
     class Meta:
         ordering = ('order', 'id', )
@@ -957,14 +956,12 @@ class Project(models.Model):
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True)
+    role = models.CharField(null=True, blank=True, max_length=100)
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
-    members = models.CharField(null=True, blank=True, max_length=200)
-    occupation = models.CharField(null=True, blank=True, max_length=100)
-    ongoing = models.BooleanField(null=True, blank=True) # singleDate
-    issuer = models.CharField(null=True, blank=True, max_length=100)
-    url = models.URLField(null=True, blank=True)
+    organization = models.CharField(null=True, blank=True, max_length=100)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ('order', 'id', )
@@ -1006,12 +1003,12 @@ class Publication(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='publications')
     order = models.SmallIntegerField(default=0)
 
-    name = models.CharField(null=True, blank=True, max_length=200)
-    date = models.CharField(null=True, blank=True, max_length=20)
-    description = models.TextField(null=True, blank=True, max_length=1000)
+    title = models.CharField(null=True, blank=True, max_length=200)
+    issuing_date = models.CharField(null=True, blank=True, max_length=20)
     authors = models.CharField(null=True, blank=True, max_length=200)
     publisher = models.CharField(null=True, blank=True, max_length=100)
-    url = models.URLField(null=True, blank=True)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True, max_length=1000)
 
     class Meta:
         ordering = ('order', 'id', )
@@ -1059,9 +1056,9 @@ class Volunteering(models.Model):
     start_date = models.CharField(null=True, blank=True, max_length=100)
     end_date = models.CharField(null=True, blank=True, max_length=100)
     organization = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True, max_length=1000)
+    organization_link = models.CharField(null=True, blank=True, max_length=100)
     cause = models.CharField(null=True, blank=True, max_length=100)
-    ongoing = models.BooleanField(null=True, blank=True) # singleDate
+    description = models.TextField(null=True, blank=True, max_length=1000)
 
     class Meta:
         ordering = ('order', 'id', )
@@ -1194,23 +1191,51 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
-        child_object.issuer_link = request.POST.get("issuer_link")
-        child_object.description = request.POST.get("description")
-    
+        child_object.link = request.POST.get("link")
+
     if child_label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
-        pass
+        child_object.occupation = request.POST.get("occupation")
+        child_object.organization = request.POST.get("organization")
+        child_object.start_date = request.POST.get("start_date")
+        child_object.end_date = request.POST.get("end_date")
+        child_object.description = request.POST.get("description")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_PATENT:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.number = request.POST.get("number")
+        child_object.issuer = request.POST.get("issuer")
+        child_object.issuing_date = request.POST.get("issuing_date")
+        child_object.inventors = request.POST.get("inventors")
+        child_object.link = request.POST.get("link")
+        child_object.description = request.POST.get("description")
+
 
     if child_label == LABEL_FOR_CHILD_OBJECT_PROJECT:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.role = request.POST.get("role")
+        child_object.start_date = request.POST.get("start_date")
+        child_object.end_date = request.POST.get("end_date")
+        child_object.organization = request.POST.get("organization")
+        child_object.link = request.POST.get("link")
+        child_object.description = request.POST.get("description")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.issuing_date = request.POST.get("issuing_date")
+        child_object.authors = request.POST.get("authors")
+        child_object.publisher = request.POST.get("publisher")
+        child_object.link = request.POST.get("link")
+        child_object.description = request.POST.get("description")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.role = request.POST.get("role")
+        child_object.start_date = request.POST.get("start_date")
+        child_object.end_date = request.POST.get("end_date")
+        child_object.organization = request.POST.get("organization")
+        child_object.organization_link = request.POST.get("organization_link")
+        child_object.cause = request.POST.get("cause")
+        child_object.description = request.POST.get("description")
 
     child_object.save()
 
