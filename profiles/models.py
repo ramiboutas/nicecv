@@ -112,9 +112,6 @@ class Profile(models.Model):
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
 
-    def activate_child_or_field(self, child_label=None):
-        pass
-
     def get_update_url(self):
         return reverse('profiles_update', kwargs={'pk':self.pk})
 
@@ -738,13 +735,13 @@ class Certification(models.Model):
     profile = models.ForeignKey(Profile, related_name='certifications', on_delete=models.CASCADE)
     order = models.SmallIntegerField(default=0)
 
-    start_date = models.CharField(null=True, blank=True, max_length=100)
-    end_date = models.CharField(null=True, blank=True, max_length=100)
-    name = models.CharField(null=True, blank=True, max_length=100)
-    authority = models.CharField(null=True, blank=True, max_length=100)
-    company = models.CharField(null=True, blank=True, max_length=100)
-    license = models.CharField(null=True, blank=True, max_length=100)
-    url = models.URLField(null=True, blank=True)
+    title = models.CharField(null=True, blank=True, max_length=100)
+    issuing_date = models.CharField(null=True, blank=True, max_length=100)
+    issuer = models.CharField(null=True, blank=True, max_length=100)
+    link = models.CharField(null=True, blank=True, max_length=100)
+
+    class Meta:
+        ordering = ('order', 'id', )
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
@@ -781,9 +778,13 @@ class Course(models.Model):
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
-    number = models.CharField(null=True, blank=True, max_length=100)
-    occupation = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True)
+    issuing_date = models.CharField(null=True, blank=True, max_length=100)
+    issuer = models.CharField(null=True, blank=True, max_length=100)
+    hours = models.CharField(null=True, blank=True, max_length=100)
+    link = models.CharField(null=True, blank=True, max_length=100)
+
+    class Meta:
+        ordering = ('order', 'id', )
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
@@ -825,6 +826,9 @@ class Honor(models.Model):
     occupation = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ('order', 'id', )
+
     def update_object_url(self):
         return reverse('profiles_update_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
@@ -865,6 +869,9 @@ class Organization(models.Model):
     end_date = models.CharField(null=True, blank=True, max_length=50)
     occupation = models.CharField(null=True, blank=True, max_length=100)
     position = models.CharField(null=True, blank=True, max_length=100)
+
+    class Meta:
+        ordering = ('order', 'id', )
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
@@ -911,6 +918,9 @@ class Patent(models.Model):
     number = models.IntegerField(null=True, blank=True) # when pending = False
     url = models.URLField(null=True, blank=True)
 
+    class Meta:
+        ordering = ('order', 'id', )
+
     def update_object_url(self):
         return reverse('profiles_update_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
@@ -955,6 +965,9 @@ class Project(models.Model):
     issuer = models.CharField(null=True, blank=True, max_length=100)
     url = models.URLField(null=True, blank=True)
 
+    class Meta:
+        ordering = ('order', 'id', )
+
     def update_object_url(self):
         return reverse('profiles_update_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
@@ -998,6 +1011,9 @@ class Publication(models.Model):
     authors = models.CharField(null=True, blank=True, max_length=200)
     publisher = models.CharField(null=True, blank=True, max_length=100)
     url = models.URLField(null=True, blank=True)
+
+    class Meta:
+        ordering = ('order', 'id', )
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
@@ -1045,6 +1061,9 @@ class Volunteering(models.Model):
     description = models.TextField(null=True, blank=True, max_length=1000)
     cause = models.CharField(null=True, blank=True, max_length=100)
     ongoing = models.BooleanField(null=True, blank=True) # singleDate
+
+    class Meta:
+        ordering = ('order', 'id', )
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
@@ -1158,10 +1177,17 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.description = request.POST.get("description")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.issuing_date = request.POST.get("issuing_date")
+        child_object.issuer = request.POST.get("issuer")
+        child_object.link = request.POST.get("link")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_COURSE:
-        pass
+        child_object.title = request.POST.get("title")
+        child_object.issuing_date = request.POST.get("issuing_date")
+        child_object.issuer = request.POST.get("issuer")
+        child_object.hours = request.POST.get("hours")
+        child_object.link = request.POST.get("link")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_HONOR:
         pass
