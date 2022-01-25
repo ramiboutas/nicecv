@@ -558,7 +558,7 @@ class Profile(models.Model):
                     new_size = (1200, 1200) # image proportion is manteined / we dont need to do extra work
                     img.thumbnail(new_size)
                     img.save(self.photo_full.path)
-            except ValueError:
+            except:
                 pass
 
 
@@ -821,10 +821,11 @@ class Honor(models.Model):
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
-    issue_date = models.CharField(null=True, blank=True, max_length=100)
+    issuing_date = models.CharField(null=True, blank=True, max_length=100)
     issuer = models.CharField(null=True, blank=True, max_length=100)
-    occupation = models.CharField(null=True, blank=True, max_length=100)
+    issuer_link = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
+
 
     class Meta:
         ordering = ('order', 'id', )
@@ -1190,8 +1191,12 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_HONOR:
-        pass
-
+        child_object.title = request.POST.get("title")
+        child_object.issuing_date = request.POST.get("issuing_date")
+        child_object.issuer = request.POST.get("issuer")
+        child_object.issuer_link = request.POST.get("issuer_link")
+        child_object.description = request.POST.get("description")
+    
     if child_label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
         pass
 
