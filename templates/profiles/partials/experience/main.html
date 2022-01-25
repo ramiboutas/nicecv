@@ -3,7 +3,8 @@
   {% if object.experience_active %}
     <h6  class="display-6 fs-6 mt-4">
       <button class="btn btn-outline-secondary border-0"
-        hx-post="{{ object.deactivate_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML">
+        hx-post="{{ object.deactivate_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate experience' %}">
         <i class="bi bi-x-lg"></i>
       </button>
       {% trans "Work Experience" %}
@@ -17,27 +18,27 @@
           <div class="row">
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
               hx-post="{{ experience.move_up_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
               {% if forloop.first %}disabled{% endif %}>
               <i class="bi bi-arrow-up"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
               hx-post="{{ experience.move_down_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
               {% if forloop.last %}disabled{% endif %}>
               <i class="bi bi-arrow-down"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
               hx-post="{{ experience.copy_object_url }}" hx-target="#experience-new" hx-swap="innerHTML"
               ><i class="bi bi-files"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this experience form' %}"
+              data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
               hx-post="{{ experience.delete_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
               ><i class="bi bi-trash"></i></button>
             </div>
