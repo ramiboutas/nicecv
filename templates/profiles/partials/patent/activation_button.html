@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="patent-activation-button">
+
+{% if not object.patent_active %}
+  <button class="btn btn-outline-secondary  border-0"
+    hx-post="{{ object.activate_patent_url }}" hx-target="#patent-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate patent' %}">
+    <i class="bi bi-eye"></i> {% trans 'Patents' %}  <i class="bi bi-file-medical"></i></button>
+{% endif %}
+
+</div>

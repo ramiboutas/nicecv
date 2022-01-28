@@ -865,6 +865,7 @@ class Organization(models.Model):
 
     role = models.CharField(null=True, blank=True, max_length=100)
     organization = models.CharField(null=True, blank=True, max_length=100)
+    organization_link = models.CharField(null=True, blank=True, max_length=100)
     start_date = models.CharField(null=True, blank=True, max_length=50)
     end_date = models.CharField(null=True, blank=True, max_length=50)
     description = models.TextField(null=True, blank=True)
@@ -907,7 +908,7 @@ class Patent(models.Model):
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
-    number = models.IntegerField(null=True, blank=True)
+    number = models.CharField(null=True, blank=True, max_length=15)
     issuer = models.CharField(null=True, blank=True, max_length=100)
     issuing_date = models.CharField(null=True, blank=True, max_length=100) # when pending = False
     inventors = models.CharField(null=True, blank=True, max_length=200)
@@ -1194,8 +1195,9 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
-        child_object.occupation = request.POST.get("occupation")
+        child_object.role = request.POST.get("role")
         child_object.organization = request.POST.get("organization")
+        child_object.organization_link = request.POST.get("organization_link")
         child_object.start_date = request.POST.get("start_date")
         child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")

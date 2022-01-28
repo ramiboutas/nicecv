@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="organization-activation-button">
+
+{% if not object.organization_active %}
+  <button class="btn btn-outline-secondary  border-0"
+    hx-post="{{ object.activate_organization_url }}" hx-target="#organization-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate organization' %}">
+    <i class="bi bi-eye"></i> {% trans 'Organization' %}  <i class="bi bi-building"></i></button>
+{% endif %}
+
+</div>
