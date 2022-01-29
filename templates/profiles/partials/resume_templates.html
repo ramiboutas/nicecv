@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<h6  class="display-6 fs-6 mt-5" ><i class="bi bi-plus-square-dotted"></i> {% trans "Resume templates" %} <i class="bi bi-plus-square-dotted"></i></h6>
+<hr>
+
+<div class="row">
+  <div class="col">
+    {% for resume in resume_templates %}
+    <form class="" action="{{ resume.download_object_url }}" method="post">
+      <img src="" alt="Resume template image">
+      <input type="hidden" name="pk_profile" value="{{object.pk}}">
+      <button type="submit" name="button">  {% trans "Select template" %}  </button>
+    </form>
+    {% endfor %}
+  </div>
+</div>

@@ -19,12 +19,13 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')), # this just for my-account url
 
     # My own apps
+    path('', include('pages.urls')),
     path('pricing/', include('pricing.urls')),
     path('profiles/', include('profiles.urls')),
-    path('', include('pages.urls')),
+    path('texfiles/', include('texfiles.urls')),
+    path("payments/", include("payments.urls")),
 
     # Payments
-    path("payments/", include("payments.urls")),
     # dj-stripe
     # path("stripe/", include("djstripe.urls", namespace="djstripe")),
 

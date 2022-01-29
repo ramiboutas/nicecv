@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'pricing.apps.PricingConfig',
     'profiles.apps.ProfilesConfig',
     'payments.apps.PaymentsConfig',
+    'texfiles.apps.TexfilesConfig',
 
     # Third-party apps
     'rosetta',
@@ -141,6 +142,7 @@ TEMPLATES = [
                 # my own context processors
                 'utils.context_processors.nicecv',
                 'profiles.context_processors.profile_variables',
+                'texfiles.context_processors.texfiles',
             ],
         },
     },
