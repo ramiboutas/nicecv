@@ -10,7 +10,7 @@
       {% trans "Courses" %}
     </h6>
 
-    {% for course in object.courses.all %}
+    {% for course in object.course_set.all %}
       <form hx-post="{{ course.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="course-{{ course.pk }}"  class="bg-light my-4">
 

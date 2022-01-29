@@ -10,7 +10,7 @@
       {% trans "Skills" %}
     </h6>
 
-    {% for skill in object.skills.all %}
+    {% for skill in object.skill_set.all %}
       <form hx-post="{{ skill.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="skill-{{ skill.pk }}" class="input-group mb-3">
           <div class="input-group-prepend">

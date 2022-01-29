@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="volunteering-activation-button">
+
+{% if not object.volunteering_active %}
+  <button class="btn btn-outline-secondary  border-0"
+    hx-post="{{ object.activate_volunteering_url }}" hx-target="#volunteering-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate volunteering' %}">
+    <i class="bi bi-eye"></i> {% trans 'Volunteering work' %}  <i class="bi bi-heart"></i></button>
+{% endif %}
+
+</div>

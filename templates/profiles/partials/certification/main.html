@@ -10,7 +10,7 @@
       {% trans "Certifications" %}
     </h6>
 
-    {% for certification in object.certifications.all %}
+    {% for certification in object.certification_set.all %}
       <form hx-post="{{ certification.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="certification-{{ certification.pk }}"  class="bg-light my-4">
 

@@ -10,7 +10,7 @@
       {% trans "Websites and social media" %}
     </h6>
 
-    {% for website in object.websites.all %}
+    {% for website in object.website_set.all %}
       <form hx-post="{{ website.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="website-{{ website.pk }}" class="input-group mb-3">
           <div class="input-group-prepend">

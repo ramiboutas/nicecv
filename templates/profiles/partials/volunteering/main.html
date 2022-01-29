@@ -1,44 +1,44 @@
 {% load i18n %}
-<div id="experience-box" class="mt-5">
-  {% if object.experience_active %}
+<div id="volunteering-box" class="mt-5">
+  {% if object.volunteering_active %}
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom">
       <button class="btn btn-outline-secondary border-0"
-        hx-post="{{ object.deactivate_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate experience' %}">
+        hx-post="{{ object.deactivate_volunteering_url }}" hx-target="#volunteering-box" hx-swap="innerHTML"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate volunteering' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
-      {% trans "Work Experience" %}
+      {% trans "Volunteering work" %}
     </h6>
 
-    {% for experience in object.experience_set.all %}
-      <form hx-post="{{ experience.update_object_url }}" hx-trigger="change" hx-swap="none">
-        <div id="experience-{{ experience.pk }}"  class="my-4 bg-light">
+    {% for volunteering in object.volunteering_set.all %}
+      <form hx-post="{{ volunteering.update_object_url }}" hx-trigger="change" hx-swap="none">
+        <div id="volunteering-{{ volunteering.pk }}"  class="my-4 bg-light">
           <!--buttons -->
           <div class="row">
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
-              hx-post="{{ experience.move_up_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              hx-post="{{ volunteering.move_up_object_url }}" hx-target="#volunteering-box" hx-swap="outerHTML"
               {% if forloop.first %}disabled{% endif %}>
               <i class="bi bi-arrow-up"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
-              hx-post="{{ experience.move_down_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              hx-post="{{ volunteering.move_down_object_url }}" hx-target="#volunteering-box" hx-swap="outerHTML"
               {% if forloop.last %}disabled{% endif %}>
               <i class="bi bi-arrow-down"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
-              hx-post="{{ experience.copy_object_url }}" hx-target="#experience-new" hx-swap="innerHTML"
+              hx-post="{{ volunteering.copy_object_url }}" hx-target="#volunteering-new" hx-swap="innerHTML"
               ><i class="bi bi-files"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
-              hx-post="{{ experience.delete_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              hx-post="{{ volunteering.delete_object_url }}" hx-target="#volunteering-box" hx-swap="outerHTML"
               ><i class="bi bi-trash"></i></button>
             </div>
           </div>
@@ -48,12 +48,12 @@
             <div class="col-7">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-briefcase"></i></span>
+                  <span class="input-group-text border-0" ><i class="bi bi-heart"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light"  type="text"
-                  placeholder="{% trans 'Job title, e.g: Project manager' %}"
+                  placeholder="{% trans 'Volunteering title, e.g: Teaching english in remote towns' %}"
                   name="title" maxlength="{{max_length_normal}}"
-                  {% if experience.title %}value="{{ experience.title }}"{% endif %}>
+                  {% if volunteering.title %}value="{{ volunteering.title }}"{% endif %}>
               </div>
             </div>
             <div class="col">
@@ -62,9 +62,9 @@
                   <span class="input-group-text border-0" ><i class="bi bi-geo-alt"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Location, e.g. Miami' %}"
+                  placeholder="{% trans 'Location, e.g. Tanzania' %}"
                   name="location" maxlength="{{max_length_short}}"
-                  {% if experience.location %}value="{{ experience.location }}"{% endif %}>
+                  {% if volunteering.location %}value="{{ volunteering.location }}"{% endif %}>
               </div>
             </div>
           </div>
@@ -77,9 +77,9 @@
                   <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Company, e.g: NASA' %}"
-                  name="company" maxlength="{{max_length_short}}"
-                  {% if experience.company %}value="{{ experience.company }}"{% endif %}>
+                  placeholder="{% trans 'Organization, e.g: Save the Children' %}"
+                  name="organization" maxlength="{{max_length_short}}"
+                  {% if volunteering.organization %}value="{{ volunteering.organization }}"{% endif %}>
               </div>
             </div>
             <div class="col">
@@ -88,9 +88,9 @@
                   <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Company link, e.g: www.nasa.gov (optional)' %}"
-                  name="company_link" maxlength="{{max_length_normal}}"
-                  {% if experience.company_link %}value="{{ experience.company_link }}"{% endif %}>
+                  placeholder="{% trans 'Organization link, e.g: www.savethechildren.net' %}"
+                  name="organization_link" maxlength="{{max_length_normal}}"
+                  {% if volunteering.organization_link %}value="{{ volunteering.organization_link }}"{% endif %}>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@
                 <input class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
                   name="start_date" maxlength="{{max_length_super_short}}"
-                  {% if experience.start_date %}value="{{ experience.start_date }}"{% endif %}>
+                  {% if volunteering.start_date %}value="{{ volunteering.start_date }}"{% endif %}>
               </div>
             </div>
             <div class="col">
@@ -116,7 +116,7 @@
                 <input class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'End date, e.g. Feb 2022, Present, ...' %}"
                   name="end_date" maxlength="{{max_length_super_short}}"
-                  {% if experience.end_date %}value="{{ experience.end_date }}"{% endif %}>
+                  {% if volunteering.end_date %}value="{{ volunteering.end_date }}"{% endif %}>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@
                 </div>
                 <textarea class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'Description' %}" name="description"
-                  maxlength="{{max_length_super_large}}">{% if experience.description %}{{ experience.description }}{% endif %}</textarea>
+                  maxlength="{{max_length_super_large}}">{% if volunteering.description %}{{ volunteering.description }}{% endif %}</textarea>
               </div>
             </div>
           </div>
@@ -139,8 +139,8 @@
       </form>
     {% endfor %}
 
-    <div id="experience-new">
-      {% include "profiles/partials/experience/new_button.html" %}
+    <div id="volunteering-new">
+      {% include "profiles/partials/volunteering/new_button.html" %}
     </div>
   {% endif %}
 </div>

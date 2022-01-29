@@ -10,7 +10,7 @@
       {% trans "Honors and awards" %}
     </h6>
 
-    {% for honor in object.honors.all %}
+    {% for honor in object.honor_set.all %}
       <form hx-post="{{ honor.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="honor-{{ honor.pk }}"  class="bg-light my-4">
 

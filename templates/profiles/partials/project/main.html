@@ -1,75 +1,75 @@
 {% load i18n %}
-<div id="experience-box" class="mt-5">
-  {% if object.experience_active %}
+<div id="project-box" class="mt-5">
+  {% if object.project_active %}
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom">
       <button class="btn btn-outline-secondary border-0"
-        hx-post="{{ object.deactivate_experience_url }}" hx-target="#experience-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate experience' %}">
+        hx-post="{{ object.deactivate_project_url }}" hx-target="#project-box" hx-swap="innerHTML"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate project' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
-      {% trans "Work Experience" %}
+      {% trans "Projects" %}
     </h6>
 
-    {% for experience in object.experience_set.all %}
-      <form hx-post="{{ experience.update_object_url }}" hx-trigger="change" hx-swap="none">
-        <div id="experience-{{ experience.pk }}"  class="my-4 bg-light">
+    {% for project in object.project_set.all %}
+      <form hx-post="{{ project.update_object_url }}" hx-trigger="change" hx-swap="none">
+        <div id="project-{{ project.pk }}"  class="my-4 bg-light">
           <!--buttons -->
           <div class="row">
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
-              hx-post="{{ experience.move_up_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              hx-post="{{ project.move_up_object_url }}" hx-target="#project-box" hx-swap="outerHTML"
               {% if forloop.first %}disabled{% endif %}>
               <i class="bi bi-arrow-up"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
-              hx-post="{{ experience.move_down_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              hx-post="{{ project.move_down_object_url }}" hx-target="#project-box" hx-swap="outerHTML"
               {% if forloop.last %}disabled{% endif %}>
               <i class="bi bi-arrow-down"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
-              hx-post="{{ experience.copy_object_url }}" hx-target="#experience-new" hx-swap="innerHTML"
+              hx-post="{{ project.copy_object_url }}" hx-target="#project-new" hx-swap="innerHTML"
               ><i class="bi bi-files"></i></button>
             </div>
             <div class="col-1">
               <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
               data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
-              hx-post="{{ experience.delete_object_url }}" hx-target="#experience-box" hx-swap="outerHTML"
+              hx-post="{{ project.delete_object_url }}" hx-target="#project-box" hx-swap="outerHTML"
               ><i class="bi bi-trash"></i></button>
             </div>
           </div>
 
-          <!--title and location -->
+          <!--title and role -->
           <div class="row">
-            <div class="col-7">
+            <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-briefcase"></i></span>
+                  <span class="input-group-text border-0" ><i class="bi bi-lightbulb"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light"  type="text"
-                  placeholder="{% trans 'Job title, e.g: Project manager' %}"
+                  placeholder="{% trans 'Project name, e.g: My cool project' %}"
                   name="title" maxlength="{{max_length_normal}}"
-                  {% if experience.title %}value="{{ experience.title }}"{% endif %}>
+                  {% if project.title %}value="{{ project.title }}"{% endif %}>
               </div>
             </div>
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-geo-alt"></i></span>
+                  <span class="input-group-text border-0" ><i class="bi bi-person"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Location, e.g. Miami' %}"
-                  name="location" maxlength="{{max_length_short}}"
-                  {% if experience.location %}value="{{ experience.location }}"{% endif %}>
+                  placeholder="{% trans 'Role in the project, e.g. Developer (optional)' %}"
+                  name="role" maxlength="{{max_length_short}}"
+                  {% if project.role %}value="{{ project.role }}"{% endif %}>
               </div>
             </div>
           </div>
 
-          <!--company and link -->
+          <!--organization and link -->
           <div class="row">
             <div class="col">
               <div class="input-group mb-3">
@@ -77,9 +77,9 @@
                   <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Company, e.g: NASA' %}"
-                  name="company" maxlength="{{max_length_short}}"
-                  {% if experience.company %}value="{{ experience.company }}"{% endif %}>
+                  placeholder="{% trans 'Organization, e.g: University of Oxford (optional)' %}"
+                  name="organization" maxlength="{{max_length_short}}"
+                  {% if project.organization %}value="{{ project.organization }}"{% endif %}>
               </div>
             </div>
             <div class="col">
@@ -88,9 +88,9 @@
                   <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Company link, e.g: www.nasa.gov (optional)' %}"
-                  name="company_link" maxlength="{{max_length_normal}}"
-                  {% if experience.company_link %}value="{{ experience.company_link }}"{% endif %}>
+                  placeholder="{% trans 'Link, e.g: www.my-project-site.com (optional)' %}"
+                  name="link" maxlength="{{max_length_normal}}"
+                  {% if project.link %}value="{{ project.link }}"{% endif %}>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@
                 <input class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
                   name="start_date" maxlength="{{max_length_super_short}}"
-                  {% if experience.start_date %}value="{{ experience.start_date }}"{% endif %}>
+                  {% if project.start_date %}value="{{ project.start_date }}"{% endif %}>
               </div>
             </div>
             <div class="col">
@@ -114,9 +114,9 @@
                   <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light"  type="text"
-                  placeholder="{% trans 'End date, e.g. Feb 2022, Present, ...' %}"
+                  placeholder="{% trans 'End date, e.g. Feb 2022, Ongoing, ...' %}"
                   name="end_date" maxlength="{{max_length_super_short}}"
-                  {% if experience.end_date %}value="{{ experience.end_date }}"{% endif %}>
+                  {% if project.end_date %}value="{{ project.end_date }}"{% endif %}>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@
                 </div>
                 <textarea class="form-control border-0 bg-light"  type="text"
                   placeholder="{% trans 'Description' %}" name="description"
-                  maxlength="{{max_length_super_large}}">{% if experience.description %}{{ experience.description }}{% endif %}</textarea>
+                  maxlength="{{max_length_super_large}}">{% if project.description %}{{ project.description }}{% endif %}</textarea>
               </div>
             </div>
           </div>
@@ -139,8 +139,8 @@
       </form>
     {% endfor %}
 
-    <div id="experience-new">
-      {% include "profiles/partials/experience/new_button.html" %}
+    <div id="project-new">
+      {% include "profiles/partials/project/new_button.html" %}
     </div>
   {% endif %}
 </div>

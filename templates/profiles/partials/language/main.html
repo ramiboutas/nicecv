@@ -10,7 +10,7 @@
       {% trans "Languages" %}
     </h6>
 
-    {% for language in object.languages.all %}
+    {% for language in object.language_set.all %}
       <form hx-post="{{ language.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="language-{{ language.pk }}" class="input-group mb-3"  >
           <div class="input-group-prepend">

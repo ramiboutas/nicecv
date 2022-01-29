@@ -57,7 +57,7 @@ class Profile(models.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profiles')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile_set')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -568,7 +568,7 @@ class Website(models.Model):
     See Website Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='websites')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='website_set')
     name = models.CharField(null=True, blank=True, max_length=50)
     bootstrap_icon = models.CharField(null=True, blank=True, default='globe', max_length=25)
     # category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_website_CHOICES)
@@ -593,7 +593,7 @@ class Skill(models.Model):
     See Skill Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skills')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skill_set')
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50) # Linkedin does not include this
 
@@ -614,7 +614,7 @@ class Language(models.Model):
     An object representing the languages that the member holds.
     """
 
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='languages')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='language_set')
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50, choices=settings.PROFILE_LANGUAGE_LEVEL_CHOICES)
 
@@ -731,7 +731,7 @@ class Certification(models.Model):
     See Certification Fields for a description of the fields available within this object.
     https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/certification
     """
-    profile = models.ForeignKey(Profile, related_name='certifications', on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, related_name='certification_set', on_delete=models.CASCADE)
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
@@ -773,7 +773,7 @@ class Course(models.Model):
     See Course Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/course
     """
-    profile = models.ForeignKey(Profile, related_name='courses', on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, related_name='course_set', on_delete=models.CASCADE)
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
@@ -816,7 +816,7 @@ class Honor(models.Model):
     See Honor Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/honor
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='honors')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='honor_set')
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
@@ -860,7 +860,7 @@ class Organization(models.Model):
     See Organization Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/organization
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='organizations')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='organization_set')
     order = models.SmallIntegerField(default=0)
 
     role = models.CharField(null=True, blank=True, max_length=100)
@@ -904,7 +904,7 @@ class Patent(models.Model):
     See Patent Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/patent
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='patents')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='patent_set')
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
@@ -953,7 +953,7 @@ class Project(models.Model):
     See Project Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='project_set')
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
@@ -1001,7 +1001,7 @@ class Publication(models.Model):
     See Publication Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='publications')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='publication_set')
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=200)
@@ -1049,16 +1049,15 @@ class Volunteering(models.Model):
     See Volunteering Experience Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/volunteering-experience
     """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='volunteering_experiences')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='volunteering_set')
     order = models.SmallIntegerField(default=0)
 
     title = models.CharField(null=True, blank=True, max_length=100)
-    role = models.CharField(null=True, blank=True, max_length=100)
-    start_date = models.CharField(null=True, blank=True, max_length=100)
-    end_date = models.CharField(null=True, blank=True, max_length=100)
+    location = models.CharField(null=True, blank=True, max_length=100)
     organization = models.CharField(null=True, blank=True, max_length=100)
     organization_link = models.CharField(null=True, blank=True, max_length=100)
-    cause = models.CharField(null=True, blank=True, max_length=100)
+    start_date = models.CharField(null=True, blank=True, max_length=100)
+    end_date = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
 
     class Meta:
@@ -1231,14 +1230,13 @@ def update_child_object(child_label=None, child_object=None, request=None):
 
     if child_label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
         child_object.title = request.POST.get("title")
-        child_object.role = request.POST.get("role")
-        child_object.start_date = request.POST.get("start_date")
-        child_object.end_date = request.POST.get("end_date")
+        child_object.location = request.POST.get("location")
         child_object.organization = request.POST.get("organization")
         child_object.organization_link = request.POST.get("organization_link")
-        child_object.cause = request.POST.get("cause")
+        child_object.start_date = request.POST.get("start_date")
+        child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")
-
+        
     child_object.save()
 
 

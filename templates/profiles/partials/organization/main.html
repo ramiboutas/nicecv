@@ -10,7 +10,7 @@
       {% trans "Organization" %}
     </h6>
 
-    {% for organization in object.organizations.all %}
+    {% for organization in object.organization_set.all %}
       <form hx-post="{{ organization.update_object_url }}" hx-trigger="change" hx-swap="none">
         <div id="organization-{{ organization.pk }}"  class="bg-light my-4">
 
