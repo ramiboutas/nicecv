@@ -1,9 +1,16 @@
 {% load i18n %}
 
-<h6  class="display-6 fs-6 mt-5" ><i class="bi bi-plus-square-dotted"></i> {% trans "Additional fields" %} <i class="bi bi-plus-square-dotted"></i></h6>
-<hr>
+<div class="container my-2 ">
 
-<div class="row">
+<div class="row border">
+  <h6  class="display-6 fs-5 mt-1 text-center">
+    <i class="bi bi-plus-square-dotted"></i>
+    {% trans "Add more fields to your profile" %}
+    <i class="bi bi-plus-square-dotted"></i>
+  </h6>
+</div>
+
+<div class="row border">
   <div class="col-md-4">
     {% include "profiles/partials/description/activation_button.html" %}
     {% include "profiles/partials/website/activation_button.html" %}
@@ -22,7 +29,6 @@
     {% include "profiles/partials/project/activation_button.html" %}
     {% include "profiles/partials/publication/activation_button.html" %}
     {% include "profiles/partials/volunteering/activation_button.html" %}
-
   </div>
-
+</div>
 </div>

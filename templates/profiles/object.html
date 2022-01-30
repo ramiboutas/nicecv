@@ -1,12 +1,13 @@
 {% load i18n %}
 
-
 <!-- modals -->
 <div id="modals-here"></div>
 
 {% include "profiles/partials/htmx_triggers.html" %}
 
-<div class="container my-5 ">
+{% include "profiles/partials/stuff_to_add.html" %}
+
+<div class="container my-5 border border-secondary">
   <div class="row my-3">
     <div class="col-md-4 col-sm-12">
       {% include "profiles/partials/photo/main.html" %}
@@ -17,7 +18,6 @@
       {% include "profiles/partials/language/main.html" %}
     </div>
     <div class="col-md-8 col-sm-12">
-
       {% include "profiles/partials/education/main.html" %}
       {% include "profiles/partials/experience/main.html" %}
       {% include "profiles/partials/certification/main.html" %}
@@ -28,17 +28,8 @@
       {% include "profiles/partials/project/main.html" %}
       {% include "profiles/partials/publication/main.html" %}
       {% include "profiles/partials/volunteering/main.html" %}
-
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      {% include "profiles/partials/stuff_to_add.html" %}
-      {% include "profiles/partials/resume_templates.html" %}
     </div>
   </div>
 </div>
 
-
-
-<div class="d-flex flex-column align-items-center text-center"></div>
+{% include "profiles/partials/resume_templates.html" %}

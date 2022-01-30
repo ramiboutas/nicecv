@@ -2,7 +2,7 @@
 <div id="course-activation-button">
 
 {% if not object.course_active %}
-  <button class="btn btn-outline-secondary  border-0"
+  <button class="btn btn-outline-secondary w-100 border-0"
     hx-post="{{ object.activate_course_url }}" hx-target="#course-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate course' %}">
     <i class="bi bi-eye"></i> {% trans 'Courses' %}  <i class="bi bi-person-video3"></i></button>
