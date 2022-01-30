@@ -2,6 +2,7 @@ from django.db import models
 from django.core.files.storage import FileSystemStorage
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
+from django.urls import reverse
 
 from utils.files import delete_path_file
 

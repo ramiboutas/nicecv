@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_tex',
     # 'djstripe',
 
     # Tools for debug
@@ -145,6 +146,15 @@ TEMPLATES = [
                 'texfiles.context_processors.texfiles',
             ],
         },
+    },
+    {
+        'NAME': 'tex',
+        'BACKEND': 'django_tex.engine.TeXEngine',
+        'DIRS': (BASE_DIR.joinpath('media'),),
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'texfiles.environment.my_environment',
+        }
     },
 ]
 
@@ -302,6 +312,17 @@ DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 SITE_NAME = _('Nice CV')
 META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
 META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
+
+
+
+# tex
+
+
+LATEX_INTERPRETER = 'pdflatex'
+# pdflatex, latex, xelatex, lualatex
+
+LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
+# LATEX_INTERPRETER_OPTIONS = '-interaction=nonstopmode'
 
 
 # profile model settings
