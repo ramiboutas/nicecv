@@ -22,7 +22,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('pricing/', include('pricing.urls')),
     path('profiles/', include('profiles.urls')),
-    path('texfiles/', include('texfiles.urls')),
+    path('pdfs/', include('texfiles.urls')),
     path("payments/", include("payments.urls")),
 
     # Payments

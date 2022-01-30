@@ -10,16 +10,24 @@
       </h6>
 
       <div class="row">
-        <div class="col">
-          {% for resume in resume_templates %}
-          <form class="" action="{{ resume.download_object_url }}" method="post" target="_blank">
-            {% csrf_token %}
-            <img src="{{ resume.image.url }}" alt="Resume template image">
-            <input type="hidden" name="pk_profile" value="{{object.pk}}">
-            <button type="submit" name="button">  {% trans "Select template" %}</button>
-          </form>
-          {% endfor %}
-        </div>
+        {% for resume in resume_templates %}
+          <div class="col">
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="{{ resume.image.url }}" alt="Resume template image">
+              <div class="card-body">
+                <h5 class="card-title">{{ resume.name }}</h5>
+                <p class="card-text"></p>
+
+                <form class="" action="{{ resume.download_object_url }}" method="post" target="_blank">
+                  {% csrf_token %}
+                  <input type="hidden" name="pk_profile" value="{{object.pk}}">
+                  <button class="btn btn-outline-danger w-100" type="submit" name="button">  {% trans "Get the PDF" %}</button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>

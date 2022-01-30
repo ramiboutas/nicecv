@@ -28,6 +28,10 @@ class ResumeTemplate(models.Model):
     def download_object_url(self):
         return reverse('texfiles_download_resume', kwargs={'pk':self.pk})
 
+    def add_one_download(self):
+        self.downloads = self.downloads + 1
+        self.save()
+
 
 class CoverLetterTemplate(models.Model):
     name = models.CharField(max_length=128)
