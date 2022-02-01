@@ -30,7 +30,7 @@
 
 % If you don't need one or more of the below, just remove the content leaving the command, e.g. \cvnumberphone{}
 
-\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
+%\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
 
 
 \cvname{ \large{ {{ object.first_name }} {{ object.last_name }}}} % Your name
@@ -59,7 +59,7 @@
 %----------------------------------------------------------------------------------------
 %	 SKILLS
 %----------------------------------------------------------------------------------------
-\skills{ { Whitespace/5.8},{good manners/4},{outgoing/4.3},{polite/4},{Java/0.01}}
+\skills{ { Whitespace/5.8}, {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
 
 %----------------------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ The heroine and the dreamer of Wonderland; Alice is the principal character.
 		\twentyitem{ \small{ {{- education.start_date -}} - {{- education.end_date -}} }}
 		{ {{- education.title -}} }
 		{ {{- education.institution -}} }
-		{ {{- education.description | linebreaks -}}  }
+		{ {{- education.description -}}  }
 	{% endfor %}
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 \end{twenty}
