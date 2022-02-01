@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import FileResponse
+from django.conf import settings
 
 from profiles.models import Profile
 from .models import ResumeTemplate
@@ -18,8 +19,9 @@ def download_resume_view(request, pk):
     profile_object = get_object_or_404(Profile, pk=pk_profile, user=request.user)
     resume_object = get_object_or_404(ResumeTemplate, pk=pk)
     resume_object.add_one_download()
-    context = {'object': profile_object}
+    settings.LATEX_INTERPRETER = resume_object.interpreter
     template_name = get_tex_template_name(resume_object)
+    context = {'object': profile_object}
     return render_to_pdf(request, template_name, context, filename='your_cv.pdf')
 
 @login_required

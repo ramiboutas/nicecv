@@ -51,7 +51,7 @@
 %----------------------------------------------------------------------------------------
 
 {% if object.description_active %}
-\aboutme{ {{object.description}}} % To have no About Me section, just remove all the text and leave \aboutme{}
+\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \aboutme{}
 {% else %}
 \aboutme{}
 {% endif %}
@@ -83,7 +83,7 @@ The heroine and the dreamer of Wonderland; Alice is the principal character.
 	{% for education in object.education_set.all() %}
 		\twentyitem{ \small{ {{- education.start_date -}} - {{- education.end_date -}} }}
 		{ {{- education.title -}} }
-		{ \href{ {{- education.institution_link -}} }{ {{- education.institution -}} } }
+		{ {{- education.institution -}} }
 		{ {{- education.description | linebreaks -}}  }
 	{% endfor %}
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}

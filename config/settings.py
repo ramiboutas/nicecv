@@ -318,7 +318,7 @@ META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and rel
 # tex
 
 
-LATEX_INTERPRETER = 'pdflatex'
+# LATEX_INTERPRETER = 'pdflatex'
 # pdflatex, latex, xelatex, lualatex
 
 LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
