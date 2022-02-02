@@ -156,6 +156,12 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
+    # settings
+    def get_profile_settings_modal_url(self):
+        return reverse('profiles_get_profile_settings_modal', kwargs={'pk':self.pk})
+
+    def remove_profile_settings_modal_url(self):
+        return reverse('profiles_remove_profile_settings_modal', kwargs={'pk':self.pk})
 
     # website
     def create_website_object_url(self):
@@ -1236,7 +1242,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.start_date = request.POST.get("start_date")
         child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")
-        
+
     child_object.save()
 
 

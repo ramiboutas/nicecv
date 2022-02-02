@@ -158,6 +158,22 @@ def update_description_view(request, pk):
     return HttpResponse(status=200)
 
 
+# htmx - profile - get profile settings view
+@login_required
+def get_profile_settings_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return render(request, 'profiles/partials/profile_settings_modal.html')
+
+
+# htmx - profile - remove profile settings view
+@login_required
+def remove_profile_settings_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return HttpResponse(status=200)
+
+
 # htmx - create child object
 @login_required
 @require_POST

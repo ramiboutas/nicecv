@@ -5,6 +5,8 @@ from .views import create_object_view, delete_object_view
 
 from .views import save_personal_information_view, update_description_view
 
+from .views import get_profile_settings_modal_view, remove_profile_settings_modal_view
+
 
 # general
 
@@ -25,10 +27,16 @@ urlpatterns = [
 
     # htmx - update description
     path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
+
+    # htmx - get profile settings modal
+    path('get-profile-settings-modal/<uuid:pk>/', get_profile_settings_modal_view, name='profiles_get_profile_settings_modal'),
+
+    # htmx - remove profile settings modal
+    path('remove-profile-settings-modal/<uuid:pk>/', remove_profile_settings_modal_view, name='profiles_remove_profile_settings_modal'),
 ]
 
-
 from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
+
 from .views import get_photo_modal_view, remove_photo_modal_view
 
 # photo
