@@ -114,33 +114,74 @@
 %----------------------------------------------------------------------------------------
 
 {% if object.education_active %}
-\section{Education}
+\section{ {{- object.education_label -}} }
 
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for education in object.education_set.all() %}
-		\twentyitem{ \scriptsize{ {{- education.start_date -}} - {{- education.end_date -}} }}
+		\twentyitem{\footnotesize{ {{ education.start_date }} - {{ education.end_date }}}}
 		{ {{- education.title -}} }
 		{ {{- education.institution -}} }
-		{ {{- education.description -}}  }
+		{ {{- education.description | linebreaks -}}  }
 	{% endfor %}
 \end{twenty}
 {% endif %}
 
 
 {% if object.experience_active %}
-\section{Work Experience}
+\section{ {{- object.experience_label -}} }
 
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for experience in object.experience_set.all() %}
-		\twentyitem{ \scriptsize{ {{- experience.start_date -}} - {{- experience.end_date -}} }}
+		\twentyitem{\footnotesize{ {{ experience.start_date }} - {{ experience.end_date }}}}
 		{ {{- experience.title -}} }
 		{ {{- experience.company -}} }
-		{ {{- experience.description -}}  }
+		{ {{- experience.description | linebreaks -}}  }
 	{% endfor %}
 \end{twenty}
 {% endif %}
+
+
+
+{% if object.certification_active %}
+\section{ {{- object.certification_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitemshort{<dates>}{<title>}
+	{% for certification in object.certification_set.all() %}
+		\twentyitem{ \small{ {{- certification.issuing_date -}} }}
+		{ {{- certification.title -}} }
+		{ {{- certification.issuer -}} }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+{% if object.course_active %}
+\section{ {{- object.course_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitemshort{<dates>}{<title>}
+	{% for course in object.course_set.all() %}
+		\twentyitem{ \small{ {{- course.issuing_date -}} }}
+		{ {{- course.title -}} }
+		{ {{- course.issuer -}} }
+		{ {{- course.hours -}} }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+% LABEL_FOR_CHILD_OBJECT_CERTIFICATION = 'certification'
+% LABEL_FOR_CHILD_OBJECT_COURSE = 'course'
+% LABEL_FOR_CHILD_OBJECT_HONOR = 'honor'
+% LABEL_FOR_CHILD_OBJECT_ORGANIZATION = 'organization'
+% LABEL_FOR_CHILD_OBJECT_PATENT = 'patent'
+% LABEL_FOR_CHILD_OBJECT_PROJECT = 'project'
+% LABEL_FOR_CHILD_OBJECT_PUBLICATION = 'publication'
+% LABEL_FOR_CHILD_OBJECT_VOLUNTEERING = 'volunteering'
+
 
 
 
