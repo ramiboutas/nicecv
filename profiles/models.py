@@ -73,7 +73,8 @@ class Profile(models.Model):
     location = models.CharField(null=True, blank=True, max_length=50)
     date_of_birth = models.CharField(null=True, blank=True, max_length=50)
     phone = models.CharField(null=True, blank=True, max_length=50)
-    email = models.CharField(max_length=50)
+    email = models.CharField(null=True, blank=True, max_length=50)
+    website = models.CharField(null=True, blank=True, max_length=50)
 
     # description & interests
     description = models.TextField(null=True, blank=True, max_length=1000)
@@ -603,6 +604,9 @@ class Skill(models.Model):
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50) # Linkedin does not include this
 
+    class Meta:
+        ordering = ('-level', )
+
     def __str__(self):
         return self.name
 
@@ -623,6 +627,9 @@ class Language(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='language_set')
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50, choices=settings.PROFILE_LANGUAGE_LEVEL_CHOICES)
+
+    class Meta:
+        ordering = ('id', 'level', )
 
     def __str__(self):
         return self.name
@@ -1157,6 +1164,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
 
     if child_label == LABEL_FOR_CHILD_OBJECT_SKILL:
         child_object.name = request.POST.get("name")
+        child_object.level = request.POST.get("level")
 
     if child_label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
         child_object.name = request.POST.get("name")

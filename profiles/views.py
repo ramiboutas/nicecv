@@ -142,7 +142,7 @@ def save_personal_information_view(request, pk):
     object.date_of_birth = request.POST.get("date_of_birth")
     object.phone = request.POST.get("phone")
     object.email = request.POST.get("email")
-    print(request.POST.get("description"))
+    object.website = request.POST.get("website")
     object.save()
     return HttpResponse(status=200)
 

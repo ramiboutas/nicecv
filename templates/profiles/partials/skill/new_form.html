@@ -1,15 +1,40 @@
 {% load i18n %}
-<form hx-post="{{ object.create_skill_object_url}}" hx-trigger="submit" hx-swap="outerHTML" hx-target="#skill-box">
-  <div class="input-group mb-3">
+<form style="border: dashed 1px green;"
+hx-post="{{ object.create_skill_object_url}}" hx-trigger="submit" hx-swap="outerHTML" hx-target="#skill-box">
+
+  <div class="input-group mb-1">
     <div class="input-group-prepend">
-      <span class="input-group-text border-0" ><i class="bi bi-gear"></i></span>
+      <span class="input-group-text border-0"><i class="bi bi-gear"></i></span>
     </div>
     <input class="form-control border-0 bg-white"  type="text"
-      placeholder="{% trans 'Add skill ...' %}"
+      placeholder="{% trans 'Enter a skill you have' %}"
       name="name" maxlength="100">
-    <button class="btn btn-outline-secondary border-0" type="submit" name="button"
-      data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this skill' %}">
-      <i class="bi bi-plus-circle"></i>
-    </button>
+  </div>
+
+  <div class="input-group mb-1">
+    <div class="input-group-prepend">
+      <span class="input-group-text border-0 bg-white"><i class="bi bi-bar-chart"></i></span>
+    </div>
+    <input  class="form-control form-range border-0" type="range" name="level">
+    <div class="input-group-prepend">
+      <span class="input-group-text border-0 bg-white" ><i class="bi bi-bar-chart-fill"></i></span>
+    </div>
+  </div>
+
+  <!--buttons -->
+  <div class="row">
+    <div class="col-2">
+      <button class="btn btn-outline-secondary border-0 w-100" type="button"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
+        hx-post="{{ object.remove_skill_new_form_url }}" hx-target="#skill-new" hx-swap="innerHTML">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+    <div class="col-10">
+      <button class="btn btn-outline-secondary  border-0 w-100" type="submit"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this skill' %}">
+        <i class="bi bi-check-circle"> {% trans "Save" %}</i>
+      </button>
+    </div>
   </div>
 </form>

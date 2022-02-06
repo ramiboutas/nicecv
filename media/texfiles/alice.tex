@@ -19,7 +19,7 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[letterpaper]{twentysecondcv} % a4paper for A4
+\documentclass[letterpaper]{twentysecondcv-alice} % a4paper for A4
 
 \usepackage{graphicx}
 {% graphicspath %}
@@ -30,16 +30,40 @@
 
 % If you don't need one or more of the below, just remove the content leaving the command, e.g. \cvnumberphone{}
 
-%\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
+{% if object.photo and object.photo.path %}
+	\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
+{% else %}
+	\profilepic{}
+{% endif %}
 
 
-\cvname{ \large{ {{ object.first_name }} {{ object.last_name }}}} % Your name
+% Your name
+{% if object.first_name or object.last_name %}
+\cvname{ {{ object.first_name }} {{ object.last_name }}}
+{% else %}
+\cvname{}
+{% endif %}
+
+
 \cvjobtitle{ {{- object.jobtitle -}} } % Job title/career
 
-\cvdate{ {{- object.date_of_birth -}} } % Date of birth
-\cvaddress{ {{- object.location -}} } % Short address/location, use \newline if more than 1 line is required
+
+% Date of birth
+{% if object.date_of_birth %}
+	\cvdate{ {{- object.date_of_birth -}} }
+{% else %}
+	\cvdate{} % Date of birth
+{% endif %}
+
+% location
+{% if object.location %}
+	\cvaddress{ {{- object.location -}} } % Use \newline if more than 1 line is required
+{% else %}
+	\cvaddress{}
+{% endif %}
+
 \cvnumberphone{ {{- object.phone -}} } % Phone number
-\cvsite{ {{- object.jobtitle -}} } % Personal website
+\cvsite{ {{- object.website -}} } % Personal website
 \cvmail{ {{- object.email -}} } % Email address
 
 %----------------------------------------------------------------------------------------
@@ -50,117 +74,74 @@
 %	 ABOUT ME
 %----------------------------------------------------------------------------------------
 
-{% if object.description_active %}
-\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \aboutme{}
+{% if object.description_active and object.description %}
+	\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \aboutme{}
 {% else %}
-\aboutme{}
+	\aboutme{}
 {% endif %}
 
 %----------------------------------------------------------------------------------------
 %	 SKILLS
 %----------------------------------------------------------------------------------------
-\skills{ { Whitespace/5.8}, {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
+
+{% if object.skill_active and object.skill_set.count() > 0 %}
+\numberofskills{ {{- object.skill_set.count() -}} }
+
+%\skills{	{ Whitespace/5.8}, {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
+\skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name -}} / {{- skill.level*6/100 -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+{% else %}
+	%\skills{}
+{% endif %}
+
+%----------------------------------------------------------------------------------------
+%	 LANGUAGES
+%----------------------------------------------------------------------------------------
+{% if object.language_active and object.language_set.count() > 0 %}
+\numberoflanguages{ {{- object.language_set.count() -}} }
+\languages{ {% for language in object.language_set.all() %}{ {{- language.name -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+{% else %}
+	%\languages{}
+{% endif %}
+
+
 
 %----------------------------------------------------------------------------------------
 
 \makeprofile % Print the sidebar
 
 %----------------------------------------------------------------------------------------
-%	 INTERESTS
-%----------------------------------------------------------------------------------------
-
-\section{Interests}
-
-The heroine and the dreamer of Wonderland; Alice is the principal character.
-
-%----------------------------------------------------------------------------------------
 %	 EDUCATION
 %----------------------------------------------------------------------------------------
+
 {% if object.education_active %}
 \section{Education}
 
 \begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for education in object.education_set.all() %}
-		\twentyitem{ \small{ {{- education.start_date -}} - {{- education.end_date -}} }}
+		\twentyitem{ \scriptsize{ {{- education.start_date -}} - {{- education.end_date -}} }}
 		{ {{- education.title -}} }
 		{ {{- education.institution -}} }
 		{ {{- education.description -}}  }
 	{% endfor %}
-	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 \end{twenty}
 {% endif %}
 
 
-%----------------------------------------------------------------------------------------
-%	 PUBLICATIONS
-%----------------------------------------------------------------------------------------
-
-\section{Publications}
-
-\begin{twentyshort} % Environment for a short list with no descriptions
-	\twentyitemshort{1865}{Chapter One, Down the Rabbit Hole.}
-	\twentyitemshort{1865}{Chapter Two, The Pool of Tears.}
-	\twentyitemshort{1865}{Chapter Three,  The Caucus Race and a Long Tale.}
-	\twentyitemshort{1865}{Chapter Four,  The Rabbit Sends a Little Bill.}
-	\twentyitemshort{1865}{Chapter Five,  Advice from a Caterpillar.}
-	%\twentyitemshort{<dates>}{<title/description>}
-\end{twentyshort}
-
-%----------------------------------------------------------------------------------------
-%	 AWARDS
-%----------------------------------------------------------------------------------------
-
-\section{Awards}
-
-\begin{twentyshort} % Environment for a short list with no descriptions
-	\twentyitemshort{1987}{All-Time Best Fantasy Novel.}
-	\twentyitemshort{1998}{All-Time Best Fantasy Novel before 1990.}
-	%\twentyitemshort{<dates>}{<title/description>}
-\end{twentyshort}
-
-%----------------------------------------------------------------------------------------
-%	 EXPERIENCE
-%----------------------------------------------------------------------------------------
-
-\section{Experience}
+{% if object.experience_active %}
+\section{Work Experience}
 
 \begin{twenty} % Environment for a list with descriptions
-	\twentyitem{1900}{Alice in Wonderland-The Circra (1900's) Silent Film.}{Film}{The first Alice on film was over a hundred years ago.}
-	\twentyitem{1933}{Alice in Wonderland 1933 version.}{Film}{This film stars Ethel griffies and Charlotte Henry. It was a box office flop when it was released.}
-	\twentyitem{1951}{Disney Film.}{Film}{Walt Disney brings Lewis Carroll's fantasy story to life in this well done animated classic. Even though many elements from the book were dropped, such as the duchess with the baby pig and mock turtle, this version is without a doubt the most famous Alice adaption made.}
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for experience in object.experience_set.all() %}
+		\twentyitem{ \scriptsize{ {{- experience.start_date -}} - {{- experience.end_date -}} }}
+		{ {{- experience.title -}} }
+		{ {{- experience.company -}} }
+		{ {{- experience.description -}}  }
+	{% endfor %}
 \end{twenty}
+{% endif %}
 
-%----------------------------------------------------------------------------------------
-%	 OTHER INFORMATION
-%----------------------------------------------------------------------------------------
 
-\section{Other information}
-
-\subsection{Review}
-
-Alice approaches Wonderland as an anthropologist, but maintains a strong sense of noblesse oblige that comes with her class status. She has confidence in her social position, education, and the Victorian virtue of good manners. Alice has a feeling of entitlement, particularly when comparing herself to Mabel, whom she declares has a ``poky little house," and no toys. Additionally, she flaunts her limited information base with anyone who will listen and becomes increasingly obsessed with the importance of good manners as she deals with the rude creatures of Wonderland. Alice maintains a superior attitude and behaves with solicitous indulgence toward those she believes are less privileged.
-
-%----------------------------------------------------------------------------------------
-%	 SECOND PAGE EXAMPLE
-%----------------------------------------------------------------------------------------
-
-%\newpage % Start a new page
-
-%\makeprofile % Print the sidebar
-
-%\section{Other information}
-
-%\subsection{Review}
-
-%Alice approaches Wonderland as an anthropologist, but maintains a strong sense of noblesse oblige that comes with her class status. She has confidence in her social position, education, and the Victorian virtue of good manners. Alice has a feeling of entitlement, particularly when comparing herself to Mabel, whom she declares has a ``poky little house," and no toys. Additionally, she flaunts her limited information base with anyone who will listen and becomes increasingly obsessed with the importance of good manners as she deals with the rude creatures of Wonderland. Alice maintains a superior attitude and behaves with solicitous indulgence toward those she believes are less privileged.
-
-%\section{Other information}
-
-%\subsection{Review}
-
-%Alice approaches Wonderland as an anthropologist, but maintains a strong sense of noblesse oblige that comes with her class status. She has confidence in her social position, education, and the Victorian virtue of good manners. Alice has a feeling of entitlement, particularly when comparing herself to Mabel, whom she declares has a ``poky little house," and no toys. Additionally, she flaunts her limited information base with anyone who will listen and becomes increasingly obsessed with the importance of good manners as she deals with the rude creatures of Wonderland. Alice maintains a superior attitude and behaves with solicitous indulgence toward those she believes are less privileged.
-
-%----------------------------------------------------------------------------------------
 
 \end{document}
