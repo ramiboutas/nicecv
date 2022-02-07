@@ -28,8 +28,6 @@
 %	 PERSONAL INFORMATION
 %----------------------------------------------------------------------------------------
 
-% If you don't need one or more of the below, just remove the content leaving the command, e.g. \cvnumberphone{}
-
 {% if object.photo and object.photo.path %}
 	\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
 {% else %}
@@ -39,14 +37,17 @@
 
 % Your name
 {% if object.first_name or object.last_name %}
-\cvname{ {{ object.first_name }} {{ object.last_name }}}
+	\cvname{ {{ object.first_name }} {{ object.last_name }}}
 {% else %}
-\cvname{}
+	\cvname{}
 {% endif %}
 
-
-\cvjobtitle{ {{- object.jobtitle -}} } % Job title/career
-
+% Job title/career
+{% if object.jobtitle %}
+	\cvjobtitle{ {{- object.jobtitle -}} }
+{% else %}
+	\cvjobtitle{}
+{% endif %}
 
 % Date of birth
 {% if object.date_of_birth %}
@@ -55,16 +56,34 @@
 	\cvdate{} % Date of birth
 {% endif %}
 
-% location
+% Location
 {% if object.location %}
 	\cvaddress{ {{- object.location -}} } % Use \newline if more than 1 line is required
 {% else %}
 	\cvaddress{}
 {% endif %}
 
-\cvnumberphone{ {{- object.phone -}} } % Phone number
-\cvsite{ {{- object.website -}} } % Personal website
-\cvmail{ {{- object.email -}} } % Email address
+% Phone number
+{% if object.phone %}
+	\cvnumberphone{ {{- object.phone -}} }
+{% else %}
+	\cvnumberphone{}
+{% endif %}
+
+% Personal website
+{% if object.website %}
+	\cvsite{ {{- object.website -}} }
+{% else %}
+	\cvsite{}
+{% endif %}
+
+% Email address
+{% if object.email %}
+	\cvmail{ {{- object.email -}} }
+{% else %}
+	\cvmail{}
+{% endif %}
+
 
 %----------------------------------------------------------------------------------------
 
@@ -74,8 +93,10 @@
 %	 ABOUT ME
 %----------------------------------------------------------------------------------------
 
+\aboutmelabel{ {{- object.description_label -}} }
+
 {% if object.description_active and object.description %}
-	\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \aboutme{}
+	\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \description{}
 {% else %}
 	\aboutme{}
 {% endif %}
@@ -84,10 +105,11 @@
 %	 SKILLS
 %----------------------------------------------------------------------------------------
 
+\skilllabel{ {{- object.skill_label -}} }
+
 {% if object.skill_active and object.skill_set.count() > 0 %}
 \numberofskills{ {{- object.skill_set.count() -}} }
-
-%\skills{	{ Whitespace/5.8}, {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
+%	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
 \skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name -}} / {{- skill.level*6/100 -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\skills{}
@@ -96,14 +118,15 @@
 %----------------------------------------------------------------------------------------
 %	 LANGUAGES
 %----------------------------------------------------------------------------------------
+
+\languagelabel{ {{- object.language_label -}} }
+
 {% if object.language_active and object.language_set.count() > 0 %}
-\numberoflanguages{ {{- object.language_set.count() -}} }
-\languages{ {% for language in object.language_set.all() %}{ {{- language.name -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+	\numberoflanguages{ {{- object.language_set.count() -}} }
+	\languages{ {% for language in object.language_set.all() %}{ {{- language.name -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\languages{}
 {% endif %}
-
-
 
 %----------------------------------------------------------------------------------------
 

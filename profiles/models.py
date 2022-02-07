@@ -97,17 +97,17 @@ class Profile(models.Model):
     volunteering_active = models.BooleanField(default=False)
 
     # labels
+    description_label = models.CharField(max_length=100, default=_('About me'))
     website_label = models.CharField(max_length=100, default=_('Websites'))
     skill_label = models.CharField(max_length=100, default=_('Skills'))
-    language_label = models.CharField(max_length=100, default=_('Language'))
-
+    language_label = models.CharField(max_length=100, default=_('Languages'))
     education_label = models.CharField(max_length=100, default=_('Education'))
     experience_label = models.CharField(max_length=100, default=_('Work experience'))
-    certification_label = models.CharField(max_length=100, default=_('Certification'))
+    certification_label = models.CharField(max_length=100, default=_('Certifications'))
     course_label = models.CharField(max_length=100, default=_('Courses'))
     honor_label = models.CharField(max_length=100, default=_('Honors and Awards'))
-    organization_label = models.CharField(max_length=100, default=_('Organization'))
-    patent_label = models.CharField(max_length=100, default=_('Patent'))
+    organization_label = models.CharField(max_length=100, default=_('Organizations'))
+    patent_label = models.CharField(max_length=100, default=_('Patents'))
     project_label = models.CharField(max_length=100, default=_('Projects'))
     publication_label = models.CharField(max_length=100, default=_('Publications'))
     volunteering_label = models.CharField(max_length=100, default=_('Volunteering work'))
