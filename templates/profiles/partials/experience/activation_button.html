@@ -2,10 +2,10 @@
 <div id="experience-activation-button">
 
 {% if not object.experience_active %}
-  <button class="btn btn-outline-secondary w-100 border-0"
+  <button class="btn btn-outline-secondary align-left w-100 border-0" style="text-align:left;"
     hx-post="{{ object.activate_experience_url }}" hx-target="#experience-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate experience' %}">
-    <i class="bi bi-eye"></i> {% trans 'Work experience' %}  <i class="bi bi-building"></i></button>
+    <i class="bi bi-building"></i> {% trans 'Work experience' %}</button>
 {% endif %}
 
 </div>

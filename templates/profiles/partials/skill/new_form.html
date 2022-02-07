@@ -17,7 +17,7 @@ hx-post="{{ object.create_skill_object_url}}" hx-trigger="submit" hx-swap="outer
     </div>
     <input  class="form-control form-range border-0" type="range" name="level">
     <div class="input-group-prepend">
-      <span class="input-group-text border-0 bg-white" ><i class="bi bi-bar-chart-fill"></i></span>
+      <span class="input-group-text border-0 bg-white"><i class="bi bi-bar-chart-fill"></i></span>
     </div>
   </div>
 
@@ -27,7 +27,7 @@ hx-post="{{ object.create_skill_object_url}}" hx-trigger="submit" hx-swap="outer
       <button class="btn btn-outline-secondary border-0 w-100" type="button"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
         hx-post="{{ object.remove_skill_new_form_url }}" hx-target="#skill-new" hx-swap="innerHTML">
-        <i class="bi bi-trash"></i>
+        <i class="bi bi-x-lg"></i>
       </button>
     </div>
     <div class="col-10">

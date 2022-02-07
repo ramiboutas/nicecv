@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="description-box" class="mt-5">
   {% if object.description_active %}
-    <h6  class="display-6 fs-6" >
+    <h6  class="display-6 fs-6">
       <button class="btn btn-outline-secondary border-0"
         hx-post="{{ object.deactivate_description_url }}" hx-target="#description-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate description' %}">

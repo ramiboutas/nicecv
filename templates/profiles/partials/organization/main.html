@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="organization-box" class="mt-5">
   {% if object.organization_active %}
-    <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom" >
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom">
       <button class="btn btn-outline-secondary border-0"
         hx-post="{{ object.deactivate_organization_url }}" hx-target="#organization-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate organization' %}">

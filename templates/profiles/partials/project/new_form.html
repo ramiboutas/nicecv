@@ -8,7 +8,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-lightbulb"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-lightbulb"></i></span>
           </div>
           <input class="form-control border-0 bg-white"  type="text"
             placeholder="{% trans 'Project name, e.g: My cool project' %}"
@@ -19,7 +19,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-person"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-person"></i></span>
           </div>
           <input class="form-control border-0 bg-white" type="text"
             placeholder="{% trans 'Role in the project, e.g. Developer (optional)' %}"
@@ -34,7 +34,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
           </div>
           <input class="form-control border-0 bg-white" type="text"
             placeholder="{% trans 'Organization, e.g: University of Oxford (optional)' %}"
@@ -45,7 +45,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
           </div>
           <input class="form-control border-0 bg-white" type="text"
             placeholder="{% trans 'Link, e.g: www.my-project-site.com (optional)' %}"
@@ -60,7 +60,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-calendar4-event"></i></span>
           </div>
           <input class="form-control border-0 bg-white"  type="text"
             placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
@@ -71,7 +71,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
           </div>
           <input class="form-control border-0 bg-white"  type="text"
             placeholder="{% trans 'End date, e.g. Feb 2022, Ongoing, ...' %}"
@@ -86,7 +86,7 @@
       <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text border-0" ><i class="bi bi-justify-left"></i></span>
+            <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
           </div>
           <textarea class="form-control border-0 bg-white"  type="text"
             placeholder="{% trans 'Description' %}" name="description"
@@ -101,7 +101,7 @@
         <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this project form' %}"
         hx-post="{{ object.remove_project_new_form_url }}" hx-target="#project-new" hx-swap="innerHTML"
-        ><i class="bi bi-trash"></i></button>
+        ><i class="bi bi-x-lg"></i></button>
       </div>
       <div class="col-11">
         <button class="btn btn-outline-secondary  border-0 w-100" type="submit" name="button"

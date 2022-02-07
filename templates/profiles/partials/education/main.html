@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="education-box" class="mt-5">
   {% if object.education_active %}
-    <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom" >
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom">
       <button class="btn btn-outline-secondary border-0"
         hx-post="{{ object.deactivate_education_url }}" hx-target="#education-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate education' %}">
@@ -53,7 +53,7 @@
             <div class="col-8">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-mortarboard"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-mortarboard"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Title, e.g: Mechanical Engineering Degree' %}"
@@ -64,7 +64,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-check2-circle"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-check2-circle"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Grade, e.g. 7.1 (optional)' %}"
@@ -79,7 +79,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-building"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light"
                   placeholder="{% trans 'Institution, e.g: University of Oxford' %}"
@@ -90,7 +90,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-link"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light"
                   placeholder="{% trans 'Institution link, e.g: www.ox.ac.uk (optional)' %}"
@@ -105,7 +105,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-calendar4-event"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-calendar4-event"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
@@ -116,7 +116,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-calendar-check"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
                 </div>
                 <input class="form-control border-0 bg-light" type="text"
                  placeholder="{% trans 'End date, e.g. Jan 2021, on going, ...' %}"
@@ -131,7 +131,7 @@
             <div class="col">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text border-0" ><i class="bi bi-justify-left"></i></span>
+                  <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
                 </div>
                 <textarea class="form-control border-0 bg-light" type="text"
                   placeholder="{% trans 'Description' %}"  name="description"
