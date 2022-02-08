@@ -1,13 +1,22 @@
 {% load i18n %}
 <div id="project-box" class="mt-5">
   {% if object.project_active %}
-    <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom">
-      <button class="btn btn-outline-secondary border-0"
+    <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
+
+      <i class="bi bi-patch-check"></i> {% trans "Projects" %}
+
+      <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.deactivate_project_url }}" hx-target="#project-box" hx-swap="innerHTML"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate project' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
-      {% trans "Projects" %}
+
+      <button class="btn btn-outline-secondary border-0 float-end"
+        hx-post="{{ object.deactivate_project_url }}" hx-target="#modals-here"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+        <i class="bi bi-info-circle"></i>
+      </button>
+
     </h6>
 
     {% for project in object.project_set.all %}
@@ -121,7 +130,7 @@
             </div>
           </div>
 
-          <!--description -->
+          <!--project -->
           <div class="row">
             <div class="col">
               <div class="input-group mb-3">
@@ -129,8 +138,8 @@
                   <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
                 </div>
                 <textarea class="form-control border-0 bg-light"  type="text"
-                  placeholder="{% trans 'Description' %}" name="description"
-                  maxlength="{{max_length_super_large}}">{% if project.description %}{{ project.description }}{% endif %}</textarea>
+                  placeholder="{% trans 'project' %}" name="project"
+                  maxlength="{{max_length_super_large}}">{% if project.project %}{{ project.project }}{% endif %}</textarea>
               </div>
             </div>
           </div>
