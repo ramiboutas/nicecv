@@ -165,12 +165,13 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
-    # settings
-    def get_profile_settings_modal_url(self):
-        return reverse('profiles_get_profile_settings_modal', kwargs={'pk':self.pk})
+    def insert_description_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
-    def remove_profile_settings_modal_url(self):
-        return reverse('profiles_remove_profile_settings_modal', kwargs={'pk':self.pk})
+    def remove_description_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
     # website
     def create_website_object_url(self):
@@ -199,6 +200,14 @@ class Profile(models.Model):
 
     def remove_website_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
+
+    def insert_website_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
+
+    def remove_website_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
 
     # skill
@@ -230,6 +239,14 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
+    def insert_skill_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
+
+    def remove_skill_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
+
     # language
     def create_language_object_url(self):
         return reverse('profiles_create_child_object',
@@ -257,6 +274,14 @@ class Profile(models.Model):
 
     def remove_language_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+
+    def insert_language_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+
+    def remove_language_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
     # education
@@ -288,6 +313,15 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
+
+    def insert_education_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+
+    def remove_education_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+
     # experience
     def create_experience_object_url(self):
         return reverse('profiles_create_child_object',
@@ -315,6 +349,14 @@ class Profile(models.Model):
 
     def remove_experience_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+
+    def insert_experience_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+
+    def remove_experience_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     # certification
@@ -346,6 +388,14 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
+    def insert_certification_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+
+    def remove_certification_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+
     # course
     def create_course_object_url(self):
         return reverse('profiles_create_child_object',
@@ -373,6 +423,14 @@ class Profile(models.Model):
 
     def remove_course_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
+
+    def insert_course_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
+
+    def remove_course_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     # honor
@@ -404,6 +462,14 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
+    def insert_honor_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
+
+    def remove_honor_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
+
     # organization
     def create_organization_object_url(self):
         return reverse('profiles_create_child_object',
@@ -431,6 +497,14 @@ class Profile(models.Model):
 
     def remove_organization_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+
+    def insert_organization_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+
+    def remove_organization_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     # patent
@@ -462,6 +536,14 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
+    def insert_patent_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
+
+    def remove_patent_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
+
     # project
     def create_project_object_url(self):
         return reverse('profiles_create_child_object',
@@ -489,6 +571,14 @@ class Profile(models.Model):
 
     def remove_project_activation_button_url(self):
         return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+
+    def insert_project_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+
+    def remove_project_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     # publication
@@ -520,6 +610,14 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
+    def insert_publication_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+
+    def remove_publication_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+
     # volunteering
     def create_volunteering_object_url(self):
         return reverse('profiles_create_child_object',
@@ -549,6 +647,13 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_activation_button',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
+    def insert_volunteering_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+
+    def remove_volunteering_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:

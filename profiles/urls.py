@@ -5,8 +5,6 @@ from .views import create_object_view, delete_object_view
 
 from .views import save_personal_information_view, update_description_view
 
-from .views import get_profile_settings_modal_view, remove_profile_settings_modal_view
-
 
 # general
 
@@ -28,11 +26,6 @@ urlpatterns = [
     # htmx - update description
     path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
 
-    # htmx - get profile settings modal
-    path('get-profile-settings-modal/<uuid:pk>/', get_profile_settings_modal_view, name='profiles_get_profile_settings_modal'),
-
-    # htmx - remove profile settings modal
-    path('remove-profile-settings-modal/<uuid:pk>/', remove_profile_settings_modal_view, name='profiles_remove_profile_settings_modal'),
 ]
 
 from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
@@ -106,5 +99,18 @@ urlpatterns += [
         # htmx - remove_child_activation_button
         path('remove-activation-button/<str:label>/<uuid:pk_parent>/', remove_child_activation_button_view, name='profiles_remove_child_activation_button'),
 
+]
+
+
+from .views import insert_child_or_field_help_modal_view, remove_child_or_field_help_modal_view
+
+# insert or remove help modal
+urlpatterns += [
+
+        # htmx - insert help modal
+        path('insert-child-or-field-help-modal/<str:label>/<uuid:pk_parent>/', insert_child_or_field_help_modal_view, name='profiles_insert_child_or_field_help_modal'),
+
+        # htmx - remove help modal
+        path('remove-child-or-field-help-modal/<str:label>/<uuid:pk_parent>/', remove_child_or_field_help_modal_view, name='profiles_remove_child_or_field_help_modal'),
 
 ]

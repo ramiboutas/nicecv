@@ -158,20 +158,20 @@ def update_description_view(request, pk):
     return HttpResponse(status=200)
 
 
-# htmx - profile - get profile settings view
-@login_required
-def get_profile_settings_modal_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    context = {'object': object}
-    return render(request, 'profiles/partials/profile_settings_modal.html')
-
-
-# htmx - profile - remove profile settings view
-@login_required
-def remove_profile_settings_modal_view(request, pk):
-    object = get_object_or_404(Profile, pk=pk, user=request.user)
-    context = {'object': object}
-    return HttpResponse(status=200)
+# # htmx - profile - get profile settings view
+# @login_required
+# def get_profile_settings_modal_view(request, pk):
+#     object = get_object_or_404(Profile, pk=pk, user=request.user)
+#     context = {'object': object}
+#     return render(request, 'profiles/partials/profile_settings_modal.html')
+#
+#
+# # htmx - profile - remove profile settings view
+# @login_required
+# def remove_profile_settings_modal_view(request, pk):
+#     object = get_object_or_404(Profile, pk=pk, user=request.user)
+#     context = {'object': object}
+#     return HttpResponse(status=200)
 
 
 # htmx - create child object
@@ -321,5 +321,23 @@ def insert_child_activation_button_view(request, label, pk_parent):
 # htmx - remove the activation button
 @login_required
 def remove_child_activation_button_view(request, label, pk_parent):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    return HttpResponse(status=200)
+
+
+# htmx - insert help modal
+@login_required
+def insert_child_or_field_help_modal_view(request, label, pk_parent):
+    object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    context = {'object': object}
+    try:
+        return render(request, f'profiles/partials/{label}/help_modal.html', context)
+    except:
+        return HttpResponseServerError()
+
+
+# htmx - remove help modal
+@login_required
+def remove_child_or_field_help_modal_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     return HttpResponse(status=200)
