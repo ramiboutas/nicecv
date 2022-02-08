@@ -3,11 +3,11 @@
   {% if object.education_active %}
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
-      <i class="bi bi-patch-check"></i> {% trans "Education" %}
+      <i class="bi bi-mortarboard"></i> {% trans "Education" %}
 
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.deactivate_education_url }}" hx-target="#education-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate education' %}">
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate education fields' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 

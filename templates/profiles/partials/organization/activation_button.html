@@ -4,8 +4,8 @@
 {% if not object.organization_active %}
   <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
     hx-post="{{ object.activate_organization_url }}" hx-target="#organization-box" hx-swap="outerHTML"
-    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate organization' %}">
-    <i class="bi bi-building"></i> {% trans 'Organization' %}</button>
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate organization memberships' %}">
+    <i class="bi bi-person-check"></i> {% trans 'Organization memberships' %}</button>
 {% endif %}
 
 </div>

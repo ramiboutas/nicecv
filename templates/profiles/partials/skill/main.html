@@ -3,11 +3,11 @@
   {% if object.skill_active %}
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
-      <i class="bi bi-patch-check"></i> {% trans "Skills" %}
+      <i class="bi bi-gear"></i> {% trans "Skills" %}
 
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.deactivate_skill_url }}" hx-target="#skill-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate skill' %}">
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate skills' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 

@@ -3,11 +3,11 @@
   {% if object.publication_active %}
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
-      <i class="bi bi-patch-check"></i> {% trans "Publications" %}
+      <i class="bi bi-book"></i> {% trans "Publications" %}
 
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.deactivate_publication_url }}" hx-target="#publication-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate publication' %}">
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate publications' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 

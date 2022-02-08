@@ -3,11 +3,11 @@
   {% if object.project_active %}
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
-      <i class="bi bi-patch-check"></i> {% trans "Projects" %}
+      <i class="bi bi-lightbulb"></i> {% trans "Projects" %}
 
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.deactivate_project_url }}" hx-target="#project-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate project' %}">
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate projects' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 

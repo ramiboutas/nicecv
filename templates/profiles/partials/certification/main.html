@@ -7,12 +7,12 @@
 
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.deactivate_certification_url }}" hx-target="#certification-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate certification' %}">
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate certifications' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 
       <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.deactivate_certification_url }}" hx-target="#modals-here"
+        hx-post="{{ object.get_certification_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
