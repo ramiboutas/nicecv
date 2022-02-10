@@ -16,8 +16,18 @@ User = get_user_model()
 
 # used in urls (child_label) & in templates  (profiles/partials/child_label/file.html)
 LABEL_FOR_PROFILE_FIELD_DESCRIPTION = 'description'
+LABEL_FOR_PROFILE_FIELD_WEBSITE = 'website'
+LABEL_FOR_PROFILE_FIELD_LINKEDIN = 'linkedin'
+LABEL_FOR_PROFILE_FIELD_SKYPE = 'skype'
+LABEL_FOR_PROFILE_FIELD_INSTAGRAM = 'instagram'
+LABEL_FOR_PROFILE_FIELD_TWITTER = 'twitter'
+LABEL_FOR_PROFILE_FIELD_FACEBOOK = 'facebook'
+LABEL_FOR_PROFILE_FIELD_YOUTUBE = 'youtube'
+LABEL_FOR_PROFILE_FIELD_GITHUB = 'github'
+LABEL_FOR_PROFILE_FIELD_GITLAB = 'gitlab'
+LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW = 'stackoverflow'
+LABEL_FOR_PROFILE_FIELD_MEDIUM = 'medium'
 
-LABEL_FOR_CHILD_OBJECT_WEBSITE = 'website'
 LABEL_FOR_CHILD_OBJECT_SKILL = 'skill'
 LABEL_FOR_CHILD_OBJECT_LANGUAGE = 'language'
 LABEL_FOR_CHILD_OBJECT_EDUCATION = 'education'
@@ -74,15 +84,41 @@ class Profile(models.Model):
     date_of_birth = models.CharField(null=True, blank=True, max_length=50)
     phone = models.CharField(null=True, blank=True, max_length=50)
     email = models.CharField(null=True, blank=True, max_length=50)
+
     website = models.CharField(null=True, blank=True, max_length=50)
+    linkedin = models.CharField(null=True, blank=True, max_length=50)
+    skype = models.CharField(null=True, blank=True, max_length=50)
+    instagram = models.CharField(null=True, blank=True, max_length=50)
+    twitter = models.CharField(null=True, blank=True, max_length=50)
+    facebook = models.CharField(null=True, blank=True, max_length=50)
+    youtube = models.CharField(null=True, blank=True, max_length=50)
+    github = models.CharField(null=True, blank=True, max_length=50)
+    gitlab = models.CharField(null=True, blank=True, max_length=50)
+    stackoverflow = models.CharField(null=True, blank=True, max_length=50)
+    medium = models.CharField(null=True, blank=True, max_length=50)
+
+
 
     # description & interests
     description = models.TextField(null=True, blank=True, max_length=1000)
     interests = models.CharField(null=True, blank=True, max_length=200)
 
-    # activation of Fields
+    # activation of fields
     description_active = models.BooleanField(default=True)
-    website_active = models.BooleanField(default=True)
+
+    website_active = models.BooleanField(default=False)
+    linkedin_active = models.BooleanField(default=True)
+    skype_active = models.BooleanField(default=True)
+    instagram_active = models.BooleanField(default=False)
+    twitter_active = models.BooleanField(default=False)
+    facebook_active = models.BooleanField(default=False)
+    youtube_active = models.BooleanField(default=False)
+    github_active = models.BooleanField(default=False)
+    gitlab_active = models.BooleanField(default=False)
+    stackoverflow_active = models.BooleanField(default=False)
+    medium_active = models.BooleanField(default=False)
+
+    # activation of child objects
     skill_active = models.BooleanField(default=True)
     language_active = models.BooleanField(default=True)
     education_active = models.BooleanField(default=True)
@@ -98,7 +134,6 @@ class Profile(models.Model):
 
     # labels
     description_label = models.CharField(max_length=100, default=_('About me'))
-    website_label = models.CharField(max_length=100, default=_('Websites'))
     skill_label = models.CharField(max_length=100, default=_('Skills'))
     language_label = models.CharField(max_length=100, default=_('Languages'))
     education_label = models.CharField(max_length=100, default=_('Education'))
@@ -145,6 +180,317 @@ class Profile(models.Model):
     def save_personal_information_url(self):
         return reverse('profiles_save_personal_information', kwargs={'pk':self.pk})
 
+    # website
+    def update_website_url(self):
+        return reverse('profiles_update_website', kwargs={'pk':self.pk})
+
+    def activate_website_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
+
+    def deactivate_website_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
+
+    def insert_website_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
+
+    def remove_website_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
+
+    def insert_website_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
+
+    def remove_website_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
+
+    # linkedin
+    def update_linkedin_url(self):
+        return reverse('profiles_update_linkedin', kwargs={'pk':self.pk})
+
+    def activate_linkedin_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
+
+    def deactivate_linkedin_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
+
+    def insert_linkedin_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
+
+    def remove_linkedin_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
+
+    def insert_linkedin_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
+
+    def remove_linkedin_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
+
+
+    # skype
+    def update_skype_url(self):
+        return reverse('profiles_update_skype', kwargs={'pk':self.pk})
+
+    def activate_skype_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
+
+    def deactivate_skype_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
+
+    def insert_skype_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
+
+    def remove_skype_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
+
+    def insert_skype_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
+
+    def remove_skype_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
+
+    # instagram
+    def update_instagram_url(self):
+        return reverse('profiles_update_instagram', kwargs={'pk':self.pk})
+
+    def activate_instagram_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
+
+    def deactivate_instagram_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
+
+    def insert_instagram_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
+
+    def remove_instagram_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
+
+    def insert_instagram_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
+
+    def remove_instagram_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
+
+    # twitter
+    def update_twitter_url(self):
+        return reverse('profiles_update_twitter', kwargs={'pk':self.pk})
+
+    def activate_twitter_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
+
+    def deactivate_twitter_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
+
+    def insert_twitter_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
+
+    def remove_twitter_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
+
+    def insert_twitter_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
+
+    def remove_twitter_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
+
+
+    # facebook
+    def update_facebook_url(self):
+        return reverse('profiles_update_facebook', kwargs={'pk':self.pk})
+
+    def activate_facebook_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
+
+    def deactivate_facebook_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
+
+    def insert_facebook_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
+
+    def remove_facebook_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
+
+    def insert_facebook_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
+
+    def remove_facebook_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
+
+    # youtube
+    def update_youtube_url(self):
+        return reverse('profiles_update_youtube', kwargs={'pk':self.pk})
+
+    def activate_youtube_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
+
+    def deactivate_youtube_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
+
+    def insert_youtube_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
+
+    def remove_youtube_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
+
+    def insert_youtube_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
+
+    def remove_youtube_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
+
+    # github
+    def update_github_url(self):
+        return reverse('profiles_update_github', kwargs={'pk':self.pk})
+
+    def activate_github_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
+
+    def deactivate_github_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
+
+    def insert_github_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
+
+    def remove_github_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
+
+    def insert_github_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
+
+    def remove_github_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
+
+    # gitlab
+    def update_gitlab_url(self):
+        return reverse('profiles_update_gitlab', kwargs={'pk':self.pk})
+
+    def activate_gitlab_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
+
+    def deactivate_gitlab_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
+
+    def insert_gitlab_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
+
+    def remove_gitlab_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
+
+    def insert_gitlab_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
+
+    def remove_gitlab_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
+
+
+    # stackoverflow
+    def update_stackoverflow_url(self):
+        return reverse('profiles_update_stackoverflow', kwargs={'pk':self.pk})
+
+    def activate_stackoverflow_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
+
+    def deactivate_stackoverflow_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
+
+    def insert_stackoverflow_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
+
+    def remove_stackoverflow_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
+
+    def insert_stackoverflow_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
+
+    def remove_stackoverflow_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
+
+    # medium
+    def update_medium_url(self):
+        return reverse('profiles_update_medium', kwargs={'pk':self.pk})
+
+    def activate_medium_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
+
+    def deactivate_medium_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
+
+    def insert_medium_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
+
+    def remove_medium_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
+
+    def insert_medium_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
+
+    def remove_medium_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
+
     # description
     def update_description_url(self):
         return reverse('profiles_update_description', kwargs={'pk':self.pk})
@@ -172,43 +518,6 @@ class Profile(models.Model):
     def remove_description_help_modal_url(self):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
-
-    # website
-    def create_website_object_url(self):
-        return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def insert_website_new_form_url(self):
-        return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def remove_website_new_form_url(self):
-        return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def activate_website_url(self):
-        return reverse('profiles_activate_child_object',
-                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def deactivate_website_url(self):
-        return reverse('profiles_deactivate_child_object',
-                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def insert_website_activation_button_url(self):
-        return reverse('profiles_insert_child_activation_button',
-                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def remove_website_activation_button_url(self):
-        return reverse('profiles_remove_child_activation_button',
-                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def insert_website_help_modal_url(self):
-        return reverse('profiles_insert_child_or_field_help_modal',
-                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def remove_website_help_modal_url(self):
-        return reverse('profiles_remove_child_or_field_help_modal',
-                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
 
     # skill
     def create_skill_object_url(self):
@@ -655,6 +964,38 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
+    def update_field(self, field_label, request):
+        # website
+        # linkedin
+        # skype
+        # instagram
+        # twitter
+        # facebook
+        # youtube
+        # github
+        # gitlab
+        # stackoverflow
+        # medium
+        if field_label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
+            self.description = request.POST.get("description")
+
+        if field_label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
+            self.website = request.POST.get("website")
+
+        if field_label == LABEL_FOR_PROFILE_FIELD_SKYPE:
+            self.skype = request.POST.get("skype")
+
+        if field_label == LABEL_FOR_PROFILE_FIELD_LINKEDIN:
+            self.linkedin = request.POST.get("linkedin")
+
+        if field_label == LABEL_FOR_PROFILE_FIELD_GITHUB:
+            self.github = request.POST.get("github")
+
+        if field_label == LABEL_FOR_PROFILE_FIELD_GITLAB:
+            self.gitlab = request.POST.get("gitlab")
+
+        self.save()
+
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
             photo_full_copy = ContentFile(self.photo_full.read())
@@ -680,31 +1021,6 @@ class Profile(models.Model):
                     img.save(self.photo_full.path)
             except:
                 pass
-
-
-class Website(models.Model):
-    """
-    Localized websites the member wants displayed on the profile.
-    See Website Fields for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/website
-    """
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='website_set')
-    name = models.CharField(null=True, blank=True, max_length=50)
-    bootstrap_icon = models.CharField(null=True, blank=True, default='globe', max_length=25)
-    # category = models.CharField(null=True, blank=True, max_length=100, choices=settings.PROFILE_website_CHOICES)
-    # label = models.CharField(null=True, blank=True, max_length=100) # if other > label
-
-    def __str__(self):
-        return self.name
-
-    def update_object_url(self):
-        return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
-    def delete_object_url(self):
-        return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_WEBSITE})
-
 
 
 class Skill(models.Model):
@@ -1215,21 +1531,18 @@ class Volunteering(models.Model):
 
 
 # util functions
-
-def get_website_boostrap_icon(text):
-    icon_list = ['github', 'facebook', 'instagram', 'linkedin', 'medium', 'quora', 'reddit', 'skype', 'slack', 'stack-overflow', 'telegram', 'twitch', 'twitter', 'vimeo', 'youtube']
-
-    # use list comprehension!!!
-    for index, icon in enumerate(icon_list):
-        if icon.replace("-", "") in text:
-            return icon_list[index]
-    return 'globe'
+#
+# def get_website_boostrap_icon(text):
+#     icon_list = ['github', 'facebook', 'instagram', 'linkedin', 'medium', 'quora', 'reddit', 'skype', 'slack', 'stack-overflow', 'telegram', 'twitch', 'twitter', 'vimeo', 'youtube']
+#
+#     # use list comprehension!!!
+#     for index, icon in enumerate(icon_list):
+#         if icon.replace("-", "") in text:
+#             return icon_list[index]
+#     return 'globe'
 
 
 def get_child_class(child_label):
-
-    if child_label == LABEL_FOR_CHILD_OBJECT_WEBSITE:
-        return Website
 
     if child_label == LABEL_FOR_CHILD_OBJECT_SKILL:
         return Skill
@@ -1269,11 +1582,6 @@ def get_child_class(child_label):
 
 
 def update_child_object(child_label=None, child_object=None, request=None):
-
-    if child_label == LABEL_FOR_CHILD_OBJECT_WEBSITE:
-        name = request.POST.get("name")
-        child_object.name = name
-        child_object.bootstrap_icon = get_website_boostrap_icon(str(name))
 
     if child_label == LABEL_FOR_CHILD_OBJECT_SKILL:
         child_object.name = request.POST.get("name")
@@ -1372,8 +1680,38 @@ def set_activation_state(label=None, object=None, active=True):
     if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
         object.description_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_WEBSITE:
+    if label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
         object.website_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_LINKEDIN:
+        object.linkedin_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_SKYPE:
+        object.skype_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_INSTAGRAM:
+        object.instagram_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_TWITTER:
+        object.twitter_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_FACEBOOK:
+        object.facebook_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_YOUTUBE:
+        object.youtube_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_GITHUB:
+        object.github_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_GITLAB:
+        object.gitlab_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW:
+        object.stackoverflow_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
+        object.medium_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_SKILL:
         object.skill_active = active

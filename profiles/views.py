@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 
 from django_htmx.http import trigger_client_event
 
-from .models import Profile, Website, Skill, Language, Education
+from .models import Profile
 from .models import get_child_object, get_above_child_object, get_below_child_object
 from .models import update_child_object, create_empty_child_object
 from .models import set_activation_state
@@ -146,6 +146,17 @@ def save_personal_information_view(request, pk):
     object.save()
     return HttpResponse(status=200)
 
+# htmx - profile - update field
+def update_field_view(request, field_label, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    object.update_field(self, field_label=field_label, request=request)
+
+    description = request.POST.get("description")
+    object.description = description
+    object.save()
+    return HttpResponse(status=200)
+
+
 
 # htmx - profile - update description
 @login_required
@@ -156,22 +167,6 @@ def update_description_view(request, pk):
     object.description = description
     object.save()
     return HttpResponse(status=200)
-
-
-# # htmx - profile - get profile settings view
-# @login_required
-# def get_profile_settings_modal_view(request, pk):
-#     object = get_object_or_404(Profile, pk=pk, user=request.user)
-#     context = {'object': object}
-#     return render(request, 'profiles/partials/profile_settings_modal.html')
-#
-#
-# # htmx - profile - remove profile settings view
-# @login_required
-# def remove_profile_settings_modal_view(request, pk):
-#     object = get_object_or_404(Profile, pk=pk, user=request.user)
-#     context = {'object': object}
-#     return HttpResponse(status=200)
 
 
 # htmx - create child object

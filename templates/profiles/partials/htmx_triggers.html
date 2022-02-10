@@ -25,6 +25,84 @@ hx-trigger="websiteDeactivatedEvent from:body"></div>
 hx-trigger="websiteActivatedEvent from:body"></div>
 
 
+<!-- when linkedin is deactivated, insert the linkedin button -->
+<div hx-get="{{ object.insert_linkedin_activation_button_url }}" hx-target="#linkedin-activation-button" hx-swap="innerHTML"
+hx-trigger="linkedinDeactivatedEvent from:body"></div>
+<!-- when linkedin is activated, remove  the linkedin button -->
+<div hx-get="{{ object.remove_linkedin_activation_button_url }}" hx-target="#linkedin-activation-button" hx-swap="innerHTML"
+hx-trigger="linkedinActivatedEvent from:body"></div>
+
+<!-- when skype is deactivated, insert the skype button -->
+<div hx-get="{{ object.insert_skype_activation_button_url }}" hx-target="#skype-activation-button" hx-swap="innerHTML"
+hx-trigger="skypeDeactivatedEvent from:body"></div>
+<!-- when skype is activated, remove  the skype button -->
+<div hx-get="{{ object.remove_skype_activation_button_url }}" hx-target="#skype-activation-button" hx-swap="innerHTML"
+hx-trigger="skypeActivatedEvent from:body"></div>
+
+
+<!-- when instagram is deactivated, insert the instagram button -->
+<div hx-get="{{ object.insert_instagram_activation_button_url }}" hx-target="#instagram-activation-button" hx-swap="innerHTML"
+hx-trigger="instagramDeactivatedEvent from:body"></div>
+<!-- when instagram is activated, remove  the instagram button -->
+<div hx-get="{{ object.remove_instagram_activation_button_url }}" hx-target="#instagram-activation-button" hx-swap="innerHTML"
+hx-trigger="instagramActivatedEvent from:body"></div>
+
+
+<!-- when twitter is deactivated, insert the twitter button -->
+<div hx-get="{{ object.insert_twitter_activation_button_url }}" hx-target="#twitter-activation-button" hx-swap="innerHTML"
+hx-trigger="twitterDeactivatedEvent from:body"></div>
+<!-- when twitter is activated, remove  the twitter button -->
+<div hx-get="{{ object.remove_twitter_activation_button_url }}" hx-target="#twitter-activation-button" hx-swap="innerHTML"
+hx-trigger="twitterActivatedEvent from:body"></div>
+
+
+<!-- when facebook is deactivated, insert the facebook button -->
+<div hx-get="{{ object.insert_facebook_activation_button_url }}" hx-target="#facebook-activation-button" hx-swap="innerHTML"
+hx-trigger="facebookDeactivatedEvent from:body"></div>
+<!-- when facebook is activated, remove  the facebook button -->
+<div hx-get="{{ object.remove_facebook_activation_button_url }}" hx-target="#facebook-activation-button" hx-swap="innerHTML"
+hx-trigger="facebookActivatedEvent from:body"></div>
+
+
+<!-- when youtube is deactivated, insert the youtube button -->
+<div hx-get="{{ object.insert_youtube_activation_button_url }}" hx-target="#youtube-activation-button" hx-swap="innerHTML"
+hx-trigger="youtubeDeactivatedEvent from:body"></div>
+<!-- when youtube is activated, remove  the youtube button -->
+<div hx-get="{{ object.remove_youtube_activation_button_url }}" hx-target="#youtube-activation-button" hx-swap="innerHTML"
+hx-trigger="youtubeActivatedEvent from:body"></div>
+
+<!-- when github is deactivated, insert the github button -->
+<div hx-get="{{ object.insert_github_activation_button_url }}" hx-target="#github-activation-button" hx-swap="innerHTML"
+hx-trigger="githubDeactivatedEvent from:body"></div>
+<!-- when github is activated, remove  the github button -->
+<div hx-get="{{ object.remove_github_activation_button_url }}" hx-target="#github-activation-button" hx-swap="innerHTML"
+hx-trigger="githubActivatedEvent from:body"></div>
+
+
+<!-- when gitlab is deactivated, insert the gitlab button -->
+<div hx-get="{{ object.insert_gitlab_activation_button_url }}" hx-target="#gitlab-activation-button" hx-swap="innerHTML"
+hx-trigger="gitlabDeactivatedEvent from:body"></div>
+<!-- when gitlab is activated, remove  the gitlab button -->
+<div hx-get="{{ object.remove_gitlab_activation_button_url }}" hx-target="#gitlab-activation-button" hx-swap="innerHTML"
+hx-trigger="gitlabActivatedEvent from:body"></div>
+
+
+<!-- when stackoverflow is deactivated, insert the stackoverflow button -->
+<div hx-get="{{ object.insert_stackoverflow_activation_button_url }}" hx-target="#stackoverflow-activation-button" hx-swap="innerHTML"
+hx-trigger="stackoverflowDeactivatedEvent from:body"></div>
+<!-- when stackoverflow is activated, remove  the stackoverflow button -->
+<div hx-get="{{ object.remove_stackoverflow_activation_button_url }}" hx-target="#stackoverflow-activation-button" hx-swap="innerHTML"
+hx-trigger="stackoverflowActivatedEvent from:body"></div>
+
+
+<!-- when medium is deactivated, insert the medium button -->
+<div hx-get="{{ object.insert_medium_activation_button_url }}" hx-target="#medium-activation-button" hx-swap="innerHTML"
+hx-trigger="mediumDeactivatedEvent from:body"></div>
+<!-- when medium is activated, remove  the medium button -->
+<div hx-get="{{ object.remove_medium_activation_button_url }}" hx-target="#medium-activation-button" hx-swap="innerHTML"
+hx-trigger="mediumActivatedEvent from:body"></div>
+
+
 <!-- when skill is deactivated, insert the skill button -->
 <div hx-get="{{ object.insert_skill_activation_button_url }}" hx-target="#skill-activation-button" hx-swap="innerHTML"
 hx-trigger="skillDeactivatedEvent from:body"></div>

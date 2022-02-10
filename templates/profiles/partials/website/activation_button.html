@@ -4,8 +4,8 @@
 {% if not object.website_active %}
   <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
     hx-post="{{ object.activate_website_url }}" hx-target="#website-box" hx-swap="outerHTML"
-    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate websites' %}">
-    <i class="bi bi-globe"></i> {% trans 'Websites and links' %}</button>
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate website' %}">
+    <i class="bi bi-globe"></i> {% trans 'Website' %}</button>
 {% endif %}
 
 </div>

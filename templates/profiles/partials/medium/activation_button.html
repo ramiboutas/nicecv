@@ -1,0 +1,11 @@
+{% load i18n %}
+<div id="medium-activation-button">
+
+{% if not object.medium_active %}
+  <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
+    hx-post="{{ object.activate_medium_url }}" hx-target="#medium-box" hx-swap="outerHTML"
+    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate medium' %}">
+    <i class="bi bi-medium"></i> {% trans 'Medium' %}</button>
+{% endif %}
+
+</div>
