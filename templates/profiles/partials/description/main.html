@@ -18,10 +18,11 @@
      </button>
 
    </h6>
-  <textarea class="form-control w-90 border-0 bg-white" rows="10"
-    hx-post="{{ object.update_description_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
-    placeholder="{% trans 'Describe yourself, what makes you a good professional? Describe your ambitions and passions' %}"
-    name="description">{% if object.description %}{{ object.description }}{% endif %}</textarea>
+   <textarea class="form-control w-100 bg-white" rows="10"
+      hx-post="{{ object.update_description_url }}" hx-trigger="keyup changed delay:1s" hx-swap="none"
+      placeholder="{% trans 'Describe yourself, what makes you a good professional? Describe your ambitions and passions' %}"
+      name="description">{% if object.description %}{{ object.description }}{% endif %}</textarea>
+
   {% endif %}
 
 </div>

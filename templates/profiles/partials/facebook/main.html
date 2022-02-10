@@ -9,11 +9,13 @@
         placeholder="{% trans 'Facebook' %}"
         hx-post="{{ facebook.update_facebook_url }}" hx-trigger="change" hx-swap="none"
         {% if object.facebook %} value="{{object.facebook}}" {% endif %} maxlength="50">
+      <!--
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.insert_facebook_help_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
+      -->
       <button class="btn btn-outline-secondary  border-0"
          hx-post="{{ object.deactivate_facebook_url }}" hx-target="#facebook-box" hx-swap="innerHTML"
          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate facebook' %}">

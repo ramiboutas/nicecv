@@ -9,11 +9,13 @@
         placeholder="{% trans 'Skype' %}"
         hx-post="{{ skype.update_skype_url }}" hx-trigger="change" hx-swap="none"
         {% if object.skype %} value="{{object.skype}}" {% endif %} maxlength="50">
+      <!--
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.insert_skype_help_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
+      -->
       <button class="btn btn-outline-secondary  border-0"
          hx-post="{{ object.deactivate_skype_url }}" hx-target="#skype-box" hx-swap="innerHTML"
          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate skype' %}">

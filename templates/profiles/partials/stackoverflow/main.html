@@ -9,11 +9,13 @@
         placeholder="{% trans 'StackOverflow' %}"
         hx-post="{{ stackoverflow.update_stackoverflow_url }}" hx-trigger="change" hx-swap="none"
         {% if object.stackoverflow %} value="{{object.stackoverflow}}" {% endif %} maxlength="50">
+      <!--
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.insert_stackoverflow_help_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
+      -->
       <button class="btn btn-outline-secondary  border-0"
          hx-post="{{ object.deactivate_stackoverflow_url }}" hx-target="#stackoverflow-box" hx-swap="innerHTML"
          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate stackoverflow' %}">

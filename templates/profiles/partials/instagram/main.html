@@ -9,11 +9,13 @@
         placeholder="{% trans 'Instagram' %}"
         hx-post="{{ instagram.update_instagram_url }}" hx-trigger="change" hx-swap="none"
         {% if object.instagram %} value="{{object.instagram}}" {% endif %} maxlength="50">
+      <!--
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.insert_instagram_help_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
+      -->
       <button class="btn btn-outline-secondary  border-0"
          hx-post="{{ object.deactivate_instagram_url }}" hx-target="#instagram-box" hx-swap="innerHTML"
          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate instagram' %}">

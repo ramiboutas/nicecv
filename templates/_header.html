@@ -1,4 +1,6 @@
 {% load i18n %}
+
+
 <header>
 
 {% if user.is_authenticated %}
@@ -12,11 +14,13 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo2">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item me-3">
-          <a class="nav-link text-primary " href="{% url 'pricing_main' %}">{% translate 'Get premium!'%}</a>
-        </li>
+
         <li class="nav-item mx-3">
           {% include "_set_language_form.html" %}
+        </li>
+
+        <li class="nav-item me-3">
+          <a class="nav-link text-primary " href="{% url 'pricing_main' %}">{% translate 'Get premium!'%}</a>
         </li>
       </ul>
 
@@ -57,6 +61,7 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo2">
       <ul class="navbar-nav me-auto">
+
 
         <li class="nav-item mx-3">
           {% include "_set_language_form.html" %}

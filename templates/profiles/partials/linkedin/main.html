@@ -9,11 +9,13 @@
         placeholder="{% trans 'LinkedIn' %}"
         hx-post="{{ linkedin.update_linkedin_url }}" hx-trigger="change" hx-swap="none"
         {% if object.linkedin %} value="{{object.linkedin}}" {% endif %} maxlength="50">
+      <!--
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.insert_linkedin_help_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
+       -->
       <button class="btn btn-outline-secondary  border-0"
          hx-post="{{ object.deactivate_linkedin_url }}" hx-target="#linkedin-box" hx-swap="innerHTML"
          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate linkedin' %}">
