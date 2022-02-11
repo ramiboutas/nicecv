@@ -3,7 +3,7 @@ from django.urls import path
 from .views import ProfileListView, ProfileUpdateView, ProfileCreateView
 from .views import create_object_view, delete_object_view
 
-from .views import save_personal_information_view, update_description_view
+from .views import save_personal_information_view, update_description_view, update_field_view
 
 
 # general
@@ -25,6 +25,9 @@ urlpatterns = [
 
     # htmx - update description
     path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
+
+    # htmx - update description
+    path('update-field/<str:label>/<uuid:pk>/', update_field_view, name='profiles_update_field'),
 
 ]
 

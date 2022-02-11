@@ -7,99 +7,103 @@
 
 <!-- {% include "profiles/partials/stuff_to_add.html" %}-->
 
-
 <div class="container border border-bottom-0 mt-5 bg-light ">
+  <nav class="navbar navbar-expand-xl navbar-white bg-light ">
+    <div class="container">
+      <div class="d-flex">
 
-<nav class="navbar navbar-expand-xl navbar-white bg-light ">
-  <div class="container">
-    <div class="d-flex">
-      
-      <div class="dropdown me-2">
-          <a class="btn btn-outline-secondary dropdown-toggle border-0" role="button" id="dropdownMenuProfile"
-            data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-person"></i> {% trans "Profile" %}
-          </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
-          <button style="text-align:left;" class="btn btn-outline-secondary border-0 w-100" type="button">
-            <i class="bi bi-files"></i> {% trans "Duplicate" %}
-          </button>
-          <button style="text-align:left;" class="btn btn-outline-danger border-0 w-100" type="button">
-             <i class="bi bi-trash"></i> {% trans "Delete" %}
-          </button>
-        </ul>
-      </div>
+        <div class="dropdown me-2">
+            <a class="btn btn-outline-secondary dropdown-toggle border-0" role="button" id="dropdownMenuProfile"
+              data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person"></i> {% trans "Profile" %}
+            </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
+            <button style="text-align:left;" class="btn btn-outline-secondary border-0 w-100" type="button">
+              <i class="bi bi-files"></i> {% trans "Duplicate" %}
+            </button>
+            <button style="text-align:left;" class="btn btn-outline-danger border-0 w-100" type="button">
+               <i class="bi bi-trash"></i> {% trans "Delete" %}
+            </button>
+          </ul>
+        </div>
 
-      <div class="dropdown me-2">
+        <div class="dropdown me-2">
           <a class="btn btn-outline-secondary dropdown-toggle border-0" role="button" id="dropdownMenuPersonalInformation"
             data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-eye"></i> {% trans "Me" %}
           </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuPersonalInformation">
-        </ul>
-      </div>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuPersonalInformation">
+            {% include "profiles/partials/jobtitle/activation_button.html" %}
+            {% include "profiles/partials/location/activation_button.html" %}
+            {% include "profiles/partials/birth/activation_button.html" %}
+            {% include "profiles/partials/phone/activation_button.html" %}
+            {% include "profiles/partials/email/activation_button.html" %}
 
-      <div class="dropdown me-2">
+          </ul>
+        </div>
+
+        <div class="dropdown me-2">
           <a class="btn btn-outline-secondary dropdown-toggle border-0" role="button" id="dropdownMenuSocialMediaAndLinks"
             data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-eye"></i> {% trans "Links" %}
+            <i class="bi bi-eye"></i> {% trans "Links" %}
           </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuSocialMediaAndLinks">
-          {% include "profiles/partials/website/activation_button.html" %}
-          {% include "profiles/partials/linkedin/activation_button.html" %}
-          {% include "profiles/partials/skype/activation_button.html" %}
-          {% include "profiles/partials/instagram/activation_button.html" %}
-          {% include "profiles/partials/twitter/activation_button.html" %}
-          {% include "profiles/partials/facebook/activation_button.html" %}
-          {% include "profiles/partials/youtube/activation_button.html" %}
-          {% include "profiles/partials/github/activation_button.html" %}
-          {% include "profiles/partials/gitlab/activation_button.html" %}
-          {% include "profiles/partials/stackoverflow/activation_button.html" %}
-          {% include "profiles/partials/medium/activation_button.html" %}
-        </ul>
-      </div>
-      <div class="dropdown me-2">
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuSocialMediaAndLinks">
+            {% include "profiles/partials/website/activation_button.html" %}
+            {% include "profiles/partials/linkedin/activation_button.html" %}
+            {% include "profiles/partials/skype/activation_button.html" %}
+            {% include "profiles/partials/instagram/activation_button.html" %}
+            {% include "profiles/partials/twitter/activation_button.html" %}
+            {% include "profiles/partials/facebook/activation_button.html" %}
+            {% include "profiles/partials/youtube/activation_button.html" %}
+            {% include "profiles/partials/github/activation_button.html" %}
+            {% include "profiles/partials/gitlab/activation_button.html" %}
+            {% include "profiles/partials/stackoverflow/activation_button.html" %}
+            {% include "profiles/partials/medium/activation_button.html" %}
+          </ul>
+        </div>
+
+        <div class="dropdown me-2">
           <a class="btn btn-outline-secondary dropdown-toggle border-0" role="button" id="dropdownMenuFields"
             data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-eye"></i> {% trans "Fields" %}
           </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuFields">
-          {% include "profiles/partials/description/activation_button.html" %}
-          {% include "profiles/partials/skill/activation_button.html" %}
-          {% include "profiles/partials/language/activation_button.html" %}
-          {% include "profiles/partials/education/activation_button.html" %}
-          {% include "profiles/partials/experience/activation_button.html" %}
-          {% include "profiles/partials/certification/activation_button.html" %}
-          {% include "profiles/partials/course/activation_button.html" %}
-          {% include "profiles/partials/honor/activation_button.html" %}
-          {% include "profiles/partials/organization/activation_button.html" %}
-          {% include "profiles/partials/patent/activation_button.html" %}
-          {% include "profiles/partials/project/activation_button.html" %}
-          {% include "profiles/partials/publication/activation_button.html" %}
-          {% include "profiles/partials/volunteering/activation_button.html" %}
-        </ul>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuFields">
+            {% include "profiles/partials/description/activation_button.html" %}
+            {% include "profiles/partials/skill/activation_button.html" %}
+            {% include "profiles/partials/language/activation_button.html" %}
+            {% include "profiles/partials/education/activation_button.html" %}
+            {% include "profiles/partials/experience/activation_button.html" %}
+            {% include "profiles/partials/certification/activation_button.html" %}
+            {% include "profiles/partials/course/activation_button.html" %}
+            {% include "profiles/partials/honor/activation_button.html" %}
+            {% include "profiles/partials/organization/activation_button.html" %}
+            {% include "profiles/partials/patent/activation_button.html" %}
+            {% include "profiles/partials/project/activation_button.html" %}
+            {% include "profiles/partials/publication/activation_button.html" %}
+            {% include "profiles/partials/volunteering/activation_button.html" %}
+          </ul>
+        </div>
+
       </div>
 
+        <button class="btn btn-outline-danger border-0 w-100" type="button">
+           <i class="bi bi-file-pdf"></i> {% trans "Download" %}
+        </button>
 
     </div>
-    <button class="btn btn-outline-danger border-0 w-100" type="button">
-       <i class="bi bi-file-pdf"></i> {% trans "Download" %}
-    </button>
-
-  </div>
-</nav>
-
-
+  </nav>
 </div>
-
-
-
-
 
 <div class="container border">
   <div class="row my-3">
     <div class="col-md-4 col-sm-12 m">
       {% include "profiles/partials/photo/main.html" %}
-      {% include "profiles/partials/personal_information.html" %}
+      {% include "profiles/partials/fullname/main.html" %}
+      {% include "profiles/partials/jobtitle/main.html" %}
+      {% include "profiles/partials/location/main.html" %}
+      {% include "profiles/partials/birth/main.html" %}
+      {% include "profiles/partials/phone/main.html" %}
+      {% include "profiles/partials/email/main.html" %}
       {% include "profiles/partials/website/main.html" %}
       {% include "profiles/partials/linkedin/main.html" %}
       {% include "profiles/partials/skype/main.html" %}

@@ -150,7 +150,6 @@ def save_personal_information_view(request, pk):
 def update_field_view(request, field_label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     object.update_field(self, field_label=field_label, request=request)
-
     description = request.POST.get("description")
     object.description = description
     object.save()

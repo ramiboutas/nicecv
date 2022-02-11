@@ -8,13 +8,42 @@ _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show t
 <div hx-get="{{ object.remove_photo_modal_url }}" hx-target="#photo-modal-content" hx-swap="outerHTML"
 hx-trigger="photoCroppedEvent from:body"></div>
 
+<!-- when jobtitle is deactivated, insert the jobtitle button -->
+<div hx-get="{{ object.insert_jobtitle_activation_button_url }}" hx-target="#jobtitle-activation-button" hx-swap="innerHTML"
+hx-trigger="jobtitleDeactivatedEvent from:body"></div>
+<!-- when jobtitle is activated, remove  the jobtitle button -->
+<div hx-get="{{ object.remove_jobtitle_activation_button_url }}" hx-target="#jobtitle-activation-button" hx-swap="innerHTML"
+hx-trigger="jobtitleActivatedEvent from:body"></div>
 
-<!-- when description is deactivated, insert the description button -->
-<div hx-get="{{ object.insert_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
-hx-trigger="descriptionDeactivatedEvent from:body"></div>
-<!-- when description is activated, remove  the description button -->
-<div hx-get="{{ object.remove_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
-hx-trigger="descriptionActivatedEvent from:body"></div>
+
+<!-- when location is deactivated, insert the location button -->
+<div hx-get="{{ object.insert_location_activation_button_url }}" hx-target="#location-activation-button" hx-swap="innerHTML"
+hx-trigger="locationDeactivatedEvent from:body"></div>
+<!-- when location is activated, remove  the location button -->
+<div hx-get="{{ object.remove_location_activation_button_url }}" hx-target="#location-activation-button" hx-swap="innerHTML"
+hx-trigger="locationActivatedEvent from:body"></div>
+
+<!-- when birth is deactivated, insert the birth button -->
+<div hx-get="{{ object.insert_birth_activation_button_url }}" hx-target="#birth-activation-button" hx-swap="innerHTML"
+hx-trigger="birthDeactivatedEvent from:body"></div>
+<!-- when birth is activated, remove  the birth button -->
+<div hx-get="{{ object.remove_birth_activation_button_url }}" hx-target="#birth-activation-button" hx-swap="innerHTML"
+hx-trigger="birthActivatedEvent from:body"></div>
+
+
+<!-- when phone is deactivated, insert the phone button -->
+<div hx-get="{{ object.insert_phone_activation_button_url }}" hx-target="#phone-activation-button" hx-swap="innerHTML"
+hx-trigger="phoneDeactivatedEvent from:body"></div>
+<!-- when phone is activated, remove  the phone button -->
+<div hx-get="{{ object.remove_phone_activation_button_url }}" hx-target="#phone-activation-button" hx-swap="innerHTML"
+hx-trigger="phoneActivatedEvent from:body"></div>
+
+<!-- when email is deactivated, insert the email button -->
+<div hx-get="{{ object.insert_email_activation_button_url }}" hx-target="#email-activation-button" hx-swap="innerHTML"
+hx-trigger="emailDeactivatedEvent from:body"></div>
+<!-- when email is activated, remove  the email button -->
+<div hx-get="{{ object.remove_email_activation_button_url }}" hx-target="#email-activation-button" hx-swap="innerHTML"
+hx-trigger="emailActivatedEvent from:body"></div>
 
 
 <!-- when website is deactivated, insert the website button -->
@@ -103,13 +132,20 @@ hx-trigger="mediumDeactivatedEvent from:body"></div>
 hx-trigger="mediumActivatedEvent from:body"></div>
 
 
+<!-- when description is deactivated, insert the description button -->
+<div hx-get="{{ object.insert_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
+hx-trigger="descriptionDeactivatedEvent from:body"></div>
+<!-- when description is activated, remove  the description button -->
+<div hx-get="{{ object.remove_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
+hx-trigger="descriptionActivatedEvent from:body"></div>
+
+
 <!-- when skill is deactivated, insert the skill button -->
 <div hx-get="{{ object.insert_skill_activation_button_url }}" hx-target="#skill-activation-button" hx-swap="innerHTML"
 hx-trigger="skillDeactivatedEvent from:body"></div>
 <!-- when skill is activated, remove  the skill button -->
 <div hx-get="{{ object.remove_skill_activation_button_url }}" hx-target="#skill-activation-button" hx-swap="innerHTML"
 hx-trigger="skillActivatedEvent from:body"></div>
-
 
 
 <!-- when language is deactivated, insert the language button -->

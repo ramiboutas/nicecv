@@ -14,7 +14,14 @@ from django.utils import timezone
 from django.urls import reverse, reverse_lazy
 User = get_user_model()
 
-# used in urls (child_label) & in templates  (profiles/partials/child_label/file.html)
+# Labels. Used in urls (label) & in templates  (profiles/partials/label/file.html)
+LABEL_FOR_PROFILE_FIELD_FIRSTNAME = 'firstname'
+LABEL_FOR_PROFILE_FIELD_LASTNAME = 'lastname'
+LABEL_FOR_PROFILE_FIELD_JOBTITLE = 'jobtitle'
+LABEL_FOR_PROFILE_FIELD_LOCATION = 'location'
+LABEL_FOR_PROFILE_FIELD_BIRTH = 'birth'
+LABEL_FOR_PROFILE_FIELD_PHONE = 'phone'
+LABEL_FOR_PROFILE_FIELD_EMAIL = 'email'
 LABEL_FOR_PROFILE_FIELD_DESCRIPTION = 'description'
 LABEL_FOR_PROFILE_FIELD_WEBSITE = 'website'
 LABEL_FOR_PROFILE_FIELD_LINKEDIN = 'linkedin'
@@ -75,16 +82,14 @@ class Profile(models.Model):
     photo = models.ImageField(null=True, blank=True, upload_to='profiles/cropped_photos/')
     photo_full = models.ImageField(null=True, blank=True, upload_to='profiles/full_photos/')
 
-    # personal information
+    # name
     first_name = models.CharField(null=True, blank=True, max_length=50)
     last_name = models.CharField(null=True, blank=True, max_length=50)
-    maiden_name = models.CharField(null=True, blank=True, max_length=50)
     jobtitle = models.CharField(max_length=50)
     location = models.CharField(null=True, blank=True, max_length=50)
-    date_of_birth = models.CharField(null=True, blank=True, max_length=50)
+    birth = models.CharField(null=True, blank=True, max_length=50)
     phone = models.CharField(null=True, blank=True, max_length=50)
     email = models.CharField(null=True, blank=True, max_length=50)
-
     website = models.CharField(null=True, blank=True, max_length=50)
     linkedin = models.CharField(null=True, blank=True, max_length=50)
     skype = models.CharField(null=True, blank=True, max_length=50)
@@ -97,15 +102,18 @@ class Profile(models.Model):
     stackoverflow = models.CharField(null=True, blank=True, max_length=50)
     medium = models.CharField(null=True, blank=True, max_length=50)
 
-
-
     # description & interests
     description = models.TextField(null=True, blank=True, max_length=1000)
     interests = models.CharField(null=True, blank=True, max_length=200)
 
     # activation of fields
+    name_active = models.BooleanField(default=True)
+    jobtitle_active = models.BooleanField(default=True)
+    location_active = models.BooleanField(default=True)
+    birth_active = models.BooleanField(default=True)
+    phone_active = models.BooleanField(default=True)
+    email_active = models.BooleanField(default=True)
     description_active = models.BooleanField(default=True)
-
     website_active = models.BooleanField(default=False)
     linkedin_active = models.BooleanField(default=True)
     skype_active = models.BooleanField(default=True)
@@ -180,9 +188,165 @@ class Profile(models.Model):
     def save_personal_information_url(self):
         return reverse('profiles_save_personal_information', kwargs={'pk':self.pk})
 
+    # firstname
+    def update_firstname_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FIRSTNAME})
+
+    # lastname
+    def update_lastname_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LASTNAME})
+
+    # jobtitle
+    def update_jobtitle_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    def activate_jobtitle_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    def deactivate_jobtitle_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    def insert_jobtitle_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    def remove_jobtitle_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    def insert_jobtitle_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    def remove_jobtitle_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_JOBTITLE})
+
+    # location
+    def update_location_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    def activate_location_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    def deactivate_location_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    def insert_location_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    def remove_location_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    def insert_location_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    def remove_location_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LOCATION})
+
+    # birth
+    def update_birth_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    def activate_birth_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    def deactivate_birth_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    def insert_birth_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    def remove_birth_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    def insert_birth_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    def remove_birth_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_BIRTH})
+
+    # phone
+    def update_phone_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    def activate_phone_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    def deactivate_phone_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    def insert_phone_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    def remove_phone_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    def insert_phone_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    def remove_phone_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_PHONE})
+
+    # email
+    def update_email_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
+    def activate_email_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
+    def deactivate_email_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
+    def insert_email_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
+    def remove_email_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
+    def insert_email_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
+    def remove_email_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_EMAIL})
+
     # website
     def update_website_url(self):
-        return reverse('profiles_update_website', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_WEBSITE})
 
     def activate_website_url(self):
         return reverse('profiles_activate_child_object',
@@ -210,7 +374,8 @@ class Profile(models.Model):
 
     # linkedin
     def update_linkedin_url(self):
-        return reverse('profiles_update_linkedin', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
 
     def activate_linkedin_url(self):
         return reverse('profiles_activate_child_object',
@@ -236,10 +401,10 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_LINKEDIN})
 
-
     # skype
     def update_skype_url(self):
-        return reverse('profiles_update_skype', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_SKYPE})
 
     def activate_skype_url(self):
         return reverse('profiles_activate_child_object',
@@ -267,7 +432,8 @@ class Profile(models.Model):
 
     # instagram
     def update_instagram_url(self):
-        return reverse('profiles_update_instagram', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_INSTAGRAM})
 
     def activate_instagram_url(self):
         return reverse('profiles_activate_child_object',
@@ -295,7 +461,8 @@ class Profile(models.Model):
 
     # twitter
     def update_twitter_url(self):
-        return reverse('profiles_update_twitter', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_TWITTER})
 
     def activate_twitter_url(self):
         return reverse('profiles_activate_child_object',
@@ -324,7 +491,8 @@ class Profile(models.Model):
 
     # facebook
     def update_facebook_url(self):
-        return reverse('profiles_update_facebook', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_FACEBOOK})
 
     def activate_facebook_url(self):
         return reverse('profiles_activate_child_object',
@@ -352,7 +520,8 @@ class Profile(models.Model):
 
     # youtube
     def update_youtube_url(self):
-        return reverse('profiles_update_youtube', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_YOUTUBE})
 
     def activate_youtube_url(self):
         return reverse('profiles_activate_child_object',
@@ -380,7 +549,8 @@ class Profile(models.Model):
 
     # github
     def update_github_url(self):
-        return reverse('profiles_update_github', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITHUB})
 
     def activate_github_url(self):
         return reverse('profiles_activate_child_object',
@@ -408,7 +578,8 @@ class Profile(models.Model):
 
     # gitlab
     def update_gitlab_url(self):
-        return reverse('profiles_update_gitlab', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
 
     def activate_gitlab_url(self):
         return reverse('profiles_activate_child_object',
@@ -434,10 +605,10 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_GITLAB})
 
-
     # stackoverflow
     def update_stackoverflow_url(self):
-        return reverse('profiles_update_stackoverflow', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW})
 
     def activate_stackoverflow_url(self):
         return reverse('profiles_activate_child_object',
@@ -465,7 +636,8 @@ class Profile(models.Model):
 
     # medium
     def update_medium_url(self):
-        return reverse('profiles_update_medium', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
 
     def activate_medium_url(self):
         return reverse('profiles_activate_child_object',
@@ -493,7 +665,8 @@ class Profile(models.Model):
 
     # description
     def update_description_url(self):
-        return reverse('profiles_update_description', kwargs={'pk':self.pk})
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION})
 
     def activate_description_url(self):
         return reverse('profiles_activate_child_object',
@@ -1676,6 +1849,27 @@ def update_child_object(child_label=None, child_object=None, request=None):
 
 
 def set_activation_state(label=None, object=None, active=True):
+
+    if label == LABEL_FOR_PROFILE_FIELD_FIRSTNAME:
+        object.firstname_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_LASTNAME:
+        object.lastname_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_JOBTITLE:
+        object.jobtitle_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_LOCATION:
+        object.location_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_BIRTH:
+        object.birth_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_PHONE:
+        object.phone_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_EMAIL:
+        object.email_active = active
 
     if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
         object.description_active = active
