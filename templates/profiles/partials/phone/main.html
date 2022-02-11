@@ -6,7 +6,7 @@
         <span class="input-group-text border-0"><i class="bi bi-telephone"></i></span>
       </div>
       <input class="form-control border-0 bg-white" type="text" name="phone"
-        placeholder="{% trans 'Phone' %}"
+        placeholder="{% trans 'Phone number' %}"
         hx-post="{{ phone.update_phone_url }}" hx-trigger="change" hx-swap="none"
         {% if object.phone %} value="{{object.phone}}" {% endif %} maxlength="50">
       <!--
