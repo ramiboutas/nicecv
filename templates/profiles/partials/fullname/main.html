@@ -6,14 +6,14 @@
         <span class="input-group-text border-0"><i class="bi bi-person-circle"></i></span>
     </div>
     <input class="form-control border-0 bg-white"  type="text"
-    placeholder="{% trans 'First name' %}" name="first_name" maxlength="50"
-    hx-post="{{ object.update_first_name_url }}" hx-trigger="change" hx-swap="none"
-    {% if object.first_name %} value="{{object.first_name}}" {% endif %} >
+    placeholder="{% trans 'First name' %}" name="firstname" maxlength="50"
+    hx-post="{{ object.update_firstname_url }}" hx-trigger="change" hx-swap="none"
+    {% if object.firstname %} value="{{object.firstname}}" {% endif %} >
 
     <input class="form-control border-0 bg-white"  type="text"
-    placeholder="{% trans 'Last name' %}" name="last_name" maxlength="50"
-    hx-post="{{ object.update_last_name_url }}" hx-trigger="change" hx-swap="none"
-    {% if object.last_name %} value="{{object.last_name}}" {% endif %} >
+    placeholder="{% trans 'Last name' %}" name="lastname" maxlength="50"
+    hx-post="{{ object.update_lastname_url }}" hx-trigger="change" hx-swap="none"
+    {% if object.lastname %} value="{{object.lastname}}" {% endif %} >
 
   </div>
 

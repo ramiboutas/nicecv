@@ -1,6 +1,7 @@
 {% load i18n %}
 <div id="education-box" class="">
   {% if object.education_active %}
+    <!--
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
       <i class="bi bi-mortarboard"></i> {% trans "Education" %}
@@ -18,6 +19,30 @@
       </button>
 
     </h6>
+    -->
+    <h6  class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-mortarboard"></i></span>
+        </div>
+        <input class="form-control border-0 bg-white"  type="text" name="education_label" value="{{ object.education_label }}"
+          hx-post="{{ object.update_education_label_url }}" hx-trigger="change" hx-swap="none">
+
+        <button class="btn btn-outline-secondary border-0 float-end"
+          hx-post="{{ object.insert_education_help_modal_url }}" hx-target="#modals-here"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+          <i class="bi bi-info-circle"></i>
+        </button>
+
+        <button class="btn btn-outline-secondary border-0 float-end"
+          hx-post="{{ object.deactivate_education_url }}" hx-target="#education-box" hx-swap="innerHTML"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate educations' %}">
+          <i class="bi bi-eye-slash"></i>
+        </button>
+      </div>
+    </h6>
+
+
 
     {% for education in object.education_set.all %}
       <form hx-post="{{ education.update_object_url }}" hx-trigger="change" hx-swap="none">

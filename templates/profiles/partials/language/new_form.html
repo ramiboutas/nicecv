@@ -1,6 +1,5 @@
 {% load i18n %}
-
-<form style="border: dashed 1px green;"
+<form style="border: dashed 2px black; border-radius: 5px;"
 hx-post="{{ object.create_language_object_url}}" hx-trigger="submit" hx-swap="outerHTML" hx-target="#language-box">
 
   <div class="input-group mb-1">
@@ -16,7 +15,7 @@ hx-post="{{ object.create_language_object_url}}" hx-trigger="submit" hx-swap="ou
     <div class="input-group-prepend">
       <span class="input-group-text border-0 bg-white"><i class="bi bi-bar-chart"></i></span>
     </div>
-    <input  class="form-control form-range border-0" type="range" name="level" max="6" >
+    <input  class="form-control form-range border-0" type="range" name="level" max="5" >
     <div class="input-group-prepend">
       <span class="input-group-text border-0 bg-white"><i class="bi bi-bar-chart-fill"></i></span>
     </div>

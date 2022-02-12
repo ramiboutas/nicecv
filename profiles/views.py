@@ -57,10 +57,10 @@ class ProfileCreateView(LoginRequiredMixin, CreateView):
 @login_required
 @require_POST
 def create_object_view(request):
-    first_name = request.POST.get("first_name")
-    last_name = request.POST.get("last_name")
+    firstname = request.POST.get("firstname")
+    lastname = request.POST.get("lastname")
     email = request.POST.get("email")
-    object = Profile(user=request.user, first_name=first_name, last_name=last_name, email=email)
+    object = Profile(user=request.user, firstname=firstname, lastname=lastname, email=email)
     object.save()
     # once the object is created, we redirect the user to the obj update url
     return HTTPResponseHXRedirect(redirect_to=object.get_update_url())
@@ -135,8 +135,8 @@ def delete_photos_view(request, pk):
 @require_POST
 def save_personal_information_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.first_name = request.POST.get("first_name")
-    object.last_name = request.POST.get("last_name")
+    object.firstname = request.POST.get("firstname")
+    object.lastname = request.POST.get("lastname")
     object.jobtitle = request.POST.get("jobtitle")
     object.location = request.POST.get("location")
     object.date_of_birth = request.POST.get("date_of_birth")
@@ -147,9 +147,9 @@ def save_personal_information_view(request, pk):
     return HttpResponse(status=200)
 
 # htmx - profile - update field
-def update_field_view(request, field_label, pk):
+def update_field_view(request, label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.update_field(self, field_label=field_label, request=request)
+    object.update_field(label=label, request=request)
     description = request.POST.get("description")
     object.description = description
     object.save()
@@ -171,13 +171,13 @@ def update_description_view(request, pk):
 # htmx - create child object
 @login_required
 @require_POST
-def create_child_object_view(request, child_label, pk_parent):
+def create_child_object_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = create_empty_child_object(child_label=child_label, profile=object)
-    update_child_object(child_label=child_label, child_object=child_object, request=request)
+    child_object = create_empty_child_object(label=label, profile=object)
+    update_child_object(label=label, child_object=child_object, request=request)
     context = {'object': object}
     try:
-        return render(request, f'profiles/partials/{child_label}/main.html', context)
+        return render(request, f'profiles/partials/{label}/main.html', context)
     except:
         return HttpResponseServerError()
 
@@ -185,67 +185,67 @@ def create_child_object_view(request, child_label, pk_parent):
 # htmx - update child object
 @login_required
 @require_POST
-def update_child_object_view(request, child_label, pk_parent, pk):
+def update_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
-    update_child_object(child_label=child_label, child_object=child_object, request=request)
+    child_object = get_child_object(label=label, pk=pk, profile=object)
+    update_child_object(label=label, child_object=child_object, request=request)
     return HttpResponse(status=200)
 
 
 # htmx - delete child object
 @login_required
 @require_POST
-def delete_child_object_view(request, child_label, pk_parent, pk):
+def delete_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
+    child_object = get_child_object(label=label, pk=pk, profile=object)
     child_object.delete()
     context = {'object': object}
     try:
-        return render(request, f'profiles/partials/{child_label}/main.html', context)
+        return render(request, f'profiles/partials/{label}/main.html', context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - insert child new form
 @login_required
-def insert_child_new_form_view(request, child_label, pk_parent):
+def insert_child_new_form_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     context = {'object': object}
     try:
-        return render(request, f'profiles/partials/{child_label}/new_form.html', context)
+        return render(request, f'profiles/partials/{label}/new_form.html', context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - remove child new form
 @login_required
-def remove_child_new_form_view(request, child_label, pk_parent):
+def remove_child_new_form_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     context = {'object': object}
     try:
-        return render(request, f'profiles/partials/{child_label}/new_button.html', context)
+        return render(request, f'profiles/partials/{label}/new_button.html', context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - copy child object
 @login_required
-def copy_child_object_view(request, child_label, pk_parent, pk):
+def copy_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
+    child_object = get_child_object(label=label, pk=pk, profile=object)
     try:
-        context = {'object': object, child_label: child_object}
-        return render(request, f'profiles/partials/{child_label}/new_form.html', context)
+        context = {'object': object, label: child_object}
+        return render(request, f'profiles/partials/{label}/new_form.html', context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - move up child object
 @login_required
-def move_up_child_object_view(request, child_label, pk_parent, pk):
+def move_up_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
-    above_child_object = get_above_child_object(child_label=child_label, child_object=child_object, profile=object)
+    child_object = get_child_object(label=label, pk=pk, profile=object)
+    above_child_object = get_above_child_object(label=label, child_object=child_object, profile=object)
     above_order = above_child_object.order
     above_child_object.order = child_object.order
     child_object.order = above_order
@@ -253,17 +253,17 @@ def move_up_child_object_view(request, child_label, pk_parent, pk):
     child_object.save()
     context = {'object': object}
     try:
-        return render(request, f'profiles/partials/{child_label}/main.html', context)
+        return render(request, f'profiles/partials/{label}/main.html', context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - move down child object
 @login_required
-def move_down_child_object_view(request, child_label, pk_parent, pk):
+def move_down_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(child_label=child_label, pk=pk, profile=object)
-    below_child_object = get_below_child_object(child_label=child_label, child_object=child_object, profile=object)
+    child_object = get_child_object(label=label, pk=pk, profile=object)
+    below_child_object = get_below_child_object(label=label, child_object=child_object, profile=object)
     below_order = below_child_object.order
     below_child_object.order = child_object.order
     child_object.order = below_order
@@ -271,7 +271,7 @@ def move_down_child_object_view(request, child_label, pk_parent, pk):
     child_object.save()
     context = {'object': object}
     try:
-        return render(request, f'profiles/partials/{child_label}/main.html', context)
+        return render(request, f'profiles/partials/{label}/main.html', context)
     except:
         return HttpResponseServerError()
 

@@ -7,7 +7,7 @@
       </div>
       <input class="form-control border-0 bg-white" type="text" name="stackoverflow"
         placeholder="{% trans 'StackOverflow' %}"
-        hx-post="{{ stackoverflow.update_stackoverflow_url }}" hx-trigger="change" hx-swap="none"
+        hx-post="{{ object.update_stackoverflow_url }}" hx-trigger="change" hx-swap="none"
         {% if object.stackoverflow %} value="{{object.stackoverflow}}" {% endif %} maxlength="50">
       <!--
       <button class="btn btn-outline-secondary border-0 float-end"

@@ -4,14 +4,14 @@
 
 {% csrf_token %}
 
-<!-- first_name & last_name -->
+<!-- firstname & lastname -->
 <div class="input-group mb-3">
   <div class="input-group-prepend">
       <span class="input-group-text border-0"><i class="bi bi-person-circle"></i></span>
   </div>
-  <input class="form-control border-0 bg-white" placeholder="{% trans 'First name' %}"  type="text" name="first_name" {% if object.first_name %} value="{{object.first_name}}" {% endif %} maxlength="50">
+  <input class="form-control border-0 bg-white" placeholder="{% trans 'First name' %}"  type="text" name="firstname" {% if object.firstname %} value="{{object.firstname}}" {% endif %} maxlength="50">
 
-  <input class="form-control  border-0 bg-white" placeholder="{% trans 'Last name' %}"  type="text" name="last_name" {% if object.last_name %} value="{{object.last_name}}" {% endif %} maxlength="50">
+  <input class="form-control  border-0 bg-white" placeholder="{% trans 'Last name' %}"  type="text" name="lastname" {% if object.lastname %} value="{{object.lastname}}" {% endif %} maxlength="50">
 </div>
 
 

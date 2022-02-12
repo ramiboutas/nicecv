@@ -48,6 +48,24 @@ LABEL_FOR_CHILD_OBJECT_PROJECT = 'project'
 LABEL_FOR_CHILD_OBJECT_PUBLICATION = 'publication'
 LABEL_FOR_CHILD_OBJECT_VOLUNTEERING = 'volunteering'
 
+LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL = 'description-label'
+LABEL_FOR_CHILD_OBJECT_SKILL_LABEL = 'skill-label'
+LABEL_FOR_CHILD_OBJECT_LANGUAGE_LABEL = 'language-label'
+LABEL_FOR_CHILD_OBJECT_EDUCATION_LABEL = 'education-label'
+LABEL_FOR_CHILD_OBJECT_EXPERIENCE_LABEL = 'experience-label'
+LABEL_FOR_CHILD_OBJECT_CERTIFICATION_LABEL = 'certification-label'
+LABEL_FOR_CHILD_OBJECT_COURSE_LABEL = 'course-label'
+LABEL_FOR_CHILD_OBJECT_HONOR_LABEL = 'honor-label'
+LABEL_FOR_CHILD_OBJECT_ORGANIZATION_LABEL = 'organization-label'
+LABEL_FOR_CHILD_OBJECT_PATENT_LABEL = 'patent-label'
+LABEL_FOR_CHILD_OBJECT_PROJECT_LABEL = 'project-label'
+LABEL_FOR_CHILD_OBJECT_PUBLICATION_LABEL = 'publication-label'
+LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL = 'volunteering-label'
+
+
+
+
+
 def user_directory_path(instance, filename): # not used // 22.01.2022
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     """
@@ -83,8 +101,8 @@ class Profile(models.Model):
     photo_full = models.ImageField(null=True, blank=True, upload_to='profiles/full_photos/')
 
     # name
-    first_name = models.CharField(null=True, blank=True, max_length=50)
-    last_name = models.CharField(null=True, blank=True, max_length=50)
+    firstname = models.CharField(null=True, blank=True, max_length=50)
+    lastname = models.CharField(null=True, blank=True, max_length=50)
     jobtitle = models.CharField(max_length=50)
     location = models.CharField(null=True, blank=True, max_length=50)
     birth = models.CharField(null=True, blank=True, max_length=50)
@@ -107,7 +125,6 @@ class Profile(models.Model):
     interests = models.CharField(null=True, blank=True, max_length=200)
 
     # activation of fields
-    name_active = models.BooleanField(default=True)
     jobtitle_active = models.BooleanField(default=True)
     location_active = models.BooleanField(default=True)
     birth_active = models.BooleanField(default=True)
@@ -156,10 +173,10 @@ class Profile(models.Model):
     volunteering_label = models.CharField(max_length=100, default=_('Volunteering work'))
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.email}'
+        return f'{self.firstname} {self.lastname} {self.email}'
 
     def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.firstname} {self.lastname}'
 
     # profile object
     def get_update_url(self):
@@ -187,6 +204,71 @@ class Profile(models.Model):
     # personal information
     def save_personal_information_url(self):
         return reverse('profiles_save_personal_information', kwargs={'pk':self.pk})
+
+    # description_label
+    def update_description_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL})
+
+    # skill_label
+    def update_skill_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL_LABEL})
+
+    # language_label
+    def update_language_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE_LABEL})
+
+    # education_label
+    def update_education_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION_LABEL})
+
+    # experience_label
+    def update_experience_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE_LABEL})
+
+    # certification_label
+    def update_certification_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION_LABEL})
+
+    # course_label
+    def update_course_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE_LABEL})
+
+    # honor_label
+    def update_honor_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR_LABEL})
+
+    # organization_label
+    def update_organization_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION_LABEL})
+
+    # patent_label
+    def update_patent_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT_LABEL})
+
+    # project_label
+    def update_project_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT_LABEL})
+
+    # publication_label
+    def update_publication_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION_LABEL})
+
+    # volunteering_label
+    def update_volunteering_label_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL})
 
     # firstname
     def update_firstname_url(self):
@@ -695,15 +777,15 @@ class Profile(models.Model):
     # skill
     def create_skill_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
     def insert_skill_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
     def remove_skill_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
     def activate_skill_url(self):
         return reverse('profiles_activate_child_object',
@@ -732,15 +814,15 @@ class Profile(models.Model):
     # language
     def create_language_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
     def insert_language_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
     def remove_language_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
     def activate_language_url(self):
         return reverse('profiles_activate_child_object',
@@ -769,15 +851,15 @@ class Profile(models.Model):
     # education
     def create_education_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def insert_education_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def remove_education_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def activate_education_url(self):
         return reverse('profiles_activate_child_object',
@@ -807,15 +889,15 @@ class Profile(models.Model):
     # experience
     def create_experience_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def insert_experience_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def remove_experience_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def activate_experience_url(self):
         return reverse('profiles_activate_child_object',
@@ -844,15 +926,15 @@ class Profile(models.Model):
     # certification
     def create_certification_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def insert_certification_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def remove_certification_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def activate_certification_url(self):
         return reverse('profiles_activate_child_object',
@@ -881,15 +963,15 @@ class Profile(models.Model):
     # course
     def create_course_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def insert_course_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def remove_course_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def activate_course_url(self):
         return reverse('profiles_activate_child_object',
@@ -918,15 +1000,15 @@ class Profile(models.Model):
     # honor
     def create_honor_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def insert_honor_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def remove_honor_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def activate_honor_url(self):
         return reverse('profiles_activate_child_object',
@@ -955,15 +1037,15 @@ class Profile(models.Model):
     # organization
     def create_organization_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def insert_organization_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def remove_organization_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def activate_organization_url(self):
         return reverse('profiles_activate_child_object',
@@ -992,15 +1074,15 @@ class Profile(models.Model):
     # patent
     def create_patent_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def insert_patent_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def remove_patent_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def activate_patent_url(self):
         return reverse('profiles_activate_child_object',
@@ -1029,15 +1111,15 @@ class Profile(models.Model):
     # project
     def create_project_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def insert_project_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def remove_project_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def activate_project_url(self):
         return reverse('profiles_activate_child_object',
@@ -1066,15 +1148,15 @@ class Profile(models.Model):
     # publication
     def create_publication_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def insert_publication_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def remove_publication_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def activate_publication_url(self):
         return reverse('profiles_activate_child_object',
@@ -1103,15 +1185,15 @@ class Profile(models.Model):
     # volunteering
     def create_volunteering_object_url(self):
         return reverse('profiles_create_child_object',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def insert_volunteering_new_form_url(self):
         return reverse('profiles_insert_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def remove_volunteering_new_form_url(self):
         return reverse('profiles_remove_child_new_form',
-                        kwargs={'pk_parent':self.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def activate_volunteering_url(self):
         return reverse('profiles_activate_child_object',
@@ -1137,35 +1219,100 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
-    def update_field(self, field_label, request):
-        # website
-        # linkedin
-        # skype
-        # instagram
-        # twitter
-        # facebook
-        # youtube
-        # github
-        # gitlab
-        # stackoverflow
-        # medium
-        if field_label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
+    def update_field(self, label, request):
+
+        if label == LABEL_FOR_PROFILE_FIELD_FIRSTNAME:
+            self.firstname = request.POST.get("firstname")
+
+        if label == LABEL_FOR_PROFILE_FIELD_LASTNAME:
+            self.lastname = request.POST.get("lastname")
+
+        if label == LABEL_FOR_PROFILE_FIELD_JOBTITLE:
+            self.jobtitle = request.POST.get("jobtitle")
+
+        if label == LABEL_FOR_PROFILE_FIELD_LOCATION:
+            self.location = request.POST.get("location")
+
+        if label == LABEL_FOR_PROFILE_FIELD_BIRTH:
+            self.birth = request.POST.get("birth")
+
+        if label == LABEL_FOR_PROFILE_FIELD_PHONE:
+            self.phone = request.POST.get("phone")
+
+        if label == LABEL_FOR_PROFILE_FIELD_EMAIL:
+            self.email = request.POST.get("email")
+
+        if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
             self.description = request.POST.get("description")
 
-        if field_label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
+        if label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
             self.website = request.POST.get("website")
 
-        if field_label == LABEL_FOR_PROFILE_FIELD_SKYPE:
+        if label == LABEL_FOR_PROFILE_FIELD_SKYPE:
             self.skype = request.POST.get("skype")
 
-        if field_label == LABEL_FOR_PROFILE_FIELD_LINKEDIN:
+        if label == LABEL_FOR_PROFILE_FIELD_INSTAGRAM:
+            self.instagram = request.POST.get("instagram")
+
+        if label == LABEL_FOR_PROFILE_FIELD_TWITTER:
             self.linkedin = request.POST.get("linkedin")
 
-        if field_label == LABEL_FOR_PROFILE_FIELD_GITHUB:
+        if label == LABEL_FOR_PROFILE_FIELD_FACEBOOK:
+            self.linkedin = request.POST.get("linkedin")
+
+        if label == LABEL_FOR_PROFILE_FIELD_YOUTUBE:
+            self.linkedin = request.POST.get("linkedin")
+
+        if label == LABEL_FOR_PROFILE_FIELD_GITHUB:
             self.github = request.POST.get("github")
 
-        if field_label == LABEL_FOR_PROFILE_FIELD_GITLAB:
+        if label == LABEL_FOR_PROFILE_FIELD_GITLAB:
             self.gitlab = request.POST.get("gitlab")
+
+        if label == LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW:
+            self.stackoverflow = request.POST.get("stackoverflow")
+
+        if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
+            self.medium = request.POST.get("medium")
+
+        if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL:
+            self.description_label = request.POST.get("description_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_SKILL_LABEL:
+            self.skill_label = request.POST.get("skill_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE_LABEL:
+            self.language_label = request.POST.get("language_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_EDUCATION_LABEL:
+            self.education_label = request.POST.get("education_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE_LABEL:
+            self.experience_label = request.POST.get("experience_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION_LABEL:
+            self.certification_label = request.POST.get("certification_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_COURSE_LABEL:
+            self.course_label = request.POST.get("course_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_HONOR_LABEL:
+            self.honor_label = request.POST.get("honor_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION_LABEL:
+            self.organization_label = request.POST.get("organization_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_PATENT_LABEL:
+            self.patent_label = request.POST.get("patent_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_PROJECT_LABEL:
+            self.project_label = request.POST.get("project_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION_LABEL:
+            self.publication_label = request.POST.get("publication_label")
+
+        if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL:
+            self.volunteering_label = request.POST.get("volunteering_label")
 
         self.save()
 
@@ -1214,11 +1361,11 @@ class Skill(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_SKILL})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
 
 
 class Language(models.Model):
@@ -1238,11 +1385,11 @@ class Language(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
 
 
 
@@ -1271,23 +1418,23 @@ class Education(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EDUCATION})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1317,23 +1464,23 @@ class Experience(models.Model):
         return self.title
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_EXPERIENCE})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1359,23 +1506,23 @@ class Certification(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_CERTIFICATION})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1402,23 +1549,23 @@ class Course(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_COURSE})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_COURSE})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1446,23 +1593,23 @@ class Honor(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_HONOR})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_HONOR})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1490,23 +1637,23 @@ class Organization(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_ORGANIZATION})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1539,23 +1686,23 @@ class Patent(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PATENT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PATENT})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1584,23 +1731,23 @@ class Project(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PROJECT})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PROJECT})
 
     def __str__(self):
         return self.title
@@ -1631,23 +1778,23 @@ class Publication(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_PUBLICATION})
 
     def __str__(self):
         return self.name
@@ -1680,23 +1827,23 @@ class Volunteering(models.Model):
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def move_up_object_url(self):
         return reverse('profiles_move_up_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def move_down_object_url(self):
         return reverse('profiles_move_down_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def copy_object_url(self):
         return reverse('profiles_copy_child_object',
-                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'child_label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
@@ -1715,56 +1862,56 @@ class Volunteering(models.Model):
 #     return 'globe'
 
 
-def get_child_class(child_label):
+def get_child_class(label):
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_SKILL:
+    if label == LABEL_FOR_CHILD_OBJECT_SKILL:
         return Skill
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
+    if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
         return Language
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_EDUCATION:
+    if label == LABEL_FOR_CHILD_OBJECT_EDUCATION:
         return Education
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
+    if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
         return Experience
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
+    if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
         return Certification
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_COURSE:
+    if label == LABEL_FOR_CHILD_OBJECT_COURSE:
         return Course
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_HONOR:
+    if label == LABEL_FOR_CHILD_OBJECT_HONOR:
         return Honor
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
+    if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
         return Organization
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_PATENT:
+    if label == LABEL_FOR_CHILD_OBJECT_PATENT:
         return Patent
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_PROJECT:
+    if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
         return Project
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
+    if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
         return Publication
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
+    if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
         return Volunteering
 
 
-def update_child_object(child_label=None, child_object=None, request=None):
+def update_child_object(label=None, child_object=None, request=None):
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_SKILL:
+    if label == LABEL_FOR_CHILD_OBJECT_SKILL:
         child_object.name = request.POST.get("name")
         child_object.level = request.POST.get("level")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
+    if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
         child_object.name = request.POST.get("name")
         child_object.level = request.POST.get("level")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_EDUCATION: # education
+    if label == LABEL_FOR_CHILD_OBJECT_EDUCATION: # education
         child_object.title = request.POST.get("title")
         child_object.grade = request.POST.get("grade")
         child_object.start_date = request.POST.get("start_date")
@@ -1773,7 +1920,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.institution_link = request.POST.get("institution_link")
         child_object.description = request.POST.get("description")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
+    if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
         child_object.title = request.POST.get("title")
         child_object.location = request.POST.get("location")
         child_object.company = request.POST.get("company")
@@ -1782,26 +1929,26 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
+    if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
         child_object.link = request.POST.get("link")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_COURSE:
+    if label == LABEL_FOR_CHILD_OBJECT_COURSE:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
         child_object.hours = request.POST.get("hours")
         child_object.link = request.POST.get("link")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_HONOR:
+    if label == LABEL_FOR_CHILD_OBJECT_HONOR:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
         child_object.link = request.POST.get("link")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
+    if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
         child_object.role = request.POST.get("role")
         child_object.organization = request.POST.get("organization")
         child_object.organization_link = request.POST.get("organization_link")
@@ -1809,7 +1956,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_PATENT:
+    if label == LABEL_FOR_CHILD_OBJECT_PATENT:
         child_object.title = request.POST.get("title")
         child_object.number = request.POST.get("number")
         child_object.issuer = request.POST.get("issuer")
@@ -1819,7 +1966,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.description = request.POST.get("description")
 
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_PROJECT:
+    if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
         child_object.title = request.POST.get("title")
         child_object.role = request.POST.get("role")
         child_object.start_date = request.POST.get("start_date")
@@ -1828,7 +1975,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
         child_object.description = request.POST.get("description")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
+    if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.authors = request.POST.get("authors")
@@ -1836,7 +1983,7 @@ def update_child_object(child_label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
         child_object.description = request.POST.get("description")
 
-    if child_label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
+    if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
         child_object.title = request.POST.get("title")
         child_object.location = request.POST.get("location")
         child_object.organization = request.POST.get("organization")
@@ -1946,33 +2093,33 @@ def set_activation_state(label=None, object=None, active=True):
     object.save()
 
 
-def get_child_object(child_label=None, pk=None, profile=None):
+def get_child_object(label=None, pk=None, profile=None):
     """
     This function gets an instance object
     """
-    Klass = get_child_class(child_label)
+    Klass = get_child_class(label)
     return get_object_or_404(Klass, profile=profile, pk=pk)
 
 
-def create_empty_child_object(child_label=None, profile=None):
+def create_empty_child_object(label=None, profile=None):
     """
     This function creates an empty object associated with a profile instance
     """
-    Klass = get_child_class(child_label)
+    Klass = get_child_class(label)
     return Klass(profile=profile)
 
 
-def get_above_child_object(child_label=None, child_object=None, profile=None):
+def get_above_child_object(label=None, child_object=None, profile=None):
     """
     This function gets an instance object that is located before the "child_object"
     """
-    Klass = get_child_class(child_label)
+    Klass = get_child_class(label)
     return Klass.objects.filter(order__lt=child_object.order, profile=profile).last()
 
 
-def get_below_child_object(child_label=None, child_object=None, profile=None):
+def get_below_child_object(label=None, child_object=None, profile=None):
     """
     This function gets an instance object that is located after the "child_object"
     """
-    Klass = get_child_class(child_label)
+    Klass = get_child_class(label)
     return Klass.objects.filter(order__gt=child_object.order, profile=profile).first()

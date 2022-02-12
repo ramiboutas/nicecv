@@ -7,7 +7,7 @@
       </div>
       <input class="form-control border-0 bg-white" type="text" name="youtube"
         placeholder="{% trans 'Youtube' %}"
-        hx-post="{{ youtube.update_youtube_url }}" hx-trigger="change" hx-swap="none"
+        hx-post="{{ object.update_youtube_url }}" hx-trigger="change" hx-swap="none"
         {% if object.youtube %} value="{{object.youtube}}" {% endif %} maxlength="50">
       <!--
       <button class="btn btn-outline-secondary border-0 float-end"

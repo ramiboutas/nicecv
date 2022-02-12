@@ -57,29 +57,29 @@ from .views import move_up_child_object_view, move_down_child_object_view
 # any child object
 urlpatterns += [
         # htmx - insert child new form
-        path('insert-new-form/<str:child_label>/<uuid:pk_parent>/', insert_child_new_form_view, name='profiles_insert_child_new_form'),
+        path('insert-new-form/<str:label>/<uuid:pk_parent>/', insert_child_new_form_view, name='profiles_insert_child_new_form'),
 
         # htmx - remove child new form
-        path('remove-new-form/<str:child_label>/<uuid:pk_parent>/', remove_child_new_form_view, name='profiles_remove_child_new_form'),
+        path('remove-new-form/<str:label>/<uuid:pk_parent>/', remove_child_new_form_view, name='profiles_remove_child_new_form'),
 
         # htmx - create child object
-        path('create-object/<str:child_label>/<uuid:pk_parent>/', create_child_object_view, name='profiles_create_child_object'),
+        path('create-object/<str:label>/<uuid:pk_parent>/', create_child_object_view, name='profiles_create_child_object'),
 
         # htmx - update child object
-        path('update-object/<str:child_label>/<uuid:pk_parent>/<int:pk>/', update_child_object_view, name='profiles_update_child_object'),
+        path('update-object/<str:label>/<uuid:pk_parent>/<int:pk>/', update_child_object_view, name='profiles_update_child_object'),
 
 
         # htmx - move up child object
-        path('move-up-child/<str:child_label>/<uuid:pk_parent>/<int:pk>/', move_up_child_object_view, name='profiles_move_up_child_object'),
+        path('move-up-child/<str:label>/<uuid:pk_parent>/<int:pk>/', move_up_child_object_view, name='profiles_move_up_child_object'),
 
         # htmx - move down child object
-        path('move-down-child/<str:child_label>/<uuid:pk_parent>/<int:pk>/', move_down_child_object_view, name='profiles_move_down_child_object'),
+        path('move-down-child/<str:label>/<uuid:pk_parent>/<int:pk>/', move_down_child_object_view, name='profiles_move_down_child_object'),
 
         # htmx - copy child object
-        path('copy-child/<str:child_label>/<uuid:pk_parent>/<int:pk>/', copy_child_object_view, name='profiles_copy_child_object'),
+        path('copy-child/<str:label>/<uuid:pk_parent>/<int:pk>/', copy_child_object_view, name='profiles_copy_child_object'),
 
         # htmx - delete child object
-        path('delete-child/<str:child_label>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),
+        path('delete-child/<str:label>/<uuid:pk_parent>/<int:pk>/', delete_child_object_view, name='profiles_delete_child_object'),
 
 ]
 

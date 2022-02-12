@@ -1,6 +1,7 @@
 {% load i18n %}
 <div id="volunteering-box" class="mt-5">
   {% if object.volunteering_active %}
+    <!--
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
       <i class="bi bi-heart"></i> {% trans "Volunteering work" %}
@@ -17,6 +18,28 @@
         <i class="bi bi-info-circle"></i>
       </button>
 
+    </h6>
+     -->
+    <h6  class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-heart"></i></span>
+        </div>
+        <input class="form-control border-0 bg-white"  type="text" name="volunteering_label" value="{{ object.volunteering_label }}"
+          hx-post="{{ object.update_volunteering_label_url }}" hx-trigger="change" hx-swap="none">
+
+        <button class="btn btn-outline-secondary border-0 float-end"
+          hx-post="{{ object.insert_volunteering_help_modal_url }}" hx-target="#modals-here"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+          <i class="bi bi-info-circle"></i>
+        </button>
+
+        <button class="btn btn-outline-secondary border-0 float-end"
+          hx-post="{{ object.deactivate_volunteering_url }}" hx-target="#volunteering-box" hx-swap="innerHTML"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate volunteerings' %}">
+          <i class="bi bi-eye-slash"></i>
+        </button>
+      </div>
     </h6>
 
     {% for volunteering in object.volunteering_set.all %}

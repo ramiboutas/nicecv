@@ -7,7 +7,7 @@
       </div>
       <input class="form-control border-0 bg-white" type="text" name="website"
         placeholder="{% trans 'Website' %}"
-        hx-post="{{ website.update_website_url }}" hx-trigger="change" hx-swap="none"
+        hx-post="{{ object.update_website_url }}" hx-trigger="change" hx-swap="none"
         {% if object.website %} value="{{object.website}}" {% endif %} maxlength="50">
       <!--
       <button class="btn btn-outline-secondary border-0 float-end"

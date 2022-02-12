@@ -12,8 +12,8 @@
   hx-post="{% url 'profiles_create_object' %}"
   hx-trigger="load delay:10ms, ObjectCreatedEvent from:body"
   hx-swap="none">
-  <input name="first_name"  value="{{ request.user.first_name }}">
-  <input name="last_name"  value="{{ request.user.last_name }}">
+  <input name="firstname"  value="{{ request.user.firstname }}">
+  <input name="lastname"  value="{{ request.user.lastname }}">
   <input name="email"  value="{{ request.user.email }}">
 </form>
 
