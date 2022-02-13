@@ -30,7 +30,7 @@
           hx-post="{{ object.update_skill_label_url }}" hx-trigger="change" hx-swap="none">
 
         <button class="btn btn-outline-secondary border-0 float-end"
-          hx-post="{{ object.insert_skill_help_modal_url }}" hx-target="#modals-here"
+          hx-get="{{ object.insert_skill_help_modal_url }}" hx-target="#modals-here"
           data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
           <i class="bi bi-info-circle"></i>
         </button>

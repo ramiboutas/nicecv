@@ -1,0 +1,82 @@
+{% load i18n %}
+
+
+<!-- Modal -->
+<div id="resume-templates-modal-content">
+  <div id="resume-templates-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+    <div id="resume-templates-modal" class="modal fade show" style="display:block;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{% trans "Resume templates" %} <i class="bi bi-file-pdf"></i> </h5>
+            <button type="button" class="btn-close"
+              hx-get="{{ object.remove_resume_templates_modal_url }}"
+              hx-target="#resume-templates-modal-content" hx-swap="outerHTML">
+            </button>
+          </div>
+
+          <div class="modal-body p-0">
+
+            <div class="row">
+              {% for resume in resume_templates %}
+                <div class="col-md-4 col-sm-12">
+                  <div class="card">
+                    <img class="card-img" src="{{ resume.image.url }}" alt="Resume template image">
+                    <div class="card-footer bg-white">
+                      <form class="" action="{{ resume.download_object_url }}" method="post" target="_blank">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk_profile" value="{{object.pk}}">
+                        <button class="btn btn-outline-danger btn-lg w-100 border-0" type="submit" name="button">
+                          {% trans "Download PDF" %} <i class="bi bi-cloud-download"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              {% for resume in resume_templates %}
+                <div class="col-md-4 col-sm-12">
+                  <div class="card">
+                    <img class="card-img" src="{{ resume.image.url }}" alt="Resume template image">
+                    <div class="card-footer bg-white">
+                      <form class="" action="{{ resume.download_object_url }}" method="post" target="_blank">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk_profile" value="{{object.pk}}">
+                        <button class="btn btn-outline-danger btn-lg w-100 border-0" type="submit" name="button">
+                          {% trans "Download PDF" %} <i class="bi bi-cloud-download"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              {% for resume in resume_templates %}
+                <div class="col-md-4 col-sm-12">
+                  <div class="card">
+                    <img class="card-img" src="{{ resume.image.url }}" alt="Resume template image">
+                    <div class="card-footer bg-white">
+                      <form class="" action="{{ resume.download_object_url }}" method="post" target="_blank">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk_profile" value="{{object.pk}}">
+                        <button class="btn btn-outline-danger btn-lg w-100 border-0" type="submit" name="button">
+                          {% trans "Download PDF" %} <i class="bi bi-cloud-download"></i>
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary"
+              hx-get="{{ object.remove_resume_templates_modal_url }}" hx-target="#resume-templates-modal-content" hx-swap="outerHTML">
+              {% translate "Close"%}
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

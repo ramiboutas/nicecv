@@ -4,6 +4,7 @@ from .views import ProfileListView, ProfileUpdateView, ProfileCreateView
 from .views import create_object_view, delete_object_view
 
 from .views import save_personal_information_view, update_description_view, update_field_view
+from .views import insert_resume_templates_modal_view, remove_resume_templates_modal_view
 
 
 # general
@@ -26,8 +27,13 @@ urlpatterns = [
     # htmx - update description
     path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
 
-    # htmx - update description
+    # htmx - update any field
     path('update-field/<str:label>/<uuid:pk>/', update_field_view, name='profiles_update_field'),
+
+    # htmx - resume templates modal
+    path('remove-resume-templates-modal/<uuid:pk>/', remove_resume_templates_modal_view, name='profiles_remove_resume_templates_modal'),
+    path('insert-resume-templates-modal/<uuid:pk>/', insert_resume_templates_modal_view, name='profiles_insert_resume_templates_modal'),
+
 
 ]
 

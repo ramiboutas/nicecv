@@ -99,6 +99,7 @@ def get_photo_modal_view(request, pk):
 # htmx - profile - remove photo modal
 @login_required
 def remove_photo_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
     return HttpResponse(status=200)
 
 
@@ -127,6 +128,22 @@ def delete_photos_view(request, pk):
     delete_path_file(object.photo.path)
     object.photo_full.delete()
     object.photo.delete()
+    return HttpResponse(status=200)
+
+
+
+# htmx - profile - get resume templates modal
+@login_required
+def insert_resume_templates_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    context = {'object': object}
+    return render(request, 'profiles/partials/resume_templates_modal.html', context)
+
+
+# htmx - profile - remove resume templates modal
+@login_required
+def remove_resume_templates_modal_view(request, pk):
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
     return HttpResponse(status=200)
 
 

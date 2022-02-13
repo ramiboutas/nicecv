@@ -30,14 +30,14 @@
          hx-post="{{ object.update_description_label_url }}" hx-trigger="change" hx-swap="none">
 
        <button class="btn btn-outline-secondary border-0 float-end"
-         hx-post="{{ object.insert_description_help_modal_url }}" hx-target="#modals-here"
+         hx-get="{{ object.insert_description_help_modal_url }}" hx-target="#modals-here"
          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
          <i class="bi bi-info-circle"></i>
        </button>
 
        <button class="btn btn-outline-secondary border-0 float-end"
          hx-post="{{ object.deactivate_description_url }}" hx-target="#description-box" hx-swap="innerHTML"
-         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate descriptions' %}">
+         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate description' %}">
          <i class="bi bi-eye-slash"></i>
        </button>
      </div>

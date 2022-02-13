@@ -26,7 +26,7 @@
           <span class="input-group-text bg-white border-0"><i class="bi bi-person-check"></i></span>
         </div>
         <input class="form-control border-0 bg-white"  type="text" name="organization_label" value="{{ object.organization_label }}"
-          hx-post="{{ object.update_organization_label_url }}" hx-trigger="change" hx-swap="none">
+          hx-get="{{ object.update_organization_label_url }}" hx-trigger="change" hx-swap="none">
 
         <button class="btn btn-outline-secondary border-0 float-end"
           hx-post="{{ object.insert_organization_help_modal_url }}" hx-target="#modals-here"

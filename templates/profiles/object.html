@@ -86,8 +86,11 @@
 
       </div>
 
-        <button class="btn btn-outline-danger border-0 w-100" type="button">
-           <i class="bi bi-file-pdf"></i> {% trans "Download" %}
+
+        <button class="btn btn-outline-danger border-0 w-100"
+          hx-get="{{ object.insert_resume_templates_modal_url }}" hx-target="#modals-here"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Select any template' %}">
+          <i class="bi bi-file-pdf"></i> {% trans "Download" %}
         </button>
 
     </div>
@@ -137,9 +140,3 @@
     </div>
   </div>
 </div>
-
-
-
-<br style="margin-bottom: 300px;" >
-
-{% include "profiles/partials/resume_templates.html" %}

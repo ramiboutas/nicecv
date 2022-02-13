@@ -1219,6 +1219,14 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_CHILD_OBJECT_VOLUNTEERING})
 
+    # resume templates modal
+    def remove_resume_templates_modal_url(self):
+        return reverse('profiles_remove_resume_templates_modal', kwargs={'pk':self.pk})
+
+    def insert_resume_templates_modal_url(self):
+        return reverse('profiles_insert_resume_templates_modal', kwargs={'pk':self.pk})
+
+    # update any field 
     def update_field(self, label, request):
 
         if label == LABEL_FOR_PROFILE_FIELD_FIRSTNAME:
