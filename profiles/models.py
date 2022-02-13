@@ -1226,7 +1226,25 @@ class Profile(models.Model):
     def insert_resume_templates_modal_url(self):
         return reverse('profiles_insert_resume_templates_modal', kwargs={'pk':self.pk})
 
-    # update any field 
+
+    # number of children created // start creating files
+    def number_of_children_created(self):
+        count_array = [ self.skill_set.count(),
+                        self.language_set.count(),
+                        self.education_set.count(),
+                        self.experience_set.count(),
+                        self.certification_set.count(),
+                        self.course_set.count(),
+                        self.honor_set.count(),
+                        self.organization_set.count(),
+                        self.patent_set.count(),
+                        self.project_set.count(),
+                        self.publication_set.count(),
+                        self.volunteering_set.count()
+                        ]
+        return sum(count_array)
+
+    # update any field
     def update_field(self, label, request):
 
         if label == LABEL_FOR_PROFILE_FIELD_FIRSTNAME:

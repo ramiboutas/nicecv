@@ -10,7 +10,6 @@ cls_storage = FileSystemStorage(location='/home/rami/texmf/tex/latex/local')
 
 
 
-
 class ResumeTemplate(models.Model):
     name = models.CharField(max_length=128)
     file = models.FileField(upload_to='texfiles')
