@@ -64,8 +64,6 @@ LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL = 'volunteering-label'
 
 
 
-
-
 def user_directory_path(instance, filename): # not used // 22.01.2022
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     """

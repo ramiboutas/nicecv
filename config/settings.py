@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_tex',
+    'celery_progress',
+    'django_celery_results',
     # 'djstripe',
 
     # Tools for debug
@@ -324,6 +326,10 @@ META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and rel
 
 LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
 # LATEX_INTERPRETER_OPTIONS = '-interaction=nonstopmode'
+
+# celery
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+
 
 
 # profile model settings

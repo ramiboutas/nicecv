@@ -1,22 +1,88 @@
-# from celery import shared_task
-# from celery_progress.backend import ProgressRecorder
-#
-# from django_htmx.http import trigger_client_event
-# from django_tex.shortcuts import render_to_pdf
-# from django_tex.core import compile_template_to_pdf
-#
-# from django.core.files.base import ContentFile
-# from django.shortcuts import get_object_or_404
-# from django.conf import settings
-# from django.http import HttpResponse
-# from django.utils.translation import gettext_lazy as _
-#
-# from utils.sessions import create_or_get_session_object
-# from utils.files import get_tex_template_name, generate_zip
-# from .models import TexFile
-# from coverletters.models import CoverLetter
-#
-#
+import os
+
+from celery import shared_task
+from celery_progress.backend import ProgressRecorder
+from django_tex.core import compile_template_to_pdf
+from pdf2image import convert_from_path, convert_from_bytes
+
+from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.core.files.base import ContentFile
+from django.utils.translation import gettext_lazy as _
+
+from profiles.models import Profile
+from texfiles.models import ResumeTemplate
+from files.models import ResumeFile
+from utils.files import get_tex_template_name
+
+IMAGE_DIRECTORY = f'files/images'
+PDF_DIRECTORY = 'files/pdfs'
+IMAGE_FORMAT = 'jpg'
+
+@shared_task(bind=True)
+def create_resume_file_objects(self, pk=None):
+    progress_recorder = ProgressRecorder(self)
+    profile = get_object_or_404(Profile, pk=pk)
+    resume_template_objects = ResumeTemplate.objects.filter(is_active=True)
+    # profile = instance.profile
+    profile.resume_files.all().delete()
+    for resume_template_object in resume_template_objects:
+        # get the template name
+        template_name = get_tex_template_name(resume_template_object)
+        context = {'object': profile}
+        # create the pdf with django-tex
+        pdf_file_in_memory = compile_template_to_pdf(template_name, context)
+        pdf_file = ContentFile(pdf_file_in_memory, f'{_("CV")}_{profile.pk}_{resume_template_object.pk}.pdf')
+        resume_file = ResumeFile(profile=profile, pdf_file=pdf_file)
+        resume_file.save()
+
+        resume_image_dir = os.path.join(settings.MEDIA_ROOT, IMAGE_DIRECTORY)
+        if not os.path.exists(resume_image_dir):
+            os.mkdir(resume_image_dir)
+
+        # convert page cover (in this case) to jpg and save
+        resume_image = convert_from_path(
+            pdf_path=resume_file.pdf_file.path,
+            dpi=200,
+            first_page=1,
+            last_page=1,
+            fmt='jpg',
+            output_folder=resume_image_dir,
+            )[0]
+
+        # get name of pdf_file
+        pdf_filename, extension = os.path.splitext(os.path.basename(resume_file.pdf_file.name))
+        new_resume_image_path = '{}.{}'.format(os.path.join(resume_image_dir, pdf_filename), IMAGE_FORMAT)
+        # rename the file that was saved to be the same as the pdf file
+        os.rename(resume_image.filename, new_resume_image_path)
+        # get the relative path to the resume image to store in model
+        new_resume_image_path_relative = '{}.{}'.format(os.path.join(IMAGE_DIRECTORY, pdf_filename), IMAGE_FORMAT)
+        resume_file.image = new_resume_image_path_relative
+        resume_file.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # @shared_task(bind=True)
 # def process_download(self, POST_dict, pk):
 #     progress_recorder = ProgressRecorder(self)
