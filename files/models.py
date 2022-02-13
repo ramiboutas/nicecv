@@ -16,11 +16,7 @@ from texfiles.models import ResumeTemplate
 from utils.files import get_tex_template_name, delete_path_file
 
 
-day = datetime.now().day
-month = datetime.now().month
-year = datetime.now().year
-
-IMAGE_DIRECTORY = 'files/images'
+IMAGE_DIRECTORY = f'files/images'
 PDF_DIRECTORY = 'files/pdfs'
 IMAGE_FORMAT = 'jpg'
 
@@ -32,22 +28,17 @@ class ResumeFile(models.Model):
     pdf_file = models.FileField(null=True , upload_to=PDF_DIRECTORY)
 
 
-@receiver(post_save, sender=Education)
-def create_files(sender, instance, created, **kwargs):
-    resume_templates = ResumeTemplate.objects.filter(is_active=True)
-    profile = instance.profile
-    previous_files = profile.resume_files.all().delete()
-    print("previous_files")
-    print(previous_files)
-    # for file in previous_files:
-    #     file.delete()
-    # previous_files.bulk_delete()
-    for resume_template in resume_templates:
-        # create the pdf and image
-        template_name = get_tex_template_name(resume_template)
+def create_resume_file_objects(profile=None):
+    resume_template_objects = ResumeTemplate.objects.filter(is_active=True)
+    # profile = instance.profile
+    profile.resume_files.all().delete()
+    for resume_template_object in resume_template_objects:
+        # get the template name
+        template_name = get_tex_template_name(resume_template_object)
         context = {'object': profile}
+        # create the pdf with django-tex
         pdf_file_in_memory = compile_template_to_pdf(template_name, context)
-        pdf_file = ContentFile(pdf_file_in_memory, f'{_("CV")}_{profile.pk}_{resume_template.pk}.pdf')
+        pdf_file = ContentFile(pdf_file_in_memory, f'{_("CV")}_{profile.pk}_{resume_template_object.pk}.pdf')
         resume_file = ResumeFile(profile=profile, pdf_file=pdf_file)
         resume_file.save()
 
@@ -74,6 +65,38 @@ def create_files(sender, instance, created, **kwargs):
         new_resume_image_path_relative = '{}.{}'.format(os.path.join(IMAGE_DIRECTORY, pdf_filename), IMAGE_FORMAT)
         resume_file.image = new_resume_image_path_relative
         resume_file.save()
+
+
+@receiver(post_delete, sender=Skill)
+@receiver(post_save, sender=Skill)
+@receiver(post_delete, sender=Language)
+@receiver(post_save, sender=Language)
+@receiver(post_delete, sender=Education)
+@receiver(post_save, sender=Education)
+@receiver(post_delete, sender=Experience)
+@receiver(post_save, sender=Experience)
+@receiver(post_delete, sender=Certification)
+@receiver(post_save, sender=Certification)
+@receiver(post_delete, sender=Course)
+@receiver(post_save, sender=Course)
+@receiver(post_delete, sender=Honor)
+@receiver(post_save, sender=Honor)
+@receiver(post_delete, sender=Organization)
+@receiver(post_save, sender=Organization)
+@receiver(post_delete, sender=Patent)
+@receiver(post_save, sender=Patent)
+@receiver(post_delete, sender=Project)
+@receiver(post_save, sender=Project)
+@receiver(post_delete, sender=Publication)
+@receiver(post_save, sender=Publication)
+@receiver(post_delete, sender=Volunteering)
+@receiver(post_save, sender=Volunteering)
+@receiver(post_save, sender=Profile)
+def file_education_trigger(sender, instance, **kwargs):
+    if sender == Profile:
+        create_resume_file_objects(profile=instance)
+    else:
+        create_resume_file_objects(profile=instance.profile)
 
 
 
