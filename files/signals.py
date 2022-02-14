@@ -41,6 +41,6 @@ def file_creation_trigger(sender, instance, **kwargs):
 @receiver(post_delete, sender=ResumeFile)
 def delete_resume_files(sender, instance, **kwargs):
     if instance.image:
-        delete_path_file(instance.image.path)
+        delete_path_file.delay(instance.image.path)
     if instance.pdf_file:
-        delete_path_file(instance.pdf_file.path)
+        delete_path_file.delay(instance.pdf_file.path)
