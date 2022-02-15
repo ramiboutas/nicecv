@@ -5,10 +5,7 @@ import zipfile
 
 from django.conf import settings
 
-from celery import shared_task
-
-@shared_task(bind=True)
-def delete_path_file(self, path):
+def delete_path_file(path):
     """
     This deletes a file from path (File System)
     """

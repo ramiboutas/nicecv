@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 
@@ -145,7 +144,6 @@ TEMPLATES = [
 
                 # my own context processors
                 'utils.context_processors.nicecv',
-                'profiles.context_processors.profile_variables',
                 'texfiles.context_processors.texfiles',
             ],
         },
@@ -196,7 +194,6 @@ else:
              },
         }
     }
-
 
 
 # Password validation
@@ -264,7 +261,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -301,13 +297,11 @@ DJSTRIPE_WEBHOOK_SECRET = STRIPE_WEBHOOK_SECRET
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
-
 # PayPal
 # Keys & stuff to include
 
 # Coinbase
 # Keys & stuff to include
-
 
 
 # SEO, Meta data & Naming
@@ -317,48 +311,13 @@ META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
 META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
 
 
-
-# tex
-
-
-# LATEX_INTERPRETER = 'pdflatex'
-# pdflatex, latex, xelatex, lualatex
-
-LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
+# LaTex settings
+# LATEX_INTERPRETER = 'pdflatex' # pdflatex, latex, xelatex, lualatex
 # LATEX_INTERPRETER_OPTIONS = '-interaction=nonstopmode'
+LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
 
 # celery
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-
-
-
-# profile model settings
-
-# PROFILE_WEBSITE_CHOICES =  [
-#     ('Linkedin', 'Linkedin'),
-#     ('Github', 'Github'),
-#     ('Twitter', 'Twitter'),
-#     ('Youtube', 'Youtube'),
-#     ('Portfolio', _('Portfolio')),
-#     ('Other', _('Other')),
-# ]
-
-PROFILE_LANGUAGE_LEVEL_CHOICES = [
-    (0, _('Select Level')), # no level indicated!
-    (1, _('Very basic')),
-    (2, _('Basic')),
-    (3, _('Intermediate')),
-    (4, _('Advanced')),
-    (5, _('Very advanced')),
-    (6, _('Native')),
-]
-
-TEXT_MAX_LENGTH_SUPER_SHORT = 15
-TEXT_MAX_LENGTH_SHORT = 50
-TEXT_MAX_LENGTH_NORMAL = 75
-TEXT_MAX_LENGTH_LARGE = 250
-TEXT_MAX_LENGTH_SUPER_LARGE = 500
-
 
 # crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

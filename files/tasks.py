@@ -16,7 +16,7 @@ from texfiles.models import ResumeTemplate
 from files.models import ResumeFile
 from utils.files import get_tex_template_name
 
-IMAGE_DIRECTORY = f'files/images'
+IMAGE_DIRECTORY = 'files/images'
 PDF_DIRECTORY = 'files/pdfs'
 IMAGE_FORMAT = 'jpg'
 
@@ -35,10 +35,10 @@ def create_resume_file_objects(self, pk=None):
         template_name = get_tex_template_name(resume_template_object)
         context = {'object': profile}
         # create the pdf with django-tex
-        pdf_file_in_memory = compile_template_to_pdf(template_name, context)
+        bytes_pdf = compile_template_to_pdf(template_name, context)
         random_string = get_random_string()
-        pdf_file = ContentFile(pdf_file_in_memory, f'{_("CV")}_{profile.pk}_{resume_template_object.pk}_{random_string}.pdf')
-        resume_file = ResumeFile(profile=profile, pdf_file=pdf_file)
+        pdf = ContentFile(bytes_pdf, f'{_("CV")}_{profile.pk}_{resume_template_object.pk}_{random_string}.pdf')
+        resume_file = ResumeFile(profile=profile, pdf=pdf)
         resume_file.save()
 
         resume_image_dir = os.path.join(settings.MEDIA_ROOT, IMAGE_DIRECTORY)
@@ -47,7 +47,7 @@ def create_resume_file_objects(self, pk=None):
 
         # convert page cover (in this case) to jpg and save
         resume_image = convert_from_path(
-            pdf_path=resume_file.pdf_file.path,
+            pdf_path=resume_file.pdf.path,
             dpi=200,
             first_page=1,
             last_page=1,
@@ -55,8 +55,8 @@ def create_resume_file_objects(self, pk=None):
             output_folder=resume_image_dir,
             )[0]
 
-        # get name of pdf_file
-        pdf_filename, extension = os.path.splitext(os.path.basename(resume_file.pdf_file.name))
+        # get name of pdf
+        pdf_filename, extension = os.path.splitext(os.path.basename(resume_file.pdf.name))
         new_resume_image_path = '{}.{}'.format(os.path.join(resume_image_dir, pdf_filename), IMAGE_FORMAT)
         # rename the file that was saved to be the same as the pdf file
         os.rename(resume_image.filename, new_resume_image_path)

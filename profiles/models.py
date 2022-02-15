@@ -1224,6 +1224,9 @@ class Profile(models.Model):
     def insert_resume_templates_modal_url(self):
         return reverse('profiles_insert_resume_templates_modal', kwargs={'pk':self.pk})
 
+    #  get resume file
+    def get_resume_file_list_url(self):
+        return reverse('files_resume_file_list', kwargs={'pk':self.pk})
 
     # number of children created // start creating files
     def number_of_children_created(self):
@@ -1399,7 +1402,7 @@ class Language(models.Model):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='language_set')
     name = models.CharField(max_length=50)
-    level = models.IntegerField(default=50, choices=settings.PROFILE_LANGUAGE_LEVEL_CHOICES)
+    level = models.IntegerField(default=50)
 
     class Meta:
         ordering = ('id', 'level', )
@@ -1414,7 +1417,6 @@ class Language(models.Model):
     def delete_object_url(self):
         return reverse('profiles_delete_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_LANGUAGE})
-
 
 
 class Education(models.Model):
@@ -1611,7 +1613,6 @@ class Honor(models.Model):
     link = models.CharField(null=True, blank=True, max_length=100)
     # description = models.TextField(null=True, blank=True)
 
-
     class Meta:
         ordering = ('order', 'id', )
 
@@ -1700,10 +1701,6 @@ class Patent(models.Model):
     inventors = models.CharField(null=True, blank=True, max_length=200)
     link = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True) # suggest to use to include if the patent is patent is pending and more relevant info
-
-    # pending = models.BooleanField(null=True, blank=True)
-    # application_date = models.CharField(null=True, blank=True, max_length=100)
-
 
     class Meta:
         ordering = ('order', 'id', )
@@ -1828,7 +1825,6 @@ class Publication(models.Model):
         super().save(*args, **kwargs)
 
 
-
 class Volunteering(models.Model):
     """
     An object representing the member's volunteering experience.
@@ -1872,18 +1868,6 @@ class Volunteering(models.Model):
     def save(self, *args, **kwargs):
         manage_instance_ordering(self)
         super().save(*args, **kwargs)
-
-
-# util functions
-#
-# def get_website_boostrap_icon(text):
-#     icon_list = ['github', 'facebook', 'instagram', 'linkedin', 'medium', 'quora', 'reddit', 'skype', 'slack', 'stack-overflow', 'telegram', 'twitch', 'twitter', 'vimeo', 'youtube']
-#
-#     # use list comprehension!!!
-#     for index, icon in enumerate(icon_list):
-#         if icon.replace("-", "") in text:
-#             return icon_list[index]
-#     return 'globe'
 
 
 def get_child_class(label):
@@ -1988,7 +1972,6 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.inventors = request.POST.get("inventors")
         child_object.link = request.POST.get("link")
         child_object.description = request.POST.get("description")
-
 
     if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
         child_object.title = request.POST.get("title")
