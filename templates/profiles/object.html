@@ -94,8 +94,9 @@
         </button>
 
         <a class="btn btn-outline-danger border-0 w-100"
-          href="{{ object.get_resume_file_list_url }}">
-          <i class="bi bi-file-pdf"></i> {% trans "Select resume templates" %}
+          href="{{ object.get_resume_file_list_url }}"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Generate resumes to download' %}">
+          <i class="bi bi-file-pdf"></i> {% trans "Generate resumes" %}
         </a>
 
     </div>
