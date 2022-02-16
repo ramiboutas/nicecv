@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_tex',
-    'celery_progress',
+    'celery_progress_htmx',
     'django_celery_results',
     # 'djstripe',
 
@@ -318,6 +318,8 @@ LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
 
 # celery
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'django-db'
+
 
 # crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

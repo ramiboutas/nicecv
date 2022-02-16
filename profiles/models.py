@@ -93,6 +93,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile_set')
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    task_id = models.CharField(null=True, blank=True, max_length=50)
 
     # media
     photo = models.ImageField(null=True, blank=True, upload_to='profiles/cropped_photos/')
@@ -1227,6 +1228,16 @@ class Profile(models.Model):
     #  get resume file
     def get_resume_file_list_url(self):
         return reverse('files_resume_file_list', kwargs={'pk':self.pk})
+
+    #  start creating resumes url
+    def generate_resumes_url(self):
+        return reverse('files_generate_resumes', kwargs={'pk':self.pk})
+
+    #  start creating resumes url
+    def resume_creation_status_url(self):
+        return reverse('files_resume_creation_status', kwargs={'pk':self.pk, 'task_id': self.task_id})
+
+
 
     # number of children created // start creating files
     def number_of_children_created(self):

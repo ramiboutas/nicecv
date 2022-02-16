@@ -87,17 +87,11 @@
       </div>
 
 
-        <button class="btn btn-outline-danger border-0 w-100"
-          hx-get="{{ object.insert_resume_templates_modal_url }}" hx-target="#modals-here"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Select any template' %}">
-          <i class="bi bi-file-pdf"></i> {% trans "Download" %}
-        </button>
-
-        <a class="btn btn-outline-danger border-0 w-100"
-          href="{{ object.get_resume_file_list_url }}"
+        <button class="btn btn-outline-danger w-100"
+          hx-target="this" hx-swap="outerHTML" hx-post="{{ object.generate_resumes_url }}"
           data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Generate resumes to download' %}">
           <i class="bi bi-file-pdf"></i> {% trans "Generate resumes" %}
-        </a>
+        </button>
 
     </div>
   </nav>
