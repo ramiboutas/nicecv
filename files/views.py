@@ -22,8 +22,6 @@ def generate_resumes_view(request, pk):
     return render(request, 'files/partials/resume_creation_status.html', context)
 
 
-
-
 @never_cache
 def resume_creation_status_view(request, pk, task_id):
     profile = get_object_or_404(Profile, pk=pk)

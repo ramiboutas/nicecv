@@ -2141,3 +2141,13 @@ def get_below_child_object(label=None, child_object=None, profile=None):
     """
     Klass = get_child_class(label)
     return Klass.objects.filter(order__gt=child_object.order, profile=profile).first()
+
+
+
+###################################################
+
+class Resume(models.Model):
+    profile = models.ForeignKey(Profile, related_name="resumes", on_delete=models.CASCADE)
+    # texfile = models.ForeignKey(ResumeTemplate, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to=settings.RESUME_IMAGE_DIRECTORY) # , upload_to='files/%Y/%m/%d/'
+    pdf = models.FileField(null=True , upload_to=settings.RESUME_PDF_DIRECTORY)

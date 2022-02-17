@@ -1,8 +1,41 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-from .models import ResumeFile
+from .models import Resume
 from utils.files import delete_path_file
+
+
+@receiver(post_delete, sender=Resume)
+def delete_resumes(sender, instance, **kwargs):
+    """
+    Delete resume files
+    """
+    delete_path_file(instance.image.path)
+    delete_path_file(instance.pdf.path)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # from .tasks import create_resume_file_objects
 # from profiles.models import Profile, Skill, Language, Education, Experience, Certification, Course, Honor, Organization, Patent, Project, Publication, Volunteering
@@ -37,12 +70,3 @@ from utils.files import delete_path_file
 #         create_resume_file_objects.delay(pk=instance.pk)
 #     else:
 #         create_resume_file_objects.delay(pk=instance.profile.pk)
-
-
-@receiver(post_delete, sender=ResumeFile)
-def delete_resumes(sender, instance, **kwargs):
-    """
-    Delete resume files
-    """
-    delete_path_file(instance.image.path)
-    delete_path_file(instance.pdf.path)

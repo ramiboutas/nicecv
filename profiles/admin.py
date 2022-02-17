@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from .models import Profile, Skill, Language, Education, Experience, Course, Certification, Honor, Organization, Patent, Project, Publication, Volunteering
-
+from .models import (Profile, Skill, Language,
+                    Education, Experience, Course,
+                    Certification, Honor, Organization,
+                    Patent, Project, Publication, Volunteering,
+                    Resume)
 
 admin.site.register(Profile)
 admin.site.register(Skill)
@@ -16,3 +19,5 @@ admin.site.register(Patent)
 admin.site.register(Project)
 admin.site.register(Publication)
 admin.site.register(Volunteering)
+######################################
+admin.site.register(Resume)

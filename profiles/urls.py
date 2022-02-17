@@ -54,7 +54,6 @@ urlpatterns += [
 ]
 
 
-
 from .views import create_child_object_view, update_child_object_view, delete_child_object_view, copy_child_object_view
 from .views import insert_child_new_form_view, remove_child_new_form_view
 from .views import move_up_child_object_view, move_down_child_object_view

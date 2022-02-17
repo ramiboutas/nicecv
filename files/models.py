@@ -1,10 +1,6 @@
 from django.db import models
 
-from django_tex.shortcuts import render_to_pdf
-
 from profiles.models import Profile
-from texfiles.models import ResumeTemplate
-from utils.files import get_tex_template_name, delete_path_file
 
 IMAGE_DIRECTORY = 'files/images'
 PDF_DIRECTORY = 'files/pdfs'

@@ -311,6 +311,13 @@ META_KEYWORDS = _('nice cv, professional, resume, jobs, good impressions')
 META_DESCRIPTION = _('Nice CV online lets you to create high quality CVs and related services')
 
 
+# profile settings
+
+RESUME_IMAGE_DIRECTORY = 'resumes/images'
+RESUME_PDF_DIRECTORY = 'resumes/pdfs'
+RESUME_IMAGE_FORMAT = 'jpg'
+
+
 # LaTex settings
 # LATEX_INTERPRETER = 'pdflatex' # pdflatex, latex, xelatex, lualatex
 # LATEX_INTERPRETER_OPTIONS = '-interaction=nonstopmode'

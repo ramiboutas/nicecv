@@ -19,7 +19,7 @@
           <div class="modal-body p-0">
 
             <div class="row">
-              {% for resume in object.resume_files.all %}
+              {% for resume in object.resumes.all %}
                 <div class="col-md-6 col-sm-12">
                   <div class="card">
                     <img class="card-img" src="{{ resume.image.url }}" alt="Resume template image">

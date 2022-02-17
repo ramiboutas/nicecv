@@ -1,20 +1,25 @@
+from celery.result import AsyncResult
+from celery_progress_htmx.backend import Progress
+from django_htmx.http import trigger_client_event
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
-
 from django.views.decorators.http import require_POST
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.decorators.cache import never_cache
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
-from django_htmx.http import trigger_client_event
-
-from .models import Profile
+from .models import Profile, Resume
 from .models import get_child_object, get_above_child_object, get_below_child_object
 from .models import update_child_object, create_empty_child_object
 from .models import set_activation_state
+from .tasks import create_resume_file_objects
 
 from utils.files import delete_path_file
 User = get_user_model()
@@ -352,3 +357,46 @@ def insert_child_or_field_help_modal_view(request, label, pk_parent):
 def remove_child_or_field_help_modal_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     return HttpResponse(status=200)
+
+
+
+##############################################################################
+
+
+
+
+@never_cache
+def generate_resumes_view(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    result =  create_resume_file_objects.delay(pk=pk)
+    profile.task_id = result.task_id
+    profile.save()
+    context = {'object': profile}
+    return render(request, 'profiles/resume_partials/resume_creation_status.html', context)
+
+
+@never_cache
+def resume_creation_status_view(request, pk, task_id):
+    profile = get_object_or_404(Profile, pk=pk)
+    progress_object = Progress(AsyncResult(profile.task_id))
+
+    progress = progress_object.get_info().get("progress")
+    percent = progress.get("percent")
+    success = progress_object.get_info().get("success")
+
+    context = { 'percent': percent,'object': profile}
+
+    if percent == 100 and success:
+        return render(request, 'profiles/resume_partials/resume_creation_success.html', context)
+
+    if success == False:
+        messages.error(request, _('Unespected error'))
+        return render(request, 'profiles/resume_partials/resume_creation_error.html', context)
+
+    return render(request, 'profiles/resume_partials/resume_creation_status.html', context)
+
+
+def resume_file_list_view(request, pk):
+    qs = ResumeFile.objects.filter(profile__user=request.user, profile__pk=pk)
+    context = {'object_list': qs}
+    return render(request, 'profiles/resume_list.html', context)
