@@ -1225,17 +1225,21 @@ class Profile(models.Model):
     def insert_resume_templates_modal_url(self):
         return reverse('profiles_insert_resume_templates_modal', kwargs={'pk':self.pk})
 
-    #  get resume file
+    #  get list of resumes
     def get_resume_file_list_url(self):
-        return reverse('files_resume_file_list', kwargs={'pk':self.pk})
+        return reverse('profiles_resume_file_list', kwargs={'pk':self.pk})
+
+    #  insert button to generate resumes
+    def insert_button_to_generate_resumes_url(self):
+        return reverse('profiles_insert_button_to_generate_resumes', kwargs={'pk':self.pk})
 
     #  start creating resumes url
     def generate_resumes_url(self):
-        return reverse('files_generate_resumes', kwargs={'pk':self.pk})
+        return reverse('profiles_generate_resumes', kwargs={'pk':self.pk})
 
     #  start creating resumes url
     def resume_creation_status_url(self):
-        return reverse('files_resume_creation_status', kwargs={'pk':self.pk, 'task_id': self.task_id})
+        return reverse('profiles_resume_creation_status', kwargs={'pk':self.pk, 'task_id': self.task_id})
 
 
 
@@ -2143,11 +2147,15 @@ def get_below_child_object(label=None, child_object=None, profile=None):
     return Klass.objects.filter(order__gt=child_object.order, profile=profile).first()
 
 
-
-###################################################
+####################################################################################
 
 class Resume(models.Model):
     profile = models.ForeignKey(Profile, related_name="resumes", on_delete=models.CASCADE)
     # texfile = models.ForeignKey(ResumeTemplate, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=settings.RESUME_IMAGE_DIRECTORY) # , upload_to='files/%Y/%m/%d/'
     pdf = models.FileField(null=True , upload_to=settings.RESUME_PDF_DIRECTORY)
+
+
+    def download_resume_pdf_url(self):
+        return reverse('profiles_get_resume_pdf',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})

@@ -3,14 +3,15 @@ from django.urls import path
 from .views import ProfileListView, ProfileUpdateView, ProfileCreateView
 from .views import create_object_view, delete_object_view
 
-from .views import save_personal_information_view, update_description_view, update_field_view
+# from .views import save_personal_information_view, update_description_view
+from .views import update_field_view
 from .views import insert_resume_templates_modal_view, remove_resume_templates_modal_view
 
 
 # general
 
 urlpatterns = [
-    path('', ProfileListView.as_view(), name='profiles_list'),
+    path('list/', ProfileListView.as_view(), name='profiles_list'),
     # path('list/', ProfileListView.as_view(), name='profiles_list'),
     path('new/', ProfileCreateView.as_view(), name='profiles_new'),
     path('profile/<uuid:pk>/', ProfileUpdateView.as_view(), name='profiles_update'),
@@ -21,11 +22,11 @@ urlpatterns = [
     # htmx - object - delete
     path('delete-object/profile/<uuid:pk>/', delete_object_view, name='profiles_delete_object'),
 
-    # htmx - save personal information
-    path('save-personal-information/<uuid:pk>/', save_personal_information_view, name='profiles_save_personal_information'),
-
-    # htmx - update description
-    path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
+    # # htmx - save personal information
+    # path('save-personal-information/<uuid:pk>/', save_personal_information_view, name='profiles_save_personal_information'),
+    #
+    # # htmx - update description
+    # path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
 
     # htmx - update any field
     path('update-field/<str:label>/<uuid:pk>/', update_field_view, name='profiles_update_field'),
@@ -121,4 +122,20 @@ urlpatterns += [
         # htmx - remove help modal
         path('remove-child-or-field-help-modal/<str:label>/<uuid:pk_parent>/', remove_child_or_field_help_modal_view, name='profiles_remove_child_or_field_help_modal'),
 
+]
+
+
+from .views import generate_resumes_view, resume_creation_status_view, insert_button_to_generate_resumes_view
+from .views import resume_file_list_view, download_resume_pdf_view
+
+
+urlpatterns += [
+    path('generate-resumes/<uuid:pk>/', generate_resumes_view, name='profiles_generate_resumes'),
+    path('insert-button-to-generate-resumes/<uuid:pk>/', insert_button_to_generate_resumes_view, name='profiles_insert_button_to_generate_resumes'),
+    path('task-result/<str:task_id>/<uuid:pk>/', resume_creation_status_view, name='profiles_resume_creation_status'),
+    path('resumes/<uuid:pk>/', resume_file_list_view, name='profiles_resume_file_list'),
+    path('resume-get-pdf/<uuid:pk_parent>/<int:pk>/', download_resume_pdf_view, name='profiles_get_resume_pdf'),
+
+    # path('pdf/<int:pk>/', download_pdf_view, name='files_download_pdf'),
+    # path('download-coverletter/<int:pk>/', download_coverletter_view, name='files_download_coverletter'),
 ]

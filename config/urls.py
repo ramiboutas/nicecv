@@ -24,7 +24,7 @@ urlpatterns = [
     path('profiles/', include('profiles.urls')),
     path('texfiles/', include('texfiles.urls')),
     path("payments/", include("payments.urls")),
-    path("files/", include("files.urls")),
+    # path("files/", include("files.urls")),
 
     # Payments
     # dj-stripe

@@ -234,3 +234,8 @@ hx-trigger="volunteeringDeactivatedEvent from:body"></div>
 <!-- when volunteering is activated, remove  the volunteering button -->
 <div hx-get="{{ object.remove_volunteering_activation_button_url }}" hx-target="#volunteering-activation-button" hx-swap="innerHTML"
 hx-trigger="volunteeringActivatedEvent from:body"></div>
+
+
+<!-- when profile is updated, insert the button to generate resumes -->
+<div hx-get="{{ object.insert_button_to_generate_resumes_url }}" hx-target="#resumes-button" hx-swap="outerHTML"
+hx-trigger="profileUpdatedEvent from:body"></div>

@@ -17,7 +17,6 @@ from .models import Resume
 from utils.files import get_tex_template_name
 
 
-
 def get_random_string():
     return ''.join(random.choice('0123456789qwertyuioplkjhgfdsazxcvbnm') for i in range(16))
 
@@ -39,7 +38,7 @@ def create_resume_file_objects(self, pk=None):
         bytes_pdf = compile_template_to_pdf(template_name, context)
         random_string = get_random_string()
         pdf = ContentFile(bytes_pdf, f'{_("CV")}_{profile.pk}_{resume_template_object.pk}_{random_string}.pdf')
-        resume_file = ResumeFile(profile=profile, pdf=pdf)
+        resume_file = Resume(profile=profile, pdf=pdf)
         resume_file.save()
 
         resume_image_dir = os.path.join(settings.MEDIA_ROOT, settings.RESUME_IMAGE_DIRECTORY)
@@ -66,4 +65,4 @@ def create_resume_file_objects(self, pk=None):
         new_resume_image_path_relative = '{}.{}'.format(os.path.join(settings.RESUME_IMAGE_DIRECTORY, pdf_filename), settings.RESUME_IMAGE_FORMAT)
         resume_file.image = new_resume_image_path_relative
         resume_file.save()
-        progress_recorder.set_progress(count, total_resume_templates, description=f" ")
+        progress_recorder.set_progress(count, total_resume_templates, description=f"{count}")

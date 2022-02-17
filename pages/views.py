@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 
 class HomePageView(TemplateView):
@@ -7,7 +8,7 @@ class HomePageView(TemplateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect('profiles_list')
+            return redirect(reverse('profiles_list'))
         return render(self.request, self.template_name)
 
 

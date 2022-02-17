@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'payments.apps.PaymentsConfig',
     'texfiles.apps.TexfilesConfig',
-    'files.apps.FilesConfig',
+    # 'files.apps.FilesConfig',
 
     # Third-party apps
     'rosetta',
