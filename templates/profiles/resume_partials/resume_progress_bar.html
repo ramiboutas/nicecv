@@ -1,8 +1,8 @@
 {% load i18n %}
 
-{% include "_messages.html" %}
 
-<div class="progress w-100" id='progress-bar'
+
+<div class="progress w-100 my-2" id='progress-bar'
   hx-get="{{ object.resume_creation_status_url }}" hx-target="this" hx-trigger="load delay:100ms" hx-swap="outerHTML"
   style="height: 64px;">
   <div class="progress-bar bg-danger fs-3" role="progressbar" {% if progress %} style="width: {{progress.percent}}%;"
@@ -10,3 +10,6 @@
     {% if progress %}{{progress.description}} {% trans "resumes created" %}{% endif %}
   </div>
 </div>
+
+
+{% include "_messages.html" %}

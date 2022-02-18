@@ -432,10 +432,20 @@ def download_resume_pdf_view(request, pk_parent, pk):
     resume = get_object_or_404(Resume, profile=profile, pk=pk)
     return FileResponse(open(resume.pdf.path, 'rb'))
 
+@login_required
+def download_resume_image_view(request, pk_parent, pk):
+    profile = get_object_or_404(Profile, pk=pk_parent, user=request.user)
+    resume = get_object_or_404(Resume, profile=profile, pk=pk)
+    return FileResponse(open(resume.image.path, 'rb'))
+
 
 from django_tex.shortcuts import render_to_pdf
+from texfiles.models import ResumeTemplate
+
 def generate_resume_testing_view(request, pk):
+    resume_template = ResumeTemplate.objects.get(pk=1)
     profile = get_object_or_404(Profile, pk=pk)
     template_name = 'texfiles/alice.tex'
+    template_name = resume_template.template_name
     context = {'object': profile}
     return render_to_pdf(request, template_name, context, filename='test.pdf')

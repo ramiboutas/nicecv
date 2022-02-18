@@ -2162,3 +2162,7 @@ class Resume(models.Model):
     def download_resume_pdf_url(self):
         return reverse('profiles_get_resume_pdf',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})
+
+    def download_resume_image_url(self):
+        return reverse('profiles_get_resume_image',
+                        kwargs={'pk':self.pk, 'pk_parent':self.profile.pk})

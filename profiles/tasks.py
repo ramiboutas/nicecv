@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import Profile
 from texfiles.models import ResumeTemplate
 from .models import Resume
-from utils.files import get_tex_template_name
+# from utils.files import get_tex_template_name
 
 
 def get_random_string():
@@ -31,7 +31,8 @@ def create_resume_objects(self, pk=None):
     profile.resumes.all().delete()
     for count, resume_template_object in enumerate(resume_template_objects):
         # get the template name
-        template_name = get_tex_template_name(resume_template_object)
+        # template_name = get_tex_template_name(resume_template_object)
+        template_name = resume_template_object.template_name
         context = {'object': profile}
 
         # create the pdf with django-tex
