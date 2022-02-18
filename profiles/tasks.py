@@ -21,7 +21,7 @@ def get_random_string():
     return ''.join(random.choice('0123456789qwertyuioplkjhgfdsazxcvbnm') for i in range(16))
 
 @shared_task(bind=True)
-def create_resume_file_objects(self, pk=None):
+def create_resume_objects(self, pk=None):
     progress_recorder = ProgressRecorder(self)
     profile = get_object_or_404(Profile, pk=pk)
     resume_template_objects = ResumeTemplate.objects.filter(is_active=True)

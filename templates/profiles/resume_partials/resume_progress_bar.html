@@ -1,5 +1,7 @@
 {% load i18n %}
 
+{% include "_messages.html" %}
+
 <div class="progress w-100" id='progress-bar'
   hx-get="{{ object.resume_creation_status_url }}" hx-target="this" hx-trigger="load delay:100ms" hx-swap="outerHTML"
   style="height: 64px;">

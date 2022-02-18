@@ -1237,10 +1237,13 @@ class Profile(models.Model):
     def generate_resumes_url(self):
         return reverse('profiles_generate_resumes', kwargs={'pk':self.pk})
 
-    #  start creating resumes url
+    #  get status
     def resume_creation_status_url(self):
         return reverse('profiles_resume_creation_status', kwargs={'pk':self.pk, 'task_id': self.task_id})
 
+    # for testing / development
+    def generate_resume_testing_url(self):
+        return reverse('profiles_generate_resume_testing', kwargs={'pk':self.pk})
 
 
     # number of children created // start creating files

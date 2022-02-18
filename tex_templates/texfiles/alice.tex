@@ -1,0 +1,211 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Twenty Seconds Resume/CV
+% LaTeX Template
+% Version 1.1 (8/1/17)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Carmine Spagnuolo (cspagnuolo@unisa.it) with major modifications by
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% The MIT License (see included LICENSE file)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[letterpaper]{twentysecondcv-alice} % a4paper for A4
+
+\usepackage{graphicx}
+{% graphicspath %}
+
+%----------------------------------------------------------------------------------------
+%	 PERSONAL INFORMATION
+%----------------------------------------------------------------------------------------
+
+{% if object.photo and object.photo.path %}
+	\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
+{% else %}
+	\profilepic{}
+{% endif %}
+
+
+% Your name
+{% if object.first_name or object.last_name %}
+	\cvname{ {{ object.first_name }} {{ object.last_name }}}
+{% else %}
+	\cvname{}
+{% endif %}
+
+% Job title/career
+{% if object.jobtitle %}
+	\cvjobtitle{ {{- object.jobtitle -}} }
+{% else %}
+	\cvjobtitle{}
+{% endif %}
+
+% Date of birth
+{% if object.date_of_birth %}
+	\cvdate{ {{- object.date_of_birth -}} }
+{% else %}
+	\cvdate{} % Date of birth
+{% endif %}
+
+% Location
+{% if object.location %}
+	\cvaddress{ {{- object.location -}} } % Use \newline if more than 1 line is required
+{% else %}
+	\cvaddress{}
+{% endif %}
+
+% Phone number
+{% if object.phone %}
+	\cvnumberphone{ {{- object.phone -}} }
+{% else %}
+	\cvnumberphone{}
+{% endif %}
+
+% Personal website
+{% if object.website %}
+	\cvsite{ {{- object.website -}} }
+{% else %}
+	\cvsite{}
+{% endif %}
+
+% Email address
+{% if object.email %}
+	\cvmail{ {{- object.email -}} }
+{% else %}
+	\cvmail{}
+{% endif %}
+
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	 ABOUT ME
+%----------------------------------------------------------------------------------------
+
+\aboutmelabel{ {{- object.description_label -}} }
+
+{% if object.description_active and object.description %}
+	\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \description{}
+{% else %}
+	\aboutme{}
+{% endif %}
+
+%----------------------------------------------------------------------------------------
+%	 SKILLS
+%----------------------------------------------------------------------------------------
+
+\skilllabel{ {{- object.skill_label -}} }
+
+{% if object.skill_active and object.skill_set.count() > 0 %}
+\numberofskills{ {{- object.skill_set.count() -}} }
+%	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
+\skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name -}} / {{- skill.level*6/100 -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+{% else %}
+	%\skills{}
+{% endif %}
+
+%----------------------------------------------------------------------------------------
+%	 LANGUAGES
+%----------------------------------------------------------------------------------------
+
+\languagelabel{ {{- object.language_label -}} }
+
+{% if object.language_active and object.language_set.count() > 0 %}
+	\numberoflanguages{ {{- object.language_set.count() -}} }
+	\languages{ {% for language in object.language_set.all() %}{ {{- language.name -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+{% else %}
+	%\languages{}
+{% endif %}
+
+%----------------------------------------------------------------------------------------
+
+\makeprofile % Print the sidebar
+
+%----------------------------------------------------------------------------------------
+%	 EDUCATION
+%----------------------------------------------------------------------------------------
+
+{% if object.education_active %}
+\section{ {{- object.education_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for education in object.education_set.all() %}
+		\twentyitem{\footnotesize{ {{ education.start_date }} - {{ education.end_date }}}}
+		{ {{- education.title -}} }
+		{ {{- education.institution -}} }
+		{ {{- education.description | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+{% if object.experience_active %}
+\section{ {{- object.experience_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for experience in object.experience_set.all() %}
+		\twentyitem{\footnotesize{ {{ experience.start_date }} - {{ experience.end_date }}}}
+		{ {{- experience.title -}} }
+		{ {{- experience.company -}} }
+		{ {{- experience.description | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+
+{% if object.certification_active %}
+\section{ {{- object.certification_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitemshort{<dates>}{<title>}
+	{% for certification in object.certification_set.all() %}
+		\twentyitem{ \small{ {{- certification.issuing_date -}} }}
+		{ {{- certification.title -}} }
+		{ {{- certification.issuer -}} }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+{% if object.course_active %}
+\section{ {{- object.course_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitemshort{<dates>}{<title>}
+	{% for course in object.course_set.all() %}
+		\twentyitem{ \small{ {{- course.issuing_date -}} }}
+		{ {{- course.title -}} }
+		{ {{- course.issuer -}} }
+		{ {{- course.hours -}} }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+% LABEL_FOR_CHILD_OBJECT_CERTIFICATION = 'certification'
+% LABEL_FOR_CHILD_OBJECT_COURSE = 'course'
+% LABEL_FOR_CHILD_OBJECT_HONOR = 'honor'
+% LABEL_FOR_CHILD_OBJECT_ORGANIZATION = 'organization'
+% LABEL_FOR_CHILD_OBJECT_PATENT = 'patent'
+% LABEL_FOR_CHILD_OBJECT_PROJECT = 'project'
+% LABEL_FOR_CHILD_OBJECT_PUBLICATION = 'publication'
+% LABEL_FOR_CHILD_OBJECT_VOLUNTEERING = 'volunteering'
+
+
+
+
+\end{document}

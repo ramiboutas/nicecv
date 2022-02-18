@@ -1,9 +1,0 @@
-{% load i18n %}
-
-<div class="progress" id='progress-bar'
-  hx-get="{{ task_status_url }}" hx-target="this" hx-trigger="load delay:600ms" hx-swap="outerHTML">
-  <div class="progress-bar bg-success" role="progressbar" {% if progress %} style="width: {{progress.percent}}%;"
-    aria-valuenow="{{progress.percent}}" {% endif %} aria-valuemin="0" aria-valuemax="100">
-    {% if progress %}{{progress.description}} {% trans "items processed" %}{% endif %}
-  </div>
-</div>

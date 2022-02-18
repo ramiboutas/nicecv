@@ -151,7 +151,7 @@ TEMPLATES = [
     {
         'NAME': 'tex',
         'BACKEND': 'django_tex.engine.TeXEngine',
-        'DIRS': (BASE_DIR.joinpath('media'),),
+        'DIRS': (BASE_DIR.joinpath('tex_templates'),),
         'APP_DIRS': True,
         'OPTIONS': {
             'environment': 'texfiles.environment.my_environment',

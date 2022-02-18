@@ -20,7 +20,8 @@
           <small><i>{{ object.pk }}</i></small>
         </div>
         <div class="col-lg-4 offset-lg-1 p-0">
-            <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-primary btn-lg px-4 me-md-2 fw-bold">{% trans "Open" %}</a>
+            <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-success btn-lg px-4 me-md-2 fw-bold">{% trans "Edit" %}</a>
+            <a type="button" href="{{ object.get_resume_file_list_url }}" class="btn btn-outline-primary btn-lg px-4 me-md-2 fw-bold">{% trans "View resumes" %}</a>
             <a type="button" class="btn btn-outline-danger btn-lg px-4" hx-post="{{ object.delete_object_url }}"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#object_{{object.pk}}" hx-swap="outerHTML"
             hx-confirm="{% trans 'Are you sure to delete this coverletter?' %}">{% trans "Delete" %}</a>

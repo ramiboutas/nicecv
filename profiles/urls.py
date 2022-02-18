@@ -127,6 +127,7 @@ urlpatterns += [
 
 from .views import generate_resumes_view, resume_creation_status_view, insert_button_to_generate_resumes_view
 from .views import resume_file_list_view, download_resume_pdf_view
+from .views import generate_resume_testing_view
 
 
 urlpatterns += [
@@ -135,6 +136,7 @@ urlpatterns += [
     path('task-result/<str:task_id>/<uuid:pk>/', resume_creation_status_view, name='profiles_resume_creation_status'),
     path('resumes/<uuid:pk>/', resume_file_list_view, name='profiles_resume_file_list'),
     path('resume-get-pdf/<uuid:pk_parent>/<int:pk>/', download_resume_pdf_view, name='profiles_get_resume_pdf'),
+    path('resume-pdf-testing-development/<uuid:pk>/', generate_resume_testing_view, name='profiles_generate_resume_testing'),
 
     # path('pdf/<int:pk>/', download_pdf_view, name='files_download_pdf'),
     # path('download-coverletter/<int:pk>/', download_coverletter_view, name='files_download_coverletter'),

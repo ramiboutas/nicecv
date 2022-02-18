@@ -19,7 +19,7 @@ from .models import Profile, Resume
 from .models import get_child_object, get_above_child_object, get_below_child_object
 from .models import update_child_object, create_empty_child_object
 from .models import set_activation_state
-from .tasks import create_resume_file_objects
+from .tasks import create_resume_objects
 
 from utils.files import delete_path_file
 User = get_user_model()
@@ -389,7 +389,7 @@ def insert_button_to_generate_resumes_view(request, pk):
 @login_required
 def generate_resumes_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk, user=request.user)
-    result =  create_resume_file_objects.delay(pk=pk)
+    result =  create_resume_objects.delay(pk=pk)
     profile.task_id = result.task_id
     profile.save()
     context = {'object': profile}
@@ -407,9 +407,9 @@ def resume_creation_status_view(request, pk, task_id):
     success = progress_object.get_info().get("success")
 
     context = { 'progress': progress,'object': profile}
-    print(progress)
 
     if percent == 100 and success:
+        messages.success(request, _('Resumes created successfully'))
         return render(request, 'profiles/resume_partials/view_resumes_button.html', context)
 
     if success == False:
@@ -420,12 +420,22 @@ def resume_creation_status_view(request, pk, task_id):
 
 @login_required
 def resume_file_list_view(request, pk):
-    qs = Resume.objects.filter(profile__user=request.user, profile__pk=pk)
-    context = {'object_list': qs}
+    object = get_object_or_404(Profile, pk=pk, user=request.user)
+    # qs = Resume.objects.filter(profile__user=request.user, profile__pk=pk)
+    context = {'object': object}
     return render(request, 'profiles/resume_list.html', context)
+
 
 @login_required
 def download_resume_pdf_view(request, pk_parent, pk):
     profile = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     resume = get_object_or_404(Resume, profile=profile, pk=pk)
     return FileResponse(open(resume.pdf.path, 'rb'))
+
+
+from django_tex.shortcuts import render_to_pdf
+def generate_resume_testing_view(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    template_name = 'texfiles/alice.tex'
+    context = {'object': profile}
+    return render_to_pdf(request, template_name, context, filename='test.pdf')
