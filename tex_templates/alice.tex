@@ -29,57 +29,66 @@
 %----------------------------------------------------------------------------------------
 
 {% if object.photo and object.photo.path %}
-	\profilepic{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
+	\photo{\includegraphics[width=\imagewidth]{ {{- object.photo.path -}} }} % Profile picture
 {% else %}
-	\profilepic{}
+	\photo{}
 {% endif %}
 
 
 % Your name
-{% if object.first_name or object.last_name %}
-	\cvname{ {{ object.first_name }} {{ object.last_name }}}
+{% if object.firstname or object.lastname %}
+	\fullname{ {{ object.firstname | latex_escape }} {{ object.lastname | latex_escape }}}
 {% else %}
-	\cvname{}
+	\fullname{}
 {% endif %}
 
 % Job title/career
-{% if object.jobtitle %}
-	\cvjobtitle{ {{- object.jobtitle -}} }
+{% if object.jobtitle and object.jobtitle_active %}
+	\jobtitle{ {{- object.jobtitle | latex_escape -}} }
 {% else %}
-	\cvjobtitle{}
+	\jobtitle{}
 {% endif %}
 
 % Date of birth
-{% if object.date_of_birth %}
-	\cvdate{ {{- object.date_of_birth -}} }
+{% if object.birth and object.birth_active %}
+	\birth{ {{- object.birth | latex_escape -}} }
 {% else %}
-	\cvdate{} % Date of birth
+	\birth{} % Date of birth
 {% endif %}
 
 % Location
-{% if object.location %}
-	\cvaddress{ {{- object.location -}} } % Use \newline if more than 1 line is required
+{% if object.location and object.location_active %}
+	\location{ {{- object.location | latex_escape -}} } % Use \newline if more than 1 line is required
 {% else %}
-	\cvaddress{}
+	\location{}
 {% endif %}
 
 % Phone number
-{% if object.phone %}
-	\cvnumberphone{ {{- object.phone -}} }
+{% if object.phone and object.phone_active %}
+	\phone{ {{- object.phone | latex_escape -}} }
 {% else %}
-	\cvnumberphone{}
+	\phone{}
 {% endif %}
 
 % Personal website
-{% if object.website %}
-	\cvsite{ {{- object.website -}} }
+{% if object.website and object.website_active %}
+	\website{ {{- object.website | latex_escape -}} }
 {% else %}
-	\cvsite{}
+	\website{}
 {% endif %}
 
+% Github
+{% if object.github and object.github_active %}
+	\github{ {{- object.github | latex_escape -}} }
+{% else %}
+	\github{}
+{% endif %}
+
+
+
 % Email address
-{% if object.email %}
-	\cvmail{ {{- object.email -}} }
+{% if object.email and object.email_active %}
+	\cvmail{ {{- object.email | latex_escape -}} }
 {% else %}
 	\cvmail{}
 {% endif %}
@@ -93,10 +102,10 @@
 %	 ABOUT ME
 %----------------------------------------------------------------------------------------
 
-\aboutmelabel{ {{- object.description_label -}} }
+\aboutmelabel{ {{- object.description_label | latex_escape -}} }
 
 {% if object.description_active and object.description %}
-	\aboutme{ {{- object.description -}} } % To have no About Me section, just remove all the text and leave \description{}
+	\aboutme{ {{- object.description | latex_escape -}} } % To have no About Me section, just remove all the text and leave \description{}
 {% else %}
 	\aboutme{}
 {% endif %}
@@ -105,12 +114,12 @@
 %	 SKILLS
 %----------------------------------------------------------------------------------------
 
-\skilllabel{ {{- object.skill_label -}} }
+\skilllabel{ {{- object.skill_label | latex_escape -}} }
 
 {% if object.skill_active and object.skill_set.count() > 0 %}
 \numberofskills{ {{- object.skill_set.count() -}} }
 %	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
-\skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name -}} / {{- skill.level*6/100 -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+\skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name | latex_escape -}} / {{- skill.level*6/100 -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\skills{}
 {% endif %}
@@ -119,11 +128,11 @@
 %	 LANGUAGES
 %----------------------------------------------------------------------------------------
 
-\languagelabel{ {{- object.language_label -}} }
+\languagelabel{ {{- object.language_label | latex_escape -}} }
 
 {% if object.language_active and object.language_set.count() > 0 %}
 	\numberoflanguages{ {{- object.language_set.count() -}} }
-	\languages{ {% for language in object.language_set.all() %}{ {{- language.name -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+	\languages{ {% for language in object.language_set.all() %}{ {{- language.name | latex_escape  -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\languages{}
 {% endif %}
@@ -137,15 +146,15 @@
 %----------------------------------------------------------------------------------------
 
 {% if object.education_active %}
-\section{ {{- object.education_label -}} }
+\section{ {{- object.education_label| latex_escape  -}} }
 
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for education in object.education_set.all() %}
-		\twentyitem{\footnotesize{ {{ education.start_date }} - {{ education.end_date }}}}
-		{ {{- education.title -}} }
-		{ {{- education.institution -}} }
-		{ {{- education.description | linebreaks -}}  }
+		\twentyitem{\footnotesize{ {{ education.start_date | latex_escape  }} - {{ education.end_date | latex_escape  }}}}
+		{ {{- education.title | latex_escape  -}} }
+		{ {{- education.institution | latex_escape  -}} }
+		{ {{- education.description | latex_escape  | linebreaks -}}  }
 	{% endfor %}
 \end{twenty}
 {% endif %}
@@ -157,10 +166,10 @@
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for experience in object.experience_set.all() %}
-		\twentyitem{\footnotesize{ {{ experience.start_date }} - {{ experience.end_date }}}}
-		{ {{- experience.title -}} }
-		{ {{- experience.company -}} }
-		{ {{- experience.description | linebreaks -}}  }
+		\twentyitem{\footnotesize{ {{ experience.start_date | latex_escape  }} - {{ experience.end_date | latex_escape }}}}
+		{ {{- experience.title | latex_escape  -}} }
+		{ {{- experience.company | latex_escape  -}} }
+		{ {{- experience.description | latex_escape | linebreaks -}}  }
 	{% endfor %}
 \end{twenty}
 {% endif %}
