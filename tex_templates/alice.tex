@@ -49,12 +49,6 @@
 	\jobtitle{}
 {% endif %}
 
-% Date of birth
-{% if object.birth and object.birth_active %}
-	\birth{ {{- object.birth | latex_escape -}} }
-{% else %}
-	\birth{} % Date of birth
-{% endif %}
 
 % Location
 {% if object.location and object.location_active %}
@@ -63,11 +57,27 @@
 	\location{}
 {% endif %}
 
+% Date of birth
+{% if object.birth and object.birth_active %}
+	\birth{ {{- object.birth | latex_escape -}} }
+{% else %}
+	\birth{} % Date of birth
+{% endif %}
+
+
 % Phone number
 {% if object.phone and object.phone_active %}
 	\phone{ {{- object.phone | latex_escape -}} }
 {% else %}
 	\phone{}
+{% endif %}
+
+
+% Email address
+{% if object.email and object.email_active %}
+	\email{ {{- object.email | latex_escape -}} }
+{% else %}
+	\email{}
 {% endif %}
 
 % Personal website
@@ -77,21 +87,82 @@
 	\website{}
 {% endif %}
 
-% Github
+% linkedin
+{% if object.linkedin and object.linkedin_active %}
+	\linkedin{ {{- object.linkedin | latex_escape -}} }
+{% else %}
+	\linkedin{}
+{% endif %}
+
+% skype
+{% if object.website and object.skype_active %}
+	\skype{ {{- object.skype | latex_escape -}} }
+{% else %}
+	\skype{}
+{% endif %}
+
+% instagram
+{% if object.instagram and object.instagram_active %}
+	\instagram{ {{- object.instagram | latex_escape -}} }
+{% else %}
+	\instagram{}
+{% endif %}
+
+% twitter
+{% if object.twitter and object.twitter_active %}
+	\twitter{ {{- object.twitter | latex_escape -}} }
+{% else %}
+	\twitter{}
+{% endif %}
+
+% facebook
+{% if object.facebook and object.facebook_active %}
+	\facebook{ {{- object.facebook | latex_escape -}} }
+{% else %}
+	\facebook{}
+{% endif %}
+
+% youtube
+{% if object.youtube and object.youtube_active %}
+	\youtube{ {{- object.youtube | latex_escape -}} }
+{% else %}
+	\youtube{}
+{% endif %}
+
+% github
 {% if object.github and object.github_active %}
 	\github{ {{- object.github | latex_escape -}} }
 {% else %}
 	\github{}
 {% endif %}
 
-
-
-% Email address
-{% if object.email and object.email_active %}
-	\cvmail{ {{- object.email | latex_escape -}} }
+% gitlab
+{% if object.gitlab and object.gitlab_active %}
+	\gitlab{ {{- object.gitlab | latex_escape -}} }
 {% else %}
-	\cvmail{}
+	\gitlab{}
 {% endif %}
+
+% stackoverflow
+{% if object.stackoverflow and object.stackoverflow_active %}
+	\stackoverflow{ {{- object.stackoverflow | latex_escape -}} }
+{% else %}
+	\stackoverflow{}
+{% endif %}
+
+
+
+% Medium
+{% if object.medium and object.medium_active %}
+	\medium{ {{- object.medium | latex_escape -}} }
+{% else %}
+	\medium{}
+{% endif %}
+
+
+
+
+
 
 
 %----------------------------------------------------------------------------------------
@@ -182,9 +253,9 @@
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitemshort{<dates>}{<title>}
 	{% for certification in object.certification_set.all() %}
-		\twentyitem{ \small{ {{- certification.issuing_date -}} }}
-		{ {{- certification.title -}} }
-		{ {{- certification.issuer -}} }
+		\twentyitem{ \small{ {{- certification.issuing_date | latex_escape -}} }}
+		{ {{- certification.title | latex_escape -}} }
+		{ {{- certification.issuer | latex_escape -}} }
 	{% endfor %}
 \end{twenty}
 {% endif %}
@@ -197,19 +268,105 @@
 	%\twentyitemshort{<dates>}{<title>}
 	{% for course in object.course_set.all() %}
 		\twentyitem{ \small{ {{- course.issuing_date -}} }}
-		{ {{- course.title -}} }
-		{ {{- course.issuer -}} }
-		{ {{- course.hours -}} }
+		{ {{- course.title | latex_escape -}} }
+		{ {{- course.issuer | latex_escape -}} }
+		{ {{- course.hours | latex_escape -}} }
 	{% endfor %}
 \end{twenty}
 {% endif %}
 
 
-% LABEL_FOR_CHILD_OBJECT_CERTIFICATION = 'certification'
-% LABEL_FOR_CHILD_OBJECT_COURSE = 'course'
-% LABEL_FOR_CHILD_OBJECT_HONOR = 'honor'
-% LABEL_FOR_CHILD_OBJECT_ORGANIZATION = 'organization'
-% LABEL_FOR_CHILD_OBJECT_PATENT = 'patent'
+{% if object.honor_active %}
+\section{ {{- object.honor_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitemshort{<dates>}{<title>}
+	{% for honor in object.honor_set.all() %}
+		\twentyitem{ \small{ {{- honor.issuing_date | latex_escape -}} }}
+		{ {{- honor.title | latex_escape -}} }
+		{ {{- honor.issuer | latex_escape -}} }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+
+
+{% if object.organization_active %}
+\section{ {{- object.organization_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for organization in object.organization_set.all() %}
+		\twentyitem{\footnotesize{ {{ organization.start_date | latex_escape  }} - {{ organization.end_date | latex_escape }}}}
+		{ {{- organization.role | latex_escape  -}} }
+		{ {{- organization.organization | latex_escape  -}} }
+		{ {{- organization.description | latex_escape | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+{% if object.patent_active %}
+\section{ {{- object.patent_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for patent in object.patent_set.all() %}
+		\twentyitem{\footnotesize{ {{- patent.issuing_date | latex_escape -}} }}
+		{ {{- patent.title | latex_escape  -}} {% if patent.number %} ( {{- patent.number | latex_escape -}} ) {% endif %} }
+		{ {{- patent.issuer | latex_escape  -}} }
+		{ {{- patent.description | latex_escape | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+
+
+{% if object.project_active %}
+\section{ {{- object.project_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for project in object.project_set.all() %}
+		\twentyitem{\footnotesize{ {{ project.start_date | latex_escape  }} - {{ project.end_date | latex_escape }}}}
+		{ {{- project.title | latex_escape  -}} }
+		{ {{- project.organization | latex_escape  -}} }
+		{ {{- project.description | latex_escape | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+{% if object.publication_active %}
+\section{ {{- object.publication_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for publication in object.publication_set.all() %}
+		\twentyitem{\footnotesize{ {{- publication.issuing_date | latex_escape  -}} }}
+		{ {{- publication.title | latex_escape  -}} }
+		{ {{- publication.publisher | latex_escape  -}} }
+		{ {{- publication.description | latex_escape | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
+{% if object.volunteering_active %}
+\section{ {{- object.volunteering_label -}} }
+
+\begin{twenty} % Environment for a list with descriptions
+	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
+	{% for volunteering in object.volunteering_set.all() %}
+		\twentyitem{\footnotesize{ {{ volunteering.start_date | latex_escape  }} - {{ volunteering.end_date | latex_escape }}}}
+		{ {{- volunteering.title | latex_escape  -}} }
+		{ {{- volunteering.organization | latex_escape  -}} }
+		{ {{- volunteering.description | latex_escape | linebreaks -}}  }
+	{% endfor %}
+\end{twenty}
+{% endif %}
+
+
 % LABEL_FOR_CHILD_OBJECT_PROJECT = 'project'
 % LABEL_FOR_CHILD_OBJECT_PUBLICATION = 'publication'
 % LABEL_FOR_CHILD_OBJECT_VOLUNTEERING = 'volunteering'

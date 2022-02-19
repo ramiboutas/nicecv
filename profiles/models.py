@@ -1287,11 +1287,11 @@ class Profile(models.Model):
         if label == LABEL_FOR_PROFILE_FIELD_EMAIL:
             self.email = request.POST.get("email")
 
-        if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
-            self.description = request.POST.get("description")
-
         if label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
             self.website = request.POST.get("website")
+
+        if label == LABEL_FOR_PROFILE_FIELD_LINKEDIN:
+            self.linkedin = request.POST.get("linkedin")
 
         if label == LABEL_FOR_PROFILE_FIELD_SKYPE:
             self.skype = request.POST.get("skype")
@@ -1300,13 +1300,13 @@ class Profile(models.Model):
             self.instagram = request.POST.get("instagram")
 
         if label == LABEL_FOR_PROFILE_FIELD_TWITTER:
-            self.linkedin = request.POST.get("linkedin")
+            self.twitter = request.POST.get("twitter")
 
         if label == LABEL_FOR_PROFILE_FIELD_FACEBOOK:
-            self.linkedin = request.POST.get("linkedin")
+            self.facebook = request.POST.get("facebook")
 
         if label == LABEL_FOR_PROFILE_FIELD_YOUTUBE:
-            self.linkedin = request.POST.get("linkedin")
+            self.youtube = request.POST.get("youtube")
 
         if label == LABEL_FOR_PROFILE_FIELD_GITHUB:
             self.github = request.POST.get("github")
@@ -1319,6 +1319,9 @@ class Profile(models.Model):
 
         if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
             self.medium = request.POST.get("medium")
+
+        if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
+            self.description = request.POST.get("description")
 
         if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL:
             self.description_label = request.POST.get("description_label")
