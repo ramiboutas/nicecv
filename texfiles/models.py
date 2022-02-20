@@ -11,10 +11,11 @@ cls_storage = FileSystemStorage(location='/home/rami/texmf/tex/latex/local')
 
 
 class ResumeTemplate(models.Model):
+    # file = models.FileField(upload_to='texfiles')
+    # cls = models.FileField(storage=cls_storage, blank=True, null=True)
+
     name = models.CharField(max_length=50)
-    file = models.FileField(upload_to='texfiles')
     template_name = models.CharField(default="test.tex", max_length=20)
-    cls = models.FileField(storage=cls_storage, blank=True, null=True)
     interpreter = models.CharField(max_length=20, default='lualatex')
     image = models.ImageField(upload_to='tex_screenshots')
     is_active = models.BooleanField(default=True)

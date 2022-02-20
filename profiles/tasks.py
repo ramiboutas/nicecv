@@ -39,7 +39,7 @@ def create_resume_objects(self, pk=None):
         bytes_pdf = compile_template_to_pdf(template_name, context)
         random_string = get_random_string()
         pdf = ContentFile(bytes_pdf, f'{_("CV")}_{profile.pk}_{resume_template_object.pk}_{random_string}.pdf')
-        resume_file = Resume(profile=profile, pdf=pdf)
+        resume_file = Resume(profile=profile, pdf=pdf, resume_template=resume_template_object)
         resume_file.save()
 
         resume_image_dir = os.path.join(settings.MEDIA_ROOT, settings.RESUME_IMAGE_DIRECTORY)
