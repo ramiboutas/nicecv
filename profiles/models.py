@@ -2159,7 +2159,7 @@ from texfiles.models import ResumeTemplate
 
 class Resume(models.Model):
     profile = models.ForeignKey(Profile, related_name="resumes", on_delete=models.CASCADE)
-    resume_template = models.OneToOneField(ResumeTemplate, null=True, on_delete=models.SET_NULL)
+    resume_template = models.ForeignKey(ResumeTemplate, null=True, on_delete=models.SET_NULL)
     # texfile = models.ForeignKey(ResumeTemplate, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=settings.RESUME_IMAGE_DIRECTORY) # , upload_to='files/%Y/%m/%d/'
     pdf = models.FileField(null=True , upload_to=settings.RESUME_PDF_DIRECTORY)

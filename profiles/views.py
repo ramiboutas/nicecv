@@ -443,7 +443,8 @@ from django_tex.shortcuts import render_to_pdf
 from texfiles.models import ResumeTemplate
 
 def generate_resume_testing_view(request, pk):
-    resume_template = ResumeTemplate.objects.get(id=3)
+    tex_template_id = request.POST.get("tex_template_id")
+    resume_template = ResumeTemplate.objects.get(id=tex_template_id)
     profile = get_object_or_404(Profile, pk=pk)
     template_name = resume_template.template_name
     context = {'object': profile}
