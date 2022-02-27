@@ -50,16 +50,28 @@
 
 \begin{document}
 
-\name{ {{ object.firstname }} {{ object.lastname }} }
+% fullname
+{% if object.firstname or object.lastname %}
+  \name{ {{ object.firstname | latex_escape }} {{ object.lastname | latex_escape }} }
+{% else %}
+  \name{}
+{% endif %}
+
+% jobtitle
 {% if object.jobtitle_active  %}
-  \jobtitle{ {{- object.jobtitle -}} }
+  \jobtitle{ {{- object.jobtitle | latex_escape -}} }
 {% else %}
   \jobtitle{}
 {% endif %}
 
-\tagline{Amazing tag line that makes HR managers want to hire you immediately.\\The tag line is aligned with the bottom of the picture to the right, so if you have\\multiple lines it fills the space to your name from the bottom. You might want to\\introduce manual line breaks to make this look nicer then simply filling up the lines.}
-% \photo[round]{picture.jpg}{\dimexpr \headerheight-\marginbottom}   % make photo exactly match the header with margintop/marginright/marginbottom as margin
+% description
+{% if object.description_active and object.description %}
+	\tagline{ {{- object.description | latex_escape  -}} }
+{% else %}
+	\tagline{}
+{% endif %}
 
+% photo
 {% if object.photo and object.photo.path %}
 	\photo[round]{ {{- object.photo.path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% else %}
@@ -70,57 +82,29 @@
 
 \highlightbar{
 
+    % personal information
     % \section{Contact}
-    {% if object.email_active %}\email{ {{- object.email -}} }{% endif %}
-    {% if object.phone_active %}\phone{ {{- object.phone -}} }{% endif %}
-    {% if object.location_active %}\location{ {{- object.location -}} }{% endif %}
-    \vspace{0.5em}
-    {% if object.website_active %}\website{ {{- object.website -}} }{ {{- object.website -}} }{% endif %}
-    {% if object.skype_active %}\skype{ {{- object.skype -}} }{% endif %}
-    {% if object.github_active %}\github{@GiantMolecularCloud}{https://github.com/giantmolecularcloud}{% endif %}
-    {% if object.linkedin_active %}\linkedin{Nico Krieger}{https://www.linkedin.com/in/nico-krieger-6b28151b2/}{% endif %}
-    \orcid{0000-0003-1104-2014}{https://www.orcid.org/0000-0003-1104-2014}
+    {% if object.location and object.location_active %}\location{ {{- object.location | latex_escape -}} }{% endif %} {% if object.birth and object.birth_active %}\birth{ {{- object.birth | latex_escape -}} }{% endif %} {% if object.phone and object.phone_active %}\phone{ {{- object.phone | latex_escape -}} }{% endif %} {% if object.email and object.email_active %}\email{ {{- object.email | latex_escape -}} }{% endif %} {% if object.website and object.website_active %}\website{ {{- object.website | latex_escape -}} }{% endif %} {% if object.linkedin and object.linkedin_active %}\linkedin{ {{- object.linkedin | latex_escape -}} }{% endif %} {% if object.website and object.skype_active %}\skype{ {{- object.skype | latex_escape -}} }{% endif %} {% if object.instagram and object.instagram_active %}\instagram{ {{- object.instagram | latex_escape -}} }{% endif %} {% if object.twitter and object.twitter_active %}\twitter{ {{- object.twitter | latex_escape -}} }{% endif %} {% if object.facebook and object.facebook_active %}\facebook{ {{- object.facebook | latex_escape -}} }{% endif %} {% if object.youtube and object.youtube_active %}\youtube{ {{- object.youtube | latex_escape -}} }{% endif %} {% if object.github and object.github_active %}\github{ {{- object.github | latex_escape -}} }{% endif %} {% if object.gitlab and object.gitlab_active %}\gitlab{ {{- object.gitlab | latex_escape -}} }{% endif %} {% if object.stackoverflow and object.stackoverflow_active %}\stackoverflow{ {{- object.stackoverflow | latex_escape -}} }{% endif %} {% if object.medium and object.medium_active %}\medium{ {{- object.medium | latex_escape -}} }{% endif %} {% if object.orcid and object.orcid_active %}\orcid{ {{- object.orcid | latex_escape -}} }{% endif %}
 
-    \section{ {{- object.skill_label -}} }
 
     %\skillsection{Programming}
-    \skill{Python}{5}
-    \skill{Bash}{4}
-    \skill{C++}{2}
-    \skill{Apple Script}{3}
-    \skill{HTML/CSS}{3}
-    \skill{LaTeX}{4}
+
+    {% if object.skill_active %}
+      \section{ {{- object.skill_label | latex_escape -}} }
+      {% for skill in object.skill_set.all() %}
+        \skill{ {{- skill.name | latex_escape -}} }{ {{- skill.level_base_5_int -}} }
+      {% endfor %}
+    {% endif %}
 
     \vspace{0.5em}
-    \skillsection{Operating Systems}
-    \skill{Linux}{4}
-    \skill{MacOS}{5}
-    \skill{Windows}{3}
 
-    \vspace{0.5em}
-    \skillsection{Software \& Tools}
-    \skill{Visualisation}{5}
-    (e.g. matplotlib, gnuplot, ...)\\
-    \skill{Data handling/analysis}{5}
-    (e.g. numpy, scipy, pandas, ...)\\
-    \skill{Docker}{3}
-    \skill{Office}{4}
+    {% if object.language_active %}
+      \section{ {{- object.language_label | latex_escape -}} }
+      {% for language in object.language_set.all() %}
+        \skill{ {{- language.name | latex_escape -}} }{ {{- language.level_base_5_int -}} }
+      {% endfor %}
+    {% endif %}
 
-    \vspace{0.5em}
-    \skillsection{Another skill subsection header}
-    You can also put simply text here without the dots.
-
-    \vspace{0.5em}
-    \skillsection{Languages}
-    \skill{German}{5}
-    \skill{English}{5}
-    \skill{French}{2}
-    \bigskip
-
-    \section{Certificates}
-    \simpleskill{AWS certified cloud practitioner}
-    \simpleskill{AWS certified ML Specialist}
-    \simpleskill{Databricks Lakehouse Platform}
 
 }
 \mainbar{

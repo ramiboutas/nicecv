@@ -151,7 +151,6 @@
 {% endif %}
 
 
-
 % Medium
 {% if object.medium and object.medium_active %}
 	\medium{ {{- object.medium | latex_escape -}} }
@@ -159,9 +158,12 @@
 	\medium{}
 {% endif %}
 
-
-
-
+% ORCID
+{% if object.orcid and object.orcid_active %}
+	\orcid{ {{- object.orcid | latex_escape -}} }
+{% else %}
+	\orcid{}
+{% endif %}
 
 
 
@@ -176,7 +178,7 @@
 \aboutmelabel{ {{- object.description_label | latex_escape -}} }
 
 {% if object.description_active and object.description %}
-	\aboutme{ {{- object.description | latex_escape -}} } % To have no About Me section, just remove all the text and leave \description{}
+	\aboutme{ {{- object.description | latex_escape | linebreaks -}} } % To have no About Me section, just remove all the text and leave \description{}
 {% else %}
 	\aboutme{}
 {% endif %}
@@ -185,12 +187,11 @@
 %	 SKILLS
 %----------------------------------------------------------------------------------------
 
-\skilllabel{ {{- object.skill_label | latex_escape -}} }
-
 {% if object.skill_active and object.skill_set.count() > 0 %}
+\skilllabel{ {{- object.skill_label | latex_escape -}} }
 \numberofskills{ {{- object.skill_set.count() -}} }
-%	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}
-\skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name | latex_escape -}} / {{- skill.level*6/100 -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+%	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01}}s
+\skills{ {% for skill in object.skill_set.all() %}{ {{- skill.name | latex_escape -}} / {{- skill.level_base_6_float -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\skills{}
 {% endif %}
@@ -199,11 +200,10 @@
 %	 LANGUAGES
 %----------------------------------------------------------------------------------------
 
-\languagelabel{ {{- object.language_label | latex_escape -}} }
-
 {% if object.language_active and object.language_set.count() > 0 %}
+	\languagelabel{ {{- object.language_label | latex_escape -}} }
 	\numberoflanguages{ {{- object.language_set.count() -}} }
-	\languages{ {% for language in object.language_set.all() %}{ {{- language.name | latex_escape  -}} / {{- language.level -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+	\languages{ {% for language in object.language_set.all() %}{ {{- language.name | latex_escape  -}} / {{- language.level_base_6_float -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\languages{}
 {% endif %}

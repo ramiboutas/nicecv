@@ -407,7 +407,7 @@ def resume_creation_status_view(request, pk, task_id):
     success = progress_object.get_info().get("success")
 
     context = { 'progress': progress,'object': profile}
-
+    
     if percent == 100 and success:
         messages.success(request, _('Resumes created successfully'))
         return render(request, 'profiles/resume_partials/view_resumes_button.html', context)

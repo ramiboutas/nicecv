@@ -132,6 +132,14 @@ hx-trigger="mediumDeactivatedEvent from:body"></div>
 hx-trigger="mediumActivatedEvent from:body"></div>
 
 
+<!-- when orcid is deactivated, insert the orcid button -->
+<div hx-get="{{ object.insert_orcid_activation_button_url }}" hx-target="#orcid-activation-button" hx-swap="innerHTML"
+hx-trigger="orcidDeactivatedEvent from:body"></div>
+<!-- when orcid is activated, remove  the orcid button -->
+<div hx-get="{{ object.remove_orcid_activation_button_url }}" hx-target="#orcid-activation-button" hx-swap="innerHTML"
+hx-trigger="orcidActivatedEvent from:body"></div>
+
+
 <!-- when description is deactivated, insert the description button -->
 <div hx-get="{{ object.insert_description_activation_button_url }}" hx-target="#description-activation-button" hx-swap="innerHTML"
 hx-trigger="descriptionDeactivatedEvent from:body"></div>

@@ -1,7 +1,0 @@
-{% load i18n %}
-
-<button class="btn btn-outline-danger w-100"
-  hx-target="this" hx-swap="outerHTML" hx-post="{{ object.generate_resumes_url }}"
-  data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Generate resumes to download' %}">
-  <i class="bi bi-file-pdf"></i> {% trans "Generate resumes" %}
-</button>

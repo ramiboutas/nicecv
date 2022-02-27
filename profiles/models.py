@@ -34,6 +34,7 @@ LABEL_FOR_PROFILE_FIELD_GITHUB = 'github'
 LABEL_FOR_PROFILE_FIELD_GITLAB = 'gitlab'
 LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW = 'stackoverflow'
 LABEL_FOR_PROFILE_FIELD_MEDIUM = 'medium'
+LABEL_FOR_PROFILE_FIELD_ORCID = 'orcid'
 
 LABEL_FOR_CHILD_OBJECT_SKILL = 'skill'
 LABEL_FOR_CHILD_OBJECT_LANGUAGE = 'language'
@@ -118,6 +119,7 @@ class Profile(models.Model):
     gitlab = models.CharField(null=True, blank=True, max_length=50)
     stackoverflow = models.CharField(null=True, blank=True, max_length=50)
     medium = models.CharField(null=True, blank=True, max_length=50)
+    orcid = models.CharField(null=True, blank=True, max_length=50)
 
     # description & interests
     description = models.TextField(null=True, blank=True, max_length=1000)
@@ -141,6 +143,7 @@ class Profile(models.Model):
     gitlab_active = models.BooleanField(default=False)
     stackoverflow_active = models.BooleanField(default=False)
     medium_active = models.BooleanField(default=False)
+    orcid_active = models.BooleanField(default=False)
 
     # activation of child objects
     skill_active = models.BooleanField(default=True)
@@ -744,6 +747,35 @@ class Profile(models.Model):
         return reverse('profiles_remove_child_or_field_help_modal',
                         kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_MEDIUM})
 
+    # orcid
+    def update_orcid_url(self):
+        return reverse('profiles_update_field',
+                        kwargs={'pk':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
+    def activate_orcid_url(self):
+        return reverse('profiles_activate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
+    def deactivate_orcid_url(self):
+        return reverse('profiles_deactivate_child_object',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
+    def insert_orcid_activation_button_url(self):
+        return reverse('profiles_insert_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
+    def remove_orcid_activation_button_url(self):
+        return reverse('profiles_remove_child_activation_button',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
+    def insert_orcid_help_modal_url(self):
+        return reverse('profiles_insert_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
+    def remove_orcid_help_modal_url(self):
+        return reverse('profiles_remove_child_or_field_help_modal',
+                        kwargs={'pk_parent':self.pk, 'label': LABEL_FOR_PROFILE_FIELD_ORCID})
+
     # description
     def update_description_url(self):
         return reverse('profiles_update_field',
@@ -1320,6 +1352,9 @@ class Profile(models.Model):
         if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
             self.medium = request.POST.get("medium")
 
+        if label == LABEL_FOR_PROFILE_FIELD_ORCID:
+            self.orcid = request.POST.get("orcid")
+
         if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
             self.description = request.POST.get("description")
 
@@ -1407,6 +1442,14 @@ class Skill(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def level_base_5_int(self):
+        return (self.level*5/100).__round__()
+
+    @property
+    def level_base_6_float(self):
+        return self.level*6/100
+
     def update_object_url(self):
         return reverse('profiles_update_child_object',
                         kwargs={'pk':self.pk, 'pk_parent':self.profile.pk, 'label': LABEL_FOR_CHILD_OBJECT_SKILL})
@@ -1423,13 +1466,21 @@ class Language(models.Model):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='language_set')
     name = models.CharField(max_length=50)
-    level = models.IntegerField(default=50)
+    level = models.IntegerField(default=3)
 
     class Meta:
         ordering = ('id', 'level', )
 
     def __str__(self):
         return self.name
+
+    @property
+    def level_base_5_int(self):
+        return (self.level*5/100).__round__()
+
+    @property
+    def level_base_6_float(self):
+        return self.level*6/100
 
     def update_object_url(self):
         return reverse('profiles_update_child_object',
@@ -2081,6 +2132,9 @@ def set_activation_state(label=None, object=None, active=True):
 
     if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
         object.medium_active = active
+
+    if label == LABEL_FOR_PROFILE_FIELD_ORCID:
+        object.orcid_active = active
 
     if label == LABEL_FOR_CHILD_OBJECT_SKILL:
         object.skill_active = active
