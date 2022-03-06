@@ -175,13 +175,14 @@
 %	 ABOUT ME
 %----------------------------------------------------------------------------------------
 
-\aboutmelabel{ {{- object.description_label | latex_escape -}} }
+% \aboutmelabel{ {{- object.description_label | latex_escape -}} }
 
-{% if object.description_active and object.description %}
-	\aboutme{ {{- object.description | latex_escape | linebreaks -}} } % To have no About Me section, just remove all the text and leave \description{}
-{% else %}
-	\aboutme{}
-{% endif %}
+% {% if object.description_active and object.description %}
+% 	\aboutme{ {{- object.description | latex_escape | linebreaks -}} } % To have no About Me section, just remove all the text and leave \description{}
+% {% else %}
+% 	\aboutme{}
+% {% endif %}
+\aboutme{}
 
 %----------------------------------------------------------------------------------------
 %	 SKILLS
@@ -211,6 +212,16 @@
 %----------------------------------------------------------------------------------------
 
 \makeprofile % Print the sidebar
+
+
+{% if object.description_active and object.description %}
+\section{ {{- object.description_label| latex_escape  -}} }
+
+\begin{twenty}
+	\twentyitemshort{}
+		{ {{- object.description | latex_escape | linebreaks -}} }
+\end{twenty}
+{% endif %}
 
 %----------------------------------------------------------------------------------------
 %	 EDUCATION
