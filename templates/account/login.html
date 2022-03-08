@@ -6,7 +6,8 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+
+<div class="container py-5" style="height: 950px;">
   <div class="row">
     <div class="col-md-4 offset-md-4">
 
@@ -21,11 +22,11 @@
 
         <div class="socialaccount_ballot">
 
-          <ul class="socialaccount_providers">
+          <!-- <ul class="socialaccount_providers" > -->
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-          </ul>
+          <!-- </ul> -->
 
-          <div class="login-or">{% trans 'or' %}</div>
+          <div class="login-or text-center">{% trans 'or' %}</div>
 
         </div>
 

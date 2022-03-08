@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from allauth.account.signals import user_signed_up
+from allauth.socialaccount.signals import social_account_added
 
 class CustomUser(AbstractUser):
     paid_until = models.DateField(null=True, blank=True)
@@ -26,10 +27,14 @@ class CustomUser(AbstractUser):
         self.save()
 
 
-@receiver(user_signed_up)
+# @receiver(social_account_added)
+# @receiver(user_signed_up)
 def get_social_avatar_url(sociallogin, user, *args, **kwargs):
-    if sociallogin:
-        if sociallogin.account.provider == 'google':
-            avatar_url = sociallogin.account.extra_data['picture']
-        user.avatar_url=avatar_url
-        user.save()
+    try:
+        if sociallogin:
+            if sociallogin.account.provider == 'google':
+                avatar_url = sociallogin.account.extra_data['picture']
+            user.avatar_url=avatar_url
+            user.save()
+    except:
+        pass
