@@ -3,8 +3,7 @@
 *.pot
 *.pyc
 __pycache__
-media/profiles
-db.sqlite3
+media
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
