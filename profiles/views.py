@@ -407,7 +407,7 @@ def resume_creation_status_view(request, pk, task_id):
     success = progress_object.get_info().get("success")
 
     context = { 'progress': progress,'object': profile}
-    
+
     if percent == 100 and success:
         messages.success(request, _('Resumes created successfully'))
         return render(request, 'profiles/resume_partials/view_resumes_button.html', context)
@@ -441,6 +441,7 @@ def download_resume_image_view(request, pk_parent, pk):
 
 from django_tex.shortcuts import render_to_pdf
 from texfiles.models import ResumeTemplate
+from utils.generate_strings import actual_datetime_string
 
 def generate_resume_testing_view(request, pk):
     tex_template_id = request.POST.get("tex_template_id")
@@ -448,4 +449,4 @@ def generate_resume_testing_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     template_name = resume_template.template_name
     context = {'object': profile}
-    return render_to_pdf(request, template_name, context, filename='test.pdf')
+    return render_to_pdf(request, template_name, context, filename=actual_datetime_string()+'_'+template_name+'_test.pdf')

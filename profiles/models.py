@@ -2212,7 +2212,7 @@ def get_below_child_object(label=None, child_object=None, profile=None):
 from texfiles.models import ResumeTemplate
 
 class Resume(models.Model):
-    profile = models.ForeignKey(Profile, related_name="resumes", on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, null=True, related_name="resumes", on_delete=models.SET_NULL)
     resume_template = models.ForeignKey(ResumeTemplate, null=True, on_delete=models.SET_NULL)
     # texfile = models.ForeignKey(ResumeTemplate, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=settings.RESUME_IMAGE_DIRECTORY) # , upload_to='files/%Y/%m/%d/'

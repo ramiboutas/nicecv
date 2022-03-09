@@ -14,7 +14,7 @@ crispy-bootstrap5==0.6
 cryptography==36.0.1
 defusedxml==0.7.1
 Deprecated==1.2.13
-Django==4.0.1
+Django==4.0.3
 django-allauth==0.47.0
 django-celery-results==2.2.0
 django-crispy-forms==1.13.0

@@ -17,9 +17,6 @@ from .models import Resume
 # from utils.files import get_tex_template_name
 
 
-def get_random_string():
-    return ''.join(random.choice('0123456789qwertyuioplkjhgfdsazxcvbnm') for i in range(16))
-
 @shared_task(bind=True)
 def create_resume_objects(self, pk=None):
     progress_recorder = ProgressRecorder(self)
@@ -37,7 +34,6 @@ def create_resume_objects(self, pk=None):
 
         # create the pdf with django-tex
         bytes_pdf = compile_template_to_pdf(template_name, context)
-        random_string = get_random_string()
         pdf = ContentFile(bytes_pdf, f'{_("CV")}_{profile.firstname}_{profile.lastname}_{profile.pk}.pdf')
         resume_file = Resume(profile=profile, pdf=pdf, resume_template=resume_template_object)
         resume_file.save()

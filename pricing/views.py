@@ -22,9 +22,9 @@ def get_payment_methods_view(request):
     This will be called just if the user is logged in (this logic is in the templates).
     We will return a partial of the payments methods
     """
-    # if request.htmx:
-    return render(request, 'pricing/partials/payment-methods.html')
-    # return redirect('pricing_main')
+    if request.htmx:
+        return render(request, 'pricing/partials/payment-methods.html')
+    return redirect('pricing_main')
 
 
 # @login_required
