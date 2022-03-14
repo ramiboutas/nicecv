@@ -110,7 +110,7 @@
 \mainbar{
 
 
-    {% if object.education_active %}
+    {% if object.education_active and object.education_set.count() > 0 %}
       \section[\faMortarBoard]{ {{- object.education_label| latex_escape  -}} }
       {% for education in object.education_set.all() %}
         \job{ {{ education.start_date | latex_escape  }} - {{ education.end_date | latex_escape  }} }
@@ -120,7 +120,7 @@
       {% endfor %}
     {% endif %}
 
-    {% if object.experience_active %}
+    {% if object.experience_active and object.experience_set.count() > 0 %}
       \section[\faGears]{ {{- object.experience_label| latex_escape  -}} }
       {% for experience in object.experience_set.all() %}
         \job{ {{ experience.start_date | latex_escape  }} - {{ experience.end_date | latex_escape  }} }
@@ -130,18 +130,25 @@
       {% endfor %}
     {% endif %}
 
-
-    {% if object.certification_active %}
-    \section[\faGears]{ {{- object.certification_label -}} }
-    \begin{twenty} % Environment for a list with descriptions
-    	%\twentyitemshort{<dates>}{<title>}
-    	{% for certification in object.certification_set.all() %}
-    		\twentyitem{ \small{ {{- certification.issuing_date | latex_escape -}} }}
-    		{ {{- certification.title | latex_escape -}} }
-    		{ {{- certification.issuer | latex_escape -}} }
-    	{% endfor %}
-    \end{twenty}
+    {% if object.certification_active and object.certification_set.count() > 0 %}
+      \section[\faCertificate]{ {{- object.certification_label| latex_escape  -}} }
+      {% for certification in object.certification_set.all() %}
+        \certification{ {{- certification.issuing_date | latex_escape  -}} }
+            { {{- certification.issuer | latex_escape -}} }
+            { {{- certification.title | latex_escape  -}} }
+      {% endfor %}
     {% endif %}
+
+    {% if object.course_active and object.course_set.count() > 0 %}
+      \section[\faCertificate]{ {{- object.course_label| latex_escape  -}} }
+      {% for course in object.course_set.all() %}
+        \course{ {{- course.issuing_date | latex_escape  -}} }
+            { {{- course.issuer | latex_escape -}} }
+            { {{- course.title | latex_escape  -}} }
+            { }
+      {% endfor %}
+    {% endif %}
+
 
     \section{Achievements, honours and awards}
     \achievement{My first achievement}
