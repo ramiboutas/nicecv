@@ -89,7 +89,7 @@
 
     %\skillsection{Programming}
 
-    {% if object.skill_active %}
+    {% if object.skill_active  %}
       \section{ {{- object.skill_label | latex_escape -}} }
       {% for skill in object.skill_set.all() %}
         \skill{ {{- skill.name | latex_escape -}} }{ {{- skill.level_base_5_int -}} }
@@ -98,7 +98,7 @@
 
     \vspace{0.5em}
 
-    {% if object.language_active %}
+    {% if object.language_active and object.language_set.count() > 0 %}
       \section{ {{- object.language_label | latex_escape -}} }
       {% for language in object.language_set.all() %}
         \skill{ {{- language.name | latex_escape -}} }{ {{- language.level_base_5_int -}} }
@@ -108,7 +108,6 @@
 
 }
 \mainbar{
-
 
     {% if object.education_active and object.education_set.count() > 0 %}
       \section[\faMortarBoard]{ {{- object.education_label| latex_escape  -}} }
@@ -144,8 +143,39 @@
       {% for course in object.course_set.all() %}
         \course{ {{- course.issuing_date | latex_escape  -}} }
             { {{- course.issuer | latex_escape -}} }
-            { {{- course.title | latex_escape  -}} }
+            { {{- course.title | latex_escape  -}}  {% if course.hours %}, {{ course.hours | latex_escape  }} {% endif %} }
             { }
+      {% endfor %}
+    {% endif %}
+
+    {% if object.honor_active and object.honor_set.count() > 0 %}
+      \section[\faTrophy]{ {{- object.honor_label| latex_escape  -}} }
+      {% for honor in object.honor_set.all() %}
+        \honor{ {{- honor.issuing_date | latex_escape  -}} }
+            { {{- honor.issuer | latex_escape -}} }
+            { {{- honor.title | latex_escape  -}} }
+            { }
+      {% endfor %}
+    {% endif %}
+
+
+    {% if object.organization_active and object.organization_set.count() > 0 %}
+      \section[\faBuilding]{ {{- object.organization_label| latex_escape  -}} }
+      {% for organization in object.organization_set.all() %}
+        \organization{ {{ organization.start_date | latex_escape  }} - {{ organization.end_date | latex_escape  }} }
+            { {{- organization.organization | latex_escape -}} }
+            { {{- organization.role | latex_escape  -}} }
+            { {{- organization.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+    {% if object.patent_active and object.patent_set.count() > 0 %}
+      \section[\faBook]{ {{- object.patent_label| latex_escape  -}} }
+      {% for patent in object.patent_set.all() %}
+        \patent{ {{- patent.issuing_date | latex_escape  -}} }
+            { {{- patent.issuer | latex_escape -}} }
+            { {{- patent.title | latex_escape  -}} {% if patent.number %} ({{ patent.number | latex_escape  }}){% endif %} }
+            { {{- patent.description | latex_escape  | linebreaks -}} }
       {% endfor %}
     {% endif %}
 
