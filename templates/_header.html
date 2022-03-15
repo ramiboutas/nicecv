@@ -16,32 +16,33 @@
       <ul class="navbar-nav me-auto">
 
         <li class="nav-item mx-3">
-          {% include "_set_language_form.html" %}
+          <a class="nav-link text-primary" href="{% url 'profiles_list' %}">{% translate 'My profiles'%}</a>
         </li>
-
-        <li class="nav-item me-3">
-          <a class="nav-link text-primary " href="{% url 'pricing_main' %}">{% translate 'Get premium!'%}</a>
-        </li>
+        {% if not user.has_paid %}
+          <li class="nav-item me-3">
+            <a class="nav-link text-primary" href="{% url 'pricing_main' %}">{% translate 'Get premium!'%}</a>
+          </li>
+        {% endif %}
       </ul>
 
       <div class="d-flex">
+        {% include "_set_language_form.html" %}
         <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink"
+                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {% if user.avatar_url %}
-                <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{user.avatar_url}}">
+                  <img class="avatar avatar-32 bg-light rounded-circle text-white" src="{{user.avatar_url}}">
                 {% else %}
-                <i class="avatar avatar-32 bi bi-person-circle"></i>
+                  <i class="avatar avatar-32 bi bi-person-circle"></i>
                 {% endif %}
-                {% trans "Hi" %} {% if user.firstname %}{{user.firstname}}{% else %}{{user.username}}{% endif %}!
+
             </a>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-
-            <li><a class="dropdown-item" href="{% url 'my_account' %}">{% translate 'My account'%}</a></li>
-            <li><a class="dropdown-item" href="{% url 'profiles_list' %}">{% translate 'My profiles'%}</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% translate 'Log out'%}</a></li>
-          </ul>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><a class="dropdown-item" href="{% url 'my_account' %}">{% translate 'My account'%}</a></li>
+              <li><a class="dropdown-item" href="{% url 'profiles_list' %}">{% translate 'My profiles'%}</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% translate 'Log out'%}</a></li>
+            </ul>
         </div>
       </div>
 

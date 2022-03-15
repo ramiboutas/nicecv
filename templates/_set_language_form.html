@@ -1,8 +1,8 @@
 {% load i18n %}
-<form class="form-inline" action="{% url 'set_language' %}" method="post">
+<form class="form-inline me-4 mt-1" action="{% url 'set_language' %}" method="post">
   {% csrf_token %}
   <input name="next" type="hidden" value="{{ redirect_to }}">
-  <div class="input-group">
+  <div class="input-group ">
     <div class="input-group-prepend">
       <span class="input-group-text text-secondary border-0" id="basic-addon1"><i class="bi bi-globe"></i></span>
     </div>
