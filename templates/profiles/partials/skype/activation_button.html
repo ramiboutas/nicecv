@@ -2,7 +2,7 @@
 <div id="skype-activation-button">
 
 {% if not object.skype_active %}
-  <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
+  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
     hx-post="{{ object.activate_skype_url }}" hx-target="#skype-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate skype' %}">
     <i class="bi bi-skype"></i> {% trans 'Skype' %}</button>

@@ -2,7 +2,7 @@
 <div id="project-activation-button">
 
 {% if not object.project_active %}
-  <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
+  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
     hx-post="{{ object.activate_project_url }}" hx-target="#project-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate project' %}">
     <i class="bi bi-lightbulb"></i> {% trans 'Projects' %}</button>

@@ -2,7 +2,7 @@
 <div id="facebook-activation-button">
 
 {% if not object.facebook_active %}
-  <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
+  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
     hx-post="{{ object.activate_facebook_url }}" hx-target="#facebook-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate facebook' %}">
     <i class="bi bi-facebook"></i> {% trans 'Facebook' %}</button>

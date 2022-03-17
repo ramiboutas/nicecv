@@ -2,7 +2,7 @@
 <div id="linkedin-activation-button">
 
 {% if not object.linkedin_active %}
-  <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
+  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
     hx-post="{{ object.activate_linkedin_url }}" hx-target="#linkedin-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate linkedin' %}">
     <i class="bi bi-linkedin"></i> {% trans 'LinkedIn' %}</button>

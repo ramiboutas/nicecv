@@ -104,13 +104,11 @@
         \skill{ {{- language.name | latex_escape -}} }{ {{- language.level_base_5_int -}} }
       {% endfor %}
     {% endif %}
-
-
 }
-\mainbar{
 
+\mainbar{
     {% if object.education_active and object.education_set.count() > 0 %}
-      \section[\faMortarBoard]{ {{- object.education_label| latex_escape  -}} }
+      \section[\faGraduationCap]{ {{- object.education_label| latex_escape  -}} }
       {% for education in object.education_set.all() %}
         \job{ {{ education.start_date | latex_escape  }} - {{ education.end_date | latex_escape  }} }
             { {{- education.institution | latex_escape -}} }
@@ -119,8 +117,10 @@
       {% endfor %}
     {% endif %}
 
+
+
     {% if object.experience_active and object.experience_set.count() > 0 %}
-      \section[\faGears]{ {{- object.experience_label| latex_escape  -}} }
+      \section[\faBriefcase]{ {{- object.experience_label| latex_escape  -}} }
       {% for experience in object.experience_set.all() %}
         \job{ {{ experience.start_date | latex_escape  }} - {{ experience.end_date | latex_escape  }} }
             { {{- experience.company | latex_escape -}} }
@@ -128,6 +128,7 @@
             { {{- experience.description | latex_escape  | linebreaks -}} }
       {% endfor %}
     {% endif %}
+
 
     {% if object.certification_active and object.certification_set.count() > 0 %}
       \section[\faCertificate]{ {{- object.certification_label| latex_escape  -}} }
@@ -138,6 +139,7 @@
       {% endfor %}
     {% endif %}
 
+
     {% if object.course_active and object.course_set.count() > 0 %}
       \section[\faCertificate]{ {{- object.course_label| latex_escape  -}} }
       {% for course in object.course_set.all() %}
@@ -147,6 +149,7 @@
             { }
       {% endfor %}
     {% endif %}
+
 
     {% if object.honor_active and object.honor_set.count() > 0 %}
       \section[\faTrophy]{ {{- object.honor_label| latex_escape  -}} }
@@ -179,36 +182,38 @@
       {% endfor %}
     {% endif %}
 
+    {% if object.project_active and object.project_set.count() > 0 %}
+      \section[\faLightbulb]{ {{- object.project_label| latex_escape  -}} }
+      {% for project in object.project_set.all() %}
+        \project{ {{ project.start_date | latex_escape  }} - {{ project.end_date | latex_escape  }}  }
+            { {{- project.organization | latex_escape -}} }
+            { {{- project.title | latex_escape  -}} }
+            { {{- project.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
 
-    \section{Achievements, honours and awards}
-    \achievement{My first achievement}
-    \achievement{My second achievement}
+    {% if object.publication_active and object.publication_set.count() > 0 %}
+      \section[\faLightbulb]{ {{- object.publication_label| latex_escape  -}} }
+      {% for publication in object.publication_set.all() %}
+        \publication
+            { {{- publication.title | latex_escape -}}  }
+            { {{- publication.authors | latex_escape -}} }
+            { {{- publication.issuing_date | latex_escape  -}} }
+            { {{- publication.publisher | latex_escape -}} }
+            { {{- publication.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
 
-    \section{General Skills}
-    \smallskip % additional skip because tag outlines use up space
-    \tag{Tag 1}
-    \tag{Tag 2}
-    \tag{and}
-    \tag{another tag}
-    \tag{some more tags}
-    \tag{yet another one}
-    \tag{tags flow over}
-    \tag{to the next line}
-    \tag{if necessary}
+    {% if object.volunteering_active and object.volunteering_set.count() > 0 %}
+      \section[\faGears]{ {{- object.volunteering_label| latex_escape  -}} }
+      {% for volunteering in object.volunteering_set.all() %}
+        \volunteering{ {{ volunteering.start_date | latex_escape  }} - {{ volunteering.end_date | latex_escape  }} }
+            { {{- volunteering.company | latex_escape -}} }
+            { {{- volunteering.title | latex_escape  -}} }
+            { {{- volunteering.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
 
-    \medskip
-    Tags must be ordered by hand with newlines to get a nice layout, especially for long tags.
-
-    \section{Wheel Chart}
-    % This is taken from AltaCV
-    % see https://github.com/liantze/AltaCV for details
-    \wheelchart{1.5cm}{0.5cm}{ %outer and inner diameter
-        6/8em/accent!20/Sleep,          % comma-separated list of
-        8/8em/accent!40/Daytime job,    % fraction of 24 / line length / color / label
-        2/8em/accent!80/Training,          % here, the color is shades of the accent color
-        3/8em/accent!60/Recovering from fighting criminals,
-        5/8em/accent/Being Batman
-    }
 }
 \makebody
 \clearpage
@@ -241,39 +246,5 @@
 }
 \makebody
 
-
-\clearpage
-\pagestyle{empty}
-
-\section{Publications}
-\pubforcefullwidth
-
-Demonstrate what an \texttt{\textbackslash pagestyle\{empty\}} page looks like.
-Also show off the macros for publications that uses small icons for authors, date, journal and links.
-
-Achieving a good looking spacing can be tricky. For empty pagestyles where the full width is available use \texttt{\textbackslash pubforcefullwidth} to force the publoication list to take up all the available space.
-The (relative) lengths reserved for date, journal and links can be set with the parameters \texttt{\textbackslash pubdatelength}, \texttt{\textbackslash pubjournallength} and \texttt{\textbackslash publinklength} as in \texttt{\textbackslash setlength\{\textbackslash pubdatelength\}\{0.15 \textbackslash linewidth\}}.
-\bigskip
-
-\publication
-	{The turbulent gas structure in the centers of NGC~253 and the Milky Way} % Title
-	{\textbf{N. Krieger}, A. Bolatto, E. Koch, A. Leroy, E. Rosolowsky, F. Walter, A. Wei\ss, D. Eden, R. Levy, D. Meier, E. Mills, T. Moore, J. Ott, Y. Su, S. Veilleux} % Authors
-	{2020} % Year
-	{The Astrophysical Journal Vol. 899, Issue 2, id.158} % Journal
-	{\ADS{https://ui.adsabs.harvard.edu/abs/2020ApJ...899..158K}, \arXiv{https://arxiv.org/abs/2008.02518}} % ADS & arxiv links
-
-\publication
-	{The molecular ISM in the Super Star Clusters of the starburst NGC253} % Title
-	{\textbf{N. Krieger}, A. Bolatto, A. Leroy, R. Levy, E. Mills, D. Meier, S. Veilleux, F. Walter, A. Wei\ss} % Authors
-	{2020} % Year
-	{The Astrophysical Journal Vol.897, Issue 2, id.176} % Journal
-	{\ADS{https://ui.adsabs.harvard.edu/abs/2020ApJ...897..176K}, \arXiv{https://arxiv.org/abs/2006.08262}} % ADS & arxiv links
-
-\publication
-	{The Molecular Outflow in NGC\,253 at a Resolution of Two Parsecs} % Title
-	{\textbf{N. Krieger}, A. Bolatto, F. Walter, A. Leroy, L. Zschaechner, D. Meier, J. Ott, A. Wei\ss, E. Mills, S. Veilleux, M. Gorski} % Authors
-	{2019} % Year
-	{The Astrophysical Journal Vol.881, Issue 1, article id. 43, 20 pp} % Journal
-	{\ADS{https://ui.adsabs.harvard.edu/abs/2019ApJ...881...43K}, \arXiv{https://arxiv.org/abs/1907.00731}} % ADS & arxiv links
 
 \end{document}

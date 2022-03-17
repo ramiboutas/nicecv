@@ -2,7 +2,7 @@
 <div id="twitter-activation-button">
 
 {% if not object.twitter_active %}
-  <button class="btn btn-outline-secondary w-100 border-0" style="text-align:left;"
+  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
     hx-post="{{ object.activate_twitter_url }}" hx-target="#twitter-box" hx-swap="outerHTML"
     data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate twitter' %}">
     <i class="bi bi-twitter"></i> {% trans 'Twitter' %}</button>

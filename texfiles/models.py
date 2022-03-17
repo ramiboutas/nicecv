@@ -16,6 +16,7 @@ class ResumeTemplate(models.Model):
 
     name = models.CharField(max_length=50)
     template_name = models.CharField(default="test.tex", max_length=20)
+    only_one_page_allowed = models.BooleanField(default=False)
     interpreter = models.CharField(max_length=20, default='lualatex')
     image = models.ImageField(upload_to='tex_screenshots')
     is_active = models.BooleanField(default=True)
