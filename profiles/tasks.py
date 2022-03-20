@@ -25,7 +25,7 @@ def create_resume_objects(self, pk=None):
     total_resume_templates = resume_template_objects.count()
     # profile = instance.profile
 
-    profile.resumes.all().delete()
+    # profile.resumes.all().delete()
     for count, resume_template_object in enumerate(resume_template_objects):
         # get the template name
         # template_name = get_tex_template_name(resume_template_object)
