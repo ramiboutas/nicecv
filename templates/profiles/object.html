@@ -174,7 +174,9 @@
 
   <div class="row mt-5">
     {% include "profiles/resume_partials/generate_resumes_button.html" %}
-    {% include "profiles/resume_partials/generate_resumes_button_testing.html" %}
+    {% if debug_flag %}
+      {% include "profiles/resume_partials/generate_resumes_button_testing.html" %}
+    {% endif %}
     <!--
     -->
   </div>

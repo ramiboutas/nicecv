@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.linkedin',
+    # 'allauth.socialaccount.providers.linkedin',
     'django_htmx',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -88,6 +88,7 @@ SOCIALACCOUNT_GOOGLE_CLIENT_ID = os.environ.get('SOCIALACCOUNT_GOOGLE_CLIENT_ID'
 SOCIALACCOUNT_GOOGLE_SECRET_KEY = os.environ.get('SOCIALACCOUNT_GOOGLE_SECRET_KEY') # my own variable
 
 SOCIALACCOUNT_PROVIDERS = {
+    # https://django-allauth.readthedocs.io/en/latest/providers.html#google
     'google': {
         # For each OAuth based provider, either add a ``SocialApp``
         # (``socialaccount`` app) containing the required client
@@ -97,7 +98,22 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': SOCIALACCOUNT_GOOGLE_SECRET_KEY,
             'key': ''
         }
-    }
+    },
+    # https://django-allauth.readthedocs.io/en/latest/providers.html#linkedin
+    # 'linkedin': {
+    #     'SCOPE': [
+    #         'r_basicprofile',
+    #         'r_emailaddress'
+    #     ],
+    #     'PROFILE_FIELDS': [
+    #         'id',
+    #         'first-name',
+    #         'last-name',
+    #         'email-address',
+    #         'picture-url',
+    #         'public-profile-url',
+    #     ]
+    # }
 }
 
 
@@ -324,6 +340,7 @@ RESUME_IMAGE_FORMAT = 'jpg'
 LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
 
 # celery
+CELERY_ACCEPT_CONTENT = ['json'] # prod issue: https://github.com/celery/celery/issues/3047
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 CELERY_RESULT_BACKEND = 'django-db'
 

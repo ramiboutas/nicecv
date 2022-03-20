@@ -2,13 +2,13 @@ from celery.result import AsyncResult
 from celery_progress_htmx.backend import Progress
 from django_htmx.http import trigger_client_event
 
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, FileResponse
 from django.views.decorators.http import require_POST
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.decorators.cache import never_cache
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -47,6 +47,10 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         obj = get_object_or_404(Profile, pk=self.kwargs['pk'], user=self.request.user)
         return obj
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['debug_flag'] = settings.DEBUG
+        return context
 
 class ProfileCreateView(LoginRequiredMixin, CreateView):
     template_name = 'profiles/profile_update.html'
