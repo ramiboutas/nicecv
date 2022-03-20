@@ -21,9 +21,8 @@ import logging
 def create_resume_objects(self, pk=None):
     progress_recorder = ProgressRecorder(self)
     logging.debug("pk:%s", pk)
-    print("pk -------------- ")
-    print(pk)
     profile = get_object_or_404(Profile, pk=pk)
+    logging.debug("profile:%s", profile)
     resume_template_objects = ResumeTemplate.objects.filter(is_active=True)
     total_resume_templates = resume_template_objects.count()
     # profile = instance.profile
