@@ -16,10 +16,11 @@ from texfiles.models import ResumeTemplate
 from .models import Resume
 # from utils.files import get_tex_template_name
 
-
+import logging
 @shared_task(bind=True)
 def create_resume_objects(self, pk=None):
     progress_recorder = ProgressRecorder(self)
+    logging.debug("pk:%s", pk)
     print("pk -------------- ")
     print(pk)
     profile = get_object_or_404(Profile, pk=pk)
