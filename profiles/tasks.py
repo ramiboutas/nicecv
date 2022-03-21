@@ -19,7 +19,7 @@ from .models import Resume
 import logging
 @shared_task(bind=True)
 def create_resume_objects(self, pk=None):
-    # progress_recorder = ProgressRecorder(self)
+    progress_recorder = ProgressRecorder(self)
     logging.debug("pk:%s", pk)
     profile = get_object_or_404(Profile, pk=pk)
     logging.debug("profile:%s", profile)
@@ -44,7 +44,7 @@ def create_resume_objects(self, pk=None):
         if not os.path.exists(resume_image_dir):
             os.mkdir(resume_image_dir)
 
-        # progress_recorder.set_progress(count+1, total_resume_templates, description=f"{count+1}")
+        progress_recorder.set_progress(count+1, total_resume_templates, description=f"{count+1}")
 
         # convert page cover (in this case) to jpg and save
         resume_image = convert_from_path(
