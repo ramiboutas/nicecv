@@ -29,6 +29,17 @@
     <!-- seo-->
     <meta name="description" content="{{ meta_description }}">
     <meta name="keywords" content="{{ meta_keywords }}">
+
+    <!-- google analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ8EGK41WY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LQ8EGK41WY');
+    </script>
+
     <title>{{ site_name }} {% block title %} {% endblock %}</title>
   </head>
   <body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
