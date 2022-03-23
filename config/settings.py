@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django_tex',
     'celery_progress_htmx',
     'django_celery_results',
+    'analytical',
     # 'djstripe',
 
     # Tools for debug
@@ -349,6 +350,12 @@ CELERY_RESULT_BACKEND = 'django-db'
 # crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# analytics
+CLICKY_SITE_ID = os.environ.get("CLICKY_SITE_ID")
+GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get("GOOGLE_ANALYTICS_GTAG_PROPERTY_ID")
+
 
 # General stuff depending on debug and production
 if PRODUCTION:

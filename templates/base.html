@@ -1,12 +1,15 @@
 {% load static %}
 {% load i18n %}
 {% load django_htmx %}
+{% load analytical %}
+{% load google_analytics_gtag %}
 {% get_current_language as LANGUAGE_CODE %}
 
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
-
+    {% analytical_head_top %}
+    {% google_analytics_gtag %}
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,11 +34,11 @@
     <meta name="description" content="{{ meta_description }}">
     <meta name="keywords" content="{{ meta_keywords }}">
 
-
-
     <title>{{ site_name }} {% block title %} {% endblock %}</title>
+    {% analytical_head_bottom %}
   </head>
   <body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% analytical_body_top %}
     {% block body %}
       {% include "_messages.html" %}
       {% include "_header.html" %}
@@ -60,5 +63,6 @@
     <!-- django-htmx comes with a small JavaScript extension for htmx’s behaviour. Currently the extension only includes a debug error handler, documented below.The script is served as a static file called django-htmx.js, but you shouldn’t reference it directly. Instead, use the included template tags, for both Django and Jinja templates. -->
     {% django_htmx_script %}
 
+    {% analytical_body_bottom %}
   </body>
 </html>
