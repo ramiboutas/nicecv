@@ -10,30 +10,11 @@ def delete_resumes(sender, instance, **kwargs):
     """
     Delete resume files
     """
-    delete_path_file(instance.image.path)
-    delete_path_file(instance.pdf.path)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    try:
+        delete_path_file(instance.image.path)
+        delete_path_file(instance.pdf.path)
+    except:
+        pass
 
 
 
