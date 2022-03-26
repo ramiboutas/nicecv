@@ -3,7 +3,7 @@
 *.pot
 *.pyc
 __pycache__
-media
+media/**
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
