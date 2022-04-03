@@ -9,7 +9,6 @@ from utils.files import delete_path_file
 cls_storage = FileSystemStorage(location='/home/rami/texmf/tex/latex/local')
 
 
-
 class ResumeTemplate(models.Model):
     # file = models.FileField(upload_to='texfiles')
     # cls = models.FileField(storage=cls_storage, blank=True, null=True)
@@ -51,8 +50,6 @@ class CoverLetterTemplate(models.Model):
 
     def download_object_url(self):
         return reverse('texfiles_download_coverletter', kwargs={'pk':self.pk})
-
-
 
 
 
