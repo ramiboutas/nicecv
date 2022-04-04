@@ -1,12 +1,9 @@
 from django.db import models
-from django.core.files.storage import FileSystemStorage
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.urls import reverse
 
 from utils.files import delete_path_file
-
-cls_storage = FileSystemStorage(location='/home/rami/texmf/tex/latex/local')
 
 
 class ResumeTemplate(models.Model):
@@ -35,9 +32,9 @@ class ResumeTemplate(models.Model):
 
 
 class CoverLetterTemplate(models.Model):
+    # cls = models.FileField(storage=cls_storage, blank=True, null=True)
+    # file = models.FileField(upload_to='texfiles/coverletters')
     name = models.CharField(max_length=128)
-    file = models.FileField(upload_to='texfiles/coverletters')
-    cls = models.FileField(storage=cls_storage, blank=True, null=True)
     interpreter = models.CharField(max_length=20, default='lualatex')
     image = models.ImageField(upload_to='texfiles/coverletters/screenshots')
     is_active = models.BooleanField(default=True)
@@ -50,7 +47,6 @@ class CoverLetterTemplate(models.Model):
 
     def download_object_url(self):
         return reverse('texfiles_download_coverletter', kwargs={'pk':self.pk})
-
 
 
 #
