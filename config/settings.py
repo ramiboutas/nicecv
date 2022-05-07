@@ -343,8 +343,8 @@ LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, 'media')
 # celery
 # CELERY_ACCEPT_CONTENT = ['json'] # prod issue: https://github.com/celery/celery/issues/3047
 # CELERY_ACCEPT_CONTENT = ['pickle', 'json'] # https://stackoverflow.com/questions/47141842/celery-traceback-encoding-error
-CELERY_BROKER_URL = 'redis://95.90.192.83:6379/0' #raspberry pi
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+# CELERY_BROKER_URL = 'redis://95.90.192.83:6379/0' #raspberry pi
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 
 
