@@ -2,7 +2,7 @@ import os
 import random
 
 from celery import shared_task
-from celery_progress.backend import ProgressRecorder
+from celery_progress_htmx.backend import ProgressRecorder
 from django_tex.core import compile_template_to_pdf
 from pdf2image import convert_from_path, convert_from_bytes
 

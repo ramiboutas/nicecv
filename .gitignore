@@ -4,9 +4,7 @@
 *.pyc
 __pycache__
 media/**
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+
 
 # Backup files #
 *.bak

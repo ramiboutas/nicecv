@@ -1,0 +1,15 @@
+django
+django-rosetta
+django-allauth
+django-htmx
+django-crispy-forms
+crispy-bootstrap5
+django-tex
+django-celery-results
+django-analytical
+django-dotenv
+django-debug-toolbar
+celery
+pillow
+pdf2image
+stripe
