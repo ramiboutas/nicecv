@@ -87,6 +87,8 @@ polib==1.1.1
     # via django-rosetta
 prompt-toolkit==3.0.31
     # via click-repl
+psycopg2-binary==2.9.4
+    # via -r requirements.in
 pycparser==2.21
     # via cffi
 pyjwt[crypto]==2.5.0

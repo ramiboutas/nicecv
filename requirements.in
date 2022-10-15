@@ -13,3 +13,4 @@ celery
 pillow
 pdf2image
 stripe
+psycopg2-binary
