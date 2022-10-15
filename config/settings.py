@@ -357,12 +357,14 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CLICKY_SITE_ID = os.environ.get("CLICKY_SITE_ID")
 GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get("GOOGLE_ANALYTICS_GTAG_PROPERTY_ID")
 
+# https://stackoverflow.com/questions/70705968/how-to-test-a-url-in-django
+APPEND_SLASH: bool = True # by default
 
 # General stuff depending on debug and production
 if PRODUCTION:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_HSTS_SECONDS = 31536000 # usual: 31536000 (1 year)
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
