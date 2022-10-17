@@ -8,6 +8,10 @@ amqp==5.1.1
     # via kombu
 asgiref==3.5.2
     # via django
+async-timeout==4.0.2
+    # via redis
+autopep8==1.7.0
+    # via -r requirements.in
 billiard==3.6.4.0
     # via celery
 celery==5.2.7
@@ -32,12 +36,16 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
+coverage==6.5.0
+    # via -r requirements.in
 crispy-bootstrap5==0.7
     # via -r requirements.in
 cryptography==38.0.1
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
+deprecated==1.2.13
+    # via redis
 django==4.1.2
     # via
     #   -r requirements.in
@@ -67,6 +75,12 @@ django-rosetta==0.9.8
     # via -r requirements.in
 django-tex==1.1.10
     # via -r requirements.in
+flake8==5.0.4
+    # via -r requirements.in
+gunicorn==20.1.0
+    # via -r requirements.in
+hiredis==2.0.0
+    # via -r requirements.in
 idna==3.4
     # via requests
 jinja2==3.1.2
@@ -75,8 +89,12 @@ kombu==5.2.4
     # via celery
 markupsafe==2.1.1
     # via jinja2
+mccabe==0.7.0
+    # via flake8
 oauthlib==3.2.1
     # via requests-oauthlib
+packaging==21.3
+    # via redis
 pdf2image==1.16.0
     # via -r requirements.in
 pillow==9.2.0
@@ -89,14 +107,24 @@ prompt-toolkit==3.0.31
     # via click-repl
 psycopg2-binary==2.9.4
     # via -r requirements.in
+pycodestyle==2.9.1
+    # via
+    #   autopep8
+    #   flake8
 pycparser==2.21
     # via cffi
+pyflakes==2.5.0
+    # via flake8
 pyjwt[crypto]==2.5.0
     # via django-allauth
+pyparsing==3.0.9
+    # via packaging
 python3-openid==3.2.0
     # via django-allauth
 pytz==2022.4
     # via celery
+redis==4.3.4
+    # via -r requirements.in
 requests==2.28.1
     # via
     #   django-allauth
@@ -113,6 +141,8 @@ sqlparse==0.4.3
     #   django-debug-toolbar
 stripe==4.2.0
     # via -r requirements.in
+toml==0.10.2
+    # via autopep8
 types-cryptography==3.3.23.1
     # via pyjwt
 urllib3==1.26.12
@@ -124,3 +154,8 @@ vine==5.0.0
     #   kombu
 wcwidth==0.2.5
     # via prompt-toolkit
+wrapt==1.14.1
+    # via deprecated
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
