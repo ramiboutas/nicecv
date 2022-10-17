@@ -13,4 +13,10 @@ celery
 pillow
 pdf2image
 stripe
+flake8
+coverage
+autopep8
 psycopg2-binary
+gunicorn
+redis
+hiredis
