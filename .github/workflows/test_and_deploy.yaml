@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    name: build and test django app
+    name: build, test and deploy django app
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -23,16 +23,17 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
-    # - uses: actions/cache@v2
-    #   name: Configure pip caching
-    #   with:
-    #     path: ~/.cache/pip
-    #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-pip-
+        python-version: "3.9"
+    - uses: actions/cache@v2
+      name: Configure pip caching
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     - name: Install Python dependencies
       run: |
+        python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
     - name: Run Tests
       env:
@@ -55,11 +56,14 @@ jobs:
         username: ${{ secrets.MY_SERVER_USERNAME }}
         key: ${{ secrets.MY_SERVER_KEY }}
         port: ${{ secrets.MY_SERVER_PORT }}
+        # fingerprint: ${{ secrets.MY_SERVER_FINGERPRINT }}
+        # if a try to run the shell script I get: bash: /home/***/my_server_scripts/englishquiz/after_deployment.sh: Permission denied
+        # /home/${{ secrets.MY_SERVER_USERNAME }}/my_server_scripts/englishquiz/after_deployment.sh
         script: |
           cd /home/${{ secrets.MY_SERVER_USERNAME }}/nicecv
           git pull
           source venv/bin/activate
           python -m pip install --upgrade pip setuptools wheel pip-tools
-          python -m pip install -r requirements.txt
           pip-sync
+          python manage.py collectstatic --noinput
           python manage.py migrate
