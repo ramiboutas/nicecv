@@ -33,7 +33,7 @@ if command != "test":  # pragma: no cover
 # Quick-start development settings - unsuitable for production
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', "some-tests-need-a-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(os.environ.get('DEBUG')) == '1'
@@ -205,33 +205,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 
 # Database
-USE_SQLITE3_DB = str(os.environ.get('USE_SQLITE3_DB')) == '1'
+if USE_POSTGRES:
+    POSTGRES_DB = os.environ.get("POSTGRES_DB", "")
+    POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "")
+    POSTGRES_USER = os.environ.get("POSTGRES_USER", "")
+    POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "")
+    POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "")
+    POSTGRES_TESTS_DB = os.environ.get("POSTGRES_TESTS_DB", "")
 
-POSTGRES_DB = os.environ.get('POSTGRES_DB')
-POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
-POSTGRES_USER = os.environ.get('POSTGRES_USER')
-POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
-POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
-POSTGRES_TESTS_DB = os.environ.get('POSTGRES_TESTS_DB')
-
-
-if USE_SQLITE3_DB:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',}}
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": POSTGRES_DB,
+            "USER": POSTGRES_USER,
+            "PASSWORD": POSTGRES_PASSWORD,
+            "HOST": POSTGRES_HOST,
+            "PORT": POSTGRES_PORT,
+            "TEST": {
+                "NAME": "test_db",
+            },
+        }
+    }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': POSTGRES_DB,
-            'USER': POSTGRES_USER,
-            'PASSWORD': POSTGRES_PASSWORD,
-            'HOST': POSTGRES_HOST,
-            'PORT': POSTGRES_PORT,
-            'TEST': {
-             'NAME': 'test_db',
-             },
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 
@@ -378,7 +377,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # analytics
 CLICKY_SITE_ID = os.environ.get("CLICKY_SITE_ID")
-GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get("GOOGLE_ANALYTICS_GTAG_PROPERTY_ID")
+GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get("GOOGLE_ANALYTICS_GTAG_PROPERTY_ID", "G-XXXXXXXX")
 
 # https://stackoverflow.com/questions/70705968/how-to-test-a-url-in-django
 APPEND_SLASH: bool = True # by default
