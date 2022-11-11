@@ -64,6 +64,7 @@
 #djDebug tr,
 #djDebug th,
 #djDebug td,
+#djDebug summary,
 #djDebug button {
     margin: 0;
     padding: 0;
@@ -76,7 +77,9 @@
     color: #000;
     vertical-align: baseline;
     background-color: transparent;
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+        Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     text-align: left;
     text-shadow: none;
     white-space: normal;
@@ -157,7 +160,7 @@
     text-decoration: none;
     display: block;
     font-size: 16px;
-    padding: 10px 10px 5px 25px;
+    padding: 7px 10px 8px 25px;
     color: #fff;
 }
 #djDebug #djDebugToolbar li > div.djdt-disabled {
@@ -176,6 +179,7 @@
 
 #djDebug #djDebugToolbar li.djdt-active:before {
     content: "▶";
+    font-family: sans-serif;
     position: absolute;
     left: 0;
     top: 50%;
@@ -237,13 +241,30 @@
     font-size: 16px;
 }
 
+#djDebug pre,
 #djDebug code {
     display: block;
-    font-family: Consolas, Monaco, "Bitstream Vera Sans Mono", "Lucida Console",
-        monospace;
+    font-family: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+        "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+        "Fira Mono", "Droid Sans Mono", "Courier New", monospace,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    overflow: auto;
+}
+
+#djDebug code {
     font-size: 12px;
     white-space: pre;
-    overflow: auto;
+}
+
+#djDebug pre {
+    white-space: pre-wrap;
+    color: #555;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    background-color: #fff;
+    padding: 2px 3px;
+    margin-bottom: 3px;
 }
 
 #djDebug .djdt-panelContent {
@@ -369,18 +390,19 @@
     position: absolute;
     top: 4px;
     right: 15px;
-    height: 16px;
-    width: 16px;
     line-height: 16px;
-    padding: 5px;
     border: 6px solid #ddd;
     border-radius: 50%;
     background: #fff;
     color: #ddd;
-    text-align: center;
     font-weight: 900;
     font-size: 20px;
-    box-sizing: content-box;
+    height: 36px;
+    width: 36px;
+    padding: 0 0 5px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
 }
 
 #djDebug .djdt-panelContent .djDebugClose:hover {
@@ -562,19 +584,7 @@
 #djDebug .djSQLDetailsDiv {
     margin-top: 0.8em;
 }
-#djDebug pre {
-    white-space: pre-wrap;
-    color: #555;
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    background-color: #fff;
-    display: block;
-    overflow: auto;
-    padding: 2px 3px;
-    margin-bottom: 3px;
-    font-family: Consolas, Monaco, "Bitstream Vera Sans Mono", "Lucida Console",
-        monospace;
-}
+
 #djDebug .djdt-stack span {
     color: #000;
     font-weight: bold;
@@ -590,6 +600,13 @@
 }
 #djDebug .djdt-stack pre.djdt-locals {
     margin: 0 27px 27px 27px;
+}
+#djDebug .djdt-raw {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-top: 0.8em;
+    padding: 5px;
+    white-space: pre-wrap;
 }
 
 #djDebug .djdt-width-20 {
@@ -607,6 +624,24 @@
 #djDebug .djdt-highlighted {
     background-color: lightgrey;
 }
+#djDebug tr.djdt-highlighted.djdt-profile-row {
+    background-color: #ffc;
+}
+#djDebug tr.djdt-highlighted.djdt-profile-row:nth-child(2n + 1) {
+    background-color: #dd9;
+}
+@keyframes djdt-flash-new {
+    from {
+        background-color: green;
+    }
+    to {
+        background-color: inherit;
+    }
+}
+#djDebug .flash-new {
+    animation: djdt-flash-new 1s;
+}
+
 .djdt-hidden {
     display: none;
 }
