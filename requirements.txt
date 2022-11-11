@@ -40,7 +40,7 @@ coverage==6.5.0
     # via -r requirements.in
 crispy-bootstrap5==0.7
     # via -r requirements.in
-cryptography==38.0.1
+cryptography==38.0.3
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
