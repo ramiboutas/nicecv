@@ -14,11 +14,6 @@ import dotenv
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Production
-PRODUCTION = os.environ.get("PRODUCTION", "") == "1"
-
-# Use Postgres (otherwise Sqlite)
-USE_POSTGRES = os.environ.get("USE_POSTGRES", "") == "1"
 
 # Load env vars from .env file if not testing
 try:
@@ -29,6 +24,12 @@ except IndexError:  # pragma: no cover
 if command != "test":  # pragma: no cover
     dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
 
+
+# Production
+PRODUCTION = os.environ.get("PRODUCTION", "") == "1"
+
+# Use Postgres (otherwise Sqlite)
+USE_POSTGRES = os.environ.get("USE_POSTGRES", "") == "1"
 
 # Quick-start development settings - unsuitable for production
 
