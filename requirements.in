@@ -7,7 +7,7 @@ crispy-bootstrap5
 django-tex
 django-celery-results
 django-analytical
-django-dotenv
+python-dotenv
 django-debug-toolbar
 celery
 pillow

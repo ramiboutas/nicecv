@@ -56,7 +56,7 @@ jobs:
         key: ${{ secrets.MY_SERVER_KEY }}
         port: ${{ secrets.MY_SERVER_PORT }}
         script: |
-          cd /home/rami/nicecv
+          cd /home/${{ secrets.MY_SERVER_USERNAME }}/nicecv
           git pull
           source venv/bin/activate
           python -m pip install --upgrade pip setuptools wheel pip-tools
