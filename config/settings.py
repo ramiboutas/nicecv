@@ -42,7 +42,7 @@ PRODUCTION = str(os.environ.get('PRODUCTION')) == '1'
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost',]
 
-ALLOWED_HOSTS = ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['nicecv.online', 'www.nicecv.online', '207.154.205.99', 'localhost', '127.0.0.1', 'notes.ramiboutas.com']
 
 
 # Application definition
