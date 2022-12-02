@@ -97,7 +97,7 @@ packaging==21.3
     # via redis
 pdf2image==1.16.0
     # via -r requirements.in
-pillow==9.2.0
+pillow==9.3.0
     # via
     #   -r requirements.in
     #   pdf2image
