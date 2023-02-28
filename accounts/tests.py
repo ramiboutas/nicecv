@@ -1,5 +1,4 @@
-import datetime
-
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -9,7 +8,6 @@ User = get_user_model()
 
 class CustomUserTests(TestCase):
     def setUp(self):
-        User = User
         self.standard_user = User.objects.create(
             username="myuser", email="myuser@email.com", password="myuserpass123"
         )
@@ -38,21 +36,21 @@ class CustomUserTests(TestCase):
         self.assertFalse(self.standard_user.has_paid())
 
     def test_has_paid_past(self):
-        self.standard_user.paid_until = datetime.date.today() - datetime.timedelta(
+        self.standard_user.paid_until = timezone.now() - timezone.timedelta(
             days=30
         )
         self.standard_user.save()
         self.assertFalse(self.standard_user.has_paid())
 
     def test_has_paid_future(self):
-        self.standard_user.paid_until = datetime.date.today() + datetime.timedelta(
+        self.standard_user.paid_until = timezone.now() + timezone.timedelta(
             days=30
         )
         self.standard_user.save()
         self.assertTrue(self.standard_user.has_paid())
 
     def test_has_paid_today(self):
-        self.standard_user.paid_until = datetime.date.today()
+        self.standard_user.paid_until = timezone.now()
         self.standard_user.save()
         self.assertTrue(self.standard_user.has_paid())
 
@@ -66,7 +64,7 @@ class CustomUserTests(TestCase):
 
     def test_set_paid_until_1_plus_1(self):
         "the user is already premium member but add one month more"
-        self.standard_user.paid_until = datetime.date.today() + datetime.timedelta(
+        self.standard_user.paid_until = timezone.now() + timezone.timedelta(
             days=365.25 / 12
         )
         self.standard_user.save()
@@ -74,7 +72,7 @@ class CustomUserTests(TestCase):
         self.standard_user.save()
         self.assertEqual(
             self.standard_user.paid_until,
-            datetime.date.today() + datetime.timedelta(days=2 * 365.25 / 12),
+            timezone.now() + timezone.timedelta(days=2 * 365.25 / 12),
         )
 
 
