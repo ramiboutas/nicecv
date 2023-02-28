@@ -1,16 +1,17 @@
 import os
-from pathlib import Path
-from io import BytesIO
 import zipfile
+from io import BytesIO
+from pathlib import Path
 
 from django.conf import settings
+
 
 def delete_path_file(path):
     """
     This deletes a file from path (File System)
     """
     if os.path.isfile(path):
-       os.remove(path)
+        os.remove(path)
 
 
 def get_tex_template_name(file_obj):
@@ -28,7 +29,7 @@ def generate_zip(files):
     """
     mem_zip = BytesIO()
 
-    with zipfile.ZipFile(mem_zip, mode="w",compression=zipfile.ZIP_DEFLATED) as zf:
+    with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
         for f in files:
             zf.writestr(f[0], f[1])
     return mem_zip.getvalue()

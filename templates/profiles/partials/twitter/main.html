@@ -1,26 +1,26 @@
 {% load i18n %}
 <div id="twitter-box">
-  {% if object.twitter_active %}
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text border-0"><i class="bi bi-twitter"></i></span>
-      </div>
-      <input class="form-control border-0 bg-white" type="text" name="twitter"
-        placeholder="{% trans 'Twitter' %}"
-        hx-post="{{ object.update_twitter_url }}" hx-trigger="change" hx-swap="none"
-        {% if object.twitter %} value="{{object.twitter}}" {% endif %} maxlength="50">
-      <!--
+    {% if object.twitter_active %}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text border-0"><i class="bi bi-twitter"></i></span>
+            </div>
+            <input class="form-control border-0 bg-white" type="text" name="twitter"
+                placeholder="{% trans 'Twitter' %}"
+                hx-post="{{ object.update_twitter_url }}" hx-trigger="change" hx-swap="none"
+                {% if object.twitter %} value="{{object.twitter}}" {% endif %} maxlength="50">
+            <!--
       <button class="btn btn-outline-secondary border-0 float-end"
         hx-post="{{ object.insert_twitter_help_modal_url }}" hx-target="#modals-here"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
       -->
-      <button class="btn btn-outline-secondary  border-0"
-         hx-post="{{ object.deactivate_twitter_url }}" hx-target="#twitter-box" hx-swap="innerHTML"
-         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate twitter' %}">
-         <i class="bi bi-eye-slash"></i>
-       </button>
-    </div>
+            <button class="btn btn-outline-secondary  border-0"
+                hx-post="{{ object.deactivate_twitter_url }}" hx-target="#twitter-box" hx-swap="innerHTML"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate twitter' %}">
+                <i class="bi bi-eye-slash"></i>
+            </button>
+        </div>
     {% endif %}
 </div>

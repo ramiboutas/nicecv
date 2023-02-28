@@ -1,11 +1,11 @@
 {% load i18n %}
 <div id="stackoverflow-activation-button">
 
-{% if not object.stackoverflow_active %}
-  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-    hx-post="{{ object.activate_stackoverflow_url }}" hx-target="#stackoverflow-box" hx-swap="outerHTML"
-    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate stackoverflow' %}">
-    <i class="bi bi-stack-overflow"></i> {% trans 'StackOverflow' %}</button>
-{% endif %}
+    {% if not object.stackoverflow_active %}
+        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
+            hx-post="{{ object.activate_stackoverflow_url }}" hx-target="#stackoverflow-box" hx-swap="outerHTML"
+            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate stackoverflow' %}">
+            <i class="bi bi-stack-overflow"></i> {% trans 'StackOverflow' %}</button>
+    {% endif %}
 
 </div>

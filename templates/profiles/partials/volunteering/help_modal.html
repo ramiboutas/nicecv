@@ -1,31 +1,31 @@
 {% load i18n %}
 <!-- Modal -->
 <div id="volunteering-modal-content">
-  <div id="volunteering-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+    <div id="volunteering-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
     <div id="volunteering-modal" class="modal fade show" style="display:block;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
 
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{% trans "Volunteering work" %}</h5>
-            <button type="button" class="btn-close"
-              hx-get="{{ object.remove_volunteering_help_modal_url }}"
-              hx-target="#volunteering-modal-content" hx-swap="outerHTML">
-            </button>
-          </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans "Volunteering work" %}</h5>
+                    <button type="button" class="btn-close"
+                        hx-get="{{ object.remove_volunteering_help_modal_url }}"
+                        hx-target="#volunteering-modal-content" hx-swap="outerHTML">
+                    </button>
+                </div>
 
-          <div class="modal-body">
-            <h3> What the fuck is this? </h3>
-            <p>object.remove_volunteering_help_modal_url = </p>
-            <p>{{ object.remove_volunteering_help_modal_url }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary"
-              hx-get="{{ object.remove_volunteering_help_modal_url }}" hx-target="#volunteering-modal-content" hx-swap="outerHTML">
-              {% translate "OK, I get it"%}
-            </button>
-          </div>
-      </div>
+                <div class="modal-body">
+                    <h3> What the fuck is this? </h3>
+                    <p>object.remove_volunteering_help_modal_url = </p>
+                    <p>{{ object.remove_volunteering_help_modal_url }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        hx-get="{{ object.remove_volunteering_help_modal_url }}" hx-target="#volunteering-modal-content" hx-swap="outerHTML">
+                        {% translate "OK, I get it"%}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

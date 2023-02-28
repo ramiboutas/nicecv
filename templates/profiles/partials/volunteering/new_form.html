@@ -1,111 +1,111 @@
 {% load i18n %}
 <form style="border: dashed 1.5px black; border-radius: 5px;"
-  hx-post="{{ object.create_volunteering_object_url }}"
-  hx-trigger="submit" hx-swap="innerHTML" hx-target="#volunteering-box">
+    hx-post="{{ object.create_volunteering_object_url }}"
+    hx-trigger="submit" hx-swap="innerHTML" hx-target="#volunteering-box">
 
     <!--title and location -->
     <div class="row">
-      <div class="col-7">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-heart"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Volunteering title, e.g: Teaching english in remote towns' %}"
-            name="title" maxlength="{{max_length_normal}}"
-            {% if volunteering.title %}value="{{ volunteering.title }}"{% endif %}>
+        <div class="col-7">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-heart"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Volunteering title, e.g: Teaching english in remote towns' %}"
+                    name="title" maxlength="{{max_length_normal}}"
+                    {% if volunteering.title %}value="{{ volunteering.title }}"{% endif %}>
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-geo-alt"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white" type="text"
-            placeholder="{% trans 'Location, e.g. Tanzania' %}"
-            name="location" maxlength="{{max_length_short}}"
-            {% if volunteering.location %}value="{{ volunteering.location }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-geo-alt"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text"
+                    placeholder="{% trans 'Location, e.g. Tanzania' %}"
+                    name="location" maxlength="{{max_length_short}}"
+                    {% if volunteering.location %}value="{{ volunteering.location }}"{% endif %}>
+            </div>
         </div>
-      </div>
     </div>
 
     <!--company and link -->
     <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white" type="text"
-            placeholder="{% trans 'Organization, e.g: Save the Children' %}"
-            name="organization" maxlength="{{max_length_short}}"
-            {% if volunteering.organization %}value="{{ volunteering.organization }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text"
+                    placeholder="{% trans 'Organization, e.g: Save the Children' %}"
+                    name="organization" maxlength="{{max_length_short}}"
+                    {% if volunteering.organization %}value="{{ volunteering.organization }}"{% endif %}>
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white" type="text"
-            placeholder="{% trans 'Organization link, e.g: www.savethechildren.net' %}"
-            name="organization_link" maxlength="{{max_length_normal}}"
-            {% if volunteering.organization_link %}value="{{ volunteering.organization_link }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text"
+                    placeholder="{% trans 'Organization link, e.g: www.savethechildren.net' %}"
+                    name="organization_link" maxlength="{{max_length_normal}}"
+                    {% if volunteering.organization_link %}value="{{ volunteering.organization_link }}"{% endif %}>
+            </div>
         </div>
-      </div>
     </div>
 
     <!--start date and end date -->
     <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-calendar4-event"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
-            name="start_date" maxlength="{{max_length_super_short}}"
-            {% if volunteering.start_date %}value="{{ volunteering.start_date }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-calendar4-event"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
+                    name="start_date" maxlength="{{max_length_super_short}}"
+                    {% if volunteering.start_date %}value="{{ volunteering.start_date }}"{% endif %}>
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'End date, e.g. Feb 2022, Present, ...' %}"
-            name="end_date" maxlength="{{max_length_super_short}}"
-            {% if volunteering.end_date %}value="{{ volunteering.end_date }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'End date, e.g. Feb 2022, Present, ...' %}"
+                    name="end_date" maxlength="{{max_length_super_short}}"
+                    {% if volunteering.end_date %}value="{{ volunteering.end_date }}"{% endif %}>
+            </div>
         </div>
-      </div>
     </div>
 
     <!--description -->
     <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
-          </div>
-          <textarea class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Description' %}" name="description"
-            maxlength="{{max_length_super_large}}">{% if volunteering.description %}{{ volunteering.description }}{% endif %}</textarea>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
+                </div>
+                <textarea class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Description' %}" name="description"
+                    maxlength="{{max_length_super_large}}">{% if volunteering.description %}{{ volunteering.description }}{% endif %}</textarea>
+            </div>
         </div>
-      </div>
     </div>
 
     <!--buttons -->
     <div class="row">
-      <div class="col-1">
-        <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this volunteering form' %}"
-        hx-post="{{ object.remove_volunteering_new_form_url }}" hx-target="#volunteering-new" hx-swap="innerHTML"
-        ><i class="bi bi-x-lg"></i></button>
-      </div>
-      <div class="col-11">
-        <button class="btn btn-outline-secondary  border-0 w-100" type="submit" name="button"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this volunteering' %}"><i class="bi bi-check-circle"> {% trans "Save" %}</i></button>
-      </div>
+        <div class="col-1">
+            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this volunteering form' %}"
+                hx-post="{{ object.remove_volunteering_new_form_url }}" hx-target="#volunteering-new" hx-swap="innerHTML"
+            ><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="col-11">
+            <button class="btn btn-outline-secondary  border-0 w-100" type="submit" name="button"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this volunteering' %}"><i class="bi bi-check-circle"> {% trans "Save" %}</i></button>
+        </div>
     </div>
 </form>

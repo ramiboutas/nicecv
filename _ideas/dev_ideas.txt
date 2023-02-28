@@ -33,4 +33,3 @@ https://docs.djangoproject.com/en/3.2/topics/forms/formsets/#using-more-than-one
 	  class Meta:
 	    verbose_name = _('my thing')
 	    verbose_name_plural = _('my things')
-

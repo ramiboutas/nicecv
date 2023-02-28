@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from importlib import import_module
-from importlib.util import module_from_spec, spec_from_file_location
+from importlib.util import module_from_spec
+from importlib.util import spec_from_file_location
 
 from django.test.runner import DiscoverRunner
 from django.test.utils import override_settings
@@ -16,7 +17,6 @@ class TestRunner(DiscoverRunner):
 TEST_SETTINGS = {
     "PAGE_SIZE": 10,  # Remove if not necessary
     "DEBUG": False,
-    
 }
 
 

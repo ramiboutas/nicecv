@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="course-box" class="mt-5">
-  {% if object.course_active %}
-    <!--
+    {% if object.course_active %}
+        <!--
     <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
       <i class="bi bi-person-video3"></i> {% trans "Courses" %}
@@ -20,138 +20,138 @@
 
     </h6>
     -->
-    <h6  class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text bg-white border-0"><i class="bi bi-person-video3"></i></span>
+        <h6  class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-white border-0"><i class="bi bi-person-video3"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text" name="course_label" value="{{ object.course_label }}"
+                    hx-post="{{ object.update_course_label_url }}" hx-trigger="change" hx-swap="none">
+
+                <button class="btn btn-outline-secondary border-0 float-end"
+                    hx-get="{{ object.insert_course_help_modal_url }}" hx-target="#modals-here"
+                    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+                    <i class="bi bi-info-circle"></i>
+                </button>
+
+                <button class="btn btn-outline-secondary border-0 float-end"
+                    hx-post="{{ object.deactivate_course_url }}" hx-target="#course-box" hx-swap="innerHTML"
+                    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate courses' %}">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+        </h6>
+
+        {% for course in object.course_set.all %}
+            <form hx-post="{{ course.update_object_url }}" hx-trigger="change" hx-swap="none">
+                <div id="course-{{ course.pk }}"  class="bg-light my-4">
+
+                    <!--buttons -->
+                    <div class="row">
+                        <div class="col-1">
+                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
+                                hx-post="{{ course.move_up_object_url }}" hx-target="#course-box" hx-swap="outerHTML"
+                                {% if forloop.first %}disabled{% endif %}>
+                                <i class="bi bi-arrow-up"></i>
+                            </button>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
+                                hx-post="{{ course.move_down_object_url }}" hx-target="#course-box" hx-swap="outerHTML"
+                                {% if forloop.last %}disabled{% endif %}>
+                                <i class="bi bi-arrow-down"></i>
+                            </button>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
+                                hx-post="{{ course.copy_object_url }}" hx-target="#course-new" hx-swap="innerHTML">
+                                <i class="bi bi-files"></i>
+                            </button>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
+                                hx-post="{{ course.delete_object_url }}" hx-target="#course-box" hx-swap="outerHTML">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--title and issuing_date -->
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0"><i class="bi bi-person-video3"></i></span>
+                                </div>
+                                <input class="form-control border-0 bg-light" type="text"
+                                    placeholder="{% trans 'Title, e.g: Python course' %}"
+                                    name="title" maxlength="{{max_length_normal}}"
+                                    {% if course.title %}value="{{ course.title }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
+                                </div>
+                                <input class="form-control border-0 bg-light" type="text"
+                                    placeholder="{% trans 'Issuing date, e.g. Feb 2022' %}"
+                                    name="issuing_date" maxlength="{{max_length_super_short}}"
+                                    {% if course.issuing_date %}value="{{ course.issuing_date }}"{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--issuer and hours -->
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
+                                </div>
+                                <input class="form-control border-0 bg-light" type="text"
+                                    placeholder="{% trans 'Issuer, e.g: Linkedin Learning' %}"
+                                    name="issuer" maxlength="{{max_length_normal}}"
+                                    {% if course.issuer %}value="{{ course.issuer }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0"><i class="bi bi-clock"></i></span>
+                                </div>
+                                <input class="form-control border-0 bg-light" type="text"
+                                    placeholder="{% trans 'Hours, e.g: 12 hours' %}"
+                                    name="hours" maxlength="{{max_length_normal}}"
+                                    {% if course.hours %}value="{{ course.hours }}"{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- link -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
+                                </div>
+                                <input class="form-control border-0 bg-light" type="text"
+                                    placeholder="{% trans 'Course link (optional)' %}"
+                                    name="link" maxlength="{{max_length_normal}}"
+                                    {% if course.link %}value="{{ course.link }}"{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        {% endfor %}
+
+        <div id="course-new">
+            {% include "profiles/partials/course/new_button.html" %}
         </div>
-        <input class="form-control border-0 bg-white"  type="text" name="course_label" value="{{ object.course_label }}"
-          hx-post="{{ object.update_course_label_url }}" hx-trigger="change" hx-swap="none">
-
-        <button class="btn btn-outline-secondary border-0 float-end"
-          hx-get="{{ object.insert_course_help_modal_url }}" hx-target="#modals-here"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
-          <i class="bi bi-info-circle"></i>
-        </button>
-
-        <button class="btn btn-outline-secondary border-0 float-end"
-          hx-post="{{ object.deactivate_course_url }}" hx-target="#course-box" hx-swap="innerHTML"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate courses' %}">
-          <i class="bi bi-eye-slash"></i>
-        </button>
-      </div>
-    </h6>
-
-    {% for course in object.course_set.all %}
-      <form hx-post="{{ course.update_object_url }}" hx-trigger="change" hx-swap="none">
-        <div id="course-{{ course.pk }}"  class="bg-light my-4">
-
-          <!--buttons -->
-          <div class="row">
-            <div class="col-1">
-              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
-                hx-post="{{ course.move_up_object_url }}" hx-target="#course-box" hx-swap="outerHTML"
-                {% if forloop.first %}disabled{% endif %}>
-                <i class="bi bi-arrow-up"></i>
-              </button>
-            </div>
-            <div class="col-1">
-              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
-                hx-post="{{ course.move_down_object_url }}" hx-target="#course-box" hx-swap="outerHTML"
-                {% if forloop.last %}disabled{% endif %}>
-                <i class="bi bi-arrow-down"></i>
-              </button>
-            </div>
-            <div class="col-1">
-              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
-                hx-post="{{ course.copy_object_url }}" hx-target="#course-new" hx-swap="innerHTML">
-                <i class="bi bi-files"></i>
-              </button>
-            </div>
-            <div class="col-1">
-              <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
-                hx-post="{{ course.delete_object_url }}" hx-target="#course-box" hx-swap="outerHTML">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </div>
-
-          <!--title and issuing_date -->
-          <div class="row">
-            <div class="col-8">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text border-0"><i class="bi bi-person-video3"></i></span>
-                </div>
-                <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Title, e.g: Python course' %}"
-                  name="title" maxlength="{{max_length_normal}}"
-                  {% if course.title %}value="{{ course.title }}"{% endif %}>
-              </div>
-            </div>
-            <div class="col">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
-                </div>
-                <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Issuing date, e.g. Feb 2022' %}"
-                  name="issuing_date" maxlength="{{max_length_super_short}}"
-                  {% if course.issuing_date %}value="{{ course.issuing_date }}"{% endif %}>
-              </div>
-            </div>
-          </div>
-
-          <!--issuer and hours -->
-          <div class="row">
-            <div class="col-8">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
-                </div>
-                <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Issuer, e.g: Linkedin Learning' %}"
-                  name="issuer" maxlength="{{max_length_normal}}"
-                  {% if course.issuer %}value="{{ course.issuer }}"{% endif %}>
-              </div>
-            </div>
-            <div class="col">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text border-0"><i class="bi bi-clock"></i></span>
-                </div>
-                <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Hours, e.g: 12 hours' %}"
-                  name="hours" maxlength="{{max_length_normal}}"
-                  {% if course.hours %}value="{{ course.hours }}"{% endif %}>
-              </div>
-            </div>
-          </div>
-          <!-- link -->
-          <div class="row">
-            <div class="col">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
-                </div>
-                <input class="form-control border-0 bg-light" type="text"
-                  placeholder="{% trans 'Course link (optional)' %}"
-                  name="link" maxlength="{{max_length_normal}}"
-                  {% if course.link %}value="{{ course.link }}"{% endif %}>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </form>
-    {% endfor %}
-
-    <div id="course-new">
-      {% include "profiles/partials/course/new_button.html" %}
-    </div>
-  {% endif %}
+    {% endif %}
 </div>

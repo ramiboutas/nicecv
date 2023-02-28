@@ -12,7 +12,7 @@ Release Date:
 =======================================================================
 10 Oct 2020
 
-Author: 
+Author:
 =======================================================================
 Xiaoying Riley at 3rd Wave Media (http://themes.3rdwavemedia.com/)
 
@@ -22,7 +22,7 @@ Web: http://themes.3rdwavemedia.com/
 Email: themes@3rdwavemedia.com
 Twitter: @3rdwave_themes
 
-License: 
+License:
 =======================================================================
 This template is 100% FREE as long as you keep the footer attribution link. You do not have the rights to resell, sublicense or redistribute (even for free) the template on its own or as a separate attachment from any of your work.
 

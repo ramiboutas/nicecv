@@ -105,7 +105,7 @@
 \newcommand{\givencvdate}{}
 \newcommand{\givencvmail}{}
 \newcommand{\givennumberphone}{}
-\newcommand{\givencvaddress}{} 
+\newcommand{\givencvaddress}{}
 \newcommand{\givenaboutme}{}
 \newcommand{\givenprofilepic}{}
 \newcommand{\givencvsite}{}
@@ -119,7 +119,7 @@
   \tikz[baseline=(char.base)]\node[anchor=north west, draw,rectangle, rounded corners, inner sep=1.6pt, minimum size=5.5mm,
     text height=3.6mm,  fill=#2,#2,text=white](char){#1} ;}
 
-\newcommand\skills[1]{ 
+\newcommand\skills[1]{
 
 \renewcommand{\givenskill}{
 \noindent
@@ -144,13 +144,13 @@
 }
 \newcommand{\givenskill}{}
 
-\newcommand\skillstext[1]{ 
+\newcommand\skillstext[1]{
 
 \renewcommand{\giventextskill}{
 \begin{flushleft}
 \noindent
 \foreach [count=\i] \x/\y in {#1}
-{ 
+{
 \x$ \star $\y
 }
 \end{flushleft}
@@ -161,7 +161,7 @@
 \newcommand{\giventextskill}{}
 
 
-  
+
 \newcommand{\makeprofile}
 {
 \begin{tikzpicture}[remember picture,overlay]
@@ -236,7 +236,7 @@
 \renewcommand{\section}[1]{
   \par%\vspace{\parskip}
   {%
-    \LARGE 
+    \LARGE
     \color{headercolor}%
     \@sectioncolor #1%
   }
@@ -247,8 +247,8 @@
 \newcommand{\sectionicon}[2]{
   \par%\vspace{\parskip}
   {%
-    \LARGE 
-    #1 
+    \LARGE
+    #1
     \color{headercolor}%
     \@sectioncolor #2%
   }
@@ -272,7 +272,7 @@
 
 \setlength{\tabcolsep}{0pt}
 \newenvironment{twenty}{%
-  
+
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ll}
 }{%
   \end{tabular*}
@@ -301,7 +301,7 @@
     {\footnotesize#4}\\%
     #5\vspace{\parsep}%
   }\\}
-  
+
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Small twenty List environment %
 %%%%%%%%%%%%%%%%%%%%%%%%%

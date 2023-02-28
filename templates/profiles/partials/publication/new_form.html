@@ -1,103 +1,103 @@
 {% load i18n %}
 <form style="border: dashed 1.5px black; border-radius: 5px;"
-  hx-post="{{ object.create_publication_object_url }}"
-  hx-trigger="submit" hx-swap="innerHTML" hx-target="#publication-box">
+    hx-post="{{ object.create_publication_object_url }}"
+    hx-trigger="submit" hx-swap="innerHTML" hx-target="#publication-box">
 
     <!--title  and issuing_date-->
     <div class="row">
-      <div class="col-8">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-book"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Publication title, e.g: Reseach in a very cool subject' %}"
-            name="title" maxlength="{{max_length_normal}}"
-            {% if publication.title %}value="{{ publication.title }}"{% endif %}>
+        <div class="col-8">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-book"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Publication title, e.g: Reseach in a very cool subject' %}"
+                    name="title" maxlength="{{max_length_normal}}"
+                    {% if publication.title %}value="{{ publication.title }}"{% endif %}>
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Issuing date, e.g. 2020' %}"
-            name="issuing_date" maxlength="{{max_length_super_short}}"
-            {% if publication.issuing_date %}value="{{ publication.issuing_date }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Issuing date, e.g. 2020' %}"
+                    name="issuing_date" maxlength="{{max_length_super_short}}"
+                    {% if publication.issuing_date %}value="{{ publication.issuing_date }}"{% endif %}>
+            </div>
         </div>
-      </div>
     </div>
 
 
 
     <!--authors and  publisher-->
     <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-people"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Authors, e.g. Person 1, Person 2, Person 3, ...' %}"
-            name="authors" maxlength="{{max_length_super_short}}"
-            {% if publication.authors %}value="{{ publication.authors }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-people"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Authors, e.g. Person 1, Person 2, Person 3, ...' %}"
+                    name="authors" maxlength="{{max_length_super_short}}"
+                    {% if publication.authors %}value="{{ publication.authors }}"{% endif %}>
+            </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white" type="text"
-            placeholder="{% trans 'Publisher, e.g. Springer Nature' %}"
-            name="publisher" maxlength="{{max_length_short}}"
-            {% if publication.publisher %}value="{{ publication.publisher }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text"
+                    placeholder="{% trans 'Publisher, e.g. Springer Nature' %}"
+                    name="publisher" maxlength="{{max_length_short}}"
+                    {% if publication.publisher %}value="{{ publication.publisher }}"{% endif %}>
+            </div>
         </div>
-      </div>
     </div>
 
 
     <!-- link -->
     <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
-          </div>
-          <input class="form-control border-0 bg-white" type="text"
-            placeholder="{% trans 'Link, e.g: www.sciencedirect.com/science/article/abs/pii/S0924013605001160 (optional)' %}"
-            name="link" maxlength="{{max_length_normal}}"
-            {% if publication.link %}value="{{ publication.link }}"{% endif %}>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
+                </div>
+                <input class="form-control border-0 bg-white" type="text"
+                    placeholder="{% trans 'Link, e.g: www.sciencedirect.com/science/article/abs/pii/S0924013605001160 (optional)' %}"
+                    name="link" maxlength="{{max_length_normal}}"
+                    {% if publication.link %}value="{{ publication.link }}"{% endif %}>
+            </div>
         </div>
-      </div>
     </div>
 
     <!--description -->
     <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
-          </div>
-          <textarea class="form-control border-0 bg-white"  type="text"
-            placeholder="{% trans 'Description' %}" name="description"
-            maxlength="{{max_length_super_large}}">{% if publication.description %}{{ publication.description }}{% endif %}</textarea>
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
+                </div>
+                <textarea class="form-control border-0 bg-white"  type="text"
+                    placeholder="{% trans 'Description' %}" name="description"
+                    maxlength="{{max_length_super_large}}">{% if publication.description %}{{ publication.description }}{% endif %}</textarea>
+            </div>
         </div>
-      </div>
     </div>
 
     <!--buttons -->
     <div class="row">
-      <div class="col-1">
-        <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this publication form' %}"
-        hx-post="{{ object.remove_publication_new_form_url }}" hx-target="#publication-new" hx-swap="innerHTML"
-        ><i class="bi bi-x-lg"></i></button>
-      </div>
-      <div class="col-11">
-        <button class="btn btn-outline-secondary  border-0 w-100" type="submit" name="button"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this publication' %}"><i class="bi bi-check-circle"> {% trans "Save" %}</i></button>
-      </div>
+        <div class="col-1">
+            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this publication form' %}"
+                hx-post="{{ object.remove_publication_new_form_url }}" hx-target="#publication-new" hx-swap="innerHTML"
+            ><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="col-11">
+            <button class="btn btn-outline-secondary  border-0 w-100" type="submit" name="button"
+                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this publication' %}"><i class="bi bi-check-circle"> {% trans "Save" %}</i></button>
+        </div>
     </div>
 </form>

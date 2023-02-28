@@ -1,4 +1,4 @@
-/*! 
+/*!
  * Template Name: Pillar - Bootstrap 4 Resume/CV Template for Developers
  * Version: 1.2
  * Author: Xiaoying Riley
@@ -19,8 +19,8 @@ $theme-bg-dark: $theme-text-color-primary;
 
 // Create variables to override the default value for variables used in the Bootstrap SCSS files.
 $theme-colors: (
-  "primary":  $theme-color-primary, 
-  "secondary":  $theme-text-color-secondary, 
+  "primary":  $theme-color-primary,
+  "secondary":  $theme-text-color-secondary,
 );
 
 //Import Bootstrap
@@ -29,12 +29,12 @@ $theme-colors: (
 
 /*************************** Pillar Styles ****************************/
 body {
-    font-family: 'Roboto', sans-serif;  
+    font-family: 'Roboto', sans-serif;
     background: $theme-bg-light;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: $theme-text-color-primary;
-    
+
 }
 
 .theme-bg-primary {
@@ -53,7 +53,7 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
 		background: rgba(0, 0, 0, 0.4);
 		border-color: transparent;border: none;
 	}
-	
+
 }
 
 .progress {
@@ -62,13 +62,13 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
 
 .theme-progress-bar-dark {
 	background-color: $theme-color-primary;
-	
+
 }
 
 .resume-wrapper {
     padding-top: 30px;
     padding-bottom: 60px;
-	
+
 }
 
 .resume-wrapper-inner {
@@ -82,25 +82,25 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
 	.picture {
 		width: 220px;
 	}
-		
+
 	.name {
 		font-size: 2.25rem;
-		letter-spacing: 0.175rem;	
+		letter-spacing: 0.175rem;
 		font-weight: 900;
 	}
 	.title {
 		font-size: 1.5rem;
 	}
-	
+
 	a {
 		color: rgba(256, 256, 256, 0.6);
 		&:hover {
 			color: white;
 		}
-		
+
 	}
-	
-	
+
+
 }
 .resume-social {
 	font-size: 0.875rem;
@@ -121,7 +121,7 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
 	font-size: 1.25rem;
 	position: relative;
 	color: $theme-color-primary;
-	
+
 	&:after {
 		content: "";
 		position: absolute;
@@ -164,7 +164,7 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
 		border: 4px solid lighten($theme-color-primary, 10%);
 		background: white;
 		@include border-radius(50%);
-		
+
 	}
 }
 
@@ -248,7 +248,7 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
     .resume-wrapper {
 	    padding-top: 0;
     }
-	
+
 	.resume-header {
 		height: auto;
 	}
@@ -257,6 +257,5 @@ a.theme-btn-on-bg, .theme-btn-on-bg {
 		@include border-radius(4px);
 	}
 
-	
-}
 
+}

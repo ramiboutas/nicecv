@@ -6,39 +6,39 @@
 
 {% block content %}
 
-<div class="container">
-  <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-dark btn-lg my-5 w-100 border-0">
-    <i class="bi bi-arrow-left-circle"></i> {% trans "Back to profile" %}
-  </a>
-  <div class="row">
-    {% for resume in object.resumes.all %}
-      <div class="col-md-6 col-sm-12">
-        <div class="card">
-          <img class="card-img" src="{{ resume.image.url }}" alt="Resume template image">
-          <div class="card-footer bg-white">
-            <div class="row">
-              <div class="col-3">
-                <a class="btn btn-secondary w-100 border-0"
-                  href="{{ resume.download_resume_image_url }}" target="_blank">
-                  {% trans "Get Image" %} <i class="bi bi-image"></i>
-                </a>
-              </div>
-              <div class="col-9">
-                <a class="btn btn-danger w-100 border-0"
-                  href="{{ resume.download_resume_pdf_url }}" target="_blank">
-                  {% trans "Download PDF" %} <i class="bi bi-cloud-download"></i>
-                </a>
-              </div>
-            </div>
-          </div>
+    <div class="container">
+        <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-dark btn-lg my-5 w-100 border-0">
+            <i class="bi bi-arrow-left-circle"></i> {% trans "Back to profile" %}
+        </a>
+        <div class="row">
+            {% for resume in object.resumes.all %}
+                <div class="col-md-6 col-sm-12">
+                    <div class="card">
+                        <img class="card-img" src="{{ resume.image.url }}" alt="Resume template image">
+                        <div class="card-footer bg-white">
+                            <div class="row">
+                                <div class="col-3">
+                                    <a class="btn btn-secondary w-100 border-0"
+                                        href="{{ resume.download_resume_image_url }}" target="_blank">
+                                        {% trans "Get Image" %} <i class="bi bi-image"></i>
+                                    </a>
+                                </div>
+                                <div class="col-9">
+                                    <a class="btn btn-danger w-100 border-0"
+                                        href="{{ resume.download_resume_pdf_url }}" target="_blank">
+                                        {% trans "Download PDF" %} <i class="bi bi-cloud-download"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-      </div>
-    {% endfor %}
-  </div>
-  <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-dark btn-lg my-5 w-100 border-0">
-    <i class="bi bi-arrow-left-circle"></i> {% trans "Back to profile" %}
-  </a>
-</div>
+        <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-dark btn-lg my-5 w-100 border-0">
+            <i class="bi bi-arrow-left-circle"></i> {% trans "Back to profile" %}
+        </a>
+    </div>
 
 
 {% endblock %}

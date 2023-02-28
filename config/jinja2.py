@@ -1,5 +1,5 @@
-from jinja2 import Environment
 from django_htmx.jinja import django_htmx_script
+from jinja2 import Environment
 
 
 def environment(**options):

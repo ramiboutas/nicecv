@@ -1,11 +1,11 @@
 {% load i18n %}
 <div id="certification-activation-button">
 
-{% if not object.certification_active %}
-  <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-    hx-post="{{ object.activate_certification_url }}" hx-target="#certification-box" hx-swap="outerHTML"
-    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate certification' %}">
-    <i class="bi bi-patch-check"></i> {% trans 'Certifications' %}  </button>
-{% endif %}
+    {% if not object.certification_active %}
+        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
+            hx-post="{{ object.activate_certification_url }}" hx-target="#certification-box" hx-swap="outerHTML"
+            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate certification' %}">
+            <i class="bi bi-patch-check"></i> {% trans 'Certifications' %}  </button>
+    {% endif %}
 
 </div>

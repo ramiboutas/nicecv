@@ -1,4 +1,5 @@
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import Resume
@@ -15,7 +16,6 @@ def delete_resumes(sender, instance, **kwargs):
         delete_path_file(instance.pdf.path)
     except:
         pass
-
 
 
 # from .tasks import create_resume_file_objects

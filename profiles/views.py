@@ -1,32 +1,42 @@
 from celery.result import AsyncResult
-from celery_progress_htmx.backend import Progress
-from django_htmx.http import trigger_client_event
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, FileResponse
-from django.views.decorators.http import require_POST
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.decorators.cache import never_cache
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user_model
+from django.http import FileResponse
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.http import HttpResponseServerError
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.utils.translation import gettext as _
+from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_POST
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
+from django_htmx.http import trigger_client_event
 
-from .models import Profile, Resume
-from .models import get_child_object, get_above_child_object, get_below_child_object
-from .models import update_child_object, create_empty_child_object
+from .models import create_empty_child_object
+from .models import get_above_child_object
+from .models import get_below_child_object
+from .models import get_child_object
+from .models import Profile
+from .models import Resume
 from .models import set_activation_state
+from .models import update_child_object
 from .tasks import create_resume_objects
-
+from celery_progress_htmx.backend import Progress
 from utils.files import delete_path_file
+
 User = get_user_model()
+
 
 class ProfileListView(LoginRequiredMixin, ListView):
     model = Profile
-    template_name = 'profiles/profile_list.html'
+    template_name = "profiles/profile_list.html"
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
@@ -35,30 +45,38 @@ class ProfileListView(LoginRequiredMixin, ListView):
 class HTTPResponseHXRedirect(HttpResponseRedirect):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self['HX-Redirect']=self['Location']
+        self["HX-Redirect"] = self["Location"]
+
     status_code = 200
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = 'profiles/profile_update.html'
+    template_name = "profiles/profile_update.html"
     model = Profile
-    fields = '__all__'
+    fields = "__all__"
     # exclude = ['candidate_name','candidate_position','candidate_email', 'candidate_phone','candidate_location', 'candidate_website']
     def get_object(self):
-        obj = get_object_or_404(Profile, pk=self.kwargs['pk'], user=self.request.user)
+        obj = get_object_or_404(Profile, pk=self.kwargs["pk"], user=self.request.user)
         return obj
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['debug_flag'] = settings.DEBUG
+        context["debug_flag"] = settings.DEBUG
         return context
 
+
 class ProfileCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'profiles/profile_update.html'
+    template_name = "profiles/profile_update.html"
     model = Profile
-    fields = '__all__'
+    fields = "__all__"
+
     def form_valid(self, form):
-        response = super(ProfileCreateView, self).form_valid(form)
-        trigger_client_event(response, 'ObjectCreatedEvent', { },)
+        response = super().form_valid(form)
+        trigger_client_event(
+            response,
+            "ObjectCreatedEvent",
+            {},
+        )
         return response
 
 
@@ -69,7 +87,9 @@ def create_object_view(request):
     firstname = request.POST.get("firstname")
     lastname = request.POST.get("lastname")
     email = request.POST.get("email")
-    object = Profile(user=request.user, firstname=firstname, lastname=lastname, email=email)
+    object = Profile(
+        user=request.user, firstname=firstname, lastname=lastname, email=email
+    )
     object.save()
     # once the object is created, we redirect the user to the obj update url
     return HTTPResponseHXRedirect(redirect_to=object.get_update_url())
@@ -91,9 +111,13 @@ def upload_full_photo_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     photo_full = request.FILES.get("photo")
     object.photo_full.save(photo_full.name, photo_full)
-    context = {'object': object}
+    context = {"object": object}
     response = HttpResponse(status=200)
-    trigger_client_event(response, "fullPhotoUploadedEvent", { },)
+    trigger_client_event(
+        response,
+        "fullPhotoUploadedEvent",
+        {},
+    )
     return response
 
 
@@ -101,8 +125,8 @@ def upload_full_photo_view(request, pk):
 @login_required
 def get_photo_modal_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    context = {'object': object}
-    return render(request, 'profiles/partials/photo/modal.html', context)
+    context = {"object": object}
+    return render(request, "profiles/partials/photo/modal.html", context)
 
 
 # htmx - profile - remove photo modal
@@ -122,9 +146,13 @@ def crop_photo_view(request, pk):
     width = int(request.POST.get("cropWidth"))
     height = int(request.POST.get("cropHeigth"))
     object = object.crop_and_save_photo(x, y, width, height)
-    context = {'object': object}
-    response = render(request, 'profiles/partials/photo/cropped.html', context)
-    trigger_client_event(response, "photoCroppedEvent", { },)
+    context = {"object": object}
+    response = render(request, "profiles/partials/photo/cropped.html", context)
+    trigger_client_event(
+        response,
+        "photoCroppedEvent",
+        {},
+    )
     return response
 
 
@@ -140,13 +168,12 @@ def delete_photos_view(request, pk):
     return HttpResponse(status=200)
 
 
-
 # htmx - profile - get resume templates modal
 @login_required
 def insert_resume_templates_modal_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    context = {'object': object}
-    return render(request, 'profiles/partials/resume_templates_modal.html', context)
+    context = {"object": object}
+    return render(request, "profiles/partials/resume_templates_modal.html", context)
 
 
 # htmx - profile - remove resume templates modal
@@ -172,6 +199,7 @@ def save_personal_information_view(request, pk):
     object.save()
     return HttpResponse(status=200)
 
+
 # htmx - profile - update field
 def update_field_view(request, label, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
@@ -180,8 +208,13 @@ def update_field_view(request, label, pk):
     object.description = description
     object.save()
     response = HttpResponse(status=200)
-    trigger_client_event(response, 'profileUpdatedEvent', { },)
+    trigger_client_event(
+        response,
+        "profileUpdatedEvent",
+        {},
+    )
     return response
+
 
 #
 #
@@ -204,10 +237,14 @@ def create_child_object_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = create_empty_child_object(label=label, profile=object)
     update_child_object(label=label, child_object=child_object, request=request)
-    context = {'object': object}
+    context = {"object": object}
     try:
-        response = render(request, f'profiles/partials/{label}/main.html', context)
-        trigger_client_event(response, 'profileUpdatedEvent', { },)
+        response = render(request, f"profiles/partials/{label}/main.html", context)
+        trigger_client_event(
+            response,
+            "profileUpdatedEvent",
+            {},
+        )
         return response
     except:
         return HttpResponseServerError()
@@ -221,7 +258,11 @@ def update_child_object_view(request, label, pk_parent, pk):
     child_object = get_child_object(label=label, pk=pk, profile=object)
     update_child_object(label=label, child_object=child_object, request=request)
     response = HttpResponse(status=200)
-    trigger_client_event(response, 'profileUpdatedEvent', { },)
+    trigger_client_event(
+        response,
+        "profileUpdatedEvent",
+        {},
+    )
     return response
 
 
@@ -232,10 +273,14 @@ def delete_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = get_child_object(label=label, pk=pk, profile=object)
     child_object.delete()
-    context = {'object': object}
+    context = {"object": object}
     try:
-        response = render(request, f'profiles/partials/{label}/main.html', context)
-        trigger_client_event(response, 'profileUpdatedEvent', { },)
+        response = render(request, f"profiles/partials/{label}/main.html", context)
+        trigger_client_event(
+            response,
+            "profileUpdatedEvent",
+            {},
+        )
         return response
     except:
         return HttpResponseServerError()
@@ -245,9 +290,9 @@ def delete_child_object_view(request, label, pk_parent, pk):
 @login_required
 def insert_child_new_form_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    context = {'object': object}
+    context = {"object": object}
     try:
-        return render(request, f'profiles/partials/{label}/new_form.html', context)
+        return render(request, f"profiles/partials/{label}/new_form.html", context)
     except:
         return HttpResponseServerError()
 
@@ -256,9 +301,9 @@ def insert_child_new_form_view(request, label, pk_parent):
 @login_required
 def remove_child_new_form_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    context = {'object': object}
+    context = {"object": object}
     try:
-        return render(request, f'profiles/partials/{label}/new_button.html', context)
+        return render(request, f"profiles/partials/{label}/new_button.html", context)
     except:
         return HttpResponseServerError()
 
@@ -269,8 +314,8 @@ def copy_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = get_child_object(label=label, pk=pk, profile=object)
     try:
-        context = {'object': object, label: child_object}
-        return render(request, f'profiles/partials/{label}/new_form.html', context)
+        context = {"object": object, label: child_object}
+        return render(request, f"profiles/partials/{label}/new_form.html", context)
     except:
         return HttpResponseServerError()
 
@@ -280,16 +325,22 @@ def copy_child_object_view(request, label, pk_parent, pk):
 def move_up_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = get_child_object(label=label, pk=pk, profile=object)
-    above_child_object = get_above_child_object(label=label, child_object=child_object, profile=object)
+    above_child_object = get_above_child_object(
+        label=label, child_object=child_object, profile=object
+    )
     above_order = above_child_object.order
     above_child_object.order = child_object.order
     child_object.order = above_order
     above_child_object.save()
     child_object.save()
-    context = {'object': object}
+    context = {"object": object}
     try:
-        response = render(request, f'profiles/partials/{label}/main.html', context)
-        trigger_client_event(response, 'profileUpdatedEvent', { },)
+        response = render(request, f"profiles/partials/{label}/main.html", context)
+        trigger_client_event(
+            response,
+            "profileUpdatedEvent",
+            {},
+        )
         return response
     except:
         return HttpResponseServerError()
@@ -300,16 +351,22 @@ def move_up_child_object_view(request, label, pk_parent, pk):
 def move_down_child_object_view(request, label, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     child_object = get_child_object(label=label, pk=pk, profile=object)
-    below_child_object = get_below_child_object(label=label, child_object=child_object, profile=object)
+    below_child_object = get_below_child_object(
+        label=label, child_object=child_object, profile=object
+    )
     below_order = below_child_object.order
     below_child_object.order = child_object.order
     child_object.order = below_order
     below_child_object.save()
     child_object.save()
-    context = {'object': object}
+    context = {"object": object}
     try:
-        response = render(request, f'profiles/partials/{label}/main.html', context)
-        trigger_client_event(response, 'profileUpdatedEvent', { },)
+        response = render(request, f"profiles/partials/{label}/main.html", context)
+        trigger_client_event(
+            response,
+            "profileUpdatedEvent",
+            {},
+        )
         return response
     except:
         return HttpResponseServerError()
@@ -320,10 +377,14 @@ def move_down_child_object_view(request, label, pk_parent, pk):
 def activate_child_or_field_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     set_activation_state(label=label, object=object, active=True)
-    context = {'object': object}
+    context = {"object": object}
     try:
-        response = render(request, f'profiles/partials/{label}/main.html', context)
-        trigger_client_event(response, f'{label}ActivatedEvent', { },)
+        response = render(request, f"profiles/partials/{label}/main.html", context)
+        trigger_client_event(
+            response,
+            f"{label}ActivatedEvent",
+            {},
+        )
         return response
     except:
         return HttpResponseServerError()
@@ -335,19 +396,28 @@ def deactivate_child_or_field_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     set_activation_state(label=label, object=object, active=False)
     response = HttpResponse(status=200)
-    trigger_client_event(response, f'{label}DeactivatedEvent', { },)
+    trigger_client_event(
+        response,
+        f"{label}DeactivatedEvent",
+        {},
+    )
     return response
-
 
 
 # htmx - insert activation button
 @login_required
 def insert_child_activation_button_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    context = {'object': object}
+    context = {"object": object}
     try:
-        response = render(request, f'profiles/partials/{label}/activation_button.html', context)
-        trigger_client_event(response, 'profileUpdatedEvent', { },)
+        response = render(
+            request, f"profiles/partials/{label}/activation_button.html", context
+        )
+        trigger_client_event(
+            response,
+            "profileUpdatedEvent",
+            {},
+        )
         return response
     except:
         return HttpResponseServerError()
@@ -358,7 +428,11 @@ def insert_child_activation_button_view(request, label, pk_parent):
 def remove_child_activation_button_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     response = HttpResponse(status=200)
-    trigger_client_event(response, 'profileUpdatedEvent', { },)
+    trigger_client_event(
+        response,
+        "profileUpdatedEvent",
+        {},
+    )
     return response
 
 
@@ -366,9 +440,9 @@ def remove_child_activation_button_view(request, label, pk_parent):
 @login_required
 def insert_child_or_field_help_modal_view(request, label, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    context = {'object': object}
+    context = {"object": object}
     try:
-        return render(request, f'profiles/partials/{label}/help_modal.html', context)
+        return render(request, f"profiles/partials/{label}/help_modal.html", context)
     except:
         return HttpResponseServerError()
 
@@ -380,24 +454,25 @@ def remove_child_or_field_help_modal_view(request, label, pk_parent):
     return HttpResponse(status=200)
 
 
-
 ##############################################################################
 @login_required
 def insert_button_to_generate_resumes_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk, user=request.user)
-    context = {'object': profile}
-    return render(request, 'profiles/resume_partials/generate_resumes_button.html', context)
+    context = {"object": profile}
+    return render(
+        request, "profiles/resume_partials/generate_resumes_button.html", context
+    )
 
 
 @never_cache
 @login_required
 def generate_resumes_view(request, pk):
     profile = get_object_or_404(Profile, pk=pk, user=request.user)
-    result =  create_resume_objects.delay(pk=pk)
+    result = create_resume_objects.delay(pk=pk)
     profile.task_id = result.task_id
     profile.save()
-    context = {'object': profile}
-    return render(request, 'profiles/resume_partials/resume_progress_bar.html', context)
+    context = {"object": profile}
+    return render(request, "profiles/resume_partials/resume_progress_bar.html", context)
 
 
 @never_cache
@@ -410,47 +485,59 @@ def resume_creation_status_view(request, pk, task_id):
     percent = progress.get("percent")
     success = progress_object.get_info().get("success")
 
-    context = { 'progress': progress,'object': profile}
+    context = {"progress": progress, "object": profile}
 
     if percent == 100 and success:
-        messages.success(request, _('Resumes created successfully'))
-        return render(request, 'profiles/resume_partials/view_resumes_button.html', context)
+        messages.success(request, _("Resumes created successfully"))
+        return render(
+            request, "profiles/resume_partials/view_resumes_button.html", context
+        )
 
     if success == False:
-        messages.error(request, _('Unespected error, try again or later'))
-        return render(request, 'profiles/resume_partials/generate_resumes_button.html', context)
+        messages.error(request, _("Unespected error, try again or later"))
+        return render(
+            request, "profiles/resume_partials/generate_resumes_button.html", context
+        )
 
-    return render(request, 'profiles/resume_partials/resume_progress_bar.html', context)
+    return render(request, "profiles/resume_partials/resume_progress_bar.html", context)
+
 
 @login_required
 def resume_file_list_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
     # qs = Resume.objects.filter(profile__user=request.user, profile__pk=pk)
-    context = {'object': object}
-    return render(request, 'profiles/resume_list.html', context)
+    context = {"object": object}
+    return render(request, "profiles/resume_list.html", context)
 
 
 @login_required
 def download_resume_pdf_view(request, pk_parent, pk):
     profile = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     resume = get_object_or_404(Resume, profile=profile, pk=pk)
-    return FileResponse(open(resume.pdf.path, 'rb'))
+    return FileResponse(open(resume.pdf.path, "rb"))
+
 
 @login_required
 def download_resume_image_view(request, pk_parent, pk):
     profile = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     resume = get_object_or_404(Resume, profile=profile, pk=pk)
-    return FileResponse(open(resume.image.path, 'rb'))
+    return FileResponse(open(resume.image.path, "rb"))
 
 
 from django_tex.shortcuts import render_to_pdf
 from texfiles.models import ResumeTemplate
 from utils.generate_strings import actual_datetime_string
 
+
 def generate_resume_testing_view(request, pk):
     tex_template_id = request.POST.get("tex_template_id")
     resume_template = ResumeTemplate.objects.get(id=tex_template_id)
     profile = get_object_or_404(Profile, pk=pk)
     template_name = resume_template.template_name
-    context = {'object': profile}
-    return render_to_pdf(request, template_name, context, filename=actual_datetime_string()+'_'+template_name+'_test.pdf')
+    context = {"object": profile}
+    return render_to_pdf(
+        request,
+        template_name,
+        context,
+        filename=actual_datetime_string() + "_" + template_name + "_test.pdf",
+    )

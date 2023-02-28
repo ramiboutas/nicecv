@@ -21,7 +21,7 @@ overloaf templates
 
 # Projects  (1 to many)
 - title
-- company 
+- company
 - description
 - dates (begin, end) or just one year
 
@@ -42,12 +42,12 @@ overloaf templates
 - issuer -> optional
 - location -> optional
 
-# Languges  (1 to many) 
-- language 
+# Languges  (1 to many)
+- language
 - level (0 - 100%)
 
 # personal interests (1 to many)
-- title 
+- title
 
 # publications (1 to many)
 - list ?
@@ -60,7 +60,7 @@ overloaf templates
 # Profile (1 to 1) -> User
 - photo
 - surname lastname
-- profession 
+- profession
 - email
 - phone number
 - location (city, country)
@@ -76,8 +76,8 @@ overloaf templates
 # learnig??
 - title
 
-# Languges  (1 to many) 
-- language 
+# Languges  (1 to many)
+- language
 - level (0 - 100%)
 
 
@@ -85,12 +85,3 @@ overloaf templates
 - person
 - email?
 - linkedin profile
-
-
-
-
-
-
-
-
-

@@ -2,13 +2,13 @@
 
 <img src="{{ object.photo.url }}" alt="Photo" class="rounded-circle" width="200">
 <p>
-<button onclick="pollImageToCrop()" class="btn btn-outline-secondary border-0" id="edit-full-photo-button" type="button"
-  data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Edit photo' %}"
-  hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
-  _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop">
-  <i class="bi bi-pencil"></i></button>
-  <button class="btn btn-outline-secondary border-0" type="button" hx-post="{{ object.delete_photos_url }}"
-  data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove photo' %}"
-  hx-target="#photo-box" hx-trigger="click" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    <i class="bi bi-trash"></i></button>
+    <button onclick="pollImageToCrop()" class="btn btn-outline-secondary border-0" id="edit-full-photo-button" type="button"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Edit photo' %}"
+        hx-get="{{ object.get_photo_modal_url }}" hx-target="#modals-here"
+        _="on htmx:afterOnLoad wait 10ms then add .show to #photo-modal then add .show to #photo-modal-backdrop">
+        <i class="bi bi-pencil"></i></button>
+    <button class="btn btn-outline-secondary border-0" type="button" hx-post="{{ object.delete_photos_url }}"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove photo' %}"
+        hx-target="#photo-box" hx-trigger="click" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        <i class="bi bi-trash"></i></button>
 </p>

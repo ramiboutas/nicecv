@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class TexfilesConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'texfiles'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "texfiles"

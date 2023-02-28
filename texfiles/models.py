@@ -1,6 +1,6 @@
 from django.db import models
-from django.dispatch import receiver
 from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.urls import reverse
 
 from utils.files import delete_path_file
@@ -13,8 +13,8 @@ class ResumeTemplate(models.Model):
     name = models.CharField(max_length=50)
     template_name = models.CharField(default="test.tex", max_length=20)
     only_one_page_allowed = models.BooleanField(default=False)
-    interpreter = models.CharField(max_length=20, default='lualatex')
-    image = models.ImageField(upload_to='tex_screenshots')
+    interpreter = models.CharField(max_length=20, default="lualatex")
+    image = models.ImageField(upload_to="tex_screenshots")
     is_active = models.BooleanField(default=True)
     credits = models.CharField(max_length=50, blank=True, null=True)
     credits_url = models.URLField(max_length=100, blank=True, null=True)
@@ -24,7 +24,7 @@ class ResumeTemplate(models.Model):
         return self.name
 
     def download_object_url(self):
-        return reverse('texfiles_download_resume', kwargs={'pk':self.pk})
+        return reverse("texfiles_download_resume", kwargs={"pk": self.pk})
 
     def add_one_download(self):
         self.downloads = self.downloads + 1
@@ -35,8 +35,8 @@ class CoverLetterTemplate(models.Model):
     # cls = models.FileField(storage=cls_storage, blank=True, null=True)
     # file = models.FileField(upload_to='texfiles/coverletters')
     name = models.CharField(max_length=128)
-    interpreter = models.CharField(max_length=20, default='lualatex')
-    image = models.ImageField(upload_to='texfiles/coverletters/screenshots')
+    interpreter = models.CharField(max_length=20, default="lualatex")
+    image = models.ImageField(upload_to="texfiles/coverletters/screenshots")
     is_active = models.BooleanField(default=True)
     credits = models.CharField(max_length=128, blank=True, null=True)
     credits_url = models.URLField(max_length=200, blank=True, null=True)
@@ -46,7 +46,7 @@ class CoverLetterTemplate(models.Model):
         return self.name
 
     def download_object_url(self):
-        return reverse('texfiles_download_coverletter', kwargs={'pk':self.pk})
+        return reverse("texfiles_download_coverletter", kwargs={"pk": self.pk})
 
 
 #

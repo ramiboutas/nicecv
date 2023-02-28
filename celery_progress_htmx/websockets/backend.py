@@ -1,6 +1,8 @@
 import logging
 
-from celery_progress_htmx.backend import ProgressRecorder, Progress, KnownResult
+from celery_progress_htmx.backend import KnownResult
+from celery_progress_htmx.backend import Progress
+from celery_progress_htmx.backend import ProgressRecorder
 
 try:
     from asgiref.sync import async_to_sync
@@ -14,28 +16,28 @@ logger = logging.getLogger(__name__)
 
 
 class WebSocketProgressRecorder(ProgressRecorder):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if not channel_layer:
             logger.warning(
-                'Tried to use websocket progress bar, but dependencies were not installed / configured. '
-                'Use pip install celery-progress[websockets] and set up channels to enable this feature. '
-                'See: https://channels.readthedocs.io/en/latest/ for more details.'
+                "Tried to use websocket progress bar, but dependencies were not installed / configured. "
+                "Use pip install celery-progress[websockets] and set up channels to enable this feature. "
+                "See: https://channels.readthedocs.io/en/latest/ for more details."
             )
 
     @staticmethod
     def push_update(task_id, data, final=False):
         try:
             async_to_sync(channel_layer.group_send)(
-                task_id,
-                {'type': 'update_task_progress', 'data': data}
+                task_id, {"type": "update_task_progress", "data": data}
             )
         except AttributeError:  # No channel layer to send to, so ignore it
             pass
         except RuntimeError as e:  # We're sending messages too fast for asgiref to handle, drop it
-            if final and channel_layer:  # Send error back to post-run handler for a retry
+            if (
+                final and channel_layer
+            ):  # Send error back to post-run handler for a retry
                 raise e
 
     def set_progress(self, current, total, description=""):
