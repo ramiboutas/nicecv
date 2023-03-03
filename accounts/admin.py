@@ -17,7 +17,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = [
         "email",
         "username",
-        "has_paid",
+        "has_premium",
     ]
     fieldsets = (
         (

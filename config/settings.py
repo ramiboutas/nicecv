@@ -2,19 +2,15 @@ import os
 import sys
 from pathlib import Path
 
+import dotenv
+
 from django.utils.translation import gettext_lazy as _
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-import dotenv
 
 # Setup
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Load env vars from .env file if not testing
 try:
@@ -26,20 +22,23 @@ if command != "test":  # pragma: no cover
     dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 
-# Production
-PRODUCTION = os.environ.get("PRODUCTION", "") == "1"
+# The name of the class to use for starting the test suite.
+TEST_RUNNER = "config.test.TestRunner"
+
+# HTTPS
+HTTPS = os.environ.get("HTTPS", "") == "1"
 
 # Use Postgres (otherwise Sqlite)
-USE_POSTGRES = os.environ.get("USE_POSTGRES", "") == "1"
+USE_POSTGRES = os.environ.get("USE_POSTGRES", "1") == "1"
 
 # Quick-start development settings - unsuitable for production
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "some-tests-need-a-secret-key")
+SECRET_KEY = os.environ.get("SECRET_KEY", "some-tests-need-a-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get("DEBUG")) == "1"
-PRODUCTION = str(os.environ.get("PRODUCTION")) == "1"
+DEBUG = os.environ.get("DEBUG", "") == "1"
+
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -49,10 +48,8 @@ INTERNAL_IPS = [
 ALLOWED_HOSTS = [
     "nicecv.online",
     "www.nicecv.online",
-    "207.154.205.99",
     "localhost",
     "127.0.0.1",
-    "notes.ramiboutas.com",
 ]
 
 
@@ -195,17 +192,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-
 # Database
 if USE_POSTGRES:
-    POSTGRES_DB = os.environ.get("POSTGRES_DB", "")
-    POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "")
-    POSTGRES_USER = os.environ.get("POSTGRES_USER", "")
-    POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "")
-    POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "")
-    POSTGRES_TESTS_DB = os.environ.get("POSTGRES_TESTS_DB", "")
+    POSTGRES_DB = os.environ.get("POSTGRES_DB", "testing_db")
+    POSTGRES_USER = os.environ.get("POSTGRES_USER", "postgres")
+    POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "postgres")
+    POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "localhost")
+    POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "5432")
 
     DATABASES = {
         "default": {
@@ -216,7 +209,7 @@ if USE_POSTGRES:
             "HOST": POSTGRES_HOST,
             "PORT": POSTGRES_PORT,
             "TEST": {
-                "NAME": "test_db",
+                "NAME": "testing_db",
             },
         }
     }
@@ -373,7 +366,7 @@ GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get(
 
 
 # General stuff depending on debug and production
-if PRODUCTION:
+if HTTPS:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_HSTS_SECONDS = 31536000  # usual: 31536000 (1 year)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True

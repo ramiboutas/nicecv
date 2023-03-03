@@ -11,6 +11,10 @@ python-dotenv
 django-debug-toolbar
 celery
 pillow
+tblib
+pytest-reverse
+pytest-xdist
+pytest-django
 pdf2image
 stripe
 flake8

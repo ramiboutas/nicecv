@@ -69,7 +69,7 @@
 
             <div id="proceed-with-payment">
               {% if user.is_authenticated %}
-                {% if user.has_paid %}
+                {% if user.has_premium %}
                   <p>{% blocktranslate with expire_date=user.paid_until %}
                     You already have a premium plan valid until {{ expire_date }}.
                     {% endblocktranslate %}

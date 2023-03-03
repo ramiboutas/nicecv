@@ -10,6 +10,8 @@ asgiref==3.5.2
     # via django
 async-timeout==4.0.2
     # via redis
+attrs==22.2.0
+    # via pytest
 autopep8==1.7.0
     # via -r requirements.in
 backports-zoneinfo==0.2.1
@@ -75,6 +77,10 @@ django-rosetta==0.9.8
     # via -r requirements.in
 django-tex==1.1.10
     # via -r requirements.in
+exceptiongroup==1.1.0
+    # via pytest
+execnet==1.9.0
+    # via pytest-xdist
 flake8==5.0.4
     # via -r requirements.in
 gunicorn==20.1.0
@@ -83,6 +89,8 @@ hiredis==2.0.0
     # via -r requirements.in
 idna==3.4
     # via requests
+iniconfig==2.0.0
+    # via pytest
 jinja2==3.1.2
     # via django-tex
 kombu==5.2.4
@@ -94,13 +102,17 @@ mccabe==0.7.0
 oauthlib==3.2.1
     # via requests-oauthlib
 packaging==21.3
-    # via redis
+    # via
+    #   pytest
+    #   redis
 pdf2image==1.16.0
     # via -r requirements.in
 pillow==9.3.0
     # via
     #   -r requirements.in
     #   pdf2image
+pluggy==1.0.0
+    # via pytest
 polib==1.1.1
     # via django-rosetta
 prompt-toolkit==3.0.31
@@ -119,6 +131,17 @@ pyjwt[crypto]==2.5.0
     # via django-allauth
 pyparsing==3.0.9
     # via packaging
+pytest==7.2.1
+    # via
+    #   pytest-django
+    #   pytest-reverse
+    #   pytest-xdist
+pytest-django==4.5.2
+    # via -r requirements.in
+pytest-reverse==1.5.0
+    # via -r requirements.in
+pytest-xdist==3.2.0
+    # via -r requirements.in
 python-dotenv==0.21.0
     # via -r requirements.in
 python3-openid==3.2.0
@@ -143,8 +166,12 @@ sqlparse==0.4.3
     #   django-debug-toolbar
 stripe==4.2.0
     # via -r requirements.in
+tblib==1.7.0
+    # via -r requirements.in
 toml==0.10.2
     # via autopep8
+tomli==2.0.1
+    # via pytest
 types-cryptography==3.3.23.1
     # via pyjwt
 urllib3==1.26.12
