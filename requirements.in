@@ -1,4 +1,4 @@
-django
+django==4.1.7
 django-rosetta
 django-allauth
 django-htmx

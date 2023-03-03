@@ -44,13 +44,13 @@ coverage==6.5.0
     # via -r requirements.in
 crispy-bootstrap5==0.7
     # via -r requirements.in
-cryptography==38.0.3
+cryptography==39.0.1
     # via pyjwt
 defusedxml==0.7.1
     # via python3-openid
 deprecated==1.2.13
     # via redis
-django==4.1.2
+django==4.1.7
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
@@ -99,7 +99,7 @@ markupsafe==2.1.1
     # via jinja2
 mccabe==0.7.0
     # via flake8
-oauthlib==3.2.1
+oauthlib==3.2.2
     # via requests-oauthlib
 packaging==21.3
     # via

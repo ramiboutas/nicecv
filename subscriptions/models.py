@@ -29,4 +29,4 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.id} - {self.user.email}"
+        return f"{self.created} - {self.user.email}"

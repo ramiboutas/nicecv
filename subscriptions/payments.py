@@ -24,7 +24,7 @@ def fulfill_order(user_id:int=None, plan_id:int=None):
             pass
 
 
-def create_stripe_session(plan: Model):
+def create_stripe_session(request, plan: Model):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     session = stripe.checkout.Session.create(
         # customer_email = request.user.email,
@@ -46,6 +46,5 @@ def create_stripe_session(plan: Model):
         success_url=request.build_absolute_uri(reverse('payments_success')) + "?session_id={CHECKOUT_SESSION_ID}",
         cancel_url=request.build_absolute_uri(reverse('payments_failed')),
     )
-    print()
     return session
     

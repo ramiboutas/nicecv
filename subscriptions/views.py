@@ -81,7 +81,7 @@ def proceed_with_payment_view(request):
 def stripe_checkout_view(request):
     months = request.POST.get('months')
     plan = Plan.objects.filter(months=months).first()
-    checkout_session = create_stripe_session(plan)
+    checkout_session = create_stripe_session(request, plan)
     return redirect(checkout_session.url, code=303)
 
 
