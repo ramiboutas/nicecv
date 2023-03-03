@@ -8,4 +8,4 @@ class SettingsTest(TestCase):
         assert settings.DEBUG == False
     
     def test_db(self):
-        assert settings.DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3'
+        assert settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql'
