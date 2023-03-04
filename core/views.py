@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 
 
-class HomePageView(TemplateView):
+class HomeView(TemplateView):
     template_name = "core/home.html"
 
     def dispatch(self, *args, **kwargs):

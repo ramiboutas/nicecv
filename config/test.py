@@ -27,4 +27,3 @@ TEST_SETTINGS = {
     "DEBUG": False,
     "USE_POSTGRES": True,
 }
-

@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 
 import dotenv
-
 from django.utils.translation import gettext_lazy as _
 
 
@@ -12,15 +11,8 @@ from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load env vars from .env file if not testing
-try:
-    command = sys.argv[1]
-except IndexError:  # pragma: no cover
-    command = "help"
-
-if command != "test":  # pragma: no cover
-    dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
-
+# Load env vars from .env file
+dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 # The name of the class to use for starting the test suite.
 TEST_RUNNER = "config.test.TestRunner"
@@ -30,8 +22,6 @@ HTTPS = os.environ.get("HTTPS", "") == "1"
 
 # Use Postgres (otherwise Sqlite)
 USE_POSTGRES = os.environ.get("USE_POSTGRES", "1") == "1"
-
-# Quick-start development settings - unsuitable for production
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "some-tests-need-a-secret-key")
@@ -177,12 +167,15 @@ TEMPLATES = [
                 "utils.context_processors.nicecv",
                 "texfiles.context_processors.texfiles",
             ],
+            "debug": DEBUG,
         },
     },
     {
         "NAME": "tex",
         "BACKEND": "django_tex.engine.TeXEngine",
-        "DIRS": (BASE_DIR.joinpath("tex_templates"),),
+        "DIRS": str(
+            BASE_DIR.joinpath("tex_templates"),
+        ),
         "APP_DIRS": True,
         "OPTIONS": {
             "environment": "texfiles.environment.my_environment",
@@ -209,7 +202,7 @@ if USE_POSTGRES:
             "HOST": POSTGRES_HOST,
             "PORT": POSTGRES_PORT,
             "TEST": {
-                "NAME": "testing_db",
+                "NAME": "test_db",
             },
         }
     }
@@ -365,7 +358,7 @@ GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get(
 )
 
 
-# General stuff depending on debug and production
+# Https for production environment
 if HTTPS:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_HSTS_SECONDS = 31536000  # usual: 31536000 (1 year)

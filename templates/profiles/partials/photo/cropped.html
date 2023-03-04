@@ -10,5 +10,6 @@
     <button class="btn btn-outline-secondary border-0" type="button" hx-post="{{ object.delete_photos_url }}"
         data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove photo' %}"
         hx-target="#photo-box" hx-trigger="click" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-        <i class="bi bi-trash"></i></button>
+        <i class="bi bi-trash"></i>
+    </button>
 </p>

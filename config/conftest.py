@@ -1,8 +1,10 @@
 import os
+
 import pytest
 from django.test.utils import override_settings
 
 from config.test import TEST_SETTINGS
+
 
 @pytest.fixture(scope="session", autouse=True)
 def test_settings():

@@ -16,7 +16,6 @@ from .views import update_field_view
 
 urlpatterns = [
     path("list/", ProfileListView.as_view(), name="profiles_list"),
-    # path('list/', ProfileListView.as_view(), name='profiles_list'),
     path("new/", ProfileCreateView.as_view(), name="profiles_new"),
     path("profile/<uuid:pk>/", ProfileUpdateView.as_view(), name="profiles_update"),
     # htmx - object - create
