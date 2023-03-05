@@ -20,8 +20,6 @@ TEST_RUNNER = "config.test.TestRunner"
 # HTTPS
 HTTPS = os.environ.get("HTTPS", "") == "1"
 
-# Use Postgres (otherwise Sqlite)
-USE_POSTGRES = os.environ.get("USE_POSTGRES", "1") == "1"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "some-tests-need-a-secret-key")
@@ -185,7 +183,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+
+
 # Database
+
+USE_POSTGRES = True
+
 if USE_POSTGRES:
     POSTGRES_DB = os.environ.get("POSTGRES_DB", "testing_db")
     POSTGRES_USER = os.environ.get("POSTGRES_USER", "postgres")

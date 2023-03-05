@@ -16,62 +16,95 @@ from PIL import Image
 
 User = get_user_model()
 
-# Labels. Used in urls (label) & in templates  (profiles/partials/label/file.html)
-LABEL_FOR_PROFILE_FIELD_FIRSTNAME = "firstname"
-LABEL_FOR_PROFILE_FIELD_LASTNAME = "lastname"
-LABEL_FOR_PROFILE_FIELD_JOBTITLE = "jobtitle"
-LABEL_FOR_PROFILE_FIELD_LOCATION = "location"
-LABEL_FOR_PROFILE_FIELD_BIRTH = "birth"
-LABEL_FOR_PROFILE_FIELD_PHONE = "phone"
-LABEL_FOR_PROFILE_FIELD_EMAIL = "email"
-LABEL_FOR_PROFILE_FIELD_DESCRIPTION = "description"
-LABEL_FOR_PROFILE_FIELD_WEBSITE = "website"
-LABEL_FOR_PROFILE_FIELD_LINKEDIN = "linkedin"
-LABEL_FOR_PROFILE_FIELD_SKYPE = "skype"
-LABEL_FOR_PROFILE_FIELD_INSTAGRAM = "instagram"
-LABEL_FOR_PROFILE_FIELD_TWITTER = "twitter"
-LABEL_FOR_PROFILE_FIELD_FACEBOOK = "facebook"
-LABEL_FOR_PROFILE_FIELD_YOUTUBE = "youtube"
-LABEL_FOR_PROFILE_FIELD_GITHUB = "github"
-LABEL_FOR_PROFILE_FIELD_GITLAB = "gitlab"
-LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW = "stackoverflow"
-LABEL_FOR_PROFILE_FIELD_MEDIUM = "medium"
-LABEL_FOR_PROFILE_FIELD_ORCID = "orcid"
-
-LABEL_FOR_CHILD_OBJECT_SKILL = "skill"
-LABEL_FOR_CHILD_OBJECT_LANGUAGE = "language"
-LABEL_FOR_CHILD_OBJECT_EDUCATION = "education"
-LABEL_FOR_CHILD_OBJECT_EXPERIENCE = "experience"
-LABEL_FOR_CHILD_OBJECT_CERTIFICATION = "certification"
-LABEL_FOR_CHILD_OBJECT_COURSE = "course"
-LABEL_FOR_CHILD_OBJECT_HONOR = "honor"
-LABEL_FOR_CHILD_OBJECT_ORGANIZATION = "organization"
-LABEL_FOR_CHILD_OBJECT_PATENT = "patent"
-LABEL_FOR_CHILD_OBJECT_PROJECT = "project"
-LABEL_FOR_CHILD_OBJECT_PUBLICATION = "publication"
-LABEL_FOR_CHILD_OBJECT_VOLUNTEERING = "volunteering"
-
-LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL = "description-label"
-LABEL_FOR_CHILD_OBJECT_SKILL_LABEL = "skill-label"
-LABEL_FOR_CHILD_OBJECT_LANGUAGE_LABEL = "language-label"
-LABEL_FOR_CHILD_OBJECT_EDUCATION_LABEL = "education-label"
-LABEL_FOR_CHILD_OBJECT_EXPERIENCE_LABEL = "experience-label"
-LABEL_FOR_CHILD_OBJECT_CERTIFICATION_LABEL = "certification-label"
-LABEL_FOR_CHILD_OBJECT_COURSE_LABEL = "course-label"
-LABEL_FOR_CHILD_OBJECT_HONOR_LABEL = "honor-label"
-LABEL_FOR_CHILD_OBJECT_ORGANIZATION_LABEL = "organization-label"
-LABEL_FOR_CHILD_OBJECT_PATENT_LABEL = "patent-label"
-LABEL_FOR_CHILD_OBJECT_PROJECT_LABEL = "project-label"
-LABEL_FOR_CHILD_OBJECT_PUBLICATION_LABEL = "publication-label"
-LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL = "volunteering-label"
+# slugs. Used in urls (slug) & in templates  (profiles/partials/slug/file.html)
+SLUG_FOR_PROFILE_FIELD_FIRSTNAME = "firstname"
+SLUG_FOR_PROFILE_FIELD_LASTNAME = "lastname"
+SLUG_FOR_PROFILE_FIELD_JOBTITLE = "jobtitle"
+SLUG_FOR_PROFILE_FIELD_LOCATION = "location"
+SLUG_FOR_PROFILE_FIELD_BIRTH = "birth"
+SLUG_FOR_PROFILE_FIELD_PHONE = "phone"
+SLUG_FOR_PROFILE_FIELD_EMAIL = "email"
+SLUG_FOR_PROFILE_FIELD_DESCRIPTION = "description"
+SLUG_FOR_PROFILE_FIELD_WEBSITE = "website"
+SLUG_FOR_PROFILE_FIELD_LINKEDIN = "linkedin"
+SLUG_FOR_PROFILE_FIELD_SKYPE = "skype"
+SLUG_FOR_PROFILE_FIELD_INSTAGRAM = "instagram"
+SLUG_FOR_PROFILE_FIELD_TWITTER = "twitter"
+SLUG_FOR_PROFILE_FIELD_FACEBOOK = "facebook"
+SLUG_FOR_PROFILE_FIELD_YOUTUBE = "youtube"
+SLUG_FOR_PROFILE_FIELD_GITHUB = "github"
+SLUG_FOR_PROFILE_FIELD_GITLAB = "gitlab"
+SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW = "stackoverflow"
+SLUG_FOR_PROFILE_FIELD_MEDIUM = "medium"
+SLUG_FOR_PROFILE_FIELD_ORCID = "orcid"
+SLUG_FOR_PROFILE_FIELD_DESCRIPTION_LABEL = "description-label"
 
 
-def user_directory_path(instance, filename):  # not used // 22.01.2022
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    """
-    This function saves the user uploads to a specific folder in media
-    """
-    return "{}/{}".format(instance.username.id, filename)
+SLUG_FOR_CHILD_OBJECT_SKILL = "skill"
+SLUG_FOR_CHILD_OBJECT_LANGUAGE = "language"
+SLUG_FOR_CHILD_OBJECT_EDUCATION = "education"
+SLUG_FOR_CHILD_OBJECT_EXPERIENCE = "experience"
+SLUG_FOR_CHILD_OBJECT_CERTIFICATION = "certification"
+SLUG_FOR_CHILD_OBJECT_COURSE = "course"
+SLUG_FOR_CHILD_OBJECT_HONOR = "honor"
+SLUG_FOR_CHILD_OBJECT_ORGANIZATION = "organization"
+SLUG_FOR_CHILD_OBJECT_PATENT = "patent"
+SLUG_FOR_CHILD_OBJECT_PROJECT = "project"
+SLUG_FOR_CHILD_OBJECT_PUBLICATION = "publication"
+SLUG_FOR_CHILD_OBJECT_VOLUNTEERING = "volunteering"
+
+
+SLUG_FOR_CHILD_OBJECT_SKILL_LABEL = "skill-label"
+SLUG_FOR_CHILD_OBJECT_LANGUAGE_LABEL = "language-label"
+SLUG_FOR_CHILD_OBJECT_EDUCATION_LABEL = "education-label"
+SLUG_FOR_CHILD_OBJECT_EXPERIENCE_LABEL = "experience-label"
+SLUG_FOR_CHILD_OBJECT_CERTIFICATION_LABEL = "certification-label"
+SLUG_FOR_CHILD_OBJECT_COURSE_LABEL = "course-label"
+SLUG_FOR_CHILD_OBJECT_HONOR_LABEL = "honor-label"
+SLUG_FOR_CHILD_OBJECT_ORGANIZATION_LABEL = "organization-label"
+SLUG_FOR_CHILD_OBJECT_PATENT_LABEL = "patent-label"
+SLUG_FOR_CHILD_OBJECT_PROJECT_LABEL = "project-label"
+SLUG_FOR_CHILD_OBJECT_PUBLICATION_LABEL = "publication-label"
+SLUG_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL = "volunteering-label"
+
+
+
+
+PROFILE_FIELD_MAPPING = {
+    SLUG_FOR_PROFILE_FIELD_FIRSTNAME : "firstname",
+    SLUG_FOR_PROFILE_FIELD_LASTNAME : "lastname",
+    SLUG_FOR_PROFILE_FIELD_JOBTITLE : "jobtitle",
+    SLUG_FOR_PROFILE_FIELD_LOCATION : "location",
+    SLUG_FOR_PROFILE_FIELD_BIRTH : "birth",
+    SLUG_FOR_PROFILE_FIELD_PHONE : "phone",
+    SLUG_FOR_PROFILE_FIELD_EMAIL : "email",
+    SLUG_FOR_PROFILE_FIELD_DESCRIPTION : "description",
+    SLUG_FOR_PROFILE_FIELD_WEBSITE : "website",
+    SLUG_FOR_PROFILE_FIELD_LINKEDIN : "linkedin",
+    SLUG_FOR_PROFILE_FIELD_SKYPE : "skype",
+    SLUG_FOR_PROFILE_FIELD_INSTAGRAM : "instagram",
+    SLUG_FOR_PROFILE_FIELD_TWITTER : "twitter",
+    SLUG_FOR_PROFILE_FIELD_FACEBOOK : "facebook",
+    SLUG_FOR_PROFILE_FIELD_YOUTUBE : "youtube",
+    SLUG_FOR_PROFILE_FIELD_GITHUB : "github",
+    SLUG_FOR_PROFILE_FIELD_GITLAB : "gitlab",
+    SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW : "stackoverflow",
+    SLUG_FOR_PROFILE_FIELD_MEDIUM : "medium",
+    SLUG_FOR_PROFILE_FIELD_ORCID : "orcid",
+    SLUG_FOR_PROFILE_FIELD_DESCRIPTION_LABEL : "description-label",
+    SLUG_FOR_CHILD_OBJECT_SKILL_LABEL : "skill_label",
+    SLUG_FOR_CHILD_OBJECT_LANGUAGE_LABEL : "language_label",
+    SLUG_FOR_CHILD_OBJECT_EDUCATION_LABEL : "education_label",
+    SLUG_FOR_CHILD_OBJECT_EXPERIENCE_LABEL : "experience_label",
+    SLUG_FOR_CHILD_OBJECT_CERTIFICATION_LABEL : "certification_label",
+    SLUG_FOR_CHILD_OBJECT_COURSE_LABEL : "course_label",
+    SLUG_FOR_CHILD_OBJECT_HONOR_LABEL : "honor_label",
+    SLUG_FOR_CHILD_OBJECT_ORGANIZATION_LABEL : "organization_label",
+    SLUG_FOR_CHILD_OBJECT_PATENT_LABEL : "patent_label",
+    SLUG_FOR_CHILD_OBJECT_PROJECT_LABEL : "project_label",
+    SLUG_FOR_CHILD_OBJECT_PUBLICATION_LABEL : "publication_label",
+    SLUG_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL : "volunteering_label",
+}
 
 
 def manage_instance_ordering(self):
@@ -178,9 +211,7 @@ class Profile(models.Model):
     patent_label = models.CharField(max_length=100, default=_("Patents"))
     project_label = models.CharField(max_length=100, default=_("Projects"))
     publication_label = models.CharField(max_length=100, default=_("Publications"))
-    volunteering_label = models.CharField(
-        max_length=100, default=_("Volunteering work")
-    )
+    volunteering_label = models.CharField(max_length=100, default=_("Volunteering work"))
 
     def __str__(self):
         return f"{self.firstname} {self.lastname} {self.email}"
@@ -215,718 +246,718 @@ class Profile(models.Model):
     def save_personal_information_url(self):
         return reverse("profiles_save_personal_information", kwargs={"pk": self.pk})
 
-    # description_label
-    def update_description_label_url(self):
+    # description_slug
+    def update_description_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION_LABEL},
         )
 
-    # skill_label
-    def update_skill_label_url(self):
+    # skill_slug
+    def update_skill_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL_LABEL},
         )
 
-    # language_label
-    def update_language_label_url(self):
+    # language_slug
+    def update_language_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE_LABEL},
         )
 
-    # education_label
-    def update_education_label_url(self):
+    # education_slug
+    def update_education_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION_LABEL},
         )
 
-    # experience_label
-    def update_experience_label_url(self):
+    # experience_slug
+    def update_experience_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE_LABEL},
         )
 
-    # certification_label
-    def update_certification_label_url(self):
+    # certification_slug
+    def update_certification_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION_LABEL},
         )
 
-    # course_label
-    def update_course_label_url(self):
+    # course_slug
+    def update_course_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE_LABEL},
         )
 
-    # honor_label
-    def update_honor_label_url(self):
+    # honor_slug
+    def update_honor_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR_LABEL},
         )
 
-    # organization_label
-    def update_organization_label_url(self):
+    # organization_slug
+    def update_organization_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION_LABEL},
         )
 
-    # patent_label
-    def update_patent_label_url(self):
+    # patent_slug
+    def update_patent_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT_LABEL},
         )
 
-    # project_label
-    def update_project_label_url(self):
+    # project_slug
+    def update_project_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT_LABEL},
         )
 
-    # publication_label
-    def update_publication_label_url(self):
+    # publication_slug
+    def update_publication_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION_LABEL},
         )
 
-    # volunteering_label
-    def update_volunteering_label_url(self):
+    # volunteering_slug
+    def update_volunteering_slug_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL},
         )
 
     # firstname
     def update_firstname_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FIRSTNAME},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FIRSTNAME},
         )
 
     # lastname
     def update_lastname_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LASTNAME},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LASTNAME},
         )
 
     # jobtitle
     def update_jobtitle_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     def activate_jobtitle_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk_parent": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     def deactivate_jobtitle_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk_parent": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     def insert_jobtitle_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk_parent": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     def remove_jobtitle_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk_parent": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     def insert_jobtitle_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk_parent": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     def remove_jobtitle_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_JOBTITLE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_JOBTITLE},
         )
 
     # location
     def update_location_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     def activate_location_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     def deactivate_location_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     def insert_location_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     def remove_location_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     def insert_location_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     def remove_location_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LOCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LOCATION},
         )
 
     # birth
     def update_birth_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     def activate_birth_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     def deactivate_birth_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     def insert_birth_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     def remove_birth_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     def insert_birth_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     def remove_birth_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_BIRTH},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_BIRTH},
         )
 
     # phone
     def update_phone_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     def activate_phone_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     def deactivate_phone_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     def insert_phone_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     def remove_phone_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     def insert_phone_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     def remove_phone_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_PHONE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_PHONE},
         )
 
     # email
     def update_email_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     def activate_email_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     def deactivate_email_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     def insert_email_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     def remove_email_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     def insert_email_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     def remove_email_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_EMAIL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_EMAIL},
         )
 
     # website
     def update_website_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     def activate_website_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     def deactivate_website_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     def insert_website_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     def remove_website_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     def insert_website_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     def remove_website_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_WEBSITE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_WEBSITE},
         )
 
     # linkedin
     def update_linkedin_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     def activate_linkedin_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     def deactivate_linkedin_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     def insert_linkedin_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     def remove_linkedin_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     def insert_linkedin_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     def remove_linkedin_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_LINKEDIN},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_LINKEDIN},
         )
 
     # skype
     def update_skype_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     def activate_skype_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     def deactivate_skype_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     def insert_skype_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     def remove_skype_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     def insert_skype_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     def remove_skype_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_SKYPE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_SKYPE},
         )
 
     # instagram
     def update_instagram_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     def activate_instagram_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     def deactivate_instagram_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     def insert_instagram_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     def remove_instagram_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     def insert_instagram_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     def remove_instagram_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_INSTAGRAM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_INSTAGRAM},
         )
 
     # twitter
     def update_twitter_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     def activate_twitter_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     def deactivate_twitter_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     def insert_twitter_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     def remove_twitter_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     def insert_twitter_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     def remove_twitter_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_TWITTER},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_TWITTER},
         )
 
     # facebook
     def update_facebook_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     def activate_facebook_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     def deactivate_facebook_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     def insert_facebook_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     def remove_facebook_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     def insert_facebook_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     def remove_facebook_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_FACEBOOK},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_FACEBOOK},
         )
 
     # youtube
     def update_youtube_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     def activate_youtube_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     def deactivate_youtube_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     def insert_youtube_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     def remove_youtube_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     def insert_youtube_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     def remove_youtube_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_YOUTUBE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_YOUTUBE},
         )
 
     # github
     def update_github_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     def activate_github_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     def deactivate_github_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     def insert_github_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     def remove_github_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     def insert_github_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     def remove_github_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITHUB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITHUB},
         )
 
     # gitlab
     def update_gitlab_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     def activate_gitlab_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     def deactivate_gitlab_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     def insert_gitlab_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     def remove_gitlab_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     def insert_gitlab_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     def remove_gitlab_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_GITLAB},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_GITLAB},
         )
 
     # stackoverflow
     def update_stackoverflow_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW},
         )
 
     def activate_stackoverflow_url(self):
@@ -934,7 +965,7 @@ class Profile(models.Model):
             "profiles_activate_child_object",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW,
+                "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW,
             },
         )
 
@@ -943,7 +974,7 @@ class Profile(models.Model):
             "profiles_deactivate_child_object",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW,
+                "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW,
             },
         )
 
@@ -952,7 +983,7 @@ class Profile(models.Model):
             "profiles_insert_child_activation_button",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW,
+                "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW,
             },
         )
 
@@ -961,7 +992,7 @@ class Profile(models.Model):
             "profiles_remove_child_activation_button",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW,
+                "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW,
             },
         )
 
@@ -970,7 +1001,7 @@ class Profile(models.Model):
             "profiles_insert_child_or_field_help_modal",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW,
+                "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW,
             },
         )
 
@@ -979,7 +1010,7 @@ class Profile(models.Model):
             "profiles_remove_child_or_field_help_modal",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW,
+                "slug":SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW,
             },
         )
 
@@ -987,349 +1018,349 @@ class Profile(models.Model):
     def update_medium_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     def activate_medium_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     def deactivate_medium_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     def insert_medium_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     def remove_medium_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     def insert_medium_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     def remove_medium_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_MEDIUM},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_MEDIUM},
         )
 
     # orcid
     def update_orcid_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     def activate_orcid_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     def deactivate_orcid_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     def insert_orcid_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     def remove_orcid_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     def insert_orcid_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     def remove_orcid_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_ORCID},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_ORCID},
         )
 
     # description
     def update_description_url(self):
         return reverse(
             "profiles_update_field",
-            kwargs={"pk": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     def activate_description_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     def deactivate_description_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     def insert_description_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     def remove_description_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     def insert_description_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     def remove_description_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_PROFILE_FIELD_DESCRIPTION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_PROFILE_FIELD_DESCRIPTION},
         )
 
     # skill
     def create_skill_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def insert_skill_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def remove_skill_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def activate_skill_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def deactivate_skill_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def insert_skill_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def remove_skill_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def insert_skill_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     def remove_skill_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_SKILL},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_SKILL},
         )
 
     # language
     def create_language_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def insert_language_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def remove_language_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def activate_language_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def deactivate_language_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def insert_language_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def remove_language_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def insert_language_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     def remove_language_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE},
         )
 
     # education
     def create_education_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def insert_education_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def remove_education_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def activate_education_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def deactivate_education_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def insert_education_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def remove_education_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def insert_education_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     def remove_education_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EDUCATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION},
         )
 
     # experience
     def create_experience_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def insert_experience_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def remove_experience_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def activate_experience_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def deactivate_experience_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def insert_experience_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def remove_experience_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def insert_experience_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     def remove_experience_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE},
         )
 
     # certification
@@ -1338,7 +1369,7 @@ class Profile(models.Model):
             "profiles_create_child_object",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1347,7 +1378,7 @@ class Profile(models.Model):
             "profiles_insert_child_new_form",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1356,7 +1387,7 @@ class Profile(models.Model):
             "profiles_remove_child_new_form",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1365,7 +1396,7 @@ class Profile(models.Model):
             "profiles_activate_child_object",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1374,7 +1405,7 @@ class Profile(models.Model):
             "profiles_deactivate_child_object",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1383,7 +1414,7 @@ class Profile(models.Model):
             "profiles_insert_child_activation_button",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1392,7 +1423,7 @@ class Profile(models.Model):
             "profiles_remove_child_activation_button",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1401,7 +1432,7 @@ class Profile(models.Model):
             "profiles_insert_child_or_field_help_modal",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1410,7 +1441,7 @@ class Profile(models.Model):
             "profiles_remove_child_or_field_help_modal",
             kwargs={
                 "pk_parent": self.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -1418,385 +1449,385 @@ class Profile(models.Model):
     def create_course_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def insert_course_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def remove_course_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def activate_course_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def deactivate_course_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def insert_course_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def remove_course_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def insert_course_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     def remove_course_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_COURSE},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_COURSE},
         )
 
     # honor
     def create_honor_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def insert_honor_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def remove_honor_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def activate_honor_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def deactivate_honor_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def insert_honor_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def remove_honor_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def insert_honor_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     def remove_honor_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_HONOR},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_HONOR},
         )
 
     # organization
     def create_organization_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def insert_organization_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def remove_organization_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def activate_organization_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def deactivate_organization_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def insert_organization_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def remove_organization_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def insert_organization_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     def remove_organization_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION},
         )
 
     # patent
     def create_patent_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def insert_patent_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def remove_patent_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def activate_patent_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def deactivate_patent_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def insert_patent_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def remove_patent_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def insert_patent_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     def remove_patent_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PATENT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PATENT},
         )
 
     # project
     def create_project_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def insert_project_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def remove_project_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def activate_project_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def deactivate_project_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def insert_project_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def remove_project_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def insert_project_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     def remove_project_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PROJECT},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PROJECT},
         )
 
     # publication
     def create_publication_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def insert_publication_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def remove_publication_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def activate_publication_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def deactivate_publication_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def insert_publication_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def remove_publication_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def insert_publication_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     def remove_publication_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION},
         )
 
     # volunteering
     def create_volunteering_object_url(self):
         return reverse(
             "profiles_create_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def insert_volunteering_new_form_url(self):
         return reverse(
             "profiles_insert_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def remove_volunteering_new_form_url(self):
         return reverse(
             "profiles_remove_child_new_form",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def activate_volunteering_url(self):
         return reverse(
             "profiles_activate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def deactivate_volunteering_url(self):
         return reverse(
             "profiles_deactivate_child_object",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def insert_volunteering_activation_button_url(self):
         return reverse(
             "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def remove_volunteering_activation_button_url(self):
         return reverse(
             "profiles_remove_child_activation_button",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def insert_volunteering_help_modal_url(self):
         return reverse(
             "profiles_insert_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     def remove_volunteering_help_modal_url(self):
         return reverse(
             "profiles_remove_child_or_field_help_modal",
-            kwargs={"pk_parent": self.pk, "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING},
+            kwargs={"pk_parent": self.pk, "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING},
         )
 
     # resume templates modal
@@ -1850,108 +1881,13 @@ class Profile(models.Model):
         return sum(count_array)
 
     # update any field
-    def update_field(self, label, request):
-
-        if label == LABEL_FOR_PROFILE_FIELD_FIRSTNAME:
-            self.firstname = request.POST.get("firstname")
-
-        if label == LABEL_FOR_PROFILE_FIELD_LASTNAME:
-            self.lastname = request.POST.get("lastname")
-
-        if label == LABEL_FOR_PROFILE_FIELD_JOBTITLE:
-            self.jobtitle = request.POST.get("jobtitle")
-
-        if label == LABEL_FOR_PROFILE_FIELD_LOCATION:
-            self.location = request.POST.get("location")
-
-        if label == LABEL_FOR_PROFILE_FIELD_BIRTH:
-            self.birth = request.POST.get("birth")
-
-        if label == LABEL_FOR_PROFILE_FIELD_PHONE:
-            self.phone = request.POST.get("phone")
-
-        if label == LABEL_FOR_PROFILE_FIELD_EMAIL:
-            self.email = request.POST.get("email")
-
-        if label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
-            self.website = request.POST.get("website")
-
-        if label == LABEL_FOR_PROFILE_FIELD_LINKEDIN:
-            self.linkedin = request.POST.get("linkedin")
-
-        if label == LABEL_FOR_PROFILE_FIELD_SKYPE:
-            self.skype = request.POST.get("skype")
-
-        if label == LABEL_FOR_PROFILE_FIELD_INSTAGRAM:
-            self.instagram = request.POST.get("instagram")
-
-        if label == LABEL_FOR_PROFILE_FIELD_TWITTER:
-            self.twitter = request.POST.get("twitter")
-
-        if label == LABEL_FOR_PROFILE_FIELD_FACEBOOK:
-            self.facebook = request.POST.get("facebook")
-
-        if label == LABEL_FOR_PROFILE_FIELD_YOUTUBE:
-            self.youtube = request.POST.get("youtube")
-
-        if label == LABEL_FOR_PROFILE_FIELD_GITHUB:
-            self.github = request.POST.get("github")
-
-        if label == LABEL_FOR_PROFILE_FIELD_GITLAB:
-            self.gitlab = request.POST.get("gitlab")
-
-        if label == LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW:
-            self.stackoverflow = request.POST.get("stackoverflow")
-
-        if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
-            self.medium = request.POST.get("medium")
-
-        if label == LABEL_FOR_PROFILE_FIELD_ORCID:
-            self.orcid = request.POST.get("orcid")
-
-        if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
-            self.description = request.POST.get("description")
-
-        if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION_LABEL:
-            self.description_label = request.POST.get("description_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_SKILL_LABEL:
-            self.skill_label = request.POST.get("skill_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE_LABEL:
-            self.language_label = request.POST.get("language_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_EDUCATION_LABEL:
-            self.education_label = request.POST.get("education_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE_LABEL:
-            self.experience_label = request.POST.get("experience_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION_LABEL:
-            self.certification_label = request.POST.get("certification_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_COURSE_LABEL:
-            self.course_label = request.POST.get("course_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_HONOR_LABEL:
-            self.honor_label = request.POST.get("honor_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION_LABEL:
-            self.organization_label = request.POST.get("organization_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_PATENT_LABEL:
-            self.patent_label = request.POST.get("patent_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_PROJECT_LABEL:
-            self.project_label = request.POST.get("project_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION_LABEL:
-            self.publication_label = request.POST.get("publication_label")
-
-        if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING_LABEL:
-            self.volunteering_label = request.POST.get("volunteering_label")
-
-        self.save()
+    def update_field(self, slug, request):        
+        try:
+            new_value = request.POST.get(PROFILE_FIELD_MAPPING[slug])
+            setattr(self, slug, new_value)
+            self.save()
+        except KeyError:
+            pass
 
     def crop_and_save_photo(self, x, y, width, height):
         if self.photo_full:
@@ -1981,6 +1917,17 @@ class Profile(models.Model):
                     img.save(self.photo_full.path)
             except:
                 pass
+
+
+# class Photo(models.Model):
+#     pass
+
+
+# class FirstName(models.Model):
+#     profile = models.OneToOneField(Profile, verbose_name=_(""), on_delete=models.CASCADE)
+#     name = models.CharField(max_length=100)
+#     active = models.BooleanField(default=True)
+
 
 
 class Skill(models.Model):
@@ -2016,7 +1963,7 @@ class Skill(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_SKILL,
+                "slug":SLUG_FOR_CHILD_OBJECT_SKILL,
             },
         )
 
@@ -2026,7 +1973,7 @@ class Skill(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_SKILL,
+                "slug":SLUG_FOR_CHILD_OBJECT_SKILL,
             },
         )
 
@@ -2065,7 +2012,7 @@ class Language(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE,
+                "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE,
             },
         )
 
@@ -2075,7 +2022,7 @@ class Language(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_LANGUAGE,
+                "slug":SLUG_FOR_CHILD_OBJECT_LANGUAGE,
             },
         )
 
@@ -2115,7 +2062,7 @@ class Education(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EDUCATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION,
             },
         )
 
@@ -2125,7 +2072,7 @@ class Education(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EDUCATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION,
             },
         )
 
@@ -2135,7 +2082,7 @@ class Education(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EDUCATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION,
             },
         )
 
@@ -2145,7 +2092,7 @@ class Education(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EDUCATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION,
             },
         )
 
@@ -2155,7 +2102,7 @@ class Education(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EDUCATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_EDUCATION,
             },
         )
 
@@ -2198,7 +2145,7 @@ class Experience(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE,
+                "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
             },
         )
 
@@ -2208,7 +2155,7 @@ class Experience(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE,
+                "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
             },
         )
 
@@ -2218,7 +2165,7 @@ class Experience(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE,
+                "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
             },
         )
 
@@ -2228,7 +2175,7 @@ class Experience(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE,
+                "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
             },
         )
 
@@ -2238,7 +2185,7 @@ class Experience(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_EXPERIENCE,
+                "slug":SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
             },
         )
 
@@ -2276,7 +2223,7 @@ class Certification(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -2286,7 +2233,7 @@ class Certification(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -2296,7 +2243,7 @@ class Certification(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -2306,7 +2253,7 @@ class Certification(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -2316,7 +2263,7 @@ class Certification(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_CERTIFICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
             },
         )
 
@@ -2355,7 +2302,7 @@ class Course(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_COURSE,
+                "slug":SLUG_FOR_CHILD_OBJECT_COURSE,
             },
         )
 
@@ -2365,7 +2312,7 @@ class Course(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_COURSE,
+                "slug":SLUG_FOR_CHILD_OBJECT_COURSE,
             },
         )
 
@@ -2375,7 +2322,7 @@ class Course(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_COURSE,
+                "slug":SLUG_FOR_CHILD_OBJECT_COURSE,
             },
         )
 
@@ -2385,7 +2332,7 @@ class Course(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_COURSE,
+                "slug":SLUG_FOR_CHILD_OBJECT_COURSE,
             },
         )
 
@@ -2395,7 +2342,7 @@ class Course(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_COURSE,
+                "slug":SLUG_FOR_CHILD_OBJECT_COURSE,
             },
         )
 
@@ -2434,7 +2381,7 @@ class Honor(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_HONOR,
+                "slug":SLUG_FOR_CHILD_OBJECT_HONOR,
             },
         )
 
@@ -2444,7 +2391,7 @@ class Honor(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_HONOR,
+                "slug":SLUG_FOR_CHILD_OBJECT_HONOR,
             },
         )
 
@@ -2454,7 +2401,7 @@ class Honor(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_HONOR,
+                "slug":SLUG_FOR_CHILD_OBJECT_HONOR,
             },
         )
 
@@ -2464,7 +2411,7 @@ class Honor(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_HONOR,
+                "slug":SLUG_FOR_CHILD_OBJECT_HONOR,
             },
         )
 
@@ -2474,7 +2421,7 @@ class Honor(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_HONOR,
+                "slug":SLUG_FOR_CHILD_OBJECT_HONOR,
             },
         )
 
@@ -2514,7 +2461,7 @@ class Organization(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
             },
         )
 
@@ -2524,7 +2471,7 @@ class Organization(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
             },
         )
 
@@ -2534,7 +2481,7 @@ class Organization(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
             },
         )
 
@@ -2544,7 +2491,7 @@ class Organization(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
             },
         )
 
@@ -2554,7 +2501,7 @@ class Organization(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_ORGANIZATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
             },
         )
 
@@ -2599,7 +2546,7 @@ class Patent(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PATENT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PATENT,
             },
         )
 
@@ -2609,7 +2556,7 @@ class Patent(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PATENT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PATENT,
             },
         )
 
@@ -2619,7 +2566,7 @@ class Patent(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PATENT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PATENT,
             },
         )
 
@@ -2629,7 +2576,7 @@ class Patent(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PATENT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PATENT,
             },
         )
 
@@ -2639,7 +2586,7 @@ class Patent(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PATENT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PATENT,
             },
         )
 
@@ -2680,7 +2627,7 @@ class Project(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PROJECT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PROJECT,
             },
         )
 
@@ -2690,7 +2637,7 @@ class Project(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PROJECT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PROJECT,
             },
         )
 
@@ -2700,7 +2647,7 @@ class Project(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PROJECT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PROJECT,
             },
         )
 
@@ -2710,7 +2657,7 @@ class Project(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PROJECT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PROJECT,
             },
         )
 
@@ -2720,7 +2667,7 @@ class Project(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PROJECT,
+                "slug":SLUG_FOR_CHILD_OBJECT_PROJECT,
             },
         )
 
@@ -2763,7 +2710,7 @@ class Publication(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION,
             },
         )
 
@@ -2773,7 +2720,7 @@ class Publication(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION,
             },
         )
 
@@ -2783,7 +2730,7 @@ class Publication(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION,
             },
         )
 
@@ -2793,7 +2740,7 @@ class Publication(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION,
             },
         )
 
@@ -2803,7 +2750,7 @@ class Publication(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_PUBLICATION,
+                "slug":SLUG_FOR_CHILD_OBJECT_PUBLICATION,
             },
         )
 
@@ -2847,7 +2794,7 @@ class Volunteering(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING,
+                "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
             },
         )
 
@@ -2857,7 +2804,7 @@ class Volunteering(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING,
+                "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
             },
         )
 
@@ -2867,7 +2814,7 @@ class Volunteering(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING,
+                "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
             },
         )
 
@@ -2877,7 +2824,7 @@ class Volunteering(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING,
+                "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
             },
         )
 
@@ -2887,7 +2834,7 @@ class Volunteering(models.Model):
             kwargs={
                 "pk": self.pk,
                 "pk_parent": self.profile.pk,
-                "label": LABEL_FOR_CHILD_OBJECT_VOLUNTEERING,
+                "slug":SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
             },
         )
 
@@ -2896,56 +2843,56 @@ class Volunteering(models.Model):
         super().save(*args, **kwargs)
 
 
-def get_child_class(label):
+def get_child_class(slug):
 
-    if label == LABEL_FOR_CHILD_OBJECT_SKILL:
+    if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
         return Skill
 
-    if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
+    if slug == SLUG_FOR_CHILD_OBJECT_LANGUAGE:
         return Language
 
-    if label == LABEL_FOR_CHILD_OBJECT_EDUCATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_EDUCATION:
         return Education
 
-    if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
+    if slug == SLUG_FOR_CHILD_OBJECT_EXPERIENCE:
         return Experience
 
-    if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_CERTIFICATION:
         return Certification
 
-    if label == LABEL_FOR_CHILD_OBJECT_COURSE:
+    if slug == SLUG_FOR_CHILD_OBJECT_COURSE:
         return Course
 
-    if label == LABEL_FOR_CHILD_OBJECT_HONOR:
+    if slug == SLUG_FOR_CHILD_OBJECT_HONOR:
         return Honor
 
-    if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_ORGANIZATION:
         return Organization
 
-    if label == LABEL_FOR_CHILD_OBJECT_PATENT:
+    if slug == SLUG_FOR_CHILD_OBJECT_PATENT:
         return Patent
 
-    if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
+    if slug == SLUG_FOR_CHILD_OBJECT_PROJECT:
         return Project
 
-    if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_PUBLICATION:
         return Publication
 
-    if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
+    if slug == SLUG_FOR_CHILD_OBJECT_VOLUNTEERING:
         return Volunteering
 
 
-def update_child_object(label=None, child_object=None, request=None):
+def update_child_object(slug=None, child_object=None, request=None):
 
-    if label == LABEL_FOR_CHILD_OBJECT_SKILL:
+    if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
         child_object.name = request.POST.get("name")
         child_object.level = request.POST.get("level")
 
-    if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
+    if slug == SLUG_FOR_CHILD_OBJECT_LANGUAGE:
         child_object.name = request.POST.get("name")
         child_object.level = request.POST.get("level")
 
-    if label == LABEL_FOR_CHILD_OBJECT_EDUCATION:  # education
+    if slug == SLUG_FOR_CHILD_OBJECT_EDUCATION:  # education
         child_object.title = request.POST.get("title")
         child_object.grade = request.POST.get("grade")
         child_object.start_date = request.POST.get("start_date")
@@ -2954,7 +2901,7 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.institution_link = request.POST.get("institution_link")
         child_object.description = request.POST.get("description")
 
-    if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
+    if slug == SLUG_FOR_CHILD_OBJECT_EXPERIENCE:
         child_object.title = request.POST.get("title")
         child_object.location = request.POST.get("location")
         child_object.company = request.POST.get("company")
@@ -2963,26 +2910,26 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")
 
-    if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_CERTIFICATION:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
         child_object.link = request.POST.get("link")
 
-    if label == LABEL_FOR_CHILD_OBJECT_COURSE:
+    if slug == SLUG_FOR_CHILD_OBJECT_COURSE:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
         child_object.hours = request.POST.get("hours")
         child_object.link = request.POST.get("link")
 
-    if label == LABEL_FOR_CHILD_OBJECT_HONOR:
+    if slug == SLUG_FOR_CHILD_OBJECT_HONOR:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.issuer = request.POST.get("issuer")
         child_object.link = request.POST.get("link")
 
-    if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_ORGANIZATION:
         child_object.role = request.POST.get("role")
         child_object.organization = request.POST.get("organization")
         child_object.organization_link = request.POST.get("organization_link")
@@ -2990,7 +2937,7 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.end_date = request.POST.get("end_date")
         child_object.description = request.POST.get("description")
 
-    if label == LABEL_FOR_CHILD_OBJECT_PATENT:
+    if slug == SLUG_FOR_CHILD_OBJECT_PATENT:
         child_object.title = request.POST.get("title")
         child_object.number = request.POST.get("number")
         child_object.issuer = request.POST.get("issuer")
@@ -2999,7 +2946,7 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
         child_object.description = request.POST.get("description")
 
-    if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
+    if slug == SLUG_FOR_CHILD_OBJECT_PROJECT:
         child_object.title = request.POST.get("title")
         child_object.role = request.POST.get("role")
         child_object.start_date = request.POST.get("start_date")
@@ -3008,7 +2955,7 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
         child_object.description = request.POST.get("description")
 
-    if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_PUBLICATION:
         child_object.title = request.POST.get("title")
         child_object.issuing_date = request.POST.get("issuing_date")
         child_object.authors = request.POST.get("authors")
@@ -3016,7 +2963,7 @@ def update_child_object(label=None, child_object=None, request=None):
         child_object.link = request.POST.get("link")
         child_object.description = request.POST.get("description")
 
-    if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
+    if slug == SLUG_FOR_CHILD_OBJECT_VOLUNTEERING:
         child_object.title = request.POST.get("title")
         child_object.location = request.POST.get("location")
         child_object.organization = request.POST.get("organization")
@@ -3028,136 +2975,136 @@ def update_child_object(label=None, child_object=None, request=None):
     child_object.save()
 
 
-def set_activation_state(label=None, object=None, active=True):
+def set_activation_state(slug=None, object=None, active=True):
 
-    if label == LABEL_FOR_PROFILE_FIELD_FIRSTNAME:
+    if slug == SLUG_FOR_PROFILE_FIELD_FIRSTNAME:
         object.firstname_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_LASTNAME:
+    if slug == SLUG_FOR_PROFILE_FIELD_LASTNAME:
         object.lastname_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_JOBTITLE:
+    if slug == SLUG_FOR_PROFILE_FIELD_JOBTITLE:
         object.jobtitle_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_LOCATION:
+    if slug == SLUG_FOR_PROFILE_FIELD_LOCATION:
         object.location_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_BIRTH:
+    if slug == SLUG_FOR_PROFILE_FIELD_BIRTH:
         object.birth_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_PHONE:
+    if slug == SLUG_FOR_PROFILE_FIELD_PHONE:
         object.phone_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_EMAIL:
+    if slug == SLUG_FOR_PROFILE_FIELD_EMAIL:
         object.email_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_DESCRIPTION:
+    if slug == SLUG_FOR_PROFILE_FIELD_DESCRIPTION:
         object.description_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_WEBSITE:
+    if slug == SLUG_FOR_PROFILE_FIELD_WEBSITE:
         object.website_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_LINKEDIN:
+    if slug == SLUG_FOR_PROFILE_FIELD_LINKEDIN:
         object.linkedin_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_SKYPE:
+    if slug == SLUG_FOR_PROFILE_FIELD_SKYPE:
         object.skype_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_INSTAGRAM:
+    if slug == SLUG_FOR_PROFILE_FIELD_INSTAGRAM:
         object.instagram_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_TWITTER:
+    if slug == SLUG_FOR_PROFILE_FIELD_TWITTER:
         object.twitter_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_FACEBOOK:
+    if slug == SLUG_FOR_PROFILE_FIELD_FACEBOOK:
         object.facebook_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_YOUTUBE:
+    if slug == SLUG_FOR_PROFILE_FIELD_YOUTUBE:
         object.youtube_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_GITHUB:
+    if slug == SLUG_FOR_PROFILE_FIELD_GITHUB:
         object.github_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_GITLAB:
+    if slug == SLUG_FOR_PROFILE_FIELD_GITLAB:
         object.gitlab_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_STACKOVERFLOW:
+    if slug == SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW:
         object.stackoverflow_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_MEDIUM:
+    if slug == SLUG_FOR_PROFILE_FIELD_MEDIUM:
         object.medium_active = active
 
-    if label == LABEL_FOR_PROFILE_FIELD_ORCID:
+    if slug == SLUG_FOR_PROFILE_FIELD_ORCID:
         object.orcid_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_SKILL:
+    if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
         object.skill_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_LANGUAGE:
+    if slug == SLUG_FOR_CHILD_OBJECT_LANGUAGE:
         object.language_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_EDUCATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_EDUCATION:
         object.education_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_EXPERIENCE:
+    if slug == SLUG_FOR_CHILD_OBJECT_EXPERIENCE:
         object.experience_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_CERTIFICATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_CERTIFICATION:
         object.certification_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_COURSE:
+    if slug == SLUG_FOR_CHILD_OBJECT_COURSE:
         object.course_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_HONOR:
+    if slug == SLUG_FOR_CHILD_OBJECT_HONOR:
         object.honor_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_ORGANIZATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_ORGANIZATION:
         object.organization_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_PATENT:
+    if slug == SLUG_FOR_CHILD_OBJECT_PATENT:
         object.patent_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_PROJECT:
+    if slug == SLUG_FOR_CHILD_OBJECT_PROJECT:
         object.project_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_PUBLICATION:
+    if slug == SLUG_FOR_CHILD_OBJECT_PUBLICATION:
         object.publication_active = active
 
-    if label == LABEL_FOR_CHILD_OBJECT_VOLUNTEERING:
+    if slug == SLUG_FOR_CHILD_OBJECT_VOLUNTEERING:
         object.volunteering_active = active
 
     object.save()
 
 
-def get_child_object(label=None, pk=None, profile=None):
+def get_child_object(slug=None, pk=None, profile=None):
     """
     This function gets an instance object
     """
-    Klass = get_child_class(label)
+    Klass = get_child_class(slug)
     return get_object_or_404(Klass, profile=profile, pk=pk)
 
 
-def create_empty_child_object(label=None, profile=None):
+def create_empty_child_object(slug=None, profile=None):
     """
     This function creates an empty object associated with a profile instance
     """
-    Klass = get_child_class(label)
+    Klass = get_child_class(slug)
     return Klass(profile=profile)
 
 
-def get_above_child_object(label=None, child_object=None, profile=None):
+def get_above_child_object(slug=None, child_object=None, profile=None):
     """
     This function gets an instance object that is located before the "child_object"
     """
-    Klass = get_child_class(label)
+    Klass = get_child_class(slug)
     return Klass.objects.filter(order__lt=child_object.order, profile=profile).last()
 
 
-def get_below_child_object(label=None, child_object=None, profile=None):
+def get_below_child_object(slug=None, child_object=None, profile=None):
     """
     This function gets an instance object that is located after the "child_object"
     """
-    Klass = get_child_class(label)
+    Klass = get_child_class(slug)
     return Klass.objects.filter(order__gt=child_object.order, profile=profile).first()
 
 

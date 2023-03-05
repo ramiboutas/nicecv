@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.test import TestCase
+from django.test import SimpleTestCase, override_settings
 
 
-class SettingsTest(TestCase):
+class SettingsTests(SimpleTestCase):
     def test_debug(self):
         assert settings.DEBUG == False
 

@@ -201,9 +201,9 @@ def save_personal_information_view(request, pk):
 
 
 # htmx - profile - update field
-def update_field_view(request, label, pk):
+def update_field_view(request, slug, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    object.update_field(label=label, request=request)
+    object.update_field(slug=slug, request=request)
     description = request.POST.get("description")
     object.description = description
     object.save()
@@ -233,13 +233,13 @@ def update_field_view(request, label, pk):
 # htmx - create child object
 @login_required
 @require_POST
-def create_child_object_view(request, label, pk_parent):
+def create_child_object_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = create_empty_child_object(label=label, profile=object)
-    update_child_object(label=label, child_object=child_object, request=request)
+    child_object = create_empty_child_object(slug=slug, profile=object)
+    update_child_object(slug=slug, child_object=child_object, request=request)
     context = {"object": object}
     try:
-        response = render(request, f"profiles/partials/{label}/main.html", context)
+        response = render(request, f"profiles/partials/{slug}/main.html", context)
         trigger_client_event(
             response,
             "profileUpdatedEvent",
@@ -253,10 +253,10 @@ def create_child_object_view(request, label, pk_parent):
 # htmx - update child object
 @login_required
 @require_POST
-def update_child_object_view(request, label, pk_parent, pk):
+def update_child_object_view(request, slug, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(label=label, pk=pk, profile=object)
-    update_child_object(label=label, child_object=child_object, request=request)
+    child_object = get_child_object(slug=slug, pk=pk, profile=object)
+    update_child_object(slug=slug, child_object=child_object, request=request)
     response = HttpResponse(status=200)
     trigger_client_event(
         response,
@@ -269,13 +269,13 @@ def update_child_object_view(request, label, pk_parent, pk):
 # htmx - delete child object
 @login_required
 @require_POST
-def delete_child_object_view(request, label, pk_parent, pk):
+def delete_child_object_view(request, slug, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(label=label, pk=pk, profile=object)
+    child_object = get_child_object(slug=slug, pk=pk, profile=object)
     child_object.delete()
     context = {"object": object}
     try:
-        response = render(request, f"profiles/partials/{label}/main.html", context)
+        response = render(request, f"profiles/partials/{slug}/main.html", context)
         trigger_client_event(
             response,
             "profileUpdatedEvent",
@@ -288,45 +288,45 @@ def delete_child_object_view(request, label, pk_parent, pk):
 
 # htmx - insert child new form
 @login_required
-def insert_child_new_form_view(request, label, pk_parent):
+def insert_child_new_form_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     context = {"object": object}
     try:
-        return render(request, f"profiles/partials/{label}/new_form.html", context)
+        return render(request, f"profiles/partials/{slug}/new_form.html", context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - remove child new form
 @login_required
-def remove_child_new_form_view(request, label, pk_parent):
+def remove_child_new_form_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     context = {"object": object}
     try:
-        return render(request, f"profiles/partials/{label}/new_button.html", context)
+        return render(request, f"profiles/partials/{slug}/new_button.html", context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - copy child object
 @login_required
-def copy_child_object_view(request, label, pk_parent, pk):
+def copy_child_object_view(request, slug, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(label=label, pk=pk, profile=object)
+    child_object = get_child_object(slug=slug, pk=pk, profile=object)
     try:
-        context = {"object": object, label: child_object}
-        return render(request, f"profiles/partials/{label}/new_form.html", context)
+        context = {"object": object, slug: child_object}
+        return render(request, f"profiles/partials/{slug}/new_form.html", context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - move up child object
 @login_required
-def move_up_child_object_view(request, label, pk_parent, pk):
+def move_up_child_object_view(request, slug, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(label=label, pk=pk, profile=object)
+    child_object = get_child_object(slug=slug, pk=pk, profile=object)
     above_child_object = get_above_child_object(
-        label=label, child_object=child_object, profile=object
+        slug=slug, child_object=child_object, profile=object
     )
     above_order = above_child_object.order
     above_child_object.order = child_object.order
@@ -335,7 +335,7 @@ def move_up_child_object_view(request, label, pk_parent, pk):
     child_object.save()
     context = {"object": object}
     try:
-        response = render(request, f"profiles/partials/{label}/main.html", context)
+        response = render(request, f"profiles/partials/{slug}/main.html", context)
         trigger_client_event(
             response,
             "profileUpdatedEvent",
@@ -348,11 +348,11 @@ def move_up_child_object_view(request, label, pk_parent, pk):
 
 # htmx - move down child object
 @login_required
-def move_down_child_object_view(request, label, pk_parent, pk):
+def move_down_child_object_view(request, slug, pk_parent, pk):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    child_object = get_child_object(label=label, pk=pk, profile=object)
+    child_object = get_child_object(slug=slug, pk=pk, profile=object)
     below_child_object = get_below_child_object(
-        label=label, child_object=child_object, profile=object
+        slug=slug, child_object=child_object, profile=object
     )
     below_order = below_child_object.order
     below_child_object.order = child_object.order
@@ -361,7 +361,7 @@ def move_down_child_object_view(request, label, pk_parent, pk):
     child_object.save()
     context = {"object": object}
     try:
-        response = render(request, f"profiles/partials/{label}/main.html", context)
+        response = render(request, f"profiles/partials/{slug}/main.html", context)
         trigger_client_event(
             response,
             "profileUpdatedEvent",
@@ -374,15 +374,15 @@ def move_down_child_object_view(request, label, pk_parent, pk):
 
 # htmx - activate child or profile field
 @login_required
-def activate_child_or_field_view(request, label, pk_parent):
+def activate_child_or_field_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    set_activation_state(label=label, object=object, active=True)
+    set_activation_state(slug=slug, object=object, active=True)
     context = {"object": object}
     try:
-        response = render(request, f"profiles/partials/{label}/main.html", context)
+        response = render(request, f"profiles/partials/{slug}/main.html", context)
         trigger_client_event(
             response,
-            f"{label}ActivatedEvent",
+            f"{slug}ActivatedEvent",
             {},
         )
         return response
@@ -392,13 +392,13 @@ def activate_child_or_field_view(request, label, pk_parent):
 
 # htmx - deactivate child or profile field
 @login_required
-def deactivate_child_or_field_view(request, label, pk_parent):
+def deactivate_child_or_field_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
-    set_activation_state(label=label, object=object, active=False)
+    set_activation_state(slug=slug, object=object, active=False)
     response = HttpResponse(status=200)
     trigger_client_event(
         response,
-        f"{label}DeactivatedEvent",
+        f"{slug}DeactivatedEvent",
         {},
     )
     return response
@@ -406,12 +406,12 @@ def deactivate_child_or_field_view(request, label, pk_parent):
 
 # htmx - insert activation button
 @login_required
-def insert_child_activation_button_view(request, label, pk_parent):
+def insert_child_activation_button_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     context = {"object": object}
     try:
         response = render(
-            request, f"profiles/partials/{label}/activation_button.html", context
+            request, f"profiles/partials/{slug}/activation_button.html", context
         )
         trigger_client_event(
             response,
@@ -425,7 +425,7 @@ def insert_child_activation_button_view(request, label, pk_parent):
 
 # htmx - remove the activation button
 @login_required
-def remove_child_activation_button_view(request, label, pk_parent):
+def remove_child_activation_button_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     response = HttpResponse(status=200)
     trigger_client_event(
@@ -438,18 +438,18 @@ def remove_child_activation_button_view(request, label, pk_parent):
 
 # htmx - insert help modal
 @login_required
-def insert_child_or_field_help_modal_view(request, label, pk_parent):
+def insert_child_or_field_help_modal_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     context = {"object": object}
     try:
-        return render(request, f"profiles/partials/{label}/help_modal.html", context)
+        return render(request, f"profiles/partials/{slug}/help_modal.html", context)
     except:
         return HttpResponseServerError()
 
 
 # htmx - remove help modal
 @login_required
-def remove_child_or_field_help_modal_view(request, label, pk_parent):
+def remove_child_or_field_help_modal_view(request, slug, pk_parent):
     object = get_object_or_404(Profile, pk=pk_parent, user=request.user)
     return HttpResponse(status=200)
 

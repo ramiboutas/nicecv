@@ -9,24 +9,22 @@ from django.urls import re_path
 
 
 urlpatterns = [
-    # Django admin
+    # Django
     path("admin/", admin.site.urls),
-    # i18n
     path("i18n/", include("django.conf.urls.i18n")),
-    # User management
+    
+    # Third-party apps
     path("accounts/", include("allauth.urls")),
-    path("accounts/", include("accounts.urls")),  # this just for my-account url
+    path("rosetta/", include("rosetta.urls")),
+
     # My own apps
-    path("", include("core.urls")),
+    path("accounts/", include("accounts.urls")),  # this just for my-account url
     path("subscriptions/", include("subscriptions.urls")),
     path("profiles/", include("profiles.urls")),
     path("texfiles/", include("texfiles.urls")),
-    # translation tool
-    path("rosetta/", include("rosetta.urls")),
+    path("", include("core.urls")),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls)),]
