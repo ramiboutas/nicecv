@@ -11,6 +11,7 @@
 <!-- when jobtitle is deactivated, insert the jobtitle button -->
 <div hx-get="{{ object.insert_jobtitle_activation_button_url }}" hx-target="#jobtitle-activation-button" hx-swap="innerHTML"
     hx-trigger="jobtitleDeactivatedEvent from:body"></div>
+    
 <!-- when jobtitle is activated, remove  the jobtitle button -->
 <div hx-get="{{ object.remove_jobtitle_activation_button_url }}" hx-target="#jobtitle-activation-button" hx-swap="innerHTML"
     hx-trigger="jobtitleActivatedEvent from:body"></div>

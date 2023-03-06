@@ -26,14 +26,9 @@ urlpatterns = [
         delete_object_view,
         name="profiles_delete_object",
     ),
-    # # htmx - save personal information
-    # path('save-personal-information/<uuid:pk>/', save_personal_information_view, name='profiles_save_personal_information'),
-    #
-    # # htmx - update description
-    # path('update-description/<uuid:pk>/', update_description_view, name='profiles_update_description'),
-    # htmx - update any field
+    
     path(
-        "update-field/<str:label>/<uuid:pk>/",
+        "update-field/<str:slug>/<uuid:pk>/",
         update_field_view,
         name="profiles_update_field",
     ),
@@ -92,49 +87,49 @@ from .views import move_up_child_object_view, move_down_child_object_view
 urlpatterns += [
     # htmx - insert child new form
     path(
-        "insert-new-form/<str:label>/<uuid:pk_parent>/",
+        "insert-new-form/<str:slug>/<uuid:pk_parent>/",
         insert_child_new_form_view,
         name="profiles_insert_child_new_form",
     ),
     # htmx - remove child new form
     path(
-        "remove-new-form/<str:label>/<uuid:pk_parent>/",
+        "remove-new-form/<str:slug>/<uuid:pk_parent>/",
         remove_child_new_form_view,
         name="profiles_remove_child_new_form",
     ),
     # htmx - create child object
     path(
-        "create-object/<str:label>/<uuid:pk_parent>/",
+        "create-object/<str:slug>/<uuid:pk_parent>/",
         create_child_object_view,
         name="profiles_create_child_object",
     ),
     # htmx - update child object
     path(
-        "update-object/<str:label>/<uuid:pk_parent>/<int:pk>/",
+        "update-object/<str:slug>/<uuid:pk_parent>/<int:pk>/",
         update_child_object_view,
         name="profiles_update_child_object",
     ),
     # htmx - move up child object
     path(
-        "move-up-child/<str:label>/<uuid:pk_parent>/<int:pk>/",
+        "move-up-child/<str:slug>/<uuid:pk_parent>/<int:pk>/",
         move_up_child_object_view,
         name="profiles_move_up_child_object",
     ),
     # htmx - move down child object
     path(
-        "move-down-child/<str:label>/<uuid:pk_parent>/<int:pk>/",
+        "move-down-child/<str:slug>/<uuid:pk_parent>/<int:pk>/",
         move_down_child_object_view,
         name="profiles_move_down_child_object",
     ),
     # htmx - copy child object
     path(
-        "copy-child/<str:label>/<uuid:pk_parent>/<int:pk>/",
+        "copy-child/<str:slug>/<uuid:pk_parent>/<int:pk>/",
         copy_child_object_view,
         name="profiles_copy_child_object",
     ),
     # htmx - delete child object
     path(
-        "delete-child/<str:label>/<uuid:pk_parent>/<int:pk>/",
+        "delete-child/<str:slug>/<uuid:pk_parent>/<int:pk>/",
         delete_child_object_view,
         name="profiles_delete_child_object",
     ),
@@ -150,25 +145,25 @@ from .views import (
 urlpatterns += [
     # htmx - activate object
     path(
-        "activate-child-or-field/<str:label>/<uuid:pk_parent>/",
+        "activate-child-or-field/<str:slug>/<uuid:pk_parent>/",
         activate_child_or_field_view,
         name="profiles_activate_child_object",
     ),
     # htmx - deactivate object
     path(
-        "deactivate-child-or-field/<str:label>/<uuid:pk_parent>/",
+        "deactivate-child-or-field/<str:slug>/<uuid:pk_parent>/",
         deactivate_child_or_field_view,
         name="profiles_deactivate_child_object",
     ),
     # htmx - insert_child_activation_button
     path(
-        "insert-activation-button/<str:label>/<uuid:pk_parent>/",
+        "insert-activation-button/<str:slug>/<uuid:pk_parent>/",
         insert_child_activation_button_view,
         name="profiles_insert_child_activation_button",
     ),
     # htmx - remove_child_activation_button
     path(
-        "remove-activation-button/<str:label>/<uuid:pk_parent>/",
+        "remove-activation-button/<str:slug>/<uuid:pk_parent>/",
         remove_child_activation_button_view,
         name="profiles_remove_child_activation_button",
     ),
@@ -184,13 +179,13 @@ from .views import (
 urlpatterns += [
     # htmx - insert help modal
     path(
-        "insert-child-or-field-help-modal/<str:label>/<uuid:pk_parent>/",
+        "insert-child-or-field-help-modal/<str:slug>/<uuid:pk_parent>/",
         insert_child_or_field_help_modal_view,
         name="profiles_insert_child_or_field_help_modal",
     ),
     # htmx - remove help modal
     path(
-        "remove-child-or-field-help-modal/<str:label>/<uuid:pk_parent>/",
+        "remove-child-or-field-help-modal/<str:slug>/<uuid:pk_parent>/",
         remove_child_or_field_help_modal_view,
         name="profiles_remove_child_or_field_help_modal",
     ),

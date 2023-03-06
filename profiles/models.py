@@ -371,10 +371,9 @@ class Profile(models.Model):
         )
 
     def insert_jobtitle_activation_button_url(self):
-        return reverse(
-            "profiles_insert_child_activation_button",
-            kwargs={"pk_parent": self.pk, "slug": SLUG_FOR_PROFILE_FIELD_JOBTITLE},
-        )
+        return reverse('profiles_insert_child_activation_button',
+                kwargs={'pk_parent':self.pk, 'slug': SLUG_FOR_PROFILE_FIELD_JOBTITLE}
+                )
 
     def remove_jobtitle_activation_button_url(self):
         return reverse(
