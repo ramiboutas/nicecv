@@ -5,17 +5,13 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from accounts.factories import UserFactory
+
+
 User = get_user_model()
 today = datetime.date.today()
 delta_month = datetime.timedelta(days=30)
 
-
-def create_user(user="user", email="user@email.com", password="userpass123"):
-    return User.objects.create(
-        username=user,
-        email=email,
-        password=password,
-    )
 
 
 def create_superuser(
@@ -27,11 +23,11 @@ def create_superuser(
         password=password,
     )
 
-
+@pytest.mark.django_db
 class CustomUserTests(TestCase):
-    @pytest.mark.django_db
+    
     def test_standard_user(self):
-        user = create_user()
+        user = UserFactory()
         assert user.username == "user"
         assert user.email == "user@email.com"
         assert user.password, "myuserpass123"
@@ -39,7 +35,7 @@ class CustomUserTests(TestCase):
         assert user.is_staff == False
         assert user.is_superuser == False
 
-    @pytest.mark.django_db
+
     def test_superuser(self):
         superuser = create_superuser()
         assert superuser.username == "superuser"
@@ -48,41 +44,41 @@ class CustomUserTests(TestCase):
         assert superuser.is_active == True
         assert superuser.is_staff == True
 
-    @pytest.mark.django_db
+
     def test_has_premium_with_user_just_created(self):
-        user = create_user()
+        user = UserFactory()
         assert user.has_premium() == False
 
-    @pytest.mark.django_db
+
     def test_has_premium_with_paid_until_none(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = None
         user.save()
         assert user.has_premium() == False
 
-    @pytest.mark.django_db
+
     def test_has_premium_with_paid_until_today(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = today
         user.save()
         assert user.has_premium() == True
 
-    @pytest.mark.django_db
+
     def test_has_premium_with_paid_until_expired(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = today - delta_month
         user.save()
         assert user.has_premium() == False
 
-    @pytest.mark.django_db
+    
     def test_has_premium_with_plan(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = today + delta_month
         user.save()
         assert user.has_premium() == True
 
     def test_set_paid_until_with_user_just_created(self):
-        user = create_user()
+        user = UserFactory()
         paid_months = 2
         user.set_paid_until(months=paid_months)
         assert user.has_premium() == True
@@ -91,7 +87,7 @@ class CustomUserTests(TestCase):
         )
 
     def test_set_paid_until_with_paid_until_in_the_past(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = today - delta_month
         paid_months = 2
         user.set_paid_until(months=paid_months)
@@ -100,7 +96,7 @@ class CustomUserTests(TestCase):
         )
 
     def test_set_paid_until_with_paid_until_today(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = today
         paid_months = 2
         user.set_paid_until(months=paid_months)
@@ -109,7 +105,7 @@ class CustomUserTests(TestCase):
         )
 
     def test_set_paid_until_with_paid_until_in_the_future(self):
-        user = create_user()
+        user = UserFactory()
         user.paid_until = today + delta_month
         paid_months = 2
         user.set_paid_until(months=paid_months)

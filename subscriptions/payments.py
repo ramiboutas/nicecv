@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Order
 from .models import Plan
-
+from accounts.models import CustomUser
 
 def fulfill_order(user_id: int = None, plan_id: int = None):
     # fulfills the order and assigns premium to user.
@@ -20,10 +20,10 @@ def fulfill_order(user_id: int = None, plan_id: int = None):
         plan = Plan.objects.get(id=plan_id)
     except Plan.DoesNotExist:
         return False
+    
     try:
-        user = User.objects.get(id=user_id)
-
-    except User.DoesNotExist:
+        user = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
         return False
     
     Order(plan=plan, user=user).save()

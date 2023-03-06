@@ -2,6 +2,9 @@ import factory
 
 from accounts.factories import UserFactory
 
+
+
+
 class PlanFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "subscriptions.Plan" 
@@ -12,7 +15,6 @@ class PlanFactory(factory.django.DjangoModelFactory):
     price = 10.0
     saving = 2.0
     stripe_product_id = "111"
-
 
 
 class OrderFactory(factory.django.DjangoModelFactory):

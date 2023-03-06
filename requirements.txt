@@ -85,7 +85,9 @@ exceptiongroup==1.1.0
 execnet==1.9.0
     # via pytest-xdist
 factory-boy==3.2.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   pytest-factoryboy
 faker==17.6.0
     # via factory-boy
 flake8==5.0.4
@@ -96,6 +98,8 @@ hiredis==2.0.0
     # via -r requirements.in
 idna==3.4
     # via requests
+inflection==0.5.1
+    # via pytest-factoryboy
 iniconfig==2.0.0
     # via pytest
 jinja2==3.1.2
@@ -142,11 +146,14 @@ pytest==7.2.1
     # via
     #   pytest-cov
     #   pytest-django
+    #   pytest-factoryboy
     #   pytest-reverse
     #   pytest-xdist
 pytest-cov==4.0.0
     # via -r requirements.in
 pytest-django==4.5.2
+    # via -r requirements.in
+pytest-factoryboy==2.5.1
     # via -r requirements.in
 pytest-reverse==1.5.0
     # via -r requirements.in
@@ -190,6 +197,8 @@ tomli==2.0.1
     #   pytest
 types-cryptography==3.3.23.1
     # via pyjwt
+typing-extensions==4.5.0
+    # via pytest-factoryboy
 urllib3==1.26.12
     # via requests
 vine==5.0.0
