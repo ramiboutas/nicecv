@@ -1,5 +1,6 @@
 import stripe
 from django.conf import settings
+from django.urls import reverse
 from django.db.models import Model
 from django.utils.translation import gettext_lazy as _
 
