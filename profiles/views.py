@@ -526,7 +526,6 @@ def download_resume_image_view(request, pk_parent, pk):
 
 from django_tex.shortcuts import render_to_pdf
 from texfiles.models import ResumeTemplate
-from utils.generate_strings import actual_datetime_string
 
 
 def generate_resume_testing_view(request, pk):
@@ -539,5 +538,5 @@ def generate_resume_testing_view(request, pk):
         request,
         template_name,
         context,
-        filename=actual_datetime_string() + "_" + template_name + "_test.pdf",
+        filename= f"{template_name}_test.pdf",
     )

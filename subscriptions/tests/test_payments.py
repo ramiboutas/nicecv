@@ -20,24 +20,23 @@ class FulfillOrderTests(TestCase):
         ok = fulfill_order(user_id=1, plan_id=None)
         assert ok == False
     
-    @pytest.mark.django_db(transaction=True)
     def test_fulfill_order_with_plan_id_and_user_id(self):
         user = UserFactory()
         plan = PlanFactory()
         ok = fulfill_order(user_id=user.id, plan_id=plan.id)
         assert ok == True
     
-    @pytest.mark.django_db(transaction=True)
+    
     def test_fulfill_order_with_user_that_does_not_exist(self):
         plan = PlanFactory()
         ok = fulfill_order(user_id=1000, plan_id=plan.id)
         assert ok == False
     
-    @pytest.mark.django_db(transaction=True)
     def test_fulfill_order_with_plan_that_does_not_exist(self):
         user = UserFactory()
         ok = fulfill_order(user_id=user.id, plan_id=1000)
         assert ok == False
+
 
 
 

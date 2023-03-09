@@ -16,7 +16,6 @@ from .models import Resume
 from celery_progress_htmx.backend import ProgressRecorder
 from texfiles.models import ResumeTemplate
 
-# from utils.files import get_tex_template_name
 
 
 @shared_task(bind=True)
@@ -31,8 +30,6 @@ def create_resume_objects(self, pk=None):
 
     profile.resumes.all().delete()
     for count, resume_template_object in enumerate(resume_template_objects):
-        # get the template name
-        # template_name = get_tex_template_name(resume_template_object)
         template_name = resume_template_object.template_name
         context = {"object": profile}
 

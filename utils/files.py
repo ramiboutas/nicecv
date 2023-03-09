@@ -1,4 +1,4 @@
-import os
+
 import zipfile
 from io import BytesIO
 from pathlib import Path
@@ -6,21 +6,12 @@ from pathlib import Path
 from django.conf import settings
 
 
-def delete_path_file(path):
+def delete_path_file(file_path:Path=None) -> None:
     """
     This deletes a file from path (File System)
     """
-    if os.path.isfile(path):
-        os.remove(path)
-
-
-def get_tex_template_name(file_obj):
-    """
-    This get a Tex file which is used as a template (str obj) for jinja2
-    """
-    template_name_abs = Path(file_obj.file.path)
-    template_name_rel = template_name_abs.relative_to(settings.MEDIA_ROOT)
-    return str(template_name_rel)
+    if file_path:
+        file_path.unlink()
 
 
 def generate_zip(files):
