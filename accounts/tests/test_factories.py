@@ -1,12 +1,11 @@
 import pytest
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from ..factories import UserFactory
 from ..models import CustomUser
 
-class UserFactoryTests(TestCase):
 
+class UserFactoryTests(TestCase):
     @pytest.mark.django_db
     def test_default_user_factory(self):
         user = UserFactory()
@@ -19,4 +18,3 @@ class UserFactoryTests(TestCase):
     def test_model_instance(self):
         user = CustomUser.objects.get(pk=UserFactory().pk)
         assert user.username == UserFactory.username
-

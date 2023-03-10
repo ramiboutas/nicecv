@@ -6,18 +6,16 @@ from django.utils.translation import gettext_lazy as _
 from .forms import CustomUserChangeForm
 from .forms import CustomUserCreationForm
 
-CustomUser = get_user_model()
 
-
-@admin.register(CustomUser)
+@admin.register(get_user_model())
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
-    models = CustomUser
+    models = get_user_model()
     list_display = [
         "email",
         "username",
-        "has_premium",
+        "has_active_plan",
     ]
     fieldsets = (
         (
@@ -40,7 +38,7 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
-        (_("Premium"), {"fields": ("paid_until",)}),
+        (_("Premium"), {"fields": ("paid_until", "actual_plan")}),
         (
             _("Permissions"),
             {

@@ -1,15 +1,19 @@
 import os
-import sys
 from pathlib import Path
 
 import dotenv
+from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
-
 
 # Setup
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+TEMP_DIR = BASE_DIR / "temp"
+
+TESTS_TEMP_DIR = TEMP_DIR / "tests"
+
 
 # Load env vars from .env file
 dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
@@ -45,6 +49,28 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # My own apps
+    "accounts.apps.AccountsConfig",
+    "core.apps.CoreConfig",
+    "plans.apps.PlansConfig",
+    "profiles.apps.ProfilesConfig",
+    "tex.apps.TexConfig",
+    # Wagtail apps
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
+    "wagtail",
+    "taggit",
+    "modelcluster",
+
+    # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -52,12 +78,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    # My own apps
-    "accounts.apps.AccountsConfig",
-    "core.apps.CoreConfig",
-    "subscriptions.apps.SubscriptionsConfig",
-    "profiles.apps.ProfilesConfig",
-    "texfiles.apps.TexfilesConfig",
     # Third-party apps
     "rosetta",
     "allauth",
@@ -71,10 +91,10 @@ INSTALLED_APPS = [
     "django_tex",
     "celery_progress_htmx",
     "django_celery_results",
-    "analytical",
     # 'djstripe',
     # Tools for debug
     "debug_toolbar",
+    "django_browser_reload",
 ]
 
 # Authentication
@@ -142,7 +162,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # wagtails middlewares
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     # third-party middlewares
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
@@ -163,8 +186,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 # my own context processors
-                "utils.context_processors.nicecv",
-                "texfiles.context_processors.texfiles",
+                "tex.context_processors.tex_objects",
             ],
             "debug": DEBUG,
         },
@@ -177,13 +199,12 @@ TEMPLATES = [
         ),
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "texfiles.environment.my_environment",
+            "environment": "tex.environment.my_environment",
         },
     },
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 
 # Database
@@ -269,8 +290,8 @@ GEOIP_PATH = BASE_DIR / "geoip2dbs"
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = (str(BASE_DIR.joinpath("static_dev")),)
-STATIC_ROOT = str(BASE_DIR.joinpath("static"))  # for production
+STATICFILES_DIRS = (str(BASE_DIR.joinpath("static")),)
+STATIC_ROOT = str(BASE_DIR.joinpath("static-files"))
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -281,7 +302,6 @@ MEDIA_ROOT = BASE_DIR.joinpath("media")
 MEDIA_URL = "/media/"
 
 # Message tags
-from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {messages.ERROR: "danger"}
 
@@ -325,20 +345,11 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = (
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 
-# SEO, Meta data & Naming
-# 'utils.context_processors.nicecv
-SITE_NAME = _("Nice CV")
-META_KEYWORDS = _("nice cv, professional, resume, jobs, good impressions")
-META_DESCRIPTION = _(
-    "Nice CV online lets you to create high quality CVs and related services"
-)
 
+# Wagtail
+WAGTAIL_SITE_NAME = 'Nice CV'
+WAGTAILADMIN_BASE_URL = "htttps://www.nicecv.online"
 
-# profile settings
-
-RESUME_IMAGE_DIRECTORY = "resumes/images"
-RESUME_PDF_DIRECTORY = "resumes/pdfs"
-RESUME_IMAGE_FORMAT = "jpg"
 
 
 # LaTex settings

@@ -1,15 +1,10 @@
-{% load static %}
-{% load i18n %}
-{% load django_htmx %}
-{% load analytical %}
-{% load google_analytics_gtag %}
+{% load static i18n %}
+{% load django_htmx django_browser_reload %}
 {% get_current_language as LANGUAGE_CODE %}
 
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
-        {% analytical_head_top %}
-        {% google_analytics_gtag %}
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,26 +20,23 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-avatar@latest/dist/avatar.min.css" rel="stylesheet">
 
         <!-- my custom css -->
-        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}">
 
         <!-- for more css in a specific page -->
         {% block css %}{% endblock %}
 
-        <!-- seo-->
-        <meta name="description" content="{{ meta_description }}">
-        <meta name="keywords" content="{{ meta_keywords }}">
-
-        <title>{{ site_name }} {% block title %} {% endblock %}</title>
-        {% analytical_head_bottom %}
+        <title>Nice CV{% block title %} {% endblock %}</title>
     </head>
     <body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-        {% analytical_body_top %}
+
         {% block body %}
             {% include "_messages.html" %}
             {% include "_header.html" %}
             {% block content %}{% endblock %}
-        {% endblock %}
-
+        {% endblock %} 
+        
+        <h1 class="text-3xl font-bold underline hover:bg-gray-300">Hello world!</h1>
+        
         {% include "_footer.html" %}
 
         {% block extra_body %}  {% endblock %}
@@ -52,17 +44,15 @@
         <!-- my JavaScript files -->
         <script src="{% static 'js/base.js' %}"></script>
 
-
         <!-- htmx -->
         <script src="https://unpkg.com/htmx.org@1.6.0"></script>
         <!--  Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
 
-
-
-        <!-- django-htmx comes with a small JavaScript extension for htmx’s behaviour. Currently the extension only includes a debug error handler, documented below.The script is served as a static file called django-htmx.js, but you shouldn’t reference it directly. Instead, use the included template tags, for both Django and Jinja templates. -->
         {% django_htmx_script %}
+        {% django_browser_reload_script %}
 
-        {% analytical_body_bottom %}
     </body>
 </html>

@@ -26,7 +26,6 @@ urlpatterns = [
         delete_object_view,
         name="profiles_delete_object",
     ),
-    
     path(
         "update-field/<str:slug>/<uuid:pk>/",
         update_field_view,

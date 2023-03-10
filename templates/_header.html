@@ -18,9 +18,9 @@
                         <li class="nav-item mx-3">
                             <a class="nav-link text-primary" href="{% url 'profiles_list' %}">{% translate 'My profiles'%}</a>
                         </li>
-                        {% if not user.has_premium %}
+                        {% if not user.has_active_plan %}
                             <li class="nav-item me-3">
-                                <a class="nav-link text-primary" href="{% url 'subscriptions_plans' %}">{% translate 'Get premium!'%}</a>
+                                <a class="nav-link text-primary" href="{% url 'plans:list' %}">{% translate 'Get premium!'%}</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -69,7 +69,7 @@
                         </li>
 
                         <li class="nav-item mx-3">
-                            <a class="nav-link" href="{% url 'subscriptions_plans' %}">{% translate 'Pricing'%}</a>
+                            <a class="nav-link" href="{% url 'plans:list' %}">{% translate 'Pricing'%}</a>
                         </li>
 
                     </ul>

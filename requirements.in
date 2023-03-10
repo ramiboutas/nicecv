@@ -13,7 +13,6 @@ django-tex
 django-celery-results
 django-analytical
 python-dotenv
-django-debug-toolbar
 psycopg2-binary
 pytest-cov
 pytest-xdist
@@ -27,3 +26,8 @@ autopep8
 gunicorn
 redis
 hiredis
+wagtail
+
+django-browser-reload
+django-debug-toolbar
+pyclean

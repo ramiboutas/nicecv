@@ -29,9 +29,7 @@ from .models import set_activation_state
 from .models import update_child_object
 from .tasks import create_resume_objects
 from celery_progress_htmx.backend import Progress
-from utils.files import delete_path_file
-
-User = get_user_model()
+from utils.files import delete_file
 
 
 class ProfileListView(LoginRequiredMixin, ListView):
@@ -161,8 +159,8 @@ def crop_photo_view(request, pk):
 @require_POST
 def delete_photos_view(request, pk):
     object = get_object_or_404(Profile, pk=pk, user=request.user)
-    delete_path_file(object.photo_full.path)
-    delete_path_file(object.photo.path)
+    delete_file(object.photo_full.path)
+    delete_file(object.photo.path)
     object.photo_full.delete()
     object.photo.delete()
     return HttpResponse(status=200)
@@ -525,7 +523,7 @@ def download_resume_image_view(request, pk_parent, pk):
 
 
 from django_tex.shortcuts import render_to_pdf
-from texfiles.models import ResumeTemplate
+from tex.models import ResumeTemplate
 
 
 def generate_resume_testing_view(request, pk):
@@ -538,5 +536,5 @@ def generate_resume_testing_view(request, pk):
         request,
         template_name,
         context,
-        filename= f"{template_name}_test.pdf",
+        filename=f"{template_name}_test.pdf",
     )

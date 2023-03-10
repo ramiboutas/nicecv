@@ -1,6 +1,5 @@
 import logging
 import os
-import random
 
 from celery import shared_task
 from django.conf import settings
@@ -8,14 +7,12 @@ from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from django_tex.core import compile_template_to_pdf
-from pdf2image import convert_from_bytes
 from pdf2image import convert_from_path
 
 from .models import Profile
 from .models import Resume
 from celery_progress_htmx.backend import ProgressRecorder
-from texfiles.models import ResumeTemplate
-
+from tex.models import ResumeTemplate
 
 
 @shared_task(bind=True)
@@ -44,9 +41,7 @@ def create_resume_objects(self, pk=None):
         )
         resume_file.save()
 
-        resume_image_dir = os.path.join(
-            settings.MEDIA_ROOT, settings.RESUME_IMAGE_DIRECTORY
-        )
+        resume_image_dir = os.path.join(settings.MEDIA_ROOT, "resumes/images")
         if not os.path.exists(resume_image_dir):
             os.mkdir(resume_image_dir)
 
@@ -70,14 +65,11 @@ def create_resume_objects(self, pk=None):
             os.path.basename(resume_file.pdf.name)
         )
         new_resume_image_path = "{}.{}".format(
-            os.path.join(resume_image_dir, pdf_filename), settings.RESUME_IMAGE_FORMAT
+            os.path.join(resume_image_dir, pdf_filename), "jpg"
         )
         # rename the file that was saved to be the same as the pdf file
         os.rename(resume_image.filename, new_resume_image_path)
         # get the relative path to the resume image to store in model
-        new_resume_image_path_relative = "{}.{}".format(
-            os.path.join(settings.RESUME_IMAGE_DIRECTORY, pdf_filename),
-            settings.RESUME_IMAGE_FORMAT,
-        )
+        new_resume_image_path_relative = "{}.{}".format(os.path.join("resumes/images", pdf_filename), "jpg")
         resume_file.image = new_resume_image_path_relative
         resume_file.save()

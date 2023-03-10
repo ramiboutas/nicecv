@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load l10n %}
+
+{% block title %} | {% translate "Pricing" %}  {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <h1>{% translate "Pricing" %}</h1>
+
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            <div class="col-lg-4 col-md-4">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">{% translate "Free" %}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title"> 0,00 € </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>{% translate "1 profile" %}</li>
+                            <li>{% translate "5 CV downloads" %}</li>
+                        </ul>
+                        {% if not user.is_authenticated %}
+                            <a href="{% url 'account_login' %}" class="w-100 btn btn-lg btn-outline-primary">{% translate "Log in" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-8 col-md-8">
+                <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                    <div class="card-header py-3 text-white bg-primary border-primary">
+                        <h4 class="my-0 fw-normal">{% trans "Premium" %}</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form class="mt-4 mb-2" action="{% url 'plans:payments_proceed_with_checkout' %}" method="post">
+                            {% csrf_token %}
+                            {% for month in months %}
+                                <div class="form-check form-check-inline">
+                                    <p class="text-capitalize h5 text-muted">
+                                        <input class="form-check-input" type="radio" name="months" id="inlineRadio{{month}}" value="{{month}}"
+                                            hx-get="{% url 'plans:pricing_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML"
+                                            {% if month == plan.months %}checked{% endif %}>
+                                        <label class="form-check-label" for="inlineRadio{{month}}">
+                                            {{ month }} month{{ month|pluralize }}
+                                        </p>
+                                    </label>
+                                </div>
+                            {% endfor %}
+
+
+                            <div id="pro-price">
+                                {% include "plans/partials/price.html" %}
+                            </div>
+
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>{% translate "Unlimited profiles" %}</li>
+                                <li>{% translate "Unlimited CV downloads" %}</li>
+                                <li>{% translate "Cover letters" %}</li>
+                                <li>{% translate "Support" %}</li>
+
+                            </ul>
+
+                            <div id="proceed-with-payment">
+                                {% if user.is_authenticated %}
+                                    <button hx-get="{% url 'plans:pricing_get_payment_methods' %}"
+                                        hx-target="#proceed-with-payment" class="w-100 btn btn-lg btn-primary">
+                                        {% if user.has_active_plan %}
+                                            {% translate "Extend" %}
+                                        {% else %}
+                                            {% translate "Select plan" %}
+                                        {% endif %}
+                                    </button>
+                                    {% if user.has_active_plan %}
+                                        <small>
+                                        {% blocktranslate with expire_date=user.paid_until %}
+                                            You have a premium plan until {{ expire_date }}
+                                        {% endblocktranslate %}
+                                        <small>
+                                        {% endif %}
+                                {% else %}
+                                    <a href="{% url 'plans:pricing_get_payment_methods' %}" class="w-100 btn btn-lg btn-primary">
+                                        {% translate "Sign in to start" %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+

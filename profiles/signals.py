@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import Resume
-from utils.files import delete_path_file
+from utils.files import delete_file
 
 
 @receiver(post_delete, sender=Resume)
@@ -12,8 +12,8 @@ def delete_resumes(sender, instance, **kwargs):
     Delete resume files
     """
     try:
-        delete_path_file(instance.image.path)
-        delete_path_file(instance.pdf.path)
+        delete_file(instance.image.path)
+        delete_file(instance.pdf.path)
     except:
         pass
 

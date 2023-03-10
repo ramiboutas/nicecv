@@ -121,3 +121,7 @@ GitHub.sublime-settings
 
 # Secrets
 secrets.txt
+
+
+# npm
+node_modules

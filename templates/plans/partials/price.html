@@ -1,0 +1,9 @@
+{% load i18n %}
+<h2  class="card-title pricing-card-title">{{ plan.price }} €</h2>
+{% if plan.saving > 0 %}
+    <p class="card-text text-primary">
+        {% blocktranslate with saving=plan.saving %}
+            Saving {{ saving }} €
+        {% endblocktranslate %}
+    </p>
+{% endif %}
