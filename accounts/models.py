@@ -9,9 +9,7 @@ from plans.models import Plan
 class CustomUser(AbstractUser):
     paid_until = models.DateField(null=True, blank=True)
     avatar_url = models.URLField(null=True, blank=True)
-    actual_plan = models.OneToOneField(
-        Plan, null=True, blank=True, on_delete=models.SET_NULL
-    )
+    plan = models.OneToOneField(Plan, null=True, blank=True, on_delete=models.SET_NULL)
 
     def has_active_plan(self):
         if self.paid_until is None:
@@ -19,7 +17,7 @@ class CustomUser(AbstractUser):
         return self.paid_until >= datetime.date.today()
 
     def set_plan(self, plan: Plan):
-        self.actual_plan = plan
+        self.plan = plan
         today = datetime.date.today()
         extra = datetime.timedelta(days=(365.25 / 12) * plan.months)
 

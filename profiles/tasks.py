@@ -70,6 +70,8 @@ def create_resume_objects(self, pk=None):
         # rename the file that was saved to be the same as the pdf file
         os.rename(resume_image.filename, new_resume_image_path)
         # get the relative path to the resume image to store in model
-        new_resume_image_path_relative = "{}.{}".format(os.path.join("resumes/images", pdf_filename), "jpg")
+        new_resume_image_path_relative = "{}.{}".format(
+            os.path.join("resumes/images", pdf_filename), "jpg"
+        )
         resume_file.image = new_resume_image_path_relative
         resume_file.save()

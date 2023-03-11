@@ -2,59 +2,54 @@
 # See https://pre-commit.com/hooks.html for more hooks
 
 default_language_version:
-    python: python3.8
+  python: python3.11
 
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
     exclude: migrations/*
--   repo: https://github.com/psf/black
-    rev: 22.12.0
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
     hooks:
-    - id: black
+      - id: black
     exclude: migrations/*
--   repo: https://github.com/asottile/reorder_python_imports
+  - repo: https://github.com/asottile/reorder_python_imports
     rev: v3.9.0
     hooks:
-    - id: reorder-python-imports
+      - id: reorder-python-imports
     args:
-    - --py37-plus
-    - --add-import
-    - 'from __future__ import annotations'
+      - --py37-plus
+      - --add-import
+      - "from __future__ import annotations"
     exclude: migrations/*
--   repo: https://github.com/PyCQA/flake8
+  - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
-    - id: flake8
+      - id: flake8
     additional_dependencies:
-        - flake8-bugbear
-        - flake8-comprehensions
-        - flake8-tidy-imports
-        - flake8-typing-imports
+      - flake8-bugbear
+      - flake8-comprehensions
+      - flake8-tidy-imports
+      - flake8-typing-imports
     exclude: migrations/*
--   repo: https://github.com/asottile/pyupgrade
+  - repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
     hooks:
-    -   id: pyupgrade
+      - id: pyupgrade
     exclude: migrations/*
--   repo: https://github.com/adamchainz/django-upgrade
-    rev: "1.12.0"  # replace with latest tag on GitHub
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: "1.12.0" # replace with latest tag on GitHub
     hooks:
-    -   id: django-upgrade
-        args: [--target-version, "4.0"]   # Replace with Django version
+      - id: django-upgrade
+        args: [--target-version, "4.1"] # Replace with Django version
     exclude: migrations/*
--   repo: https://github.com/thibaudcolas/curlylint
-    rev: v0.13.1
+  - repo: https://github.com/Riverside-Healthcare/djLint
+    rev: v1.19.16
     hooks:
-    - id: curlylint
--   repo: https://github.com/rtts/djhtml
-    rev: v1.5.2
-    hooks:
-    - id: djhtml
-    args:
-    - --tabwidth=2
+      - id: djlint-django
+        args: [--profile, django, --ignore, "T003", --reformat] #  ""

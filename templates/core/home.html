@@ -1,24 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
-{% block title %} | {% translate "Home" %}  {% endblock %}
-
+{% block title %}
+    | {% translate "Home" %}
+{% endblock %}
 {% block content %}
     <main>
-
         <div class="position-relative overflow-hidden text-center bg-light">
             <div class="col-md-5 p-lg-5 mx-auto my-5 b">
-                <h1 class="display-1 fw-normal text-primary">{% translate "Nice CV" %} </h1>
-                <p class="lead fw-normal my-5">
-                    {% translate "Create a profile and download any templates you like" %}
-                </p>
-                <a href="{% url 'account_login' %}" class="btn btn-lg btn-primary me-2 w-50">{% translate 'Start'%}</a>
+                <h1 class="display-1 fw-normal text-primary">{% translate "Nice CV" %}</h1>
+                <p class="lead fw-normal my-5">{% translate "Create a profile and download any templates you like" %}</p>
+                <a href="{% url 'account_login' %}"
+                   class="btn btn-lg btn-primary me-2 w-50">{% translate 'Start' %}</a>
             </div>
         </div>
-
         <div class="container bg-white">
-            <h2 class="text-center my-5" >{% trans "Templates" %}</h2>
+            <h2 class="text-center my-5">{% translate "Templates" %}</h2>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {% for resume_template in resume_templates %}
                     <div class="col">
@@ -29,9 +26,6 @@
                 {% endfor %}
             </div>
         </div>
-        
-
     </div>
-    </main>
-
+</main>
 {% endblock %}

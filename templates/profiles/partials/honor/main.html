@@ -2,142 +2,225 @@
 <div id="honor-box" class="mt-5">
     {% if object.honor_active %}
         <!--
-    <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
-      <i class="bi bi-award"></i> {% trans "Honors and awards" %}
+      <i class="bi bi-award"></i> {% translate "Honors and awards" %}
 
-      <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.deactivate_honor_url }}" hx-target="#honor-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate honors and awards' %}">
+      <button class="btn btn-outline-secondary border-0 float-end" hx-post="{{ object.deactivate_honor_url }}" hx-target="#honor-box" hx-swap="innerHTML" data-bs-toggle="tooltip" data-bs-placement="right" title="{% translate 'Deactivate honors and awards' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 
-      <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.insert_honor_help_modal_url }}" hx-target="#modals-here"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+      <button class="btn btn-outline-secondary border-0 float-end" hx-post="{{ object.insert_honor_help_modal_url }}" hx-target="#modals-here" data-bs-toggle="tooltip" data-bs-placement="right" title="{% translate 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
 
     </h6>
     -->
-        <h6  class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+        <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0"><i class="bi bi-award"></i></span>
+                    <span class="input-group-text bg-white border-0"><i class="bi bi-award"></i
+                    ></span>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text" name="honor_label" value="{{ object.honor_label }}"
-                    hx-post="{{ object.update_honor_slug_url }}" hx-trigger="change" hx-swap="none">
-
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       name="honor_label"
+                       value="{{ object.honor_label }}"
+                       hx-post="{{ object.update_honor_slug_url }}"
+                       hx-trigger="change"
+                       hx-swap="none"/>
                 <button class="btn btn-outline-secondary border-0 float-end"
-                    hx-get="{{ object.insert_honor_help_modal_url }}" hx-target="#modals-here"
-                    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+                        hx-get="{{ object.insert_honor_help_modal_url }}"
+                        hx-target="#modals-here"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="{% translate 'Get information about this field' %}">
                     <i class="bi bi-info-circle"></i>
                 </button>
-
                 <button class="btn btn-outline-secondary border-0 float-end"
-                    hx-post="{{ object.deactivate_honor_url }}" hx-target="#honor-box" hx-swap="innerHTML"
-                    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate honors' %}">
+                        hx-post="{{ object.deactivate_honor_url }}"
+                        hx-target="#honor-box"
+                        hx-swap="innerHTML"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="{% translate 'Deactivate honors' %}">
                     <i class="bi bi-eye-slash"></i>
                 </button>
             </div>
         </h6>
-
         {% for honor in object.honor_set.all %}
-            <form hx-post="{{ honor.update_object_url }}" hx-trigger="change" hx-swap="none">
-                <div id="honor-{{ honor.pk }}"  class="bg-light my-4">
-
+            <form hx-post="{{ honor.update_object_url }}"
+                  hx-trigger="change"
+                  hx-swap="none">
+                <div id="honor-{{ honor.pk }}" class="bg-light my-4">
                     <!--buttons -->
                     <div class="row">
                         <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move up' %}"
-                                hx-post="{{ honor.move_up_object_url }}" hx-target="#honor-box" hx-swap="outerHTML"
-                                {% if forloop.first %}disabled{% endif %}>
+                            <button
+                                class="btn btn-outline-secondary border-0 w-100"
+                                type="button"
+                                name="button"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                title="{% translate 'Move up' %}"
+                                hx-post="{{ honor.move_up_object_url }}"
+                                hx-target="#honor-box"
+                                hx-swap="outerHTML"
+                                {%
+                                if
+                                forloop.first
+                                %}disabled{%
+                                endif
+                                %}
+                                >
                                 <i class="bi bi-arrow-up"></i>
                             </button>
                         </div>
                         <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Move down' %}"
-                                hx-post="{{ honor.move_down_object_url }}" hx-target="#honor-box" hx-swap="outerHTML"
-                                {% if forloop.last %}disabled{% endif %}>
+                            <button
+                                class="btn btn-outline-secondary border-0 w-100"
+                                type="button"
+                                name="button"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right"
+                                title="{% translate 'Move down' %}"
+                                hx-post="{{ honor.move_down_object_url }}"
+                                hx-target="#honor-box"
+                                hx-swap="outerHTML"
+                                {%
+                                if
+                                forloop.last
+                                %}disabled{%
+                                endif
+                                %}
+                                >
                                 <i class="bi bi-arrow-down"></i>
                             </button>
                         </div>
                         <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Copy' %}"
-                                hx-post="{{ honor.copy_object_url }}" hx-target="#honor-new" hx-swap="innerHTML">
+                            <button class="btn btn-outline-secondary border-0 w-100"
+                                    type="button"
+                                    name="button"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="right"
+                                    title="{% translate 'Copy' %}"
+                                    hx-post="{{ honor.copy_object_url }}"
+                                    hx-target="#honor-new"
+                                    hx-swap="innerHTML">
                                 <i class="bi bi-files"></i>
                             </button>
                         </div>
                         <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
-                                hx-post="{{ honor.delete_object_url }}" hx-target="#honor-box" hx-swap="outerHTML">
+                            <button class="btn btn-outline-secondary border-0 w-100"
+                                    type="button"
+                                    name="button"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="right"
+                                    title="{% translate 'Remove' %}"
+                                    hx-post="{{ honor.delete_object_url }}"
+                                    hx-target="#honor-box"
+                                    hx-swap="outerHTML">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </div>
                     </div>
-
                     <!--title and issuing_date -->
                     <div class="row">
                         <div class="col-8">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text border-0"><i class="bi bi-award"></i></span>
+                                    <span class="input-group-text border-0"><i class="bi bi-award"></i
+                                    ></span>
                                 </div>
-                                <input class="form-control border-0 bg-light" type="text"
-                                    placeholder="{% trans 'Title, e.g: Award in a local photography competition' %}"
-                                    name="title" maxlength="{{max_length_normal}}"
-                                    {% if honor.title %}value="{{ honor.title }}"{% endif %}>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
+                                <input
+                                    class="form-control border-0 bg-light"
+                                    type="text"
+                                    placeholder="{% translate 'Title, e.g: Award in a local photography competition' %}"
+                                    name="title"
+                                    maxlength="{{ max_length_normal }}"
+                                    {%
+                                    if
+                                    honor.title
+                                    %}value="{{ honor.title }}"
+                                    {%
+                                    endif
+                                    %}
+                                    />
                                 </div>
-                                <input class="form-control border-0 bg-light" type="text"
-                                    placeholder="{% trans 'Issuing date, e.g. 2019' %}"
-                                    name="issuing_date" maxlength="{{max_length_super_short}}"
-                                    {% if honor.issuing_date %}value="{{ honor.issuing_date }}"{% endif %}>
                             </div>
-                        </div>
-                    </div>
-
-                    <!--issuer and hours -->
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i
+                                        ></span>
+                                    </div>
+                                    <input
+                                        class="form-control border-0 bg-light"
+                                        type="text"
+                                        placeholder="{% translate 'Issuing date, e.g. 2019' %}"
+                                        name="issuing_date"
+                                        maxlength="{{ max_length_super_short }}"
+                                        {%
+                                        if
+                                        honor.issuing_date
+                                        %}value="{{ honor.issuing_date }}"
+                                        {%
+                                        endif
+                                        %}
+                                        />
+                                    </div>
                                 </div>
-                                <input class="form-control border-0 bg-light" type="text"
-                                    placeholder="{% trans 'Issuer, e.g: City Hall of Madrid' %}"
-                                    name="issuer" maxlength="{{max_length_normal}}"
-                                    {% if honor.issuer %}value="{{ honor.issuer }}"{% endif %}>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
+                            <!--issuer and hours -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0"><i class="bi bi-building"></i
+                                            ></span>
+                                        </div>
+                                        <input
+                                            class="form-control border-0 bg-light"
+                                            type="text"
+                                            placeholder="{% translate 'Issuer, e.g: City Hall of Madrid' %}"
+                                            name="issuer"
+                                            maxlength="{{ max_length_normal }}"
+                                            {%
+                                            if
+                                            honor.issuer
+                                            %}value="{{ honor.issuer }}"
+                                            {%
+                                            endif
+                                            %}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text border-0"><i class="bi bi-link"></i
+                                                ></span>
+                                            </div>
+                                            <input
+                                                class="form-control border-0 bg-light"
+                                                type="text"
+                                                placeholder="{% translate 'honor link (optional)' %}"
+                                                name="link"
+                                                maxlength="{{ max_length_normal }}"
+                                                {%
+                                                if
+                                                honor.link
+                                                %}value="{{ honor.link }}"
+                                                {%
+                                                endif
+                                                %}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <input class="form-control border-0 bg-light" type="text"
-                                    placeholder="{% trans 'honor link (optional)' %}"
-                                    name="link" maxlength="{{max_length_normal}}"
-                                    {% if honor.link %}value="{{ honor.link }}"{% endif %}>
-                            </div>
-                        </div>
-                    </div>
-
+                            </form>
+                        {% endfor %}
+                        <div id="honor-new">{% include "profiles/partials/honor/new_button.html" %}</div>
+                    {% endif %}
                 </div>
-            </form>
-        {% endfor %}
-
-        <div id="honor-new">
-            {% include "profiles/partials/honor/new_button.html" %}
-        </div>
-    {% endif %}
-</div>

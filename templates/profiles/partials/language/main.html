@@ -2,71 +2,88 @@
 <div id="language-box" class="mt-5">
     {% if object.language_active %}
         <!--
-    <h6  class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
-      <i class="bi bi-chat-quote"></i> {% trans "Languages" %}
+      <i class="bi bi-chat-quote"></i> {% translate "Languages" %}
 
-      <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.deactivate_language_url }}" hx-target="#language-box" hx-swap="innerHTML"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate languages' %}">
+      <button class="btn btn-outline-secondary border-0 float-end" hx-post="{{ object.deactivate_language_url }}" hx-target="#language-box" hx-swap="innerHTML" data-bs-toggle="tooltip" data-bs-placement="right" title="{% translate 'Deactivate languages' %}">
         <i class="bi bi-eye-slash"></i>
       </button>
 
-      <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.insert_language_help_modal_url }}" hx-target="#modals-here"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+      <button class="btn btn-outline-secondary border-0 float-end" hx-post="{{ object.insert_language_help_modal_url }}" hx-target="#modals-here" data-bs-toggle="tooltip" data-bs-placement="right" title="{% translate 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
 
     </h6>
-  -->
-
-        <h6  class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+-->
+        <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0"><i class="bi bi-chat-quote"></i></span>
+                    <span class="input-group-text bg-white border-0"><i class="bi bi-chat-quote"></i
+                    ></span>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text" name="language_label" value="{{ object.language_label }}"
-                    hx-post="{{ object.update_language_slug_url }}" hx-trigger="change" hx-swap="none">
-
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       name="language_label"
+                       value="{{ object.language_label }}"
+                       hx-post="{{ object.update_language_slug_url }}"
+                       hx-trigger="change"
+                       hx-swap="none"/>
                 <button class="btn btn-outline-secondary border-0 float-end"
-                    hx-get="{{ object.insert_language_help_modal_url }}" hx-target="#modals-here"
-                    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+                        hx-get="{{ object.insert_language_help_modal_url }}"
+                        hx-target="#modals-here"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="{% translate 'Get information about this field' %}">
                     <i class="bi bi-info-circle"></i>
                 </button>
-
                 <button class="btn btn-outline-secondary border-0 float-end"
-                    hx-post="{{ object.deactivate_language_url }}" hx-target="#language-box" hx-swap="innerHTML"
-                    data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate languages' %}">
+                        hx-post="{{ object.deactivate_language_url }}"
+                        hx-target="#language-box"
+                        hx-swap="innerHTML"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="{% translate 'Deactivate languages' %}">
                     <i class="bi bi-eye-slash"></i>
                 </button>
             </div>
         </h6>
-
         {% for language in object.language_set.all %}
-            <form hx-post="{{ language.update_object_url }}" hx-trigger="change" hx-swap="none">
-                <div id="language-{{ language.pk }}" class="input-group mb-3"  >
+            <form hx-post="{{ language.update_object_url }}"
+                  hx-trigger="change"
+                  hx-swap="none">
+                <div id="language-{{ language.pk }}" class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text border-0"><i class="bi bi-chat-quote"></i></span>
+                        <span class="input-group-text border-0"><i class="bi bi-chat-quote"></i
+                        ></span>
                     </div>
-                    <input class="form-control border-0 bg-white"  type="text" name="name" value="{{language.name}}">
-                    <input  class="form-control form-range border-0 bg-white mt-2" type="range" name="level" value="{{language.level}}">
+                    <input class="form-control border-0 bg-white"
+                           type="text"
+                           name="name"
+                           value="{{ language.name }}"/>
+                    <input class="form-control form-range border-0 bg-white mt-2"
+                           type="range"
+                           name="level"
+                           value="{{ language.level }}"/>
                     <!--
           <select class="form-control form-select border-0" name="level">
              {% for value, showing_name in profile_level_choices %}
-              <option value="{{value}}" {% if language.level == value %} selected {% endif %}>{{showing_name}}</option>
+              <option value="{{value}}" {% if language.level == value %} selected{% endif %}>{{showing_name}}</option>
              {% endfor %}
           </select>
           -->
-                    <button class="btn btn-outline-secondary  border-0"
-                        hx-post="{{ language.delete_object_url }}" hx-target="#language-box" hx-swap="outerHTML"
-                        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this language' %}"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-outline-secondary border-0"
+                            hx-post="{{ language.delete_object_url }}"
+                            hx-target="#language-box"
+                            hx-swap="outerHTML"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="{% translate 'Remove this language' %}">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </div>
             </form>
         {% endfor %}
-
-        <div id="language-new">
-            {% include "profiles/partials/language/new_button.html" %}
-        </div>
+        <div id="language-new">{% include "profiles/partials/language/new_button.html" %}</div>
     {% endif %}
 </div>

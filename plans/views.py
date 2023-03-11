@@ -1,43 +1,26 @@
 import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 
 from .models import Plan
+from .models import PlanFAQ
 from .payments import create_stripe_session
 from .payments import fulfill_order
 
 
 def plan_list(request):
-    plan = Plan.objects.get(default=True)
-    month_list = Plan.objects.values_list("months", flat=True)
-    context = {"plan": plan, "months": month_list}
+    context = {
+        "plans": Plan.objects.all(),
+        "FAQs": PlanFAQ.objects.filter(active=True),
+    }
     return render(request, "plans/plan_list.html", context)
-
-
-@login_required
-def hx_get_payment_methods_view(request):
-    if request.htmx:
-        return render(request, "plans/partials/payment-methods.html")
-    return redirect("plans_plans")
-
-
-def hx_update_price_view(request):
-    if request.htmx:
-        months = request.GET.get("months")
-        plan = Plan.objects.get(months=int(months))
-        context = {"plan": plan}
-        return render(request, "plans/partials/price.html", context)
-    return redirect("plans_plans")
 
 
 @login_required
@@ -53,19 +36,8 @@ def payment_failed_view(request):
     return redirect("plans_plans")
 
 
-@login_required
-@require_POST
-def proceed_with_payment_view(request):
-    payment_method = request.POST.get("payment_method")
-
-    if payment_method == "card":
-        return stripe_checkout_view(request)
-
-    elif payment_method == "paypal":
-        return paypal_checkout_view(request)
-
-    messages.error(request, _("Somethig wrong happened, please try again or later"))
-    return redirect("plans_plans")
+def paypal_checkout_view():
+    pass
 
 
 @login_required

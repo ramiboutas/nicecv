@@ -34,7 +34,9 @@ class WebSocketProgressRecorder(ProgressRecorder):
             )
         except AttributeError:  # No channel layer to send to, so ignore it
             pass
-        except RuntimeError as e:  # We're sending messages too fast for asgiref to handle, drop it
+        except (
+            RuntimeError
+        ) as e:  # We're sending messages too fast for asgiref to handle, drop it
             if (
                 final and channel_layer
             ):  # Send error back to post-run handler for a retry

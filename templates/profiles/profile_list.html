@@ -1,40 +1,59 @@
 {% extends "base.html" %}
-
 {% load i18n %}
-
-{% block head_title %}{% trans "My profiles" %}{% endblock %}
-
+{% block head_title %}
+    {% translate
+    "My profiles" %}
+{% endblock %}
 {% block content %}
     <div class="container">
-
-        <h1 class="display-4 text-center my-5" >{% trans "My profiles" %}</h1>
-
+        <h1 class="display-4 text-center my-5">{% translate "My profiles" %}</h1>
         {% for object in object_list %}
-            <div id="object_{{object.pk}}" class="container my-5">
+            <div id="object_{{ object.pk }}" class="container my-5">
                 <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
-                        <h1 class="display-6 fw-bold lh-1">{% if object.firstname or object.lastname %}{{ object.get_full_name }}{% endif %}</h1>
-                        <p class="lead"> {% if object.description %}{{ object.description|truncatewords:100 }}{% endif %}</p>
+                        <h1 class="display-6 fw-bold lh-1">
+                            {% if object.firstname or object.lastname %}
+                                {{ object.get_full_name
+                                }}
+                            {% endif %}
+                        </h1>
+                        <p class="lead">
+                            {% if object.description %}
+                                {{ object.description|truncatewords:100
+                                }}
+                            {% endif %}
+                        </p>
                         <small>{{ object.pk }}</small>
                     </div>
                     <div class="col-lg-4 offset-lg-1 p-0">
-                        <a type="button" href="{{ object.get_update_url }}" class="btn btn-outline-success btn-lg px-4 me-md-2 fw-bold">{% trans "Edit" %}</a>
-                        <a type="button" href="{{ object.get_resume_file_list_url }}" class="btn btn-outline-primary btn-lg px-4 me-md-2 fw-bold">{% trans "View resumes" %}</a>
-                        <a type="button" class="btn btn-outline-danger btn-lg px-4"
-                            hx-post="{{ object.delete_object_url }}" hx-target="#object_{{object.pk}}" hx-swap="outerHTML"
-                            hx-confirm="{% trans 'Are you sure to delete this profile?' %}">
-                            {% trans "Delete" %}
-                        </a>
+                        <a type="button"
+                           href="{{ object.get_update_url }}"
+                           class="btn btn-outline-success btn-lg px-4 me-md-2 fw-bold">{% translate "Edit" %}</a
+                            >
+                            <a type="button"
+                               href="{{ object.get_resume_file_list_url }}"
+                               class="btn btn-outline-primary btn-lg px-4 me-md-2 fw-bold">{% translate "View resumes" %}</a
+                                >
+                                <a type="button"
+                                   class="btn btn-outline-danger btn-lg px-4"
+                                   hx-post="{{ object.delete_object_url }}"
+                                   hx-target="#object_{{ object.pk }}"
+                                   hx-swap="outerHTML"
+                                   hx-confirm="{% translate 'Are you sure to delete this profile?' %}">
+                                    {% translate "Delete" %}
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                {% empty %}
+                    <div class="container my-5">
+                        <div class="d-flex justify-content-center">
+                            <p class="fs-2 display-6">
+                                <a href="{% url 'profiles_new' %}">{% translate "Create your first profile" %}</a
+                                    >
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
-        {% empty %}
-            <div class="container my-5">
-                <div class="d-flex  justify-content-center">
-                    <p class="fs-2 display-6"><a href="{% url 'profiles_new' %}">{% trans "Create your first profile" %}</a></p>
-                </div>
-            </div>
-        {% endfor %}
-
-    </div>
-{% endblock %}
+            {% endblock %}

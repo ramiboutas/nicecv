@@ -4,6 +4,7 @@ pillow
 stripe
 factory-boy
 django==4.1.7
+django-auto-prefetch
 django-rosetta
 django-allauth
 django-htmx
@@ -22,12 +23,18 @@ django-coverage-plugin
 pdf2image
 flake8
 coverage
-autopep8
 gunicorn
 redis
 hiredis
 wagtail
+boto3
+django-storages
+django-money[exchange]
+django-modeltranslation
 
-django-browser-reload
 django-debug-toolbar
 pyclean
+pylint
+autopep8
+black
+pylint-django

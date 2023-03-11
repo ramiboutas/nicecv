@@ -5,20 +5,27 @@
             <div class="input-group-prepend">
                 <span class="input-group-text border-0"><i class="bi bi-github"></i></span>
             </div>
-            <input class="form-control border-0 bg-white" type="text" name="github"
-                placeholder="{% trans 'GitHub' %}"
-                hx-post="{{ object.update_github_url }}" hx-trigger="change" hx-swap="none"
-                {% if object.github %} value="{{object.github}}" {% endif %} maxlength="50">
+            <input class="form-control border-0 bg-white"
+                   type="text"
+                   name="github"
+                   placeholder="{% translate 'GitHub' %}"
+                   hx-post="{{ object.update_github_url }}"
+                   hx-trigger="change"
+                   hx-swap="none"
+                   {% if object.github %} value="{{ object.github }}"{% endif %}
+                   maxlength="50">
             <!--
-      <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.insert_github_help_modal_url }}" hx-target="#modals-here"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+      <button class="btn btn-outline-secondary border-0 float-end" hx-post="{{ object.insert_github_help_modal_url }}" hx-target="#modals-here" data-bs-toggle="tooltip" data-bs-placement="right" title="{% translate 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
       -->
             <button class="btn btn-outline-secondary  border-0"
-                hx-post="{{ object.deactivate_github_url }}" hx-target="#github-box" hx-swap="innerHTML"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate github' %}">
+                    hx-post="{{ object.deactivate_github_url }}"
+                    hx-target="#github-box"
+                    hx-swap="innerHTML"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    title="{% translate 'Deactivate github' %}">
                 <i class="bi bi-eye-slash"></i>
             </button>
         </div>

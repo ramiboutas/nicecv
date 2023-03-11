@@ -1,5 +1,6 @@
 import uuid
 
+import auto_prefetch
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
@@ -9,7 +10,6 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
-User = get_user_model()
 
 # slugs. Used in urls (slug) & in templates  (profiles/partials/slug/file.html)
 SLUG_FOR_PROFILE_FIELD_FIRSTNAME = "firstname"
@@ -113,13 +113,13 @@ def manage_instance_ordering(self):
             pass  # exception if objects do not exist
 
 
-class Profile(models.Model):
+class Profile(auto_prefetch.Model):
     """
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(
+    user = auto_prefetch.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         related_name="profile_set",
@@ -1920,30 +1920,30 @@ class Profile(models.Model):
                 pass
 
 
-# class Photo(models.Model):
+# class Photo(auto_prefetch.Model):
 #     pass
 
 
-# class FirstName(models.Model):
+# class FirstName(auto_prefetch.Model):
 #     profile = models.OneToOneField(Profile, verbose_name=_(""), on_delete=models.CASCADE)
 #     name = models.CharField(max_length=100)
 #     active = models.BooleanField(default=True)
 
 
-class Skill(models.Model):
+class Skill(auto_prefetch.Model):
     """
     An object representing the skills that the member holds.
     See Skill Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="skill_set"
     )
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50)  # Linkedin does not include this
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = ("-level",)
 
     def __str__(self):
@@ -1978,18 +1978,18 @@ class Skill(models.Model):
         )
 
 
-class Language(models.Model):
+class Language(auto_prefetch.Model):
     """
     An object representing the languages that the member holds.
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="language_set"
     )
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=3)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "id",
             "level",
@@ -2027,14 +2027,14 @@ class Language(models.Model):
         )
 
 
-class Education(models.Model):
+class Education(auto_prefetch.Model):
     """
     An object representing the member's educational background.
     See Education Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="education_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2047,7 +2047,7 @@ class Education(models.Model):
     end_date = models.CharField(null=True, blank=True, max_length=50)
     description = models.TextField(null=True, blank=True, max_length=300)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2111,13 +2111,13 @@ class Education(models.Model):
         super().save(*args, **kwargs)
 
 
-class Experience(models.Model):
+class Experience(auto_prefetch.Model):
     """
     Employment history. See Positions for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="experience_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2130,7 +2130,7 @@ class Experience(models.Model):
     end_date = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2194,14 +2194,14 @@ class Experience(models.Model):
         super().save(*args, **kwargs)
 
 
-class Certification(models.Model):
+class Certification(auto_prefetch.Model):
     """
     An object representing the certifications that the member holds.
     See Certification Fields for a description of the fields available within this object.
     https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/certification
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, related_name="certification_set", on_delete=models.CASCADE
     )
     order = models.SmallIntegerField(default=0)
@@ -2211,7 +2211,7 @@ class Certification(models.Model):
     issuer = models.CharField(null=True, blank=True, max_length=100)
     link = models.CharField(null=True, blank=True, max_length=100)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2272,14 +2272,14 @@ class Certification(models.Model):
         super().save(*args, **kwargs)
 
 
-class Course(models.Model):
+class Course(auto_prefetch.Model):
     """
     An object representing courses the member has taken.
     See Course Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/course
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, related_name="course_set", on_delete=models.CASCADE
     )
     order = models.SmallIntegerField(default=0)
@@ -2290,7 +2290,7 @@ class Course(models.Model):
     hours = models.CharField(null=True, blank=True, max_length=100)
     link = models.CharField(null=True, blank=True, max_length=100)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2351,14 +2351,14 @@ class Course(models.Model):
         super().save(*args, **kwargs)
 
 
-class Honor(models.Model):
+class Honor(auto_prefetch.Model):
     """
     An object representing the various honors and awards the member has received.
     See Honor Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/honor
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="honor_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2369,7 +2369,7 @@ class Honor(models.Model):
     link = models.CharField(null=True, blank=True, max_length=100)
     # description = models.TextField(null=True, blank=True)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2430,14 +2430,14 @@ class Honor(models.Model):
         super().save(*args, **kwargs)
 
 
-class Organization(models.Model):
+class Organization(auto_prefetch.Model):
     """
     An object representing the organizations that the member is in.
     See Organization Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/organization
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="organization_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2449,7 +2449,7 @@ class Organization(models.Model):
     end_date = models.CharField(null=True, blank=True, max_length=50)
     description = models.TextField(null=True, blank=True)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2510,14 +2510,14 @@ class Organization(models.Model):
         super().save(*args, **kwargs)
 
 
-class Patent(models.Model):
+class Patent(auto_prefetch.Model):
     """
     An object representing the various patents associated with the member.
     See Patent Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/patent
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="patent_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2534,7 +2534,7 @@ class Patent(models.Model):
         null=True, blank=True
     )  # suggest to use to include if the patent is patent is pending and more relevant info
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2595,14 +2595,14 @@ class Patent(models.Model):
         super().save(*args, **kwargs)
 
 
-class Project(models.Model):
+class Project(auto_prefetch.Model):
     """
     An object representing the various projects associated with the member.
     See Project Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="project_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2615,7 +2615,7 @@ class Project(models.Model):
     link = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2679,14 +2679,14 @@ class Project(models.Model):
         super().save(*args, **kwargs)
 
 
-class Publication(models.Model):
+class Publication(auto_prefetch.Model):
     """
     An object representing the various publications associated with the member.
     See Publication Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="publication_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2698,7 +2698,7 @@ class Publication(models.Model):
     link = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2762,14 +2762,14 @@ class Publication(models.Model):
         super().save(*args, **kwargs)
 
 
-class Volunteering(models.Model):
+class Volunteering(auto_prefetch.Model):
     """
     An object representing the member's volunteering experience.
     See Volunteering Experience Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/volunteering-experience
     """
 
-    profile = models.ForeignKey(
+    profile = auto_prefetch.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="volunteering_set"
     )
     order = models.SmallIntegerField(default=0)
@@ -2782,7 +2782,7 @@ class Volunteering(models.Model):
     end_date = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         ordering = (
             "order",
             "id",
@@ -2844,7 +2844,6 @@ class Volunteering(models.Model):
 
 
 def get_child_class(slug):
-
     if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
         return Skill
 
@@ -2883,7 +2882,6 @@ def get_child_class(slug):
 
 
 def update_child_object(slug=None, child_object=None, request=None):
-
     if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
         child_object.name = request.POST.get("name")
         child_object.level = request.POST.get("level")
@@ -2976,7 +2974,6 @@ def update_child_object(slug=None, child_object=None, request=None):
 
 
 def set_activation_state(slug=None, object=None, active=True):
-
     if slug == SLUG_FOR_PROFILE_FIELD_FIRSTNAME:
         object.firstname_active = active
 
@@ -3113,11 +3110,13 @@ def get_below_child_object(slug=None, child_object=None, profile=None):
 from tex.models import ResumeTemplate
 
 
-class Resume(models.Model):
-    profile = models.ForeignKey(
+class Resume(auto_prefetch.Model):
+    profile = auto_prefetch.ForeignKey(
         Profile, null=True, related_name="resume_set", on_delete=models.SET_NULL
     )
-    template = models.ForeignKey(ResumeTemplate, null=True, on_delete=models.SET_NULL)
+    template = auto_prefetch.ForeignKey(
+        ResumeTemplate, null=True, on_delete=models.SET_NULL
+    )
     image = models.ImageField(null=True, upload_to="resumes/images")
     pdf = models.FileField(null=True, upload_to="resumes/pdfs")
 

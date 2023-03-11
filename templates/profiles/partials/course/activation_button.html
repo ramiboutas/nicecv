@@ -1,11 +1,15 @@
 {% load i18n %}
 <div id="course-activation-button">
-
     {% if not object.course_active %}
-        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-            hx-post="{{ object.activate_course_url }}" hx-target="#course-box" hx-swap="outerHTML"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate course' %}">
-            <i class="bi bi-person-video3"></i> {% trans 'Courses' %}</button>
+        <button class="btn btn-outline-secondary border-0"
+                style="text-align:left"
+                hx-post="{{ object.activate_course_url }}"
+                hx-target="#course-box"
+                hx-swap="outerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Activate course' %}">
+            <i class="bi bi-person-video3"></i> {% translate 'Courses' %}
+        </button>
     {% endif %}
-
 </div>

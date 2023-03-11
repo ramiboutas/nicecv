@@ -1,8 +1,8 @@
-from plans.factories import PlanFactory
 from accounts.factories import SuperUserFactory
+from plans.factories import PlanFactory
 
 
 def create_initial_objects():
     SuperUserFactory()
     PlanFactory()
-    PlanFactory(price=14, saving=4, default=True)
+    PlanFactory(price=14, months=6)

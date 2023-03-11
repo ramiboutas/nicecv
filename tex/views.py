@@ -23,5 +23,4 @@ def download_resume_view(request, pk):
     resume.add_one_download()
     settings.LATEX_INTERPRETER = resume.interpreter
     context = {"object": profile_object}
-    return render_to_pdf(
-        request, resume.template_name, context, filename="your_cv.pdf")
+    return render_to_pdf(request, resume.template_name, context, filename="your_cv.pdf")

@@ -14,16 +14,17 @@ TEMP_DIR = BASE_DIR / "temp"
 
 TESTS_TEMP_DIR = TEMP_DIR / "tests"
 
-
 # Load env vars from .env file
 dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 # The name of the class to use for starting the test suite.
 TEST_RUNNER = "config.test.TestRunner"
 
+# Use Digital Ocean Spaces service (Storage)
+USE_SPACES = os.environ.get("USE_SPACES", "") == "1"
+
 # HTTPS
 HTTPS = os.environ.get("HTTPS", "") == "1"
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "some-tests-need-a-secret-key")
@@ -69,7 +70,6 @@ INSTALLED_APPS = [
     "wagtail",
     "taggit",
     "modelcluster",
-
     # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -80,6 +80,9 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     # Third-party apps
     "rosetta",
+    "modeltranslation",
+    "djmoney",
+    "djmoney.contrib.exchange",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -94,7 +97,6 @@ INSTALLED_APPS = [
     # 'djstripe',
     # Tools for debug
     "debug_toolbar",
-    "django_browser_reload",
 ]
 
 # Authentication
@@ -163,9 +165,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # wagtails middlewares
-    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # third-party middlewares
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
@@ -267,7 +268,6 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-
 USE_TZ = True
 
 LANGUAGE_COOKIE_NAME = "client_language"
@@ -276,30 +276,63 @@ LANGUAGES = (
     ("en", _("English")),
     ("es", _("Spanish")),
     ("de", _("German")),
-    ("fr", _("French")),
-    ("pt", _("Portuguese")),
-    ("it", _("Italian")),
 )
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
+# Model translation
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
+
+# Currency exchange
+OPEN_EXCHANGE_RATES_APP_ID = os.environ.get("OPEN_EXCHANGE_RATES_APP_ID", "")
 
 # geoip2
 GEOIP_PATH = BASE_DIR / "geoip2dbs"
 
+
 # Static files (CSS, JavaScript, Images)
 
-STATIC_URL = "/static/"
-STATICFILES_DIRS = (str(BASE_DIR.joinpath("static")),)
-STATIC_ROOT = str(BASE_DIR.joinpath("static-files"))
-
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
 ]
-# Media files
-MEDIA_ROOT = BASE_DIR.joinpath("media")
-MEDIA_URL = "/media/"
+
+
+if USE_SPACES:  # pragma: no cover
+    # Stuff that could be useful (comments):
+    # AWS_LOCATION = f'https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com'
+    # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com/{AWS_MEDIA_LOCATION}/' # it worked
+    # MEDIA_URL = f'https://{AWS_s3_endpoint_url}/{AWS_MEDIA_LOCATION}/'
+    # STATIC_URL = f'https://{AWS_s3_endpoint_url}/{AWS_STATIC_LOCATION}/'
+
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_ENDPOINT_URL = "https://fra1.digitaloceanspaces.com"
+    AWS_S3_CUSTOM_DOMAIN = "ramiboutas.fra1.cdn.digitaloceanspaces.com"
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400", "ACL": "public-read"}
+
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
+
+    DEFAULT_FILE_STORAGE = "config.storage_backends.MediaRootStorage"
+    STATICFILES_STORAGE = "config.storage_backends.StaticRootStorage"
+
+    AWS_STATIC_LOCATION = "nicecv-static"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
+    STATIC_ROOT = f"{AWS_STATIC_LOCATION}/"
+
+    AWS_MEDIA_LOCATION = "nicecv-media"
+
+    MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
+    MEDIA_ROOT = f"{AWS_MEDIA_LOCATION}/"
+
+else:  # pragma: no cover
+    STATIC_URL = "/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 
 # Message tags
 
@@ -339,17 +372,13 @@ else:
 
 # addional for dj-stripe
 DJSTRIPE_WEBHOOK_SECRET = STRIPE_WEBHOOK_SECRET
-DJSTRIPE_USE_NATIVE_JSONFIELD = (
-    True  # We recommend setting to True for new installations
-)
+DJSTRIPE_USE_NATIVE_JSONFIELD = True
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 
-
 # Wagtail
-WAGTAIL_SITE_NAME = 'Nice CV'
+WAGTAIL_SITE_NAME = "Nice CV"
 WAGTAILADMIN_BASE_URL = "htttps://www.nicecv.online"
-
 
 
 # LaTex settings

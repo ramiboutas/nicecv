@@ -1,11 +1,15 @@
 {% load i18n %}
 <div id="github-activation-button">
-
     {% if not object.github_active %}
-        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-            hx-post="{{ object.activate_github_url }}" hx-target="#github-box" hx-swap="outerHTML"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate github' %}">
-            <i class="bi bi-github"></i> {% trans 'GitHub' %}</button>
+        <button class="btn btn-outline-secondary border-0"
+                style="text-align:left"
+                hx-post="{{ object.activate_github_url }}"
+                hx-target="#github-box"
+                hx-swap="outerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Activate github' %}">
+            <i class="bi bi-github"></i> {% translate 'GitHub' %}
+        </button>
     {% endif %}
-
 </div>

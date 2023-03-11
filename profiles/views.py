@@ -52,6 +52,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "profiles/profile_update.html"
     model = Profile
     fields = "__all__"
+
     # exclude = ['candidate_name','candidate_position','candidate_email', 'candidate_phone','candidate_location', 'candidate_website']
     def get_object(self):
         obj = get_object_or_404(Profile, pk=self.kwargs["pk"], user=self.request.user)

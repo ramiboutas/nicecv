@@ -1,11 +1,15 @@
 {% load i18n %}
 <div id="skill-activation-button">
-
     {% if not object.skill_active %}
-        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-            hx-post="{{ object.activate_skill_url }}" hx-target="#skill-box" hx-swap="outerHTML"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate skills' %}">
-            <i class="bi bi-gear"></i> {% trans 'Skills' %}</button>
+        <button class="btn btn-outline-secondary border-0"
+                style="text-align:left"
+                hx-post="{{ object.activate_skill_url }}"
+                hx-target="#skill-box"
+                hx-swap="outerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Activate skills' %}">
+            <i class="bi bi-gear"></i> {% translate 'Skills' %}
+        </button>
     {% endif %}
-
 </div>

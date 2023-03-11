@@ -1,12 +1,9 @@
+import auto_prefetch
 from django.db import models
-
 from django.urls import reverse
 
-from utils.files import delete_file
 
-
-class ResumeTemplate(models.Model):
-
+class ResumeTemplate(auto_prefetch.Model):
     name = models.CharField(max_length=50)
     template_name = models.CharField(default="test.tex", max_length=20)
     only_one_page_allowed = models.BooleanField(default=False)
@@ -28,7 +25,7 @@ class ResumeTemplate(models.Model):
         self.save()
 
 
-class CoverLetterTemplate(models.Model):
+class CoverLetterTemplate(auto_prefetch.Model):
     name = models.CharField(max_length=128)
     interpreter = models.CharField(max_length=20, default="lualatex")
     image = models.ImageField(upload_to="tex/cover-letters/screenshots")

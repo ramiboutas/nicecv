@@ -1,7 +1,10 @@
 {% load i18n %}
-<form  style="border: dashed 1.5px black; border-radius: 5px;"
-    hx-post="{{ object.create_education_object_url }}"
-    hx-trigger="submit" hx-swap="innerHTML" hx-target="#education-box">
+<form style="border: dashed 1.5px black;
+             border-radius: 5px"
+      hx-post="{{ object.create_education_object_url }}"
+      hx-trigger="submit"
+      hx-swap="innerHTML"
+      hx-target="#education-box">
     <!--title and grade -->
     <div class="row">
         <div class="col-8">
@@ -9,10 +12,12 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text border-0"><i class="bi bi-mortarboard"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Title, e.g: Mechanical Engineering Degree' %}"
-                    name="title" maxlength="{{max_length_normal}}"
-                    {% if education.title %}value="{{ education.title }}"{% endif %}>
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       placeholder="{% translate 'Title, e.g: Mechanical Engineering Degree' %}"
+                       name="title"
+                       maxlength="{{ max_length_normal }}"
+                       {% if education.title %}value="{{ education.title }}"{% endif %}>
             </div>
         </div>
         <div class="col">
@@ -20,14 +25,15 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text border-0"><i class="bi bi-check2-circle"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Grade, e.g. 7.1 (optional)' %}"
-                    name="grade" maxlength="{{max_length_super_short}}"
-                    {% if education.grade %}value="{{ education.grade }}"{% endif %}>
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       placeholder="{% translate 'Grade, e.g. 7.1 (optional)' %}"
+                       name="grade"
+                       maxlength="{{ max_length_super_short }}"
+                       {% if education.grade %}value="{{ education.grade }}"{% endif %}>
             </div>
         </div>
     </div>
-
     <!--institution and link -->
     <div class="row">
         <div class="col">
@@ -35,10 +41,12 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Institution, e.g: University of Oxford' %}"
-                    name="institution" maxlength="{{max_length_normal}}"
-                    {% if education.institution %}value="{{ education.institution }}"{% endif %}>
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       placeholder="{% translate 'Institution, e.g: University of Oxford' %}"
+                       name="institution"
+                       maxlength="{{ max_length_normal }}"
+                       {% if education.institution %}value="{{ education.institution }}"{% endif %}>
             </div>
         </div>
         <div class="col">
@@ -46,14 +54,15 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Institution link, e.g: www.ox.ac.uk (optional)' %}"
-                    name="institution_link" maxlength="{{max_length_normal}}"
-                    {% if education.institution_link %}value="{{ education.institution_link }}"{% endif %}>
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       placeholder="{% translate 'Institution link, e.g: www.ox.ac.uk (optional)' %}"
+                       name="institution_link"
+                       maxlength="{{ max_length_normal }}"
+                       {% if education.institution_link %}value="{{ education.institution_link }}"{% endif %}>
             </div>
         </div>
     </div>
-
     <!--start date and end date -->
     <div class="row">
         <div class="col">
@@ -61,10 +70,12 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text border-0"><i class="bi bi-calendar4-event"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Start date, e.g. Mar 2019' %}"
-                    name="start_date" maxlength="{{max_length_super_short}}"
-                    {% if education.start_date %}value="{{ education.start_date }}"{% endif %}>
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       placeholder="{% translate 'Start date, e.g. Mar 2019' %}"
+                       name="start_date"
+                       maxlength="{{ max_length_super_short }}"
+                       {% if education.start_date %}value="{{ education.start_date }}"{% endif %}>
             </div>
         </div>
         <div class="col">
@@ -72,15 +83,16 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'End date, e.g. Jan 2021, on going, ...' %}"
-                    name="end_date" maxlength="{{max_length_super_short}}"
-                    {% if education.end_date %}value="{{ education.end_date }}"{% endif %}>
+                <input class="form-control border-0 bg-white"
+                       type="text"
+                       placeholder="{% translate 'End date, e.g. Jan 2021, on going, ...' %}"
+                       name="end_date"
+                       maxlength="{{ max_length_super_short }}"
+                       {% if education.end_date %}value="{{ education.end_date }}"{% endif %}>
             </div>
         </div>
     </div>
 </div>
-
 <!--description -->
 <div class="row">
     <div class="col">
@@ -88,26 +100,35 @@
             <div class="input-group-prepend">
                 <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
             </div>
-            <textarea class="form-control border-0 bg-white" type="text"
-                placeholder="{% trans 'Description' %}"  name="description"
-                maxlength="{{max_length_super_large}}">{% if education.description %}{{ education.description }}{% endif %}</textarea>
+            <textarea class="form-control border-0 bg-white"
+                      type="text"
+                      placeholder="{% translate 'Description' %}"
+                      name="description"
+                      maxlength="{{max_length_super_large}}">{% if education.description %}{{ education.description }}{% endif %}</textarea>
         </div>
     </div>
 </div>
-
 <!--buttons -->
 <div class="row">
     <div class="col-1">
-        <button class="btn btn-outline-secondary border-0 w-100" type="button"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove' %}"
-            hx-post="{{ object.remove_education_new_form_url }}" hx-target="#education-new" hx-swap="innerHTML">
+        <button class="btn btn-outline-secondary border-0 w-100"
+                type="button"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Remove' %}"
+                hx-post="{{ object.remove_education_new_form_url }}"
+                hx-target="#education-new"
+                hx-swap="innerHTML">
             <i class="bi bi-x-lg"></i>
         </button>
     </div>
     <div class="col-11">
-        <button class="btn btn-outline-secondary  border-0 w-100" type="submit"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this education' %}">
-            <i class="bi bi-check-circle"> {% trans "Save" %}</i>
+        <button class="btn btn-outline-secondary  border-0 w-100"
+                type="submit"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Add this education' %}">
+            <i class="bi bi-check-circle"> {% translate "Save" %}</i>
         </button>
     </div>
 </div>

@@ -1,102 +1,76 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% load l10n %}
-
-{% block title %} | {% translate "Pricing" %}  {% endblock %}
-
-{% block content %}
-
-    <div class="container">
-
-        <h1>{% translate "Pricing" %}</h1>
-
-        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-            <div class="col-lg-4 col-md-4">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">{% translate "Free" %}</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title"> 0,00 € </h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li>{% translate "1 profile" %}</li>
-                            <li>{% translate "5 CV downloads" %}</li>
-                        </ul>
-                        {% if not user.is_authenticated %}
-                            <a href="{% url 'account_login' %}" class="w-100 btn btn-lg btn-outline-primary">{% translate "Log in" %}</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-lg-8 col-md-8">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-white bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">{% trans "Premium" %}</h4>
-                    </div>
-                    <div class="card-body">
-
-                        <form class="mt-4 mb-2" action="{% url 'plans:payments_proceed_with_checkout' %}" method="post">
-                            {% csrf_token %}
-                            {% for month in months %}
-                                <div class="form-check form-check-inline">
-                                    <p class="text-capitalize h5 text-muted">
-                                        <input class="form-check-input" type="radio" name="months" id="inlineRadio{{month}}" value="{{month}}"
-                                            hx-get="{% url 'plans:pricing_update_price' %}"  hx-target="#pro-price" hx-swap="innerHTML"
-                                            {% if month == plan.months %}checked{% endif %}>
-                                        <label class="form-check-label" for="inlineRadio{{month}}">
-                                            {{ month }} month{{ month|pluralize }}
-                                        </p>
-                                    </label>
-                                </div>
-                            {% endfor %}
-
-
-                            <div id="pro-price">
-                                {% include "plans/partials/price.html" %}
-                            </div>
-
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>{% translate "Unlimited profiles" %}</li>
-                                <li>{% translate "Unlimited CV downloads" %}</li>
-                                <li>{% translate "Cover letters" %}</li>
-                                <li>{% translate "Support" %}</li>
-
-                            </ul>
-
-                            <div id="proceed-with-payment">
-                                {% if user.is_authenticated %}
-                                    <button hx-get="{% url 'plans:pricing_get_payment_methods' %}"
-                                        hx-target="#proceed-with-payment" class="w-100 btn btn-lg btn-primary">
-                                        {% if user.has_active_plan %}
-                                            {% translate "Extend" %}
-                                        {% else %}
-                                            {% translate "Select plan" %}
-                                        {% endif %}
-                                    </button>
-                                    {% if user.has_active_plan %}
-                                        <small>
-                                        {% blocktranslate with expire_date=user.paid_until %}
-                                            You have a premium plan until {{ expire_date }}
-                                        {% endblocktranslate %}
-                                        <small>
-                                        {% endif %}
-                                {% else %}
-                                    <a href="{% url 'plans:pricing_get_payment_methods' %}" class="w-100 btn btn-lg btn-primary">
-                                        {% translate "Sign in to start" %}
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-
+{% load i18n l10n djmoney %}
+{% block title %}
+    | {% translate "Pricing" %}
 {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="bg-white py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-4xl sm:text-center">
+                    <h1 class="text-base font-semibold leading-7 text-indigo-600">{% translate "Pricing" %}</h1>
+                    <p class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+                        {% translate "Choose the right plan for you" %}
+                    </p>
+                </div>
 
+                {% for plan in plans %}
+                  <div class="mt-20 flow-root">
+                      <div class="isolate -mt-16 grid max-w-sm grid-cols-1 gap-y-16 divide-y divide-gray-100 sm:mx-auto lg:-mx-8 lg:mt-0 lg:max-w-none lg:grid-cols-3 lg:divide-y-0 lg:divide-x xl:-mx-4">
+                          <div class="pt-16 lg:px-8 lg:pt-0 xl:px-14">
+                              <h3 id="tier-basic"
+                                  class="text-base font-semibold leading-7 text-gray-900">{{ plan.name }}</h3>
+                              <p class="mt-6 flex items-baseline gap-x-1">
+                                  <span class="text-5xl font-bold tracking-tight text-gray-900"> {% money_localize plan.price %}  </span>
+                              </p>
+                              <p class="mt-3 text-sm leading-6 text-gray-500">$12 per month if paid annually</p>
+                              <a href="#"
+                                aria-describedby="tier-basic"
+                                class="mt-10 block rounded-md bg-indigo-600 py-2 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Buy plan</a>
+                              <p class="mt-10 text-sm font-semibold leading-6 text-gray-900">Everything necessary to get started.</p>
+                              <ul role="list" class="mt-6 space-y-3 text-sm leading-6 text-gray-600">
+                                  <li class="flex gap-x-3">
+                                      <svg class="h-6 w-5 flex-none text-indigo-600"
+                                          viewBox="0 0 20 20"
+                                          fill="currentColor"
+                                          aria-hidden="true">
+                                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                                      </svg>
+                                      5 products
+                                  </li>
+                                  <li class="flex gap-x-3">
+                                      <svg class="h-6 w-5 flex-none text-indigo-600"
+                                          viewBox="0 0 20 20"
+                                          fill="currentColor"
+                                          aria-hidden="true">
+                                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                                      </svg>
+                                      Up to 1,000 subscribers
+                                  </li>
+                                  <li class="flex gap-x-3">
+                                      <svg class="h-6 w-5 flex-none text-indigo-600"
+                                          viewBox="0 0 20 20"
+                                          fill="currentColor"
+                                          aria-hidden="true">
+                                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                                      </svg>
+                                      Basic analytics
+                                  </li>
+                                  <li class="flex gap-x-3">
+                                      <svg class="h-6 w-5 flex-none text-indigo-600"
+                                          viewBox="0 0 20 20"
+                                          fill="currentColor"
+                                          aria-hidden="true">
+                                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                                      </svg>
+                                      48-hour support response time
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

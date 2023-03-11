@@ -1,11 +1,15 @@
 {% load i18n %}
 <div id="birth-activation-button">
-
     {% if not object.birth_active %}
-        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-            hx-post="{{ object.activate_birth_url }}" hx-target="#birth-box" hx-swap="outerHTML"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate birth' %}">
-            <i class="bi bi-calendar-heart"></i> {% trans 'Date of birth' %}</button>
+        <button class="btn btn-outline-secondary border-0"
+                style="text-align:left"
+                hx-post="{{ object.activate_birth_url }}"
+                hx-target="#birth-box"
+                hx-swap="outerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Activate birth' %}">
+            <i class="bi bi-calendar-heart"></i> {% translate 'Date of birth' %}
+        </button>
     {% endif %}
-
 </div>

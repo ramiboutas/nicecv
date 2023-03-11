@@ -28,5 +28,4 @@ admin.site.register(Patent)
 admin.site.register(Project)
 admin.site.register(Publication)
 admin.site.register(Volunteering)
-######################################
 admin.site.register(Resume)

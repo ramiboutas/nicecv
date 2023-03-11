@@ -5,20 +5,27 @@
             <div class="input-group-prepend">
                 <span class="input-group-text border-0 h-100">ID</span>
             </div>
-            <input class="form-control border-0 bg-white" type="text" name="orcid"
-                placeholder="{% trans 'ORCID' %}"
-                hx-post="{{ object.update_orcid_url }}" hx-trigger="change" hx-swap="none"
-                {% if object.orcid %} value="{{object.orcid}}" {% endif %} maxlength="50">
+            <input class="form-control border-0 bg-white"
+                   type="text"
+                   name="orcid"
+                   placeholder="{% translate 'ORCID' %}"
+                   hx-post="{{ object.update_orcid_url }}"
+                   hx-trigger="change"
+                   hx-swap="none"
+                   {% if object.orcid %} value="{{ object.orcid }}"{% endif %}
+                   maxlength="50">
             <!--
-      <button class="btn btn-outline-secondary border-0 float-end"
-        hx-post="{{ object.insert_orcid_help_modal_url }}" hx-target="#modals-here"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Get information about this field' %}">
+      <button class="btn btn-outline-secondary border-0 float-end" hx-post="{{ object.insert_orcid_help_modal_url }}" hx-target="#modals-here" data-bs-toggle="tooltip" data-bs-placement="right" title="{% translate 'Get information about this field' %}">
         <i class="bi bi-info-circle"></i>
       </button>
       -->
             <button class="btn btn-outline-secondary  border-0"
-                hx-post="{{ object.deactivate_orcid_url }}" hx-target="#orcid-box" hx-swap="innerHTML"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Deactivate ORCID' %}">
+                    hx-post="{{ object.deactivate_orcid_url }}"
+                    hx-target="#orcid-box"
+                    hx-swap="innerHTML"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    title="{% translate 'Deactivate ORCID' %}">
                 <i class="bi bi-eye-slash"></i>
             </button>
         </div>

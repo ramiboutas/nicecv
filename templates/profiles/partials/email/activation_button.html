@@ -1,11 +1,15 @@
 {% load i18n %}
 <div id="email-activation-button">
-
     {% if not object.email_active %}
-        <button class="btn btn-outline-secondary border-0" style="text-align:left;"
-            hx-post="{{ object.activate_email_url }}" hx-target="#email-box" hx-swap="outerHTML"
-            data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Activate email' %}">
-            <i class="bi bi-envelope"></i> {% trans 'Email' %}</button>
+        <button class="btn btn-outline-secondary border-0"
+                style="text-align:left"
+                hx-post="{{ object.activate_email_url }}"
+                hx-target="#email-box"
+                hx-swap="outerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Activate email' %}">
+            <i class="bi bi-envelope"></i> {% translate 'Email' %}
+        </button>
     {% endif %}
-
 </div>

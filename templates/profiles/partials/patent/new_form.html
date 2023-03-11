@@ -1,114 +1,190 @@
 {% load i18n %}
-<form style="border: dashed 1.5px black; border-radius: 5px;"
-    hx-post="{{ object.create_patent_object_url }}"
-    hx-trigger="submit" hx-swap="innerHTML" hx-target="#patent-box">
-
+<form style="border: dashed 1.5px black;
+             border-radius: 5px"
+      hx-post="{{ object.create_patent_object_url }}"
+      hx-trigger="submit"
+      hx-swap="innerHTML"
+      hx-target="#patent-box">
     <!--title and number -->
     <div class="row">
         <div class="col-8">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-file-medical"></i></span>
+                    <span class="input-group-text border-0"><i class="bi bi-file-medical"></i
+                    ></span>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text"
-                    placeholder="{% trans 'Patent title, e.g: Development of a very cool device' %}"
-                    name="title" maxlength="{{max_length_normal}}"
-                    {% if patent.title %}value="{{ patent.title }}"{% endif %}>
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-123"></i></span>
+                <input
+                    class="form-control border-0 bg-white"
+                    type="text"
+                    placeholder="{% translate 'Patent title, e.g: Development of a very cool device' %}"
+                    name="title"
+                    maxlength="{{ max_length_normal }}"
+                    {%
+                    if
+                    patent.title
+                    %}value="{{ patent.title }}"
+                    {%
+                    endif
+                    %}
+                    />
                 </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Number, e.g. EPXXXXXX' %}"
-                    name="number" maxlength="{{max_length_short}}"
-                    {% if patent.number %}value="{{ patent.number }}"{% endif %}>
             </div>
-        </div>
-    </div>
-
-
-
-    <!--inventors and issuing_date -->
-    <div class="row">
-        <div class="col-8">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-people"></i></span>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text border-0"><i class="bi bi-123"></i
+                        ></span>
+                    </div>
+                    <input
+                        class="form-control border-0 bg-white"
+                        type="text"
+                        placeholder="{% translate 'Number, e.g. EPXXXXXX' %}"
+                        name="number"
+                        maxlength="{{ max_length_short }}"
+                        {%
+                        if
+                        patent.number
+                        %}value="{{ patent.number }}"
+                        {%
+                        endif
+                        %}
+                        />
+                    </div>
                 </div>
-                <input class="form-control border-0 bg-white"  type="text"
-                    placeholder="{% trans 'Inventors, e.g. Person 1, Person 2, Person 3, ...' %}"
-                    name="inventors" maxlength="{{max_length_super_short}}"
-                    {% if patent.inventors %}value="{{ patent.inventors }}"{% endif %}>
             </div>
-        </div>
-        <div class="col">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i></span>
-                </div>
-                <input class="form-control border-0 bg-white"  type="text"
-                    placeholder="{% trans 'Issuing date, e.g. 2020' %}"
-                    name="issuing_date" maxlength="{{max_length_super_short}}"
-                    {% if patent.issuing_date %}value="{{ patent.issuing_date }}"{% endif %}>
-            </div>
-        </div>
-    </div>
-
-
-    <!--issuer and link -->
-    <div class="row">
-        <div class="col">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-building"></i></span>
-                </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Issuer, e.g: General Motors' %}"
-                    name="issuer" maxlength="{{max_length_short}}"
-                    {% if patent.issuer %}value="{{ patent.issuer }}"{% endif %}>
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-link"></i></span>
-                </div>
-                <input class="form-control border-0 bg-white" type="text"
-                    placeholder="{% trans 'Issuer link, e.g: www.gm.com (optional)' %}"
-                    name="link" maxlength="{{max_length_normal}}"
-                    {% if patent.link %}value="{{ patent.link }}"{% endif %}>
-            </div>
-        </div>
-    </div>
-
-    <!--description -->
-    <div class="row">
-        <div class="col">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text border-0"><i class="bi bi-justify-left"></i></span>
-                </div>
-                <textarea class="form-control border-0 bg-white"  type="text"
-                    placeholder="{% trans 'Description' %}" name="description"
-                    maxlength="{{max_length_super_large}}">{% if patent.description %}{{ patent.description }}{% endif %}</textarea>
-            </div>
-        </div>
-    </div>
-
-    <!--buttons -->
-    <div class="row">
-        <div class="col-1">
-            <button class="btn btn-outline-secondary border-0 w-100" type="button" name="button"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Remove this patent form' %}"
-                hx-post="{{ object.remove_patent_new_form_url }}" hx-target="#patent-new" hx-swap="innerHTML"
-            ><i class="bi bi-x-lg"></i></button>
-        </div>
-        <div class="col-11">
-            <button class="btn btn-outline-secondary  border-0 w-100" type="submit" name="button"
-                data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Add this patent' %}"><i class="bi bi-check-circle"> {% trans "Save" %}</i></button>
-        </div>
-    </div>
-</form>
+            <!--inventors and issuing_date -->
+            <div class="row">
+                <div class="col-8">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text border-0"><i class="bi bi-people"></i
+                            ></span>
+                        </div>
+                        <input
+                            class="form-control border-0 bg-white"
+                            type="text"
+                            placeholder="{% translate 'Inventors, e.g. Person 1, Person 2, Person 3, ...' %}"
+                            name="inventors"
+                            maxlength="{{ max_length_super_short }}"
+                            {%
+                            if
+                            patent.inventors
+                            %}value="{{ patent.inventors }}"
+                            {%
+                            endif
+                            %}
+                            />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i
+                                ></span>
+                            </div>
+                            <input
+                                class="form-control border-0 bg-white"
+                                type="text"
+                                placeholder="{% translate 'Issuing date, e.g. 2020' %}"
+                                name="issuing_date"
+                                maxlength="{{ max_length_super_short }}"
+                                {%
+                                if
+                                patent.issuing_date
+                                %}value="{{ patent.issuing_date }}"
+                                {%
+                                endif
+                                %}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <!--issuer and link -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0"><i class="bi bi-building"></i
+                                    ></span>
+                                </div>
+                                <input
+                                    class="form-control border-0 bg-white"
+                                    type="text"
+                                    placeholder="{% translate 'Issuer, e.g: General Motors' %}"
+                                    name="issuer"
+                                    maxlength="{{ max_length_short }}"
+                                    {%
+                                    if
+                                    patent.issuer
+                                    %}value="{{ patent.issuer }}"
+                                    {%
+                                    endif
+                                    %}
+                                    />
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text border-0"><i class="bi bi-link"></i
+                                        ></span>
+                                    </div>
+                                    <input
+                                        class="form-control border-0 bg-white"
+                                        type="text"
+                                        placeholder="{% translate 'Issuer link, e.g: www.gm.com (optional)' %}"
+                                        name="link"
+                                        maxlength="{{ max_length_normal }}"
+                                        {%
+                                        if
+                                        patent.link
+                                        %}value="{{ patent.link }}"
+                                        {%
+                                        endif
+                                        %}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <!--description -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0"><i class="bi bi-justify-left"></i
+                                            ></span>
+                                        </div>
+                                        <textarea class="form-control border-0 bg-white" type="text" placeholder="{% translate 'Description' %}" name="description" maxlength="{{ max_length_super_large }}">
+{% if patent.description %}{{ patent.description }}{% endif %}
+</textarea
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <!--buttons -->
+                            <div class="row">
+                                <div class="col-1">
+                                    <button class="btn btn-outline-secondary border-0 w-100"
+                                            type="button"
+                                            name="button"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="right"
+                                            title="{% translate 'Remove this patent form' %}"
+                                            hx-post="{{ object.remove_patent_new_form_url }}"
+                                            hx-target="#patent-new"
+                                            hx-swap="innerHTML">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="col-11">
+                                    <button class="btn btn-outline-secondary border-0 w-100"
+                                            type="submit"
+                                            name="button"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="right"
+                                            title="{% translate 'Add this patent' %}">
+                                        <i class="bi bi-check-circle"> {% translate "Save" %}</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>

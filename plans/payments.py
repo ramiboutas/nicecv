@@ -1,12 +1,13 @@
 import stripe
 from django.conf import settings
-from django.urls import reverse
 from django.db.models import Model
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .models import Order
 from .models import Plan
 from accounts.models import CustomUser
+
 
 def fulfill_order(user_id: int = None, plan_id: int = None):
     # fulfills the order and assigns premium to user.
@@ -21,15 +22,16 @@ def fulfill_order(user_id: int = None, plan_id: int = None):
         plan = Plan.objects.get(id=plan_id)
     except Plan.DoesNotExist:
         return False
-    
+
     try:
         user = CustomUser.objects.get(id=user_id)
     except CustomUser.DoesNotExist:
         return False
-        
+
     Order(plan=plan, user=user).save()
     user.set_plan(plan)
     return True
+
 
 def create_stripe_session(request, plan: Model):
     stripe.api_key = settings.STRIPE_SECRET_KEY
