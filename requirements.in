@@ -1,7 +1,7 @@
 tblib
 celery
 pillow
-stripe
+dj-stripe
 factory-boy
 django==4.1.7
 django-auto-prefetch

@@ -1,15 +1,18 @@
-from modeltranslation.translator import register, TranslationOptions
+from modeltranslation.translator import register
+from modeltranslation.translator import TranslationOptions
 
-from .models import Plan
+from .models import PremiumPlan
 from .models import PlanFAQ
 
 
-
-@register(Plan)
+@register(PremiumPlan)
 class PlanTranslationOptions(TranslationOptions):
-    fields = ('name',)
+    fields = ("name", "description")
 
 
 @register(PlanFAQ)
 class PlanFAQTranslationOptions(TranslationOptions):
-    fields = ('question', 'answer',)
+    fields = (
+        "question",
+        "answer",
+    )

@@ -29,7 +29,7 @@ HTTPS = os.environ.get("HTTPS", "") == "1"
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "some-tests-need-a-secret-key")
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: do not run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "") == "1"
 
 
@@ -87,14 +87,14 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    # 'allauth.socialaccount.providers.linkedin',
+    # "allauth.socialaccount.providers.linkedin",
     "django_htmx",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_tex",
     "celery_progress_htmx",
     "django_celery_results",
-    # 'djstripe',
+    "djstripe",
     # Tools for debug
     "debug_toolbar",
 ]
@@ -108,7 +108,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
-ACCOUNT_LOGOUT_REDIRECT = "home"
+ACCOUNT_LOGOUT_REDIRECT = "core:home"
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 
@@ -118,8 +118,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "core:home"
+LOGOUT_REDIRECT_URL = "core:home"
 
 
 # Provider specific settings
@@ -261,7 +261,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 
-# LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = "en-us"
 LANGUAGE_CODE = "en"
 
 TIME_ZONE = "UTC"
@@ -299,10 +299,10 @@ STATICFILES_DIRS = [
 
 if USE_SPACES:  # pragma: no cover
     # Stuff that could be useful (comments):
-    # AWS_LOCATION = f'https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com'
-    # MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com/{AWS_MEDIA_LOCATION}/' # it worked
-    # MEDIA_URL = f'https://{AWS_s3_endpoint_url}/{AWS_MEDIA_LOCATION}/'
-    # STATIC_URL = f'https://{AWS_s3_endpoint_url}/{AWS_STATIC_LOCATION}/'
+    # AWS_LOCATION = f"https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com"
+    # MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com/{AWS_MEDIA_LOCATION}/" # it worked
+    # MEDIA_URL = f"https://{AWS_s3_endpoint_url}/{AWS_MEDIA_LOCATION}/"
+    # STATIC_URL = f"https://{AWS_s3_endpoint_url}/{AWS_STATIC_LOCATION}/"
 
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
@@ -346,35 +346,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Payments
 
-# Stripe - general
-STRIPE_LIVE_MODE = str(os.environ.get("STRIPE_LIVE_MODE")) == "1"
-
-# Stripe - live keys
-STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLICKEY")
-STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY")
-STRIPE_LIVE_WEBHOOK_SECRET = os.environ.get("STRIPE_LIVE_WEBHOOK_SECRET")
-
-# Stripe - test keys
-STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY")
-STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
-STRIPE_TEST_WEBHOOK_SECRET = os.environ.get("STRIPE_TEST_WEBHOOK_SECRET")
-
-# Stripe - depending on the STRIPE_LIVE_MODE, we select to test keys or production keys
-if STRIPE_LIVE_MODE:
-    STRIPE_PUBLIC_KEY = STRIPE_LIVE_PUBLIC_KEY
-    STRIPE_SECRET_KEY = STRIPE_LIVE_SECRET_KEY
-    STRIPE_WEBHOOK_SECRET = STRIPE_LIVE_WEBHOOK_SECRET
-else:
-    STRIPE_PUBLIC_KEY = STRIPE_TEST_PUBLIC_KEY
-    STRIPE_SECRET_KEY = STRIPE_TEST_SECRET_KEY
-    STRIPE_WEBHOOK_SECRET = STRIPE_TEST_WEBHOOK_SECRET
-
-
-# addional for dj-stripe
-DJSTRIPE_WEBHOOK_SECRET = STRIPE_WEBHOOK_SECRET
+# Stripe (dj-stripe)
+STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "") == "1"
+STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "")
+DJSTRIPE_WEBHOOK_SECRET = os.environ.get("DJSTRIPE_WEBHOOK_SECRET", "")
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
-
+DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
 
 # Wagtail
 WAGTAIL_SITE_NAME = "Nice CV"
@@ -382,8 +361,8 @@ WAGTAILADMIN_BASE_URL = "htttps://www.nicecv.online"
 
 
 # LaTex settings
-# LATEX_INTERPRETER = 'pdflatex' # pdflatex, latex, xelatex, lualatex
-# LATEX_INTERPRETER_OPTIONS = '-interaction=nonstopmode'
+# LATEX_INTERPRETER = "pdflatex" # pdflatex, latex, xelatex, lualatex
+# LATEX_INTERPRETER_OPTIONS = "-interaction=nonstopmode"
 LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, "media")
 
 # celery

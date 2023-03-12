@@ -1,31 +1,31 @@
 {% load i18n %}
 <div class="card border-0">
-    <div class="card-body">
-        <div class="d-flex flex-column">
-            <div id="photo-box" class="align-items-center text-center">
-                {% if object.photo %}
-                    {% include "profiles/partials/photo/cropped.html"
-                    %}
-                {% endif %}
-            </div>
-            <div class="align-items-center text-center">
-                <form>
-                    {% csrf_token %}
-                    <label class="btn btn-outline-secondary border-0 mx-2 w-100"
-                           for="file-input">
-                        <i class="bi bi-camera"></i> {% translate "Select photo" %}
-                    </label>
-                    <input id="file-input"
-                           type="file"
-                           name="photo"
-                           onchange="pollImageToCrop()"
-                           style="visibility: hidden"
-                           hx-post="{{ object.upload_full_photo_url }}"
-                           hx-encoding="multipart/form-data"
-                           hx-trigger="change"
-                           hx-swap="none"/>
-                </form>
-            </div>
-        </div>
+  <div class="card-body">
+    <div class="d-flex flex-column">
+      <div id="photo-box" class="align-items-center text-center">
+        {% if object.photo %}
+          {% include "profiles/partials/photo/cropped.html"
+          %}
+        {% endif %}
+      </div>
+      <div class="align-items-center text-center">
+        <form>
+          {% csrf_token %}
+          <label class="btn btn-outline-secondary border-0 mx-2 w-100"
+                 for="file-input">
+            <i class="bi bi-camera"></i> {% translate "Select photo" %}
+          </label>
+          <input id="file-input"
+                 type="file"
+                 name="photo"
+                 onchange="pollImageToCrop()"
+                 style="visibility: hidden"
+                 hx-post="{{ object.upload_full_photo_url }}"
+                 hx-encoding="multipart/form-data"
+                 hx-trigger="change"
+                 hx-swap="none"/>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

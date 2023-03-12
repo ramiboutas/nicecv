@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block head_title %}
-    {% translate
-    "Account Inactive" %}
+  {% translate "Account Inactive" %}
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <h1>{% translate "Account Inactive" %}</h1>
-        <p>{% translate "This account is inactive." %}</p>
-    </div>
+  <div class="container">
+    <h1>{% translate "Account Inactive" %}</h1>
+    <p>{% translate "This account is inactive." %}</p>
+  </div>
 {% endblock %}

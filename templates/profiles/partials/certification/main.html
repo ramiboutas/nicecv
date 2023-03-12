@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="certification-box" class="mt-5">
-    {% if object.certification_active %}
-        <!--
+  {% if object.certification_active %}
+    <!--
     <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
       <i class="bi bi-patch-check"></i> {% translate "Certifications" %}
@@ -16,211 +16,211 @@
 
     </h6>
 -->
-        <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0"><i class="bi bi-patch-check"></i
-                    ></span>
-                </div>
-                <input class="form-control border-0 bg-white"
-                       type="text"
-                       name="certification_label"
-                       value="{{ object.certification_label }}"
-                       hx-post="{{ object.update_certification_slug_url }}"
-                       hx-trigger="change"
-                       hx-swap="none"/>
-                <button class="btn btn-outline-secondary border-0 float-end"
-                        hx-get="{{ object.insert_certification_help_modal_url }}"
-                        hx-target="#modals-here"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="{% translate 'Get information about this field' %}">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <button class="btn btn-outline-secondary border-0 float-end"
-                        hx-post="{{ object.deactivate_certification_url }}"
-                        hx-target="#certification-box"
-                        hx-swap="innerHTML"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="{% translate 'Deactivate certifications' %}">
-                    <i class="bi bi-eye-slash"></i>
-                </button>
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-patch-check"></i
+          ></span>
+        </div>
+        <input class="form-control border-0 bg-white"
+               type="text"
+               name="certification_label"
+               value="{{ object.certification_label }}"
+               hx-post="{{ object.update_certification_slug_url }}"
+               hx-trigger="change"
+               hx-swap="none"/>
+        <button class="btn btn-outline-secondary border-0 float-end"
+                hx-get="{{ object.insert_certification_help_modal_url }}"
+                hx-target="#modals-here"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Get information about this field' %}">
+          <i class="bi bi-info-circle"></i>
+        </button>
+        <button class="btn btn-outline-secondary border-0 float-end"
+                hx-post="{{ object.deactivate_certification_url }}"
+                hx-target="#certification-box"
+                hx-swap="innerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Deactivate certifications' %}">
+          <i class="bi bi-eye-slash"></i>
+        </button>
+      </div>
+    </h6>
+    {% for certification in object.certification_set.all %}
+      <form hx-post="{{ certification.update_object_url }}"
+            hx-trigger="change"
+            hx-swap="none">
+        <div id="certification-{{ certification.pk }}" class="bg-light my-4">
+          <!--buttons -->
+          <div class="row">
+            <div class="col-1">
+              <button
+                class="btn btn-outline-secondary border-0 w-100"
+                type="button"
+                name="button"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Move up' %}"
+                hx-post="{{ certification.move_up_object_url }}"
+                hx-target="#certification-box"
+                hx-swap="outerHTML"
+                {%
+                if
+                forloop.first
+                %}disabled{%
+                endif
+                %}
+                >
+                <i class="bi bi-arrow-up"></i>
+              </button>
             </div>
-        </h6>
-        {% for certification in object.certification_set.all %}
-            <form hx-post="{{ certification.update_object_url }}"
-                  hx-trigger="change"
-                  hx-swap="none">
-                <div id="certification-{{ certification.pk }}" class="bg-light my-4">
-                    <!--buttons -->
-                    <div class="row">
-                        <div class="col-1">
-                            <button
-                                class="btn btn-outline-secondary border-0 w-100"
-                                type="button"
-                                name="button"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="{% translate 'Move up' %}"
-                                hx-post="{{ certification.move_up_object_url }}"
-                                hx-target="#certification-box"
-                                hx-swap="outerHTML"
-                                {%
-                                if
-                                forloop.first
-                                %}disabled{%
-                                endif
-                                %}
-                                >
-                                <i class="bi bi-arrow-up"></i>
-                            </button>
-                        </div>
-                        <div class="col-1">
-                            <button
-                                class="btn btn-outline-secondary border-0 w-100"
-                                type="button"
-                                name="button"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="{% translate 'Move down' %}"
-                                hx-post="{{ certification.move_down_object_url }}"
-                                hx-target="#certification-box"
-                                hx-swap="outerHTML"
-                                {%
-                                if
-                                forloop.last
-                                %}disabled{%
-                                endif
-                                %}
-                                >
-                                <i class="bi bi-arrow-down"></i>
-                            </button>
-                        </div>
-                        <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100"
-                                    type="button"
-                                    name="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="right"
-                                    title="{% translate 'Copy' %}"
-                                    hx-post="{{ certification.copy_object_url }}"
-                                    hx-target="#certification-new"
-                                    hx-swap="innerHTML">
-                                <i class="bi bi-files"></i>
-                            </button>
-                        </div>
-                        <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100"
-                                    type="button"
-                                    name="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="right"
-                                    title="{% translate 'Remove' %}"
-                                    hx-post="{{ certification.delete_object_url }}"
-                                    hx-target="#certification-box"
-                                    hx-swap="outerHTML">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!--title and issuing_date -->
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0"><i class="bi bi-patch-check"></i
-                                    ></span>
-                                </div>
-                                <input
-                                    class="form-control border-0 bg-light"
-                                    type="text"
-                                    placeholder="{% translate 'Title, e.g: Google Certified Professional (GCP) Cloud Architect' %}"
-                                    name="title"
-                                    maxlength="{{ max_length_normal }}"
-                                    {%
-                                    if
-                                    certification.title
-                                    %}value="{{ certification.title }}"
-                                    {%
-                                    endif
-                                    %}
-                                    />
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i
-                                        ></span>
-                                    </div>
-                                    <input
-                                        class="form-control border-0 bg-light"
-                                        type="text"
-                                        placeholder="{% translate 'Issuing date, e.g. Apr 2021' %}"
-                                        name="issuing_date"
-                                        maxlength="{{ max_length_super_short }}"
-                                        {%
-                                        if
-                                        certification.issuing_date
-                                        %}value="{{ certification.issuing_date }}"
-                                        {%
-                                        endif
-                                        %}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <!--issuer and link -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text border-0"><i class="bi bi-building"></i
-                                            ></span>
-                                        </div>
-                                        <input
-                                            class="form-control border-0 bg-light"
-                                            type="text"
-                                            placeholder="{% translate 'Issuer, e.g: Microsoft, Cambridge University, ...' %}"
-                                            name="issuer"
-                                            maxlength="{{ max_length_normal }}"
-                                            {%
-                                            if
-                                            certification.issuer
-                                            %}value="{{ certification.issuer }}"
-                                            {%
-                                            endif
-                                            %}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text border-0"><i class="bi bi-link"></i
-                                                ></span>
-                                            </div>
-                                            <input
-                                                class="form-control border-0 bg-light"
-                                                type="text"
-                                                placeholder="{% translate 'Certificate link (optional)' %}"
-                                                name="link"
-                                                maxlength="{{ max_length_normal }}"
-                                                {%
-                                                if
-                                                certification.link
-                                                %}value="{{ certification.link }}"
-                                                {%
-                                                endif
-                                                %}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        {% endfor %}
-                        <div id="certification-new">{% include "profiles/partials/certification/new_button.html" %}</div>
-                    {% endif %}
+            <div class="col-1">
+              <button
+                class="btn btn-outline-secondary border-0 w-100"
+                type="button"
+                name="button"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Move down' %}"
+                hx-post="{{ certification.move_down_object_url }}"
+                hx-target="#certification-box"
+                hx-swap="outerHTML"
+                {%
+                if
+                forloop.last
+                %}disabled{%
+                endif
+                %}
+                >
+                <i class="bi bi-arrow-down"></i>
+              </button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100"
+                      type="button"
+                      name="button"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="right"
+                      title="{% translate 'Copy' %}"
+                      hx-post="{{ certification.copy_object_url }}"
+                      hx-target="#certification-new"
+                      hx-swap="innerHTML">
+                <i class="bi bi-files"></i>
+              </button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100"
+                      type="button"
+                      name="button"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="right"
+                      title="{% translate 'Remove' %}"
+                      hx-post="{{ certification.delete_object_url }}"
+                      hx-target="#certification-box"
+                      hx-swap="outerHTML">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+          <!--title and issuing_date -->
+          <div class="row">
+            <div class="col-8">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0"><i class="bi bi-patch-check"></i
+                  ></span>
                 </div>
+                <input
+                  class="form-control border-0 bg-light"
+                  type="text"
+                  placeholder="{% translate 'Title, e.g: Google Certified Professional (GCP) Cloud Architect' %}"
+                  name="title"
+                  maxlength="{{ max_length_normal }}"
+                  {%
+                  if
+                  certification.title
+                  %}value="{{ certification.title }}"
+                  {%
+                  endif
+                  %}
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i
+                    ></span>
+                  </div>
+                  <input
+                    class="form-control border-0 bg-light"
+                    type="text"
+                    placeholder="{% translate 'Issuing date, e.g. Apr 2021' %}"
+                    name="issuing_date"
+                    maxlength="{{ max_length_super_short }}"
+                    {%
+                    if
+                    certification.issuing_date
+                    %}value="{{ certification.issuing_date }}"
+                    {%
+                    endif
+                    %}
+                    />
+                  </div>
+                </div>
+              </div>
+              <!--issuer and link -->
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text border-0"><i class="bi bi-building"></i
+                      ></span>
+                    </div>
+                    <input
+                      class="form-control border-0 bg-light"
+                      type="text"
+                      placeholder="{% translate 'Issuer, e.g: Microsoft, Cambridge University, ...' %}"
+                      name="issuer"
+                      maxlength="{{ max_length_normal }}"
+                      {%
+                      if
+                      certification.issuer
+                      %}value="{{ certification.issuer }}"
+                      {%
+                      endif
+                      %}
+                      />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text border-0"><i class="bi bi-link"></i
+                        ></span>
+                      </div>
+                      <input
+                        class="form-control border-0 bg-light"
+                        type="text"
+                        placeholder="{% translate 'Certificate link (optional)' %}"
+                        name="link"
+                        maxlength="{{ max_length_normal }}"
+                        {%
+                        if
+                        certification.link
+                        %}value="{{ certification.link }}"
+                        {%
+                        endif
+                        %}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            {% endfor %}
+            <div id="certification-new">{% include "profiles/partials/certification/new_button.html" %}</div>
+          {% endif %}
+        </div>

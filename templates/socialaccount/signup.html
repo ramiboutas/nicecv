@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block head_title %}
-    {% translate
-    "Signup" %}
+  {% translate "Signup" %}
 {% endblock %}
 {% block content %}
-    <div class="container text-center mt-5" style="height: 950px">
-        <h1>{% translate "Sign Up" %}</h1>
-        <p>
-            {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
-            You are about to use your {{provider_name}} account to login to {{site_name}}.
-            As a final step, please complete the following form:
-          {% endblocktrans %}
-        </p>
-        <form class="signup"
-              id="signup_form"
-              method="post"
-              action="{% url 'socialaccount_signup' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% if redirect_field_value %}
-                <input type="hidden"
-                       name="{{ redirect_field_name }}"
-                       value="{{ redirect_field_value }}"/>
-            {% endif %}
-            <button class="btn btn-outline-secondary" type="submit">{% translate "Sign Up" %} 👉</button>
-        </form>
-    </div>
+  <div class="container text-center mt-5" style="height: 950px">
+    <h1>{% translate "Sign Up" %}</h1>
+    <p>
+      {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
+      You are about to use your {{provider_name}} account to login to {{site_name}}.
+      As a final step, please complete the following form:
+      {% endblocktrans %}
+    </p>
+    <form class="signup"
+          id="signup_form"
+          method="post"
+          action="{% url 'socialaccount_signup' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {% if redirect_field_value %}
+        <input type="hidden"
+               name="{{ redirect_field_name }}"
+               value="{{ redirect_field_value }}"/>
+      {% endif %}
+      <button class="btn btn-outline-secondary" type="submit">{% translate "Sign Up" %}</button>
+    </form>
+  </div>
 {% endblock %}

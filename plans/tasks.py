@@ -1,7 +1,6 @@
-from django.utils.module_loading import import_string
-
 from celery import Celery
 from celery import shared_task
+from django.utils.module_loading import import_string
 from djmoney import settings
 
 

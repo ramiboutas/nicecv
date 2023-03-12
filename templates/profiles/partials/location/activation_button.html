@@ -1,15 +1,15 @@
 {% load i18n %}
 <div id="location-activation-button">
-    {% if not object.location_active %}
-        <button class="btn btn-outline-secondary border-0"
-                style="text-align:left"
-                hx-post="{{ object.activate_location_url }}"
-                hx-target="#location-box"
-                hx-swap="outerHTML"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                title="{% translate 'Activate location' %}">
-            <i class="bi bi-geo-alt"></i> {% translate 'Location' %}
-        </button>
-    {% endif %}
+  {% if not object.location_active %}
+    <button class="btn btn-outline-secondary border-0"
+            style="text-align:left"
+            hx-post="{{ object.activate_location_url }}"
+            hx-target="#location-box"
+            hx-swap="outerHTML"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="{% translate 'Activate location' %}">
+      <i class="bi bi-geo-alt"></i> {% translate 'Location' %}
+    </button>
+  {% endif %}
 </div>

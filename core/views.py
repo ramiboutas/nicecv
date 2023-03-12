@@ -11,3 +11,7 @@ class HomeView(TemplateView):
         if self.request.user.is_authenticated:
             return redirect(reverse("profiles_list"))
         return render(self.request, self.template_name)
+
+
+def contact_view(request):
+    pass

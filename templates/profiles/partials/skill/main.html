@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="skill-box" class="mt-5">
-    {% if object.skill_active %}
-        <!--
+  {% if object.skill_active %}
+    <!--
      <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
       <i class="bi bi-gear"></i> {% translate "Skills" %}
@@ -16,67 +16,67 @@
 
     </h6>
 -->
-        <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0"><i class="bi bi-gear"></i
-                    ></span>
-                </div>
-                <input class="form-control border-0 bg-white"
-                       type="text"
-                       name="skill_label"
-                       value="{{ object.skill_label }}"
-                       hx-post="{{ object.update_skill_slug_url }}"
-                       hx-trigger="change"
-                       hx-swap="none"/>
-                <button class="btn btn-outline-secondary border-0 float-end"
-                        hx-get="{{ object.insert_skill_help_modal_url }}"
-                        hx-target="#modals-here"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="{% translate 'Get information about this field' %}">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <button class="btn btn-outline-secondary border-0 float-end"
-                        hx-post="{{ object.deactivate_skill_url }}"
-                        hx-target="#skill-box"
-                        hx-swap="innerHTML"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="{% translate 'Deactivate skills' %}">
-                    <i class="bi bi-eye-slash"></i>
-                </button>
-            </div>
-        </h6>
-        {% for skill in object.skill_set.all %}
-            <form hx-post="{{ skill.update_object_url }}"
-                  hx-trigger="change"
-                  hx-swap="none">
-                <div id="skill-{{ skill.pk }}" class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text border-0"><i class="bi bi-gear"></i
-                        ></span>
-                    </div>
-                    <input class="form-control border-0 bg-white"
-                           type="text"
-                           name="name"
-                           value="{{ skill.name }}"/>
-                    <input class="form-control form-range border-0 bg-white mt-2"
-                           type="range"
-                           name="level"
-                           value="{{ skill.level }}"/>
-                    <button class="btn btn-outline-secondary border-0"
-                            hx-post="{{ skill.delete_object_url }}"
-                            hx-target="#skill-box"
-                            hx-swap="outerHTML"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="right"
-                            title="{% translate 'Remove this skill' %}">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-            </form>
-        {% endfor %}
-        <div id="skill-new">{% include "profiles/partials/skill/new_button.html" %}</div>
-    {% endif %}
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-gear"></i
+          ></span>
+        </div>
+        <input class="form-control border-0 bg-white"
+               type="text"
+               name="skill_label"
+               value="{{ object.skill_label }}"
+               hx-post="{{ object.update_skill_slug_url }}"
+               hx-trigger="change"
+               hx-swap="none"/>
+        <button class="btn btn-outline-secondary border-0 float-end"
+                hx-get="{{ object.insert_skill_help_modal_url }}"
+                hx-target="#modals-here"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Get information about this field' %}">
+          <i class="bi bi-info-circle"></i>
+        </button>
+        <button class="btn btn-outline-secondary border-0 float-end"
+                hx-post="{{ object.deactivate_skill_url }}"
+                hx-target="#skill-box"
+                hx-swap="innerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Deactivate skills' %}">
+          <i class="bi bi-eye-slash"></i>
+        </button>
+      </div>
+    </h6>
+    {% for skill in object.skill_set.all %}
+      <form hx-post="{{ skill.update_object_url }}"
+            hx-trigger="change"
+            hx-swap="none">
+        <div id="skill-{{ skill.pk }}" class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text border-0"><i class="bi bi-gear"></i
+            ></span>
+          </div>
+          <input class="form-control border-0 bg-white"
+                 type="text"
+                 name="name"
+                 value="{{ skill.name }}"/>
+          <input class="form-control form-range border-0 bg-white mt-2"
+                 type="range"
+                 name="level"
+                 value="{{ skill.level }}"/>
+          <button class="btn btn-outline-secondary border-0"
+                  hx-post="{{ skill.delete_object_url }}"
+                  hx-target="#skill-box"
+                  hx-swap="outerHTML"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="right"
+                  title="{% translate 'Remove this skill' %}">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </form>
+    {% endfor %}
+    <div id="skill-new">{% include "profiles/partials/skill/new_button.html" %}</div>
+  {% endif %}
 </div>

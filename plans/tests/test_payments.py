@@ -11,28 +11,23 @@ from plans.payments import fulfill_order
 @pytest.mark.django_db
 class FulfillOrderTests(TestCase):
     def test_fulfill_order_with_user_id_none(self):
-        ok = fulfill_order(user_id=None, plan_id=1)
-        assert ok == False
+        assert not fulfill_order(user_id=None, plan_id=1)
 
     def test_fulfill_order_with_plan_id_none(self):
-        ok = fulfill_order(user_id=1, plan_id=None)
-        assert ok == False
+        assert not fulfill_order(user_id=1, plan_id=None)
 
     def test_fulfill_order_with_plan_id_and_user_id(self):
         user = UserFactory()
         plan = PlanFactory()
-        ok = fulfill_order(user_id=user.id, plan_id=plan.id)
-        assert ok == True
+        assert fulfill_order(user_id=user.id, plan_id=plan.id)
 
     def test_fulfill_order_with_user_that_does_not_exist(self):
         plan = PlanFactory()
-        ok = fulfill_order(user_id=1000, plan_id=plan.id)
-        assert ok == False
+        assert not fulfill_order(user_id=1000, plan_id=plan.id)
 
     def test_fulfill_order_with_plan_that_does_not_exist(self):
         user = UserFactory()
-        ok = fulfill_order(user_id=user.id, plan_id=1000)
-        assert ok == False
+        assert not fulfill_order(user_id=user.id, plan_id=1000)
 
 
 @pytest.mark.django_db
@@ -43,4 +38,4 @@ class StripeSessionTests(TestCase):
         request = request_factory.get("/")
         request.user = UserFactory()
         session = create_stripe_session(request, plan=PlanFactory())
-        assert ("checkout.stripe.com" in session["url"]) == True
+        assert "checkout.stripe.com" in session["url"]

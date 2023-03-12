@@ -70,10 +70,13 @@ defusedxml==0.7.1
     # via python3-openid
 dill==0.3.6
     # via pylint
+dj-stripe==2.7.3
+    # via -r requirements.in
 django==4.1.7
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
+    #   dj-stripe
     #   django-allauth
     #   django-auto-prefetch
     #   django-crispy-forms
@@ -90,6 +93,7 @@ django==4.1.7
     #   django-tex
     #   django-treebeard
     #   djangorestframework
+    #   jsonfield
     #   wagtail
 django-allauth==0.52.0
     # via -r requirements.in
@@ -161,6 +165,8 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
+jsonfield==3.1.0
+    # via dj-stripe
 kombu==5.2.4
     # via celery
 l18n==2021.3
@@ -280,8 +286,8 @@ sqlparse==0.4.3
     # via
     #   django
     #   django-debug-toolbar
-stripe==5.2.0
-    # via -r requirements.in
+stripe==4.2.0
+    # via dj-stripe
 tblib==1.7.0
     # via -r requirements.in
 telepath==0.3

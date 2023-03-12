@@ -19,6 +19,7 @@ urlpatterns = [
     # Third-party apps
     path("accounts/", include("allauth.urls")),
     path("rosetta/", include("rosetta.urls")),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
     # My own apps
     path("accounts/", include("accounts.urls")),  # this just for my-account url
     path("plans/", include("plans.urls")),

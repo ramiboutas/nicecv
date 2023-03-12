@@ -2,22 +2,22 @@
 {% load static %}
 {% load i18n %}
 {% block title %}
-    |
-    {% translate "My profile" %}
+  |
+  {% translate "My profile" %}
 {% endblock %}
 {% block css %}
-    <!-- cropper  -->
-    <link rel="stylesheet" href="{% static 'css/cropper.css' %}" />
+  <!-- cropper  -->
+  <link rel="stylesheet" href="{% static 'css/cropper.css' %}" />
 {% endblock %}
 {% block content %}
-    {% if object %}
-        {% include
-        "profiles/object.html" %}
-    {% else %}
-        {% include "profiles/create_object.html" %}
-    {% endif %}
+  {% if object %}
+    {% include
+    "profiles/object.html" %}
+  {% else %}
+    {% include "profiles/create_object.html" %}
+  {% endif %}
 {% endblock %}
 {% block extra_body %}
-    <!-- cropper js -->
-    <script src="{% static 'js/cropper.js' %}"></script>
+  <!-- cropper js -->
+  <script src="{% static 'js/cropper.js' %}"></script>
 {% endblock %}

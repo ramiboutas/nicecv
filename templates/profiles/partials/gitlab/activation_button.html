@@ -1,15 +1,15 @@
 {% load i18n %}
 <div id="gitlab-activation-button">
-    {% if not object.gitlab_active %}
-        <button class="btn btn-outline-secondary border-0"
-                style="text-align:left"
-                hx-post="{{ object.activate_gitlab_url }}"
-                hx-target="#gitlab-box"
-                hx-swap="outerHTML"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                title="{% translate 'Activate gitlab' %}">
-            <i class="bi bi-git"></i> {% translate 'GitLab' %}
-        </button>
-    {% endif %}
+  {% if not object.gitlab_active %}
+    <button class="btn btn-outline-secondary border-0"
+            style="text-align:left"
+            hx-post="{{ object.activate_gitlab_url }}"
+            hx-target="#gitlab-box"
+            hx-swap="outerHTML"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="{% translate 'Activate gitlab' %}">
+      <i class="bi bi-git"></i> {% translate 'GitLab' %}
+    </button>
+  {% endif %}
 </div>

@@ -1,15 +1,15 @@
 {% load i18n %}
 <div id="youtube-activation-button">
-    {% if not object.youtube_active %}
-        <button class="btn btn-outline-secondary border-0"
-                style="text-align:left"
-                hx-post="{{ object.activate_youtube_url }}"
-                hx-target="#youtube-box"
-                hx-swap="outerHTML"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                title="{% translate 'Activate youtube' %}">
-            <i class="bi bi-youtube"></i> {% translate 'Youtube' %}
-        </button>
-    {% endif %}
+  {% if not object.youtube_active %}
+    <button class="btn btn-outline-secondary border-0"
+            style="text-align:left"
+            hx-post="{{ object.activate_youtube_url }}"
+            hx-target="#youtube-box"
+            hx-swap="outerHTML"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="{% translate 'Activate youtube' %}">
+      <i class="bi bi-youtube"></i> {% translate 'Youtube' %}
+    </button>
+  {% endif %}
 </div>

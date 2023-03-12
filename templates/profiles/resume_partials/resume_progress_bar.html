@@ -6,25 +6,25 @@
      hx-trigger="load delay:600ms"
      hx-swap="outerHTML"
      style="height: 64px">
-    <div
-        class="progress-bar bg-danger fs-3"
-        role="progressbar"
-        {%
-        if
-        progress
-        %}
-        style="width: {{ progress.percent }}%;"
-        aria-valuenow="{{ progress.percent }}"
-        {%
-        endif
-        %}
-        aria-valuemin="0"
-        aria-valuemax="100"
-        >
-        {% if progress %}
-            {{ progress.description }} {% translate "resumes created"
-            %}
-        {% endif %}
-    </div>
+  <div
+    class="progress-bar bg-danger fs-3"
+    role="progressbar"
+    {%
+    if
+    progress
+    %}
+    style="width: {{ progress.percent }}%;"
+    aria-valuenow="{{ progress.percent }}"
+    {%
+    endif
+    %}
+    aria-valuemin="0"
+    aria-valuemax="100"
+    >
+    {% if progress %}
+      {{ progress.description }} {% translate "resumes created"
+      %}
+    {% endif %}
+  </div>
 </div>
 {% include "_messages.html" %}

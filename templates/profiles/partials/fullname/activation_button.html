@@ -1,15 +1,15 @@
 {% load i18n %}
 <div id="jobtitle-activation-button">
-    {% if not object.jobtitle_active %}
-        <button class="btn btn-outline-secondary border-0"
-                style="text-align:left"
-                hx-post="{{ object.activate_jobtitle_url }}"
-                hx-target="#jobtitle-box"
-                hx-swap="outerHTML"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                title="{% translate 'Activate job title' %}">
-            <i class="bi bi-briefcase"></i> {% translate 'Job title' %}
-        </button>
-    {% endif %}
+  {% if not object.jobtitle_active %}
+    <button class="btn btn-outline-secondary border-0"
+            style="text-align:left"
+            hx-post="{{ object.activate_jobtitle_url }}"
+            hx-target="#jobtitle-box"
+            hx-swap="outerHTML"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title="{% translate 'Activate job title' %}">
+      <i class="bi bi-briefcase"></i> {% translate 'Job title' %}
+    </button>
+  {% endif %}
 </div>

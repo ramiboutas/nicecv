@@ -3,20 +3,22 @@ import datetime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from plans.models import Plan
+from plans.models import PremiumPlan
 
 
 class CustomUser(AbstractUser):
     paid_until = models.DateField(null=True, blank=True)
     avatar_url = models.URLField(null=True, blank=True)
-    plan = models.OneToOneField(Plan, null=True, blank=True, on_delete=models.SET_NULL)
+    plan = models.OneToOneField(
+        PremiumPlan, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     def has_active_plan(self):
         if self.paid_until is None:
             return False
         return self.paid_until >= datetime.date.today()
 
-    def set_plan(self, plan: Plan):
+    def set_plan(self, plan: PremiumPlan):
         self.plan = plan
         today = datetime.date.today()
         extra = datetime.timedelta(days=(365.25 / 12) * plan.months)

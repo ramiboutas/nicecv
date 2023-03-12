@@ -1,95 +1,95 @@
 {% load i18n %}
 <div class="container my-5 border border-2">
-    <div class="row">
-        <div class="col-md-3 col-sm-12">
-            <div class="accordion" id="accordionLeft">
-                <div class="accordion-item border-0">
-                    <h2 class="accordion-header text-center" id="headingLeft">
-                        <button class="accordion-button collapsed fs-5 text-secondary"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseLeft"
-                                aria-expanded="true"
-                                aria-controls="collapseLeft">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </h2>
-                    <div id="collapseLeft"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingLeft"
-                         data-bs-parent="#accordionLeft">
-                        <div class="accordion-body">
-                            {% include "profiles/partials/description/activation_button.html"
-                            %}
-                            {% include "profiles/partials/website/activation_button.html"
-                            %}
-                            {% include "profiles/partials/linkedin/activation_button.html"
-                            %}
-                            {% include "profiles/partials/skype/activation_button.html" %}
-                            {% include "profiles/partials/instagram/activation_button.html" %}
-                            {% include "profiles/partials/twitter/activation_button.html" %}
-                            {% include "profiles/partials/facebook/activation_button.html" %}
-                            {% include "profiles/partials/youtube/activation_button.html" %}
-                            {% include "profiles/partials/github/activation_button.html" %}
-                            {%
-                            include "profiles/partials/gitlab/activation_button.html" %} {%
-                            include "profiles/partials/stackoverflow/activation_button.html"
-                            %}
-                            {% include "profiles/partials/medium/activation_button.html" %}
-                            {% include "profiles/partials/skill/activation_button.html" %}
-                            {%
-                            include "profiles/partials/language/activation_button.html" %} {%
-                            include "profiles/partials/education/activation_button.html" %} {%
-                            include "profiles/partials/experience/activation_button.html" %}
-                            {% include
-                            "profiles/partials/certification/activation_button.html" %}
-                            {%
-                            include "profiles/partials/course/activation_button.html" %} {%
-                            include "profiles/partials/honor/activation_button.html" %} {%
-                            include "profiles/partials/organization/activation_button.html" %}
-                            {% include "profiles/partials/patent/activation_button.html" %}
-                            {%
-                            include "profiles/partials/project/activation_button.html" %} {%
-                            include "profiles/partials/publication/activation_button.html" %}
-                            {% include "profiles/partials/volunteering/activation_button.html"
-                            %}
-                        </div>
-                    </div>
-                </div>
+  <div class="row">
+    <div class="col-md-3 col-sm-12">
+      <div class="accordion" id="accordionLeft">
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header text-center" id="headingLeft">
+            <button class="accordion-button collapsed fs-5 text-secondary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseLeft"
+                    aria-expanded="true"
+                    aria-controls="collapseLeft">
+              <i class="bi bi-eye"></i>
+            </button>
+          </h2>
+          <div id="collapseLeft"
+               class="accordion-collapse collapse"
+               aria-labelledby="headingLeft"
+               data-bs-parent="#accordionLeft">
+            <div class="accordion-body">
+              {% include "profiles/partials/description/activation_button.html"
+              %}
+              {% include "profiles/partials/website/activation_button.html"
+              %}
+              {% include "profiles/partials/linkedin/activation_button.html"
+              %}
+              {% include "profiles/partials/skype/activation_button.html" %}
+              {% include "profiles/partials/instagram/activation_button.html" %}
+              {% include "profiles/partials/twitter/activation_button.html" %}
+              {% include "profiles/partials/facebook/activation_button.html" %}
+              {% include "profiles/partials/youtube/activation_button.html" %}
+              {% include "profiles/partials/github/activation_button.html" %}
+              {%
+              include "profiles/partials/gitlab/activation_button.html" %} {%
+              include "profiles/partials/stackoverflow/activation_button.html"
+              %}
+              {% include "profiles/partials/medium/activation_button.html" %}
+              {% include "profiles/partials/skill/activation_button.html" %}
+              {%
+              include "profiles/partials/language/activation_button.html" %} {%
+              include "profiles/partials/education/activation_button.html" %} {%
+              include "profiles/partials/experience/activation_button.html" %}
+              {% include
+              "profiles/partials/certification/activation_button.html" %}
+              {%
+              include "profiles/partials/course/activation_button.html" %} {%
+              include "profiles/partials/honor/activation_button.html" %} {%
+              include "profiles/partials/organization/activation_button.html" %}
+              {% include "profiles/partials/patent/activation_button.html" %}
+              {%
+              include "profiles/partials/project/activation_button.html" %} {%
+              include "profiles/partials/publication/activation_button.html" %}
+              {% include "profiles/partials/volunteering/activation_button.html"
+              %}
             </div>
+          </div>
         </div>
-        <div class="col-md-3 col-sm-12">
-            <div class="accordion" id="accordionRight">
-                <div class="accordion-item border-0">
-                    <h2 class="accordion-header text-center" id="headingRight">
-                        <button class="accordion-button collapsed fs-5 text-secondary"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseRight"
-                                aria-expanded="true"
-                                aria-controls="collapseRight">
-                            <i class="bi bi-gear"></i>
-                        </button>
-                    </h2>
-                    <div id="collapseRight"
-                         class="accordion-collapse collapse"
-                         aria-labelledby="headingRight"
-                         data-bs-parent="#accordionRight">
-                        <div class="accordion-body">
-                            <button class="btn btn-outline-danger w-100 my-2 border-0" type="button">
-                                {% translate "Download your CV" %}
-                                <i class="bi bi-file-pdf"></i>
-                            </button>
-                            <button class="btn btn-outline-secondary w-100 my-2 border-0" type="button">
-                                {% translate "Duplicate profile" %} <i class="bi bi-files"></i>
-                            </button>
-                            <button class="btn btn-outline-secondary w-100 my-2 border-0" type="button">
-                                {% translate "Delete profile" %} <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="col-md-3 col-sm-12">
+      <div class="accordion" id="accordionRight">
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header text-center" id="headingRight">
+            <button class="accordion-button collapsed fs-5 text-secondary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseRight"
+                    aria-expanded="true"
+                    aria-controls="collapseRight">
+              <i class="bi bi-gear"></i>
+            </button>
+          </h2>
+          <div id="collapseRight"
+               class="accordion-collapse collapse"
+               aria-labelledby="headingRight"
+               data-bs-parent="#accordionRight">
+            <div class="accordion-body">
+              <button class="btn btn-outline-danger w-100 my-2 border-0" type="button">
+                {% translate "Download your CV" %}
+                <i class="bi bi-file-pdf"></i>
+              </button>
+              <button class="btn btn-outline-secondary w-100 my-2 border-0" type="button">
+                {% translate "Duplicate profile" %} <i class="bi bi-files"></i>
+              </button>
+              <button class="btn btn-outline-secondary w-100 my-2 border-0" type="button">
+                {% translate "Delete profile" %} <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

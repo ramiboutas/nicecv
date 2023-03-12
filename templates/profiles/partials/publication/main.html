@@ -1,7 +1,7 @@
 {% load i18n %}
 <div id="publication-box" class="mt-5">
-    {% if object.publication_active %}
-        <!--
+  {% if object.publication_active %}
+    <!--
     <h6 class="display-6 fs-6 mt-4 border-secondary border-2 border-bottom pb-3">
 
       <i class="bi bi-book"></i> {% translate "Publications" %}
@@ -16,251 +16,251 @@
 
     </h6>
      -->
-        <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0"><i class="bi bi-book"></i
-                    ></span>
-                </div>
-                <input class="form-control border-0 bg-white"
-                       type="text"
-                       name="publication_label"
-                       value="{{ object.publication_label }}"
-                       hx-post="{{ object.update_publication_slug_url }}"
-                       hx-trigger="change"
-                       hx-swap="none"/>
-                <button class="btn btn-outline-secondary border-0 float-end"
-                        hx-get="{{ object.insert_publication_help_modal_url }}"
-                        hx-target="#modals-here"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="{% translate 'Get information about this field' %}">
-                    <i class="bi bi-info-circle"></i>
-                </button>
-                <button class="btn btn-outline-secondary border-0 float-end"
-                        hx-post="{{ object.deactivate_publication_url }}"
-                        hx-target="#publication-box"
-                        hx-swap="innerHTML"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="{% translate 'Deactivate publications' %}">
-                    <i class="bi bi-eye-slash"></i>
-                </button>
+    <h6 class="display-6 fs-6 mt-4 border-secondary border-1 border-bottom">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-white border-0"><i class="bi bi-book"></i
+          ></span>
+        </div>
+        <input class="form-control border-0 bg-white"
+               type="text"
+               name="publication_label"
+               value="{{ object.publication_label }}"
+               hx-post="{{ object.update_publication_slug_url }}"
+               hx-trigger="change"
+               hx-swap="none"/>
+        <button class="btn btn-outline-secondary border-0 float-end"
+                hx-get="{{ object.insert_publication_help_modal_url }}"
+                hx-target="#modals-here"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Get information about this field' %}">
+          <i class="bi bi-info-circle"></i>
+        </button>
+        <button class="btn btn-outline-secondary border-0 float-end"
+                hx-post="{{ object.deactivate_publication_url }}"
+                hx-target="#publication-box"
+                hx-swap="innerHTML"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Deactivate publications' %}">
+          <i class="bi bi-eye-slash"></i>
+        </button>
+      </div>
+    </h6>
+    {% for publication in object.publication_set.all %}
+      <form hx-post="{{ publication.update_object_url }}"
+            hx-trigger="change"
+            hx-swap="none">
+        <div id="publication-{{ publication.pk }}" class="my-4 bg-light">
+          <!--buttons -->
+          <div class="row">
+            <div class="col-1">
+              <button
+                class="btn btn-outline-secondary border-0 w-100"
+                type="button"
+                name="button"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Move up' %}"
+                hx-post="{{ publication.move_up_object_url }}"
+                hx-target="#publication-box"
+                hx-swap="outerHTML"
+                {%
+                if
+                forloop.first
+                %}disabled{%
+                endif
+                %}
+                >
+                <i class="bi bi-arrow-up"></i>
+              </button>
             </div>
-        </h6>
-        {% for publication in object.publication_set.all %}
-            <form hx-post="{{ publication.update_object_url }}"
-                  hx-trigger="change"
-                  hx-swap="none">
-                <div id="publication-{{ publication.pk }}" class="my-4 bg-light">
-                    <!--buttons -->
-                    <div class="row">
-                        <div class="col-1">
-                            <button
-                                class="btn btn-outline-secondary border-0 w-100"
-                                type="button"
-                                name="button"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="{% translate 'Move up' %}"
-                                hx-post="{{ publication.move_up_object_url }}"
-                                hx-target="#publication-box"
-                                hx-swap="outerHTML"
-                                {%
-                                if
-                                forloop.first
-                                %}disabled{%
-                                endif
-                                %}
-                                >
-                                <i class="bi bi-arrow-up"></i>
-                            </button>
-                        </div>
-                        <div class="col-1">
-                            <button
-                                class="btn btn-outline-secondary border-0 w-100"
-                                type="button"
-                                name="button"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="{% translate 'Move down' %}"
-                                hx-post="{{ publication.move_down_object_url }}"
-                                hx-target="#publication-box"
-                                hx-swap="outerHTML"
-                                {%
-                                if
-                                forloop.last
-                                %}disabled{%
-                                endif
-                                %}
-                                >
-                                <i class="bi bi-arrow-down"></i>
-                            </button>
-                        </div>
-                        <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100"
-                                    type="button"
-                                    name="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="right"
-                                    title="{% translate 'Copy' %}"
-                                    hx-post="{{ publication.copy_object_url }}"
-                                    hx-target="#publication-new"
-                                    hx-swap="innerHTML">
-                                <i class="bi bi-files"></i>
-                            </button>
-                        </div>
-                        <div class="col-1">
-                            <button class="btn btn-outline-secondary border-0 w-100"
-                                    type="button"
-                                    name="button"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="right"
-                                    title="{% translate 'Remove' %}"
-                                    hx-post="{{ publication.delete_object_url }}"
-                                    hx-target="#publication-box"
-                                    hx-swap="outerHTML">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
+            <div class="col-1">
+              <button
+                class="btn btn-outline-secondary border-0 w-100"
+                type="button"
+                name="button"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="{% translate 'Move down' %}"
+                hx-post="{{ publication.move_down_object_url }}"
+                hx-target="#publication-box"
+                hx-swap="outerHTML"
+                {%
+                if
+                forloop.last
+                %}disabled{%
+                endif
+                %}
+                >
+                <i class="bi bi-arrow-down"></i>
+              </button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100"
+                      type="button"
+                      name="button"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="right"
+                      title="{% translate 'Copy' %}"
+                      hx-post="{{ publication.copy_object_url }}"
+                      hx-target="#publication-new"
+                      hx-swap="innerHTML">
+                <i class="bi bi-files"></i>
+              </button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-outline-secondary border-0 w-100"
+                      type="button"
+                      name="button"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="right"
+                      title="{% translate 'Remove' %}"
+                      hx-post="{{ publication.delete_object_url }}"
+                      hx-target="#publication-box"
+                      hx-swap="outerHTML">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+          <!--title  and issuing_date-->
+          <div class="row">
+            <div class="col-8">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-0"><i class="bi bi-book"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control border-0 bg-light"
+                  type="text"
+                  placeholder="{% translate 'Publication title, e.g: Reseach in a very cool subject' %}"
+                  name="title"
+                  maxlength="{{ max_length_normal }}"
+                  {%
+                  if
+                  publication.title
+                  %}value="{{ publication.title }}"
+                  {%
+                  endif
+                  %}
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i
+                    ></span>
+                  </div>
+                  <input
+                    class="form-control border-0 bg-light"
+                    type="text"
+                    placeholder="{% translate 'Issuing date, e.g. 2020' %}"
+                    name="issuing_date"
+                    maxlength="{{ max_length_super_short }}"
+                    {%
+                    if
+                    publication.issuing_date
+                    %}value="{{ publication.issuing_date }}"
+                    {%
+                    endif
+                    %}
+                    />
+                  </div>
+                </div>
+              </div>
+              <!--authors and  publisher-->
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text border-0"><i class="bi bi-people"></i
+                      ></span>
                     </div>
-                    <!--title  and issuing_date-->
+                    <input
+                      class="form-control border-0 bg-light"
+                      type="text"
+                      placeholder="{% translate 'Authors, e.g. Person 1, Person 2, Person 3, ...' %}"
+                      name="authors"
+                      maxlength="{{ max_length_super_short }}"
+                      {%
+                      if
+                      publication.authors
+                      %}value="{{ publication.authors }}"
+                      {%
+                      endif
+                      %}
+                      />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text border-0"><i class="bi bi-building"></i
+                        ></span>
+                      </div>
+                      <input
+                        class="form-control border-0 bg-light"
+                        type="text"
+                        placeholder="{% translate 'Publisher, e.g. Springer Nature' %}"
+                        name="publisher"
+                        maxlength="{{ max_length_short }}"
+                        {%
+                        if
+                        publication.publisher
+                        %}value="{{ publication.publisher }}"
+                        {%
+                        endif
+                        %}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- link -->
+                  <div class="row">
+                    <div class="col">
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text border-0"><i class="bi bi-link"></i
+                          ></span>
+                        </div>
+                        <input
+                          class="form-control border-0 bg-light"
+                          type="text"
+                          placeholder="{% translate 'Link, e.g: www.sciencedirect.com/science/article/abs/pii/S0924013605001160 (optional)' %}"
+                          name="link"
+                          maxlength="{{ max_length_normal }}"
+                          {%
+                          if
+                          publication.link
+                          %}value="{{ publication.link }}"
+                          {%
+                          endif
+                          %}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!--description -->
                     <div class="row">
-                        <div class="col-8">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text border-0"><i class="bi bi-book"></i
-                                    ></span>
-                                </div>
-                                <input
-                                    class="form-control border-0 bg-light"
-                                    type="text"
-                                    placeholder="{% translate 'Publication title, e.g: Reseach in a very cool subject' %}"
-                                    name="title"
-                                    maxlength="{{ max_length_normal }}"
-                                    {%
-                                    if
-                                    publication.title
-                                    %}value="{{ publication.title }}"
-                                    {%
-                                    endif
-                                    %}
-                                    />
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text border-0"><i class="bi bi-calendar-check"></i
-                                        ></span>
-                                    </div>
-                                    <input
-                                        class="form-control border-0 bg-light"
-                                        type="text"
-                                        placeholder="{% translate 'Issuing date, e.g. 2020' %}"
-                                        name="issuing_date"
-                                        maxlength="{{ max_length_super_short }}"
-                                        {%
-                                        if
-                                        publication.issuing_date
-                                        %}value="{{ publication.issuing_date }}"
-                                        {%
-                                        endif
-                                        %}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <!--authors and  publisher-->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text border-0"><i class="bi bi-people"></i
-                                            ></span>
-                                        </div>
-                                        <input
-                                            class="form-control border-0 bg-light"
-                                            type="text"
-                                            placeholder="{% translate 'Authors, e.g. Person 1, Person 2, Person 3, ...' %}"
-                                            name="authors"
-                                            maxlength="{{ max_length_super_short }}"
-                                            {%
-                                            if
-                                            publication.authors
-                                            %}value="{{ publication.authors }}"
-                                            {%
-                                            endif
-                                            %}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text border-0"><i class="bi bi-building"></i
-                                                ></span>
-                                            </div>
-                                            <input
-                                                class="form-control border-0 bg-light"
-                                                type="text"
-                                                placeholder="{% translate 'Publisher, e.g. Springer Nature' %}"
-                                                name="publisher"
-                                                maxlength="{{ max_length_short }}"
-                                                {%
-                                                if
-                                                publication.publisher
-                                                %}value="{{ publication.publisher }}"
-                                                {%
-                                                endif
-                                                %}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- link -->
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text border-0"><i class="bi bi-link"></i
-                                                    ></span>
-                                                </div>
-                                                <input
-                                                    class="form-control border-0 bg-light"
-                                                    type="text"
-                                                    placeholder="{% translate 'Link, e.g: www.sciencedirect.com/science/article/abs/pii/S0924013605001160 (optional)' %}"
-                                                    name="link"
-                                                    maxlength="{{ max_length_normal }}"
-                                                    {%
-                                                    if
-                                                    publication.link
-                                                    %}value="{{ publication.link }}"
-                                                    {%
-                                                    endif
-                                                    %}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--description -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text border-0"><i class="bi bi-justify-left"></i
-                                                        ></span>
-                                                    </div>
-                                                    <textarea class="form-control border-0 bg-light" type="text" placeholder="{% translate 'Description' %}" name="description" maxlength="{{ max_length_super_large }}">
+                      <div class="col">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text border-0"><i class="bi bi-justify-left"></i
+                            ></span>
+                          </div>
+                          <textarea class="form-control border-0 bg-light" type="text" placeholder="{% translate 'Description' %}" name="description" maxlength="{{ max_length_super_large }}">
 {% if publication.description %}{{ publication.description }}{% endif %}
 </textarea
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            {% endfor %}
-                            <div id="publication-new">{% include "profiles/partials/publication/new_button.html" %}</div>
-                        {% endif %}
+                          >
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                </form>
+              {% endfor %}
+              <div id="publication-new">{% include "profiles/partials/publication/new_button.html" %}</div>
+            {% endif %}
+          </div>

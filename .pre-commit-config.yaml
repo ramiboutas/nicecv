@@ -52,4 +52,9 @@ repos:
     rev: v1.19.16
     hooks:
       - id: djlint-django
-        args: [--profile, django, --ignore, "T003", --reformat] #  ""
+        args:
+        - --reformat
+        - --profile=django
+        - --ignore="T003"
+        - --indent=2
+        # - --quiet

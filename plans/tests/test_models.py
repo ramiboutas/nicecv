@@ -4,21 +4,34 @@ from django.test import TestCase
 
 from accounts.factories import UserFactory
 from plans.factories import PlanFactory
+from plans.factories import PlanFAQFactory
 from plans.models import Order
-from plans.models import Plan
+from plans.models import PremiumPlan
 
 
 @pytest.mark.django_db
 class PlanTests(TestCase):
     def test_plan_instance(self):
-        plan = Plan.objects.create(months=1, price=7)
+        plan = PremiumPlan.objects.create(months=1, price=7)
         assert plan.months == 1
         assert str(plan) == "1 months"
 
     def test_one_single_month_value_is_allowed(self):
-        Plan.objects.create(months=1, price=7)
+        PremiumPlan.objects.create(months=1, price=7)
         with pytest.raises(IntegrityError):
-            Plan.objects.create(months=1, price=14)
+            PremiumPlan.objects.create(months=1, price=14)
+
+    def test_plan_checkout_url(self):
+        plan = PlanFactory()
+        assert plan.detail_url
+
+
+@pytest.mark.django_db
+class PlanFAQTest(TestCase):
+    def test_planfaq_instance(self):
+        faq = PlanFAQFactory()
+        assert "?" in faq.question
+        assert str(faq)
 
 
 @pytest.mark.django_db
