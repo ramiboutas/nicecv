@@ -8,6 +8,24 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.models import register_snippet
 
 
+class AbractPlan(auto_prefetch.Model):
+    # TODO: put the common fields
+    pass
+
+
+class FreePlan(AbractPlan):
+    # without price and payment related fields
+    pass
+
+    class Meta(auto_prefetch.Model.Meta):
+        constraints = [
+            models.CheckConstraint(
+                name="%(app_label)s_%(class)s_single_instance",
+                check=models.Q(id=1),
+            ),
+        ]
+
+
 @register_snippet
 class PremiumPlan(auto_prefetch.Model):
     name = models.CharField(max_length=16)
@@ -69,12 +87,3 @@ class PlanFAQ(auto_prefetch.Model):
 
     def __str__(self) -> str:
         return self.question
-
-
-class Order(auto_prefetch.Model):
-    plan = auto_prefetch.ForeignKey(PremiumPlan, on_delete=models.CASCADE)
-    user = auto_prefetch.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.created} - {self.user.email}"

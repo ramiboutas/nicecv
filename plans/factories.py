@@ -19,12 +19,3 @@ class PlanFAQFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "plans.PlanFAQ"
         django_get_or_create = ("question",)
-
-
-class OrderFactory(factory.django.DjangoModelFactory):
-    plan = factory.SubFactory(PremiumPlanFactory)
-    user = factory.SubFactory(UserFactory)
-
-    class Meta:
-        model = "plans.Order"
-        django_get_or_create = ("plan", "user")

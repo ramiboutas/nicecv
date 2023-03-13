@@ -38,7 +38,7 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
-        (_("Premium"), {"fields": ("paid_until", "actual_plan")}),
+        (_("Premium"), {"fields": ("paid_until", "plan")}),
         (
             _("Permissions"),
             {

@@ -32,14 +32,3 @@ class PlanFAQTest(TestCase):
         faq = PlanFAQFactory()
         assert "?" in faq.question
         assert str(faq)
-
-
-@pytest.mark.django_db
-class OrderTests(TestCase):
-    def test_order_instance(self):
-        user = UserFactory()
-        plan = PlanFactory()
-        order = Order.objects.create(user=user, plan=plan)
-        assert order.user == user
-        assert order.plan == plan
-        assert str(order) == f"{order.created} - {user.email}"

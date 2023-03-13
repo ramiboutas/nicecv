@@ -6,9 +6,9 @@ from django.utils.translation import gettext_lazy as _
 from djstripe import models as djstripe_models
 from djstripe import settings as djstripe_settings
 
-from .models import Order
 from .models import PremiumPlan
 from accounts.models import CustomUser
+from accounts.models import UserPremiumPlan
 
 
 def fulfill_order(user_id: int = None, plan_id: int = None):
@@ -30,7 +30,7 @@ def fulfill_order(user_id: int = None, plan_id: int = None):
     except CustomUser.DoesNotExist:
         return False
 
-    Order(plan=plan, user=user).save()
+    UserPremiumPlan.objects.create(plan=plan, user=user)
     user.set_plan(plan)
     return True
 
