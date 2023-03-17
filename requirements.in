@@ -31,6 +31,7 @@ boto3
 django-storages
 django-money[exchange]
 django-modeltranslation
+django-cleanup
 
 django-debug-toolbar
 pyclean

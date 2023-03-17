@@ -21,11 +21,11 @@ urlpatterns = [
     path("rosetta/", include("rosetta.urls")),
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
     # My own apps
-    path("accounts/", include("accounts.urls")),  # this just for my-account url
-    path("plans/", include("plans.urls")),
-    path("profiles/", include("profiles.urls")),
-    path("tex/", include("tex.urls")),
-    path("", include("core.urls")),
+    path("accounts/", include("apps.accounts.urls")),  # this just for my-account url
+    path("plans/", include("apps.plans.urls")),
+    path("profiles/", include("apps.profiles.urls")),
+    path("tex/", include("apps.tex.urls")),
+    path("", include("apps.core.urls")),
 ]
 
 if settings.DEBUG:

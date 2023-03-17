@@ -51,11 +51,13 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     # My own apps
-    "accounts.apps.AccountsConfig",
-    "core.apps.CoreConfig",
-    "plans.apps.PlansConfig",
-    "profiles.apps.ProfilesConfig",
-    "tex.apps.TexConfig",
+    "apps.accounts.apps.AccountsConfig",
+    "apps.resumes.apps.ResumesConfig",
+    "apps.core.apps.CoreConfig",
+    "apps.plans.apps.PlansConfig",
+    "apps.profiles.apps.ProfilesConfig",
+    "apps.tex.apps.TexConfig",
+    "apps.celery_progress_htmx",  # Actually a thid party but changed
     # Wagtail apps
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -92,9 +94,9 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_tex",
-    "celery_progress_htmx",
     "django_celery_results",
     "djstripe",
+    "django_cleanup.apps.CleanupConfig",  # https://github.com/un1t/django-cleanup
     # Tools for debug
     "debug_toolbar",
 ]
@@ -177,7 +179,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [str(BASE_DIR.joinpath("templates"))],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -187,7 +189,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 # my own context processors
-                "tex.context_processors.tex_objects",
+                "apps.tex.context_processors.tex_objects",
             ],
             "debug": DEBUG,
         },
@@ -195,12 +197,10 @@ TEMPLATES = [
     {
         "NAME": "tex",
         "BACKEND": "django_tex.engine.TeXEngine",
-        "DIRS": str(
-            BASE_DIR.joinpath("tex_templates"),
-        ),
-        "APP_DIRS": True,
+        "DIRS": [BASE_DIR / "apps" / "templates" / "tex"],
+        "APP_DIRS": False,
         "OPTIONS": {
-            "environment": "tex.environment.my_environment",
+            "environment": "apps.tex.environment.my_environment",
         },
     },
 ]
