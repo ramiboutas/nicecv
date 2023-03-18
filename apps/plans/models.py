@@ -1,15 +1,19 @@
 import auto_prefetch
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
+
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.models import register_snippet
 
 
 class AbractPlan(auto_prefetch.Model):
-    name = models.CharField(max_length=16)
+    name = models.CharField(max_length=32)
     description = models.CharField(max_length=64, null=True)
     profiles = models.PositiveSmallIntegerField(default=5)
     coverletters = models.PositiveSmallIntegerField(default=10)
@@ -28,6 +32,10 @@ class FreePlan(AbractPlan):
         FieldPanel("coverletters"),
         FieldPanel("support"),
     ]
+
+    def clean(self):
+        if self.__class__.objects.count() > 0 and self._state.adding:
+            raise ValidationError(_("Only one instance is allowed"))
 
     class Meta(auto_prefetch.Model.Meta):
         constraints = [
@@ -94,3 +102,19 @@ class PlanFAQ(auto_prefetch.Model):
 
     def __str__(self) -> str:
         return self.question
+
+
+def get_free_plan():
+    try:
+        plan = FreePlan.objects.get(id=1)
+    except FreePlan.DoesNotExist:
+        plan = FreePlan.objects.create(
+            name="Free Plan", description=_("Enjoy the free plan")
+        )
+    except IntegrityError:
+        plan = FreePlan.objects.all().first()
+
+    return plan
+
+
+free_plan_instance = get_free_plan()

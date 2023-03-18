@@ -1,5 +1,7 @@
 import factory
 
+from apps.plans.factories import PremiumPlanFactory
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     username = "user"
@@ -22,3 +24,12 @@ class SuperUserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "accounts.CustomUser"
         django_get_or_create = ("username",)
+
+
+class UserPremiumPlanFactory(factory.django.DjangoModelFactory):
+    plan = factory.SubFactory(PremiumPlanFactory)
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = "accounts.UserPremiumPlan"
+        django_get_or_create = ("user", "plan")

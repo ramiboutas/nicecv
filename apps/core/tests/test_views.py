@@ -3,12 +3,13 @@ from http import HTTPStatus
 from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import resolve
+from django.urls import reverse
 
 from ..views import HomeView
 from apps.accounts.factories import UserFactory
 
 
-class HomeViewTest(TestCase):
+class HomeViewTests(TestCase):
     def test_home_view_status_code(self):
         response = self.client.get("/")
         assert response.status_code == HTTPStatus.OK
@@ -23,3 +24,10 @@ class HomeViewTest(TestCase):
         request.user = UserFactory()
         response = HomeView.as_view()(request)
         assert response.status_code == HTTPStatus.FOUND
+
+
+class ContactViewTests(TestCase):
+    def test_contact_view(self):
+        url = reverse("core:contact")
+        response = self.client.get(url)
+        assert response.status_code == HTTPStatus.OK

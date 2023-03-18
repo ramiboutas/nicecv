@@ -2,13 +2,14 @@ import pytest
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from apps.plans.factories import PremiumPlanFactory
 from apps.plans.factories import PlanFAQFactory
+from apps.plans.factories import PremiumPlanFactory
 from apps.plans.models import PremiumPlan
+from apps.plans.models import FreePlan
 
 
 @pytest.mark.django_db
-class PlanTests(TestCase):
+class PremiumPlanTests(TestCase):
     def test_plan_instance(self):
         plan = PremiumPlan.objects.create(months=1, price=7)
         assert plan.months == 1
@@ -22,6 +23,15 @@ class PlanTests(TestCase):
     def test_plan_checkout_url(self):
         plan = PremiumPlanFactory()
         assert plan.detail_url
+
+
+@pytest.mark.django_db(transaction=True)
+class FreePlanTests(TestCase):
+    def test_one_instance_is_allowed(self):
+        with pytest.raises(IntegrityError):
+            FreePlan.objects.create(
+                name="Free Plan 2", description="Description of free plan 2"
+            )
 
 
 @pytest.mark.django_db

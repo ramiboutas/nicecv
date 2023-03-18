@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import TemplateView
+from django.http import HttpResponse
 
 
 class HomeView(TemplateView):
@@ -14,4 +15,4 @@ class HomeView(TemplateView):
 
 
 def contact_view(request):
-    pass
+    return HttpResponse()

@@ -1,89 +1,44 @@
 import datetime
-
 import pytest
 from django.test import TestCase
 
+from apps.accounts.models import UserPremiumPlan
 from apps.accounts.factories import SuperUserFactory
 from apps.accounts.factories import UserFactory
+from apps.accounts.factories import UserPremiumPlanFactory
 from apps.plans.factories import PremiumPlanFactory
+from apps.plans.models import FreePlan
+from apps.plans.models import PremiumPlan
 
-today = datetime.date.today()
-delta_month = datetime.timedelta(days=30)
 
-
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 class CustomUserTests(TestCase):
+    @pytest.mark.django_db
     def test_standard_user(self):
         user = UserFactory()
         assert user.is_active
         assert not user.is_staff
         assert not user.is_superuser
 
+    @pytest.mark.django_db
     def test_superuser(self):
         superuser = SuperUserFactory()
         assert superuser.is_active
         assert superuser.is_staff
 
-    def test_has_premium_with_user_just_created(self):
+    @pytest.mark.django_db
+    def test_user_just_created_with_free_plan(self):
         user = UserFactory()
-        assert not user.has_active_plan()
+        assert isinstance(user.get_actual_plan(), FreePlan)
 
-    def test_has_premium_with_paid_until_none(self):
-        user = UserFactory()
-        user.paid_until = None
-        user.save()
-        assert not user.has_active_plan()
+    @pytest.mark.django_db
+    def test_user_with_premium_plan(self):
+        user_plan = UserPremiumPlanFactory()
+        assert user_plan.expires > datetime.date.today()
 
-    def test_has_premium_with_paid_until_today(self):
-        user = UserFactory()
-        user.paid_until = today
-        user.save()
-        assert user.has_active_plan()
 
-    def test_has_premium_with_paid_until_expired(self):
-        user = UserFactory()
-        user.paid_until = today - delta_month
-        user.save()
-        assert not user.has_active_plan()
-
-    def test_has_premium_with_plan(self):
-        user = UserFactory()
-        user.paid_until = today + delta_month
-        user.save()
-        assert user.has_active_plan()
-
-    def test_set_paid_until_with_user_just_created(self):
-        user = UserFactory()
-        plan = PremiumPlanFactory()
-        user.set_plan(plan=plan)
-        assert user.has_active_plan()
-        assert user.paid_until == today + datetime.timedelta(
-            days=(365.25 / 12) * plan.months
-        )
-
-    def test_set_paid_until_with_paid_until_in_the_past(self):
-        user = UserFactory()
-        user.paid_until = today - delta_month
-        plan = PremiumPlanFactory()
-        user.set_plan(plan=plan)
-        assert user.paid_until == today + datetime.timedelta(
-            days=(365.25 / 12) * plan.months
-        )
-
-    def test_set_paid_until_with_paid_until_today(self):
-        user = UserFactory()
-        plan = PremiumPlanFactory()
-        user.paid_until = today
-        user.set_plan(plan=plan)
-        assert user.paid_until == today + datetime.timedelta(
-            days=(365.25 / 12) * plan.months
-        )
-
-    def test_set_paid_until_with_paid_until_in_the_future(self):
-        user = UserFactory()
-        user.paid_until = today + delta_month
-        plan = PremiumPlanFactory()
-        user.set_plan(plan=plan)
-        assert user.paid_until == today + delta_month + datetime.timedelta(
-            days=(365.25 / 12) * plan.months
-        )
+@pytest.mark.django_db
+class UserPremiumPlanTests(TestCase):
+    def test_instance_str(self):
+        user_plan = UserPremiumPlanFactory()
+        assert type(str(user_plan)) == str

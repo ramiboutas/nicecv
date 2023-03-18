@@ -41,7 +41,6 @@ INTERNAL_IPS = [
 ALLOWED_HOSTS = [
     "nicecv.online",
     "www.nicecv.online",
-    "localhost",
     "127.0.0.1",
     "testserver",
 ]
@@ -51,12 +50,12 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     # My own apps
-    "apps.accounts.apps.AccountsConfig",
-    "apps.resumes.apps.ResumesConfig",
-    "apps.core.apps.CoreConfig",
-    "apps.plans.apps.PlansConfig",
-    "apps.profiles.apps.ProfilesConfig",
-    "apps.tex.apps.TexConfig",
+    "apps.accounts.AccountsConfig",
+    "apps.resumes.ResumesConfig",
+    "apps.core.CoreConfig",
+    "apps.plans.PlansConfig",
+    "apps.profiles.ProfilesConfig",
+    "apps.tex.TexConfig",
     "apps.celery_progress_htmx",  # Actually a thid party but changed
     # Wagtail apps
     "wagtail.contrib.forms",

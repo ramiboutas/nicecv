@@ -30,7 +30,6 @@ def fulfill_order(user_id: int = None, plan_id: int = None):
         return False
 
     UserPremiumPlan.objects.create(plan=plan, user=user)
-    user.set_plan(plan)
     return True
 
 

@@ -15,7 +15,6 @@ class CustomUserAdmin(UserAdmin):
     list_display = [
         "email",
         "username",
-        "has_active_plan",
     ]
     fieldsets = (
         (
@@ -38,7 +37,6 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
-        (_("Premium"), {"fields": ("paid_until", "plan")}),
         (
             _("Permissions"),
             {
