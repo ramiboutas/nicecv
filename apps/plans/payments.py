@@ -65,7 +65,7 @@ def create_stripe_session(request, plan: Model):
 
         # ! Note that Stripe will always create a new Customer Object if customer id not provided
         # ! even if customer_email is provided!
-        session = stripe.checkout.Session.create(
+        session = stripe.checkout.Session.create(  # pragma: no cover
             payment_method_types=["card"],
             customer=customer.id,
             # payment_method_types=["bacs_debit"],  # for bacs_debit

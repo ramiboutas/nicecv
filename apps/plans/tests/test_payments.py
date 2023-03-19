@@ -7,6 +7,8 @@ from apps.plans.factories import PremiumPlanFactory
 from apps.plans.payments import create_stripe_session
 from apps.plans.payments import fulfill_order
 
+from djstripe import models as djstripe_models
+
 
 @pytest.mark.django_db
 class FulfillOrderTests(TestCase):

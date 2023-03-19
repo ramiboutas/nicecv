@@ -10,9 +10,5 @@ class HomeView(TemplateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect(reverse("profiles_list"))
+            return redirect(reverse("profiles:list"))
         return render(self.request, self.template_name)
-
-
-def contact_view(request):
-    return HttpResponse()

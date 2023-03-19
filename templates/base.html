@@ -1,0 +1,33 @@
+{% load static i18n django_htmx %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- my custom css -->
+    <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" />
+    <!-- for more css in a specific page -->
+    {% block css %}{% endblock %}
+    <title>Nice CV
+      {% block title %}{% endblock %}
+    </title>
+  </head>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+      {% include "_messages.html" %}
+      {% include "_header.html" %}
+      {% block content %}{% endblock %}
+
+    {% include "_footer.html" %}
+
+    {% block extra_body %}{% endblock %}
+
+    <!-- js files -->
+    <script src="{% static 'js/base.js' %}"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.6/dist/htmx.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {% django_htmx_script %}
+  </body>
+</html>

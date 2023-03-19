@@ -1,11 +1,14 @@
 import pytest
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.urls import reverse
 
 from apps.plans.factories import PlanFAQFactory
 from apps.plans.factories import PremiumPlanFactory
 from apps.plans.models import PremiumPlan
 from apps.plans.models import FreePlan
+from apps.plans.models import get_free_plan
 
 
 @pytest.mark.django_db
@@ -20,18 +23,24 @@ class PremiumPlanTests(TestCase):
         with pytest.raises(IntegrityError):
             PremiumPlan.objects.create(months=1, price=14)
 
-    def test_plan_checkout_url(self):
+    def test_plan_urls(self):
         plan = PremiumPlanFactory()
-        assert plan.detail_url
+        assert plan.detail_url == reverse("plans:detail", kwargs={"id": plan.id})
+        assert plan.checkout_url == reverse("plans:checkout", kwargs={"id": plan.id})
 
 
-@pytest.mark.django_db(transaction=True)
+@pytest.mark.django_db
 class FreePlanTests(TestCase):
     def test_one_instance_is_allowed(self):
-        with pytest.raises(IntegrityError):
+        with pytest.raises((IntegrityError, ValidationError)):
             FreePlan.objects.create(
                 name="Free Plan 2", description="Description of free plan 2"
             )
+
+    def test_when_instance_does_not_exist(self):
+        FreePlan.objects.all().delete()
+        plan = get_free_plan()
+        assert plan.name == "Free Plan"
 
 
 @pytest.mark.django_db

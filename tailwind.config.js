@@ -8,10 +8,7 @@ module.exports = {
     "./templates/**/*.html",
     "./templates/**/**/*.html",
     "./static/js/*.js",
-    "./accounts/forms.py",
-    "./plans/forms.py",
-    "./profiles/forms.py",
-    "./tex/forms.py",
+    "./apps/**/forms.py",
   ],
   theme: {
     // colors: {
@@ -19,5 +16,7 @@ module.exports = {
     // },
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }

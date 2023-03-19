@@ -16,21 +16,24 @@ class CustomUser(AbstractUser):
     def get_actual_plan(self):
         """Return a PremiumPlan instance if the user has one.
         If not, return the FreePlan instance"""
-        premium_plan = self.premium_plans.filter(
+        user_premium_plan = self.user_premium_plans.filter(
             expires__gte=datetime.date.today()
         ).first()
-        if premium_plan:
-            return premium_plan
+        if user_premium_plan:
+            return user_premium_plan.plan
         return free_plan_instance
 
     @property
     def number_of_profiles(self):
-        return self.actual_plan.profiles
+        return self.get_actual_plan().profiles
 
 
 class UserPremiumPlan(auto_prefetch.Model):
     user = auto_prefetch.ForeignKey(
-        CustomUser, on_delete=models.SET_NULL, null=True, related_name="premium_plans"
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="user_premium_plans",
     )
     plan = auto_prefetch.OneToOneField(
         PremiumPlan, on_delete=models.SET_NULL, null=True

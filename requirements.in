@@ -32,6 +32,8 @@ django-storages
 django-money[exchange]
 django-modeltranslation
 django-cleanup
+crispy-tailwind
+
 
 django-debug-toolbar
 pyclean

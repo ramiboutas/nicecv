@@ -1,8 +1,13 @@
 {
   "scripts": {
-    "dev": "tailwindcss -i static/css/tailwind-input.css -o static/css/tailwind-output.css --watch"
+    "dev": "tailwindcss -i static/css/tailwind-input.css -o static/css/tailwind-output.css --watch --minify"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.3"
   }
 }

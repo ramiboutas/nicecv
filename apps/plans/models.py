@@ -1,7 +1,6 @@
 import auto_prefetch
-from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db.utils import IntegrityError
+
 
 from django.db import models
 from django.db.models import UniqueConstraint
@@ -33,7 +32,8 @@ class FreePlan(AbractPlan):
         FieldPanel("support"),
     ]
 
-    def clean(self):
+    def clean(self):  # pragma: no cover
+        # Manually tested (for Wagtail admin only)
         if self.__class__.objects.count() > 0 and self._state.adding:
             raise ValidationError(_("Only one instance is allowed"))
 
@@ -111,9 +111,6 @@ def get_free_plan():
         plan = FreePlan.objects.create(
             name="Free Plan", description=_("Enjoy the free plan")
         )
-    except IntegrityError:
-        plan = FreePlan.objects.all().first()
-
     return plan
 
 

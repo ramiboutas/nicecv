@@ -33,10 +33,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "some-tests-need-a-secret-key")
 DEBUG = os.environ.get("DEBUG", "") == "1"
 
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "localhost",
-]
+INTERNAL_IPS = ["127.0.0.1"]
 
 ALLOWED_HOSTS = [
     "nicecv.online",
@@ -51,12 +48,13 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     # My own apps
     "apps.accounts.AccountsConfig",
+    "apps.forms.FormsConfig",
     "apps.resumes.ResumesConfig",
     "apps.core.CoreConfig",
     "apps.plans.PlansConfig",
     "apps.profiles.ProfilesConfig",
     "apps.tex.TexConfig",
-    "apps.celery_progress_htmx",  # Actually a thid party but changed
+    "apps.celery_progress_htmx",  # Actually a thid party but adapted
     # Wagtail apps
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -90,12 +88,12 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     # "allauth.socialaccount.providers.linkedin",
     "django_htmx",
-    "crispy_forms",
-    "crispy_bootstrap5",
     "django_tex",
     "django_celery_results",
     "djstripe",
     "django_cleanup.apps.CleanupConfig",  # https://github.com/un1t/django-cleanup
+    "crispy_forms",
+    "crispy_tailwind",
     # Tools for debug
     "debug_toolbar",
 ]
@@ -178,7 +176,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -370,8 +368,8 @@ CELERY_RESULT_BACKEND = "django-db"
 
 
 # crispy forms
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 
 # analytics
