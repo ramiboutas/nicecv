@@ -1,11 +1,10 @@
 from django.urls import path
 
-from .views import profile_create_view
 from .views import delete_object_view
-
+from .views import profile_create_view
 from .views import profile_list_view
-from .views import profile_update_view
 from .views import profile_update_fields_view
+from .views import profile_update_view
 
 
 # from .views import save_personal_information_view, update_description_view

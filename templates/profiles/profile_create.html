@@ -1,20 +1,16 @@
 {% extends "base.html" %}
-{% load static  i18n%}
-
-{% block title %} | {% translate "Creating profile..." %} {% endblock %}
-
-{% block content %}
-
-<h1>{% translate "Creating a new profile..." %} </h1>
-
-<form method="POST">
-  {% csrf_token %}
-  <div class="hidden"
-       hx-post="{% url 'profiles:create' %}"
-       hx-trigger="load delay:3s from:body">
-    {{ form }}
-  </form>
-</div>
-
+{% load static  i18n %}
+{% block title %}
+  | {% translate "Creating profile..." %}
 {% endblock %}
-
+{% block content %}
+  <h1>{% translate "Creating a new profile..." %}</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="hidden"
+         hx-post="{% url 'profiles:create' %}"
+         hx-trigger="load delay:3s from:body">
+      {{ form }}
+    </form>
+  </div>
+{% endblock %}

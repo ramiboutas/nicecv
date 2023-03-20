@@ -1,19 +1,16 @@
 {% extends "base.html" %}
 {% load static i18n crispy_forms_tags %}
-
-{% block title %} | {% translate "My profile" %}
+{% block title %}
+  | {% translate "My profile" %}
 {% endblock %}
-
 {% block css %}
   <!-- cropper  -->
   <link rel="stylesheet" href="{% static 'css/cropper.css' %}" />
 {% endblock %}
-
 {% block content %}
-
-<!-- modals -->
-<div id="modals-here"></div>
-<!--
+  <!-- modals -->
+  <div id="modals-here"></div>
+  <!--
   This example requires some changes to your config:
 
   ```
@@ -27,43 +24,36 @@
   }
   ```
 -->
-<div class="md:container md:mx-auto">
-  <form
-
-
-  >
-  {% for field in profile_form %}
-
-    <div>
-      <label for="{{field.label}}" class="block text-sm font-medium leading-6 text-gray-900">{{field.label}} {{field.name}}  </label>
-      <div class="mt-2">
-        <input hx-trigger="keyup changed delay:1s"
-        hx-post="{{ object.update_fields_url }}"     hx-swap="none"
-        hx-target="body"
-         name="{{field.name}}" id="{{field.label}}" class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-      </div>
-    </div>
-  {% endfor %}
-</form>
-
-</div>
-
-
-
-
+  <div class="md:container md:mx-auto">
+    <form >
+      {% for field in profile_form %}
+        <div>
+          <label for="{{ field.label }}"
+                 class="block text-sm font-medium leading-6 text-gray-900">
+            {{ field.label }} {{ field.name }}
+          </label>
+          <div class="mt-2">
+            <input hx-trigger="keyup changed delay:1s"
+                   hx-post="{{ object.update_fields_url }}"
+                   hx-swap="none"
+                   hx-target="body"
+                   name="{{ field.name }}"
+                   id="{{ field.label }}"
+                   class="block rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+      {% endfor %}
+    </form>
+  </div>
   <div x-data="{ open: false }">
     <button class="border" @mouseenter="open = !open">Expand</button>
     <div x-show="open">Content 1 asdsdf adas dfasdfasdf sad</div>
   </div>
-
 {% endblock %}
-
 {% block extra_body %}
   <!-- cropper js -->
   <script src="{% static 'js/cropper.js' %}"></script>
-
   <script>
-
     form.addEventListener('submit', function (event) {
       event.preventDefault();
     });

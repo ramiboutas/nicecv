@@ -1,14 +1,14 @@
 import pytest
-from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
 
 from apps.plans.factories import PlanFAQFactory
 from apps.plans.factories import PremiumPlanFactory
-from apps.plans.models import PremiumPlan
 from apps.plans.models import FreePlan
 from apps.plans.models import get_free_plan
+from apps.plans.models import PremiumPlan
 
 
 @pytest.mark.django_db

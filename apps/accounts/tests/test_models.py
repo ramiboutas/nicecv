@@ -1,15 +1,15 @@
 import datetime
+
 import pytest
 from django.test import TestCase
-
-from apps.accounts.models import UserPremiumPlan
-from apps.plans.models import FreePlan
-from apps.plans.models import PremiumPlan
 
 from apps.accounts.factories import SuperUserFactory
 from apps.accounts.factories import UserFactory
 from apps.accounts.factories import UserPremiumPlanFactory
+from apps.accounts.models import UserPremiumPlan
 from apps.plans.factories import PremiumPlanFactory
+from apps.plans.models import FreePlan
+from apps.plans.models import PremiumPlan
 
 
 @pytest.mark.django_db(transaction=True)

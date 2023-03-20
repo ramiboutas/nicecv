@@ -4,8 +4,8 @@ import auto_prefetch
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from apps.plans.models import PremiumPlan
 from apps.plans.models import free_plan_instance
+from apps.plans.models import PremiumPlan
 
 
 class CustomUser(AbstractUser):

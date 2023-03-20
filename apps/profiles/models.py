@@ -13,7 +13,7 @@ from PIL import Image
 
 def photo_path(instance):
     # file will be uploaded to MEDIA_ROOT
-    return "profiles/photos/{0}".format(instance.profile.id)
+    return "profiles/photos/{}".format(instance.profile.id)
 
 
 def manage_instance_ordering(self):

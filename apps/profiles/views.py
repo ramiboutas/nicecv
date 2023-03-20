@@ -2,9 +2,8 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-
-from django.http import HttpResponseServerError
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseServerError
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.translation import gettext as _
@@ -14,9 +13,9 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django_htmx.http import trigger_client_event
 
-from .models import Profile
 from .forms import ProfileCreationForm
 from .forms import ProfileUpdateForm
+from .models import Profile
 from apps.core.http import HTTPResponseHXRedirect
 
 
