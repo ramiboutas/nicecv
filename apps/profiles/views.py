@@ -59,7 +59,10 @@ def profile_update_view(request, id):
 def profile_update_fields_view(request, id):
     form = ProfileUpdateForm(request.POST)
     if form.is_valid():
-        form.save()
+        profile_form = form.save()
+        context = {"profile_form": form}
+
+        return render(request, "profiles/hs/profile_fields.html", context)
 
 
 # htmx - profile - delete object

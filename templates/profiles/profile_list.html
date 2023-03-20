@@ -39,16 +39,10 @@
           </div>
         </div>
       </div>
-    {% empty %}
-      <div class="container my-5">
-        <div class="d-flex justify-content-center">
-          <p class="fs-2 display-6">
-            <a href="{% url 'profiles:create' %}">
-              {% translate "Create your first profile" %}
-            </a>
-          </p>
-        </div>
-      </div>
     {% endfor %}
   </div>
+
+  <a hx-boost="true" href="{% url 'profiles:create' %}" hx-push-url="{% url 'profiles:list' %}">
+    {% translate "Create profile" %}
+  </a>
 {% endblock %}

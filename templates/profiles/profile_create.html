@@ -11,10 +11,9 @@
   {% csrf_token %}
   <div class="hidden"
        hx-post="{% url 'profiles:create' %}"
-       hx-trigger="load delay:3s from:body">
+       hx-trigger="load delay:100ms from:body">
     {{ form }}
   </form>
 </div>
 
 {% endblock %}
-
