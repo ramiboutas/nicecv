@@ -1,12 +1,6 @@
 from django.urls import path
 
-from .views import profile_create_view
-from .views import delete_object_view
-
-from .views import profile_list_view
-from .views import profile_update_view
-from .views import profile_update_fields_view
-
+from . import views
 
 # from .views import save_personal_information_view, update_description_view
 
@@ -14,11 +8,21 @@ app_name = "profiles"
 # general
 
 urlpatterns = [
-    path("", profile_list_view, name="list"),
-    path("create/", profile_create_view, name="create"),
-    path("profile/<uuid:id>/", profile_update_view, name="update"),
-    path("profile/<uuid:id>/", profile_update_fields_view, name="update-fields"),
-    path("delete/profile/<uuid:id>/", delete_object_view, name="delete"),
+    path("", views.profile_list, name="list"),
+    path("create/", views.profile_create, name="create"),
+    path("profile/<uuid:id>/", views.profile_update, name="update"),
+    path(
+        "update-fields/<uuid:id>/",
+        views.profile_update_fields,
+        name="update-fields",
+    ),
+    path("delete/profile/<uuid:id>/", views.delete_object, name="delete"),
+    # child methods
+    path(
+        "update-child/<str:klass>/<str:form>/<int:id>/",
+        views.update_child_form,
+        name="update-child-form",
+    ),
 ]
 
 

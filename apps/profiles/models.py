@@ -52,16 +52,13 @@ class Profile(auto_prefetch.Model):
     updated = models.DateTimeField(auto_now=True)
 
     # name
-    fullname = models.CharField(verbose_name=_("Full name"), **null_blank_32)
+    # fullname = models.CharField(verbose_name=_("Full name"), **null_blank_32)
     jobtitle = models.CharField(verbose_name=_("Job title"), **null_blank_32)
     location = models.CharField(verbose_name=_("Location"), **null_blank_32)
     birth = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
     phone = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
     email = models.CharField(verbose_name=_("Email address"), **null_blank_32)
     website = models.CharField(verbose_name=_("Website"), **null_blank_32)
-
-    def __str__(self):
-        return f"{self.fullname} {self.email}"
 
     # profile object
     @property
@@ -147,6 +144,15 @@ class AbstractChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
 
+    def update_child_url(self, child_type):
+        print(child_type)
+
+    def update_form_url(self, klass, form, *args):
+        return reverse(
+            "profiles:update-child-form",
+            kwargs={"klass": klass, "form": form, "id": self.id},
+        )
+
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
 
@@ -154,6 +160,10 @@ class AbstractChild(auto_prefetch.Model):
 class Description(AbstractChild):
     label = models.CharField(max_length=32, default=_("About me"))
     text = models.TextField()
+
+
+class Fullname(AbstractChild):
+    text = models.CharField(verbose_name=_("Full name"), max_length=32)
 
 
 class SkillSet(AbstractChild):
@@ -188,6 +198,17 @@ class SkillItem(auto_prefetch.Model):
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("-level",)
         default_related_name = "items"
+
+
+def get_class_object(klass):
+    mappings = {
+        "Fullname": Fullname,
+        "SkillSet": SkillSet,
+    }
+    try:
+        return mappings[klass]
+    except KeyError:
+        pass
 
 
 # class Language(auto_prefetch.Model):

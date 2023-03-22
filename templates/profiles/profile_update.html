@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static i18n crispy_forms_tags %}
+{% load static i18n  profile_tags %}
 
 {% block title %} | {% translate "My profile" %}
 {% endblock %}
@@ -11,12 +11,31 @@
 
 {% block content %}
 
-<!-- modals -->
-<div id="modals-here"></div>
 
-<div class="md:container md:mx-auto">
+<div class="md:container md:mx-auto" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-  {% include "profiles/hx/profile_fields.html" %}
+  <div id="notifications"></div>
+
+
+  <!-- fullname -->
+
+  <div class="mt-4 relative" x-data="{ showBorder: false }"
+    x-on:mouseenter="showBorder = true" x-on:mouseleave="showBorder = false">
+    <label for="{{ field_name }}"
+      class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-500">
+      {{ fullname_form.text.label }}
+    </label>
+
+    <input :class="showBorder ? 'border-slate-500' : 'border-slate-200'" name="{{ fullname_form.text.name }}"
+      class="border-2 border-dashed rounded-md hover:bg-slate-100 placeholder:italic" type="text"
+      {% if fullname_form.text.value %}value="{{ fullname_form.text.value }}"{% endif %}
+      hx-trigger="keyup changed delay:1s"
+      hx-target="#notifications"
+      hx-post='{% call_child_method fullname_form.instance "update_form_url" klass="Fullname" form="FullnameTextForm" %}'
+      hx-swap="innerHTML"
+    />
+  </div>
+
 
 
 </div>
@@ -24,15 +43,9 @@
 
 
 
-  <div x-data="{ open: false }">
-    <button class="border" @mouseenter="open = !open">Expand</button>
-    <div x-show="open">Content 1 asdsdf adas dfasdfasdf sad</div>
-  </div>
-
 {% endblock %}
 
 {% block extra_body %}
   <!-- cropper js -->
   <script src="{% static 'js/cropper.js' %}"></script>
-
 {% endblock %}

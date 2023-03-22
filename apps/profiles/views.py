@@ -15,60 +15,82 @@ from django.views.generic.list import ListView
 from django_htmx.http import trigger_client_event
 
 from .models import Profile
+from .models import Fullname
+from .models import get_class_object
 from .forms import ProfileCreationForm
-from .forms import ProfileUpdateForm
+from .forms import ProfileForm
+from .forms import FullnameTextForm
+from .forms import get_form_object
 from apps.core.http import HTTPResponseHXRedirect
 
 
 @login_required
-def profile_list_view(request):
+def profile_list(request):
     context = {"object_list": Profile.objects.filter(user=request.user)}
     return render(request, "profiles/profile_list.html", context)
 
 
-def _get_profile_initial_data(request) -> dict:
+def _get_initial_profile_instance(request) -> Profile:
+    # TODO: move to models.py
+
     if request.user:
-        return {
-            "user": request.user,
-            "fullname": request.user.first_name + " " + request.user.last_name,
-            "email": request.user.email,
-        }
-    return {}
-
-
-def profile_create_view(request):
-    if request.method == "POST":
-        form = ProfileCreationForm(request.POST)
-        if form.is_valid():
-            profile = form.save()
-            return HTTPResponseHXRedirect(redirect_to=profile.update_url)
+        fullname = request.user.first_name + " " + request.user.last_name
+        # TODO: "email": request.user.email,
+        profile = Profile.objects.create(user=request.user)
     else:
-        form = ProfileCreationForm(initial=_get_profile_initial_data(request))
+        fullname = ""
+        profile = Profile.objects.create()
 
-    return render(request, "profiles/profile_create.html", {"form": form})
+    # Add children objects
+    Fullname.objects.create(text=fullname, profile=profile)
+    return profile
 
 
-def profile_update_view(request, id):
+def profile_create(request):
+    profile = _get_initial_profile_instance(request)
+    return HTTPResponseHXRedirect(redirect_to=profile.update_url)
+
+
+def profile_update(request, id):
     profile = get_object_or_404(Profile, id=id, user=request.user)
-    profile_form = ProfileUpdateForm(instance=profile)
-    context = {"object": profile, "profile_form": profile_form}
+    profile_form = ProfileForm(instance=profile)
+    fullname_form = FullnameTextForm(instance=profile.fullname)
+    context = {
+        "object": profile,
+        "profile_form": profile_form,
+        "fullname_form": fullname_form,
+    }
     return render(request, "profiles/profile_update.html", context)
 
 
-@require_POST
-def profile_update_fields_view(request, id):
-    form = ProfileUpdateForm(request.POST)
+def update_child_form(request, klass, form, id):
+    Child = get_class_object(klass)
+    ChildForm = get_form_object(form)
+    obj = get_object_or_404(Child, id=id)
+    form = ChildForm(request.POST, instance=obj)
     if form.is_valid():
-        profile_form = form.save()
-        context = {"profile_form": form}
+        child_name = Child._meta.verbose_name.title()
+        context = {
+            "message": _(f"{child_name} saved"),
+            "icon": "✅",
+        }
+        return render(request, "components/hx_notification.html", context)
 
-        return render(request, "profiles/hs/profile_fields.html", context)
+
+@require_POST
+def profile_update_fields(request, id):
+    profile = get_object_or_404(Profile, id=id, user=request.user)
+    form = ProfileForm(request.POST, instance=profile)
+    if form.is_valid():
+        form.save()
+        context = {"message": _("Profile saved"), "icon": "✅"}
+        return render(request, "components/hx_notification.html", context)
 
 
 # htmx - profile - delete object
 @login_required
 @require_POST
-def delete_object_view(request, id):
+def delete_object(request, id):
     object = get_object_or_404(Profile, id=id, user=request.user)
     object.delete()
     return HttpResponse(status=200)
