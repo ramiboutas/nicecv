@@ -5,11 +5,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from apps.plans.models import PremiumPlan
-from apps.plans.models import free_plan_instance
+from apps.plans.models import get_free_plan
 
 
 class CustomUser(AbstractUser):
-    paid_until = models.DateField(null=True, blank=True)
     avatar_url = models.URLField(null=True, blank=True)
     notify_when_plan_expires = models.BooleanField(default=False)
 
@@ -21,7 +20,7 @@ class CustomUser(AbstractUser):
         ).first()
         if user_premium_plan:
             return user_premium_plan.plan
-        return free_plan_instance
+        return get_free_plan()
 
     @property
     def number_of_profiles(self):

@@ -1,26 +1,29 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 
-from django.http import HttpResponseServerError
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
-from django.views.generic.edit import CreateView
-from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
 from django_htmx.http import trigger_client_event
 
+from . import models as profile_models
+from . import forms as profile_forms
 from .models import Profile
 from .models import Fullname
-from .models import get_class_object
-from .forms import ProfileCreationForm
+from .models import Jobtitle
+from .models import Location
+from .models import Email
+from .models import Phone
+from .models import Website
 from .forms import ProfileForm
-from .forms import FullnameTextForm
-from .forms import get_form_object
+from .forms import FullnameForm
+from .forms import JobtitleForm
+from .forms import LocationForm
+from .forms import PhoneForm
+from .forms import EmailForm
+from .forms import WebsiteForm
 from apps.core.http import HTTPResponseHXRedirect
 
 
@@ -32,18 +35,38 @@ def profile_list(request):
 
 def _get_initial_profile_instance(request) -> Profile:
     # TODO: move to models.py
-
+    fullname = ""
+    email = ""
     if request.user:
         fullname = request.user.first_name + " " + request.user.last_name
-        # TODO: "email": request.user.email,
+        email = request.user.email
+
         profile = Profile.objects.create(user=request.user)
     else:
-        fullname = ""
         profile = Profile.objects.create()
 
     # Add children objects
     Fullname.objects.create(text=fullname, profile=profile)
+    Jobtitle.objects.create(profile=profile)
+    Location.objects.create(profile=profile)
+    Email.objects.create(text=email, profile=profile)
+    Phone.objects.create(profile=profile)
+    Website.objects.create(profile=profile)
     return profile
+
+
+def _get_complete_profile_context(profile):
+    context = {
+        "object": profile,
+        "profile_form": ProfileForm(instance=profile),
+        "fullname_form": FullnameForm(instance=profile.fullname),
+        "jobtitle_form": JobtitleForm(instance=profile.jobtitle),
+        "location_form": LocationForm(instance=profile.location),
+        "phone_form": PhoneForm(instance=profile.phone),
+        "email_form": EmailForm(instance=profile.email),
+        "website_form": WebsiteForm(instance=profile.website),
+    }
+    return context
 
 
 def profile_create(request):
@@ -53,23 +76,18 @@ def profile_create(request):
 
 def profile_update(request, id):
     profile = get_object_or_404(Profile, id=id, user=request.user)
-    profile_form = ProfileForm(instance=profile)
-    fullname_form = FullnameTextForm(instance=profile.fullname)
-    context = {
-        "object": profile,
-        "profile_form": profile_form,
-        "fullname_form": fullname_form,
-    }
+    context = _get_complete_profile_context(profile)
     return render(request, "profiles/profile_update.html", context)
 
 
-def update_child_form(request, klass, form, id):
-    Child = get_class_object(klass)
-    ChildForm = get_form_object(form)
+def update_child(request, cls, id):
+    Child = getattr(profile_models, cls)
+    ChildForm = getattr(profile_forms, cls + "Form")
     obj = get_object_or_404(Child, id=id)
     form = ChildForm(request.POST, instance=obj)
     if form.is_valid():
-        child_name = Child._meta.verbose_name.title()
+        form.save()
+        child_name = Child._meta.verbose_name
         context = {
             "message": _(f"{child_name} saved"),
             "icon": "✅",

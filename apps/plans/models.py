@@ -112,6 +112,3 @@ def get_free_plan():
             name="Free Plan", description=_("Enjoy the free plan")
         )
     return plan
-
-
-free_plan_instance = get_free_plan()

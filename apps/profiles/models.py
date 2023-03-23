@@ -11,7 +11,14 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
 
-def photo_path(instance):
+null_blank = {"null": True, "blank": True}
+null_blank_16 = {"null": True, "blank": True, "max_length": 16}
+null_blank_32 = {"null": True, "blank": True, "max_length": 32}
+null_blank_64 = {"null": True, "blank": True, "max_length": 34}
+null_blank_128 = {"null": True, "blank": True, "max_length": 128}
+
+
+def get_uploading_photo_path(instance):
     # file will be uploaded to MEDIA_ROOT
     return "profiles/photos/{0}".format(instance.profile.id)
 
@@ -29,13 +36,6 @@ def manage_instance_ordering(self):
             pass  # exception if objects do not exist
 
 
-null_blank = {"null": True, "blank": True}
-null_blank_16 = {"null": True, "blank": True, "max_length": 16}
-null_blank_32 = {"null": True, "blank": True, "max_length": 32}
-null_blank_64 = {"null": True, "blank": True, "max_length": 34}
-null_blank_128 = {"null": True, "blank": True, "max_length": 128}
-
-
 class Profile(auto_prefetch.Model):
     """
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
@@ -48,17 +48,12 @@ class Profile(auto_prefetch.Model):
         related_name="profile_set",
         **null_blank,
     )
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-
-    # name
-    # fullname = models.CharField(verbose_name=_("Full name"), **null_blank_32)
-    jobtitle = models.CharField(verbose_name=_("Job title"), **null_blank_32)
-    location = models.CharField(verbose_name=_("Location"), **null_blank_32)
-    birth = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
-    phone = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
-    email = models.CharField(verbose_name=_("Email address"), **null_blank_32)
-    website = models.CharField(verbose_name=_("Website"), **null_blank_32)
+    is_temporary = models.BooleanField(default=False)
+    is_template = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=False)
 
     # profile object
     @property
@@ -66,16 +61,8 @@ class Profile(auto_prefetch.Model):
         return reverse("profiles:update", kwargs={"id": self.id})
 
     @property
-    def update_fields_url(self):
-        return reverse("profiles:update-fields", kwargs={"id": self.id})
-
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
-
-    # update any profile field
-    def update_field(self, field_name, field_value):
-        setattr(self, field_name, field_value)
-        self.save()
 
     def save(self, *args, **kwargs):
         if self._state.adding:
@@ -84,11 +71,26 @@ class Profile(auto_prefetch.Model):
         super().save(*args, **kwargs)
 
 
-class Photo(auto_prefetch.Model):
+class AbstractChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
-    full = models.ImageField(null=True, blank=True, upload_to=photo_path)
-    cropped = models.ImageField(null=True, blank=True, upload_to=photo_path)
+
+    def update_child_url(self, child_type):
+        print(child_type)
+
+    def update_form_url(self):
+        cls = self.__class__.__name__
+        return reverse("profiles:update-child", kwargs={"cls": cls, "id": self.id})
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+
+
+class Photo(AbstractChild):
+    full = models.ImageField(null=True, blank=True, upload_to=get_uploading_photo_path)
+    cropped = models.ImageField(
+        null=True, blank=True, upload_to=get_uploading_photo_path
+    )
     crop_x = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_y = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_width = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -134,36 +136,60 @@ class Photo(auto_prefetch.Model):
                 pass
 
 
-# class FirstName(auto_prefetch.Model):
-#     profile = models.OneToOneField(Profile, verbose_name=_(""), on_delete=models.CASCADE)
-#     name = models.CharField(max_length=100)
-#     active = models.BooleanField(default=True)
-
-
-class AbstractChild(auto_prefetch.Model):
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
-
-    def update_child_url(self, child_type):
-        print(child_type)
-
-    def update_form_url(self, klass, form, *args):
-        return reverse(
-            "profiles:update-child-form",
-            kwargs={"klass": klass, "form": form, "id": self.id},
-        )
-
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
-
-
 class Description(AbstractChild):
     label = models.CharField(max_length=32, default=_("About me"))
     text = models.TextField()
 
 
 class Fullname(AbstractChild):
-    text = models.CharField(verbose_name=_("Full name"), max_length=32)
+    text = models.CharField(verbose_name=_("Full name"), max_length=64)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Full name")
+
+
+class Jobtitle(AbstractChild):
+    text = models.CharField(verbose_name=_("Job title"), max_length=64)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Job title")
+
+
+class Location(AbstractChild):
+    text = models.CharField(verbose_name=_("Location"), max_length=64)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Location")
+
+
+class Birth(AbstractChild):
+    text = models.CharField(verbose_name=_("Date of birth"), max_length=64)
+    active = models.BooleanField(default=False)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Date of birth")
+
+
+class Phone(AbstractChild):
+    text = models.CharField(verbose_name=_("Phone number"), max_length=64)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Phone number")
+
+
+class Email(AbstractChild):
+    text = models.CharField(verbose_name=_("Email"), max_length=64)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Email")
+
+
+class Website(AbstractChild):
+    text = models.CharField(verbose_name=_("Website"), max_length=64)
+    active = models.BooleanField(default=False)
+
+    class Meta(AbstractChild.Meta):
+        verbose_name = _("Website")
 
 
 class SkillSet(AbstractChild):
@@ -198,17 +224,6 @@ class SkillItem(auto_prefetch.Model):
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("-level",)
         default_related_name = "items"
-
-
-def get_class_object(klass):
-    mappings = {
-        "Fullname": Fullname,
-        "SkillSet": SkillSet,
-    }
-    try:
-        return mappings[klass]
-    except KeyError:
-        pass
 
 
 # class Language(auto_prefetch.Model):

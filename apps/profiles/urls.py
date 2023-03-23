@@ -11,18 +11,9 @@ urlpatterns = [
     path("", views.profile_list, name="list"),
     path("create/", views.profile_create, name="create"),
     path("profile/<uuid:id>/", views.profile_update, name="update"),
-    path(
-        "update-fields/<uuid:id>/",
-        views.profile_update_fields,
-        name="update-fields",
-    ),
     path("delete/profile/<uuid:id>/", views.delete_object, name="delete"),
     # child methods
-    path(
-        "update-child/<str:klass>/<str:form>/<int:id>/",
-        views.update_child_form,
-        name="update-child-form",
-    ),
+    path("update-child/<str:cls>/<int:id>/", views.update_child, name="update-child"),
 ]
 
 

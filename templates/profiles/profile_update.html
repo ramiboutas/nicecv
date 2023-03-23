@@ -11,30 +11,26 @@
 
 {% block content %}
 
+<div id="notifications"></div>
+
 
 <div class="md:container md:mx-auto" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-  <div id="notifications"></div>
-
 
   <!-- fullname -->
+  {% include "profiles/partials/child_form.html" with form=fullname_form %}
 
-  <div class="mt-4 relative" x-data="{ showBorder: false }"
-    x-on:mouseenter="showBorder = true" x-on:mouseleave="showBorder = false">
-    <label for="{{ field_name }}"
-      class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-500">
-      {{ fullname_form.text.label }}
-    </label>
+  <!-- jobtitle -->
+  {% include "profiles/partials/child_form.html" with form=jobtitle_form %}
 
-    <input :class="showBorder ? 'border-slate-500' : 'border-slate-200'" name="{{ fullname_form.text.name }}"
-      class="border-2 border-dashed rounded-md hover:bg-slate-100 placeholder:italic" type="text"
-      {% if fullname_form.text.value %}value="{{ fullname_form.text.value }}"{% endif %}
-      hx-trigger="keyup changed delay:1s"
-      hx-target="#notifications"
-      hx-post='{% call_child_method fullname_form.instance "update_form_url" klass="Fullname" form="FullnameTextForm" %}'
-      hx-swap="innerHTML"
-    />
-  </div>
+  <!-- location -->
+  {% include "profiles/partials/child_form.html" with form=location_form %}
+
+  <!-- phone -->
+  {% include "profiles/partials/child_form.html" with form=phone_form %}
+
+  <!-- email -->
+  {% include "profiles/partials/child_form.html" with form=email_form %}
 
 
 
