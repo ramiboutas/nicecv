@@ -34,7 +34,7 @@ django-modeltranslation
 django-cleanup
 crispy-tailwind
 
-
+ipython
 django-debug-toolbar
 pyclean
 pylint

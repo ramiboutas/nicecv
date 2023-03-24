@@ -1,14 +1,13 @@
 import uuid
-
 import auto_prefetch
+from PIL import Image
+
+from django.db import transaction
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.db import models
-from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
 
 
 null_blank = {"null": True, "blank": True}
@@ -23,7 +22,7 @@ def get_uploading_photo_path(instance):
     return "profiles/photos/{0}".format(instance.profile.id)
 
 
-def manage_instance_ordering(self):
+def manage_instance_order_field(self):
     """
     This function manages the ordering of an instance when it is created
     new_instance.order > max_order_of_objects + 1
@@ -64,6 +63,13 @@ class Profile(auto_prefetch.Model):
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
 
+    def build_xml(self):
+        # TODO: build xml for the deepl API
+        # https://www.deepl.com/docs-api/xml/
+        # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
+        pass
+
+    @transaction.atomic
     def save(self, *args, **kwargs):
         if self._state.adding:
             pass
@@ -75,9 +81,6 @@ class AbstractChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
 
-    def update_child_url(self, child_type):
-        print(child_type)
-
     def update_form_url(self):
         cls = self.__class__.__name__
         return reverse("profiles:update-child", kwargs={"cls": cls, "id": self.id})
@@ -86,15 +89,18 @@ class AbstractChild(auto_prefetch.Model):
         abstract = True
 
 
+class AbstractGrandchild(auto_prefetch.Model):
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+
+
 class Photo(AbstractChild):
-    full = models.ImageField(null=True, blank=True, upload_to=get_uploading_photo_path)
-    cropped = models.ImageField(
-        null=True, blank=True, upload_to=get_uploading_photo_path
-    )
-    crop_x = models.PositiveSmallIntegerField(null=True, blank=True)
-    crop_y = models.PositiveSmallIntegerField(null=True, blank=True)
-    crop_width = models.PositiveSmallIntegerField(null=True, blank=True)
-    crop_height = models.PositiveSmallIntegerField(null=True, blank=True)
+    full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
+    cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
+    crop_x = models.PositiveSmallIntegerField(**null_blank)
+    crop_y = models.PositiveSmallIntegerField(**null_blank)
+    crop_width = models.PositiveSmallIntegerField(**null_blank)
+    crop_height = models.PositiveSmallIntegerField(**null_blank)
 
     def upload_photo_url(self):
         return reverse("profiles:photo-upload", kwargs={"pk": self.pk})
@@ -142,28 +148,28 @@ class Description(AbstractChild):
 
 
 class Fullname(AbstractChild):
-    text = models.CharField(verbose_name=_("Full name"), max_length=64)
+    text = models.CharField(verbose_name=_("Full name"), **null_blank_32)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Full name")
 
 
 class Jobtitle(AbstractChild):
-    text = models.CharField(verbose_name=_("Job title"), max_length=64)
+    text = models.CharField(verbose_name=_("Job title"), **null_blank_16)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Job title")
 
 
 class Location(AbstractChild):
-    text = models.CharField(verbose_name=_("Location"), max_length=64)
+    text = models.CharField(verbose_name=_("Location"), **null_blank_16)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Location")
 
 
 class Birth(AbstractChild):
-    text = models.CharField(verbose_name=_("Date of birth"), max_length=64)
+    text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
     active = models.BooleanField(default=False)
 
     class Meta(AbstractChild.Meta):
@@ -171,28 +177,28 @@ class Birth(AbstractChild):
 
 
 class Phone(AbstractChild):
-    text = models.CharField(verbose_name=_("Phone number"), max_length=64)
+    text = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Phone number")
 
 
 class Email(AbstractChild):
-    text = models.CharField(verbose_name=_("Email"), max_length=64)
+    text = models.CharField(verbose_name=_("Email"), **null_blank_32)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Email")
 
 
 class Website(AbstractChild):
-    text = models.CharField(verbose_name=_("Website"), max_length=64)
+    text = models.CharField(verbose_name=_("Website"), **null_blank_16)
     active = models.BooleanField(default=False)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Website")
 
 
-class SkillSet(AbstractChild):
+class Skill(AbstractChild):
     """
     An object representing the skills that the member holds.
     See Skill Fields for a description of the fields available within this object.
@@ -206,7 +212,7 @@ class SkillSet(AbstractChild):
 
 
 class SkillItem(auto_prefetch.Model):
-    skill_set = auto_prefetch.ForeignKey(SkillSet, on_delete=models.CASCADE)
+    skill = auto_prefetch.ForeignKey(Skill, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50)  # Linkedin does not include this
 

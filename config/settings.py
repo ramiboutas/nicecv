@@ -69,14 +69,6 @@ INSTALLED_APPS = [
     "wagtail",
     "taggit",
     "modelcluster",
-    # Django apps
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django.contrib.sites",
     # Third-party apps
     "rosetta",
     "modeltranslation",
@@ -94,8 +86,15 @@ INSTALLED_APPS = [
     "django_cleanup.apps.CleanupConfig",  # https://github.com/un1t/django-cleanup
     "crispy_forms",
     "crispy_tailwind",
-    # Tools for debug
     "debug_toolbar",
+    # Django apps
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.sites",
 ]
 
 # Authentication

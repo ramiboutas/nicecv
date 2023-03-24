@@ -5,8 +5,7 @@
     {% endfor %}
 
     {% for field in form.visible_fields %}
-
-      <div class="mt-4 " x-data="{ active: false }" x-on:mouseenter="active = true" x-on:mouseleave="active = false">
+      <div class="mt-4 relative" x-data="{ active: false }" x-on:mouseenter="active = true" x-on:mouseleave="active = false">
         <label for="id_{{ field.name }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-500">
           {{ field.label }}
         </label>

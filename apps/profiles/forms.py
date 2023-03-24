@@ -14,8 +14,6 @@ from .models import Website
 def _build_child_input_attrs(instance=None):
     more_attrs = {}
     base_attrs = {
-        "@mouseenter": "active = true",
-        "@mouseleave": "active = false",
         "hx-trigger": "keyup changed delay:1s",
         "class": "border-2 border-dashed rounded-md hover:bg-slate-100 placeholder:italic",
         ":class": mark_safe("active ? 'border-slate-500' : 'border-slate-200'"),

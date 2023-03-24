@@ -25,6 +25,7 @@ from .forms import PhoneForm
 from .forms import EmailForm
 from .forms import WebsiteForm
 from apps.core.http import HTTPResponseHXRedirect
+from .utils import get_profile_children
 
 
 @login_required
@@ -34,7 +35,7 @@ def profile_list(request):
 
 
 def _get_initial_profile_instance(request) -> Profile:
-    # TODO: move to models.py
+    # TODO: move to utils.py
     fullname = ""
     email = ""
     if request.user:
@@ -46,25 +47,27 @@ def _get_initial_profile_instance(request) -> Profile:
         profile = Profile.objects.create()
 
     # Add children objects
-    Fullname.objects.create(text=fullname, profile=profile)
-    Jobtitle.objects.create(profile=profile)
-    Location.objects.create(profile=profile)
-    Email.objects.create(text=email, profile=profile)
-    Phone.objects.create(profile=profile)
-    Website.objects.create(profile=profile)
+    ChildKlasses = get_profile_children()
+    for ChildKlass in ChildKlasses:
+        ChildKlass.objects.create(profile=profile)
+
+    profile.fullname.text = fullname
+    profile.email.text = email
+    profile.fullname.save()
+    profile.email.save()
     return profile
 
 
 def _get_complete_profile_context(profile):
     context = {
-        "object": profile,
-        "profile_form": ProfileForm(instance=profile),
-        "fullname_form": FullnameForm(instance=profile.fullname),
-        "jobtitle_form": JobtitleForm(instance=profile.jobtitle),
-        "location_form": LocationForm(instance=profile.location),
-        "phone_form": PhoneForm(instance=profile.phone),
-        "email_form": EmailForm(instance=profile.email),
-        "website_form": WebsiteForm(instance=profile.website),
+        "object": profile,  # maybe remove
+        "profile_form": ProfileForm(instance=profile),  # maybe remove
+        "fullname": FullnameForm(instance=profile.fullname),
+        "jobtitle": JobtitleForm(instance=profile.jobtitle),
+        "location": LocationForm(instance=profile.location),
+        "phone": PhoneForm(instance=profile.phone),
+        "email": EmailForm(instance=profile.email),
+        "website": WebsiteForm(instance=profile.website),
     }
     return context
 
