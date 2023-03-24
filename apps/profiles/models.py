@@ -143,6 +143,7 @@ class Photo(AbstractChild):
 
 
 class Description(AbstractChild):
+    hide_label = True
     label = models.CharField(max_length=32, default=_("About me"))
     text = models.TextField()
 

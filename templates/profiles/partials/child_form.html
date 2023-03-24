@@ -1,18 +1,23 @@
 {% if form.instance.active  %}
-  <form hx-post="{{ form.instance.update_form_url }}" hx-swap="innerHTML" hx-target="#notifications">
+  <form
+    hx-post="{{ form.instance.update_form_url }}"
+    hx-trigger="change"
+    hx-swap="innerHTML"
+    hx-target="#notifications"
+    >
     {% for hidden in form.hidden_fields %}
       {{ hidden }}
     {% endfor %}
 
     {% for field in form.visible_fields %}
       <div class="mt-4 relative" x-data="{ active: false }" x-on:mouseenter="active = true" x-on:mouseleave="active = false">
-        <label for="id_{{ field.name }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-500">
+        {% if not form.instance.hide_label %}
+        <label for="id_{{ field.name }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
           {{ field.label }}
         </label>
+        {% endif %}
 
         {{ field }}
-
-        {{ field.errors }}
 
       </div>
 

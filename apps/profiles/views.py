@@ -1,7 +1,7 @@
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.translation import gettext as _
@@ -11,21 +11,11 @@ from django_htmx.http import trigger_client_event
 from . import models as profile_models
 from . import forms as profile_forms
 from .models import Profile
-from .models import Fullname
-from .models import Jobtitle
-from .models import Location
-from .models import Email
-from .models import Phone
-from .models import Website
-from .forms import ProfileForm
-from .forms import FullnameForm
-from .forms import JobtitleForm
-from .forms import LocationForm
-from .forms import PhoneForm
-from .forms import EmailForm
-from .forms import WebsiteForm
 from apps.core.http import HTTPResponseHXRedirect
-from .utils import get_profile_children
+
+
+from .utils import create_initial_profile
+from .utils import collect_profile_context
 
 
 @login_required
@@ -34,55 +24,18 @@ def profile_list(request):
     return render(request, "profiles/profile_list.html", context)
 
 
-def _get_initial_profile_instance(request) -> Profile:
-    # TODO: move to utils.py
-    fullname = ""
-    email = ""
-    if request.user:
-        fullname = request.user.first_name + " " + request.user.last_name
-        email = request.user.email
-
-        profile = Profile.objects.create(user=request.user)
-    else:
-        profile = Profile.objects.create()
-
-    # Add children objects
-    ChildKlasses = get_profile_children()
-    for ChildKlass in ChildKlasses:
-        ChildKlass.objects.create(profile=profile)
-
-    profile.fullname.text = fullname
-    profile.email.text = email
-    profile.fullname.save()
-    profile.email.save()
-    return profile
-
-
-def _get_complete_profile_context(profile):
-    context = {
-        "object": profile,  # maybe remove
-        "profile_form": ProfileForm(instance=profile),  # maybe remove
-        "fullname": FullnameForm(instance=profile.fullname),
-        "jobtitle": JobtitleForm(instance=profile.jobtitle),
-        "location": LocationForm(instance=profile.location),
-        "phone": PhoneForm(instance=profile.phone),
-        "email": EmailForm(instance=profile.email),
-        "website": WebsiteForm(instance=profile.website),
-    }
-    return context
-
-
 def profile_create(request):
-    profile = _get_initial_profile_instance(request)
+    profile = create_initial_profile(request)
     return HTTPResponseHXRedirect(redirect_to=profile.update_url)
 
 
 def profile_update(request, id):
     profile = get_object_or_404(Profile, id=id, user=request.user)
-    context = _get_complete_profile_context(profile)
+    context = collect_profile_context(profile)
     return render(request, "profiles/profile_update.html", context)
 
 
+@require_POST
 def update_child(request, cls, id):
     Child = getattr(profile_models, cls)
     ChildForm = getattr(profile_forms, cls + "Form")
@@ -90,22 +43,15 @@ def update_child(request, cls, id):
     form = ChildForm(request.POST, instance=obj)
     if form.is_valid():
         form.save()
-        child_name = Child._meta.verbose_name
+        context = {"message": _("Saved"), "icon": "✅"}
+    else:
         context = {
-            "message": _(f"{child_name} saved"),
-            "icon": "✅",
+            "message": _("Error during save process"),
+            "icon": "⚠️",
+            "description": mark_safe(form.errors.as_ul()),
+            "disappearing_time": 5000,
         }
-        return render(request, "components/hx_notification.html", context)
-
-
-@require_POST
-def profile_update_fields(request, id):
-    profile = get_object_or_404(Profile, id=id, user=request.user)
-    form = ProfileForm(request.POST, instance=profile)
-    if form.is_valid():
-        form.save()
-        context = {"message": _("Profile saved"), "icon": "✅"}
-        return render(request, "components/hx_notification.html", context)
+    return render(request, "components/hx_notification.html", context)
 
 
 # htmx - profile - delete object
