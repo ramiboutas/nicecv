@@ -1,6 +1,9 @@
+import sys
 import uuid
+import inspect
 import auto_prefetch
 from PIL import Image
+from functools import cache
 
 from django.db import transaction
 from django.conf import settings
@@ -69,21 +72,28 @@ class Profile(auto_prefetch.Model):
         # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
         pass
 
-    @transaction.atomic
     def save(self, *args, **kwargs):
-        if self._state.adding:
+        if not self._state.adding:
             pass
-
         super().save(*args, **kwargs)
 
 
 class AbstractChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
+    # active = models.BooleanField(default=True)
+
+    def child_name(self):
+        return self.__class__._meta.model_name
+
+    def is_active(self):
+        return getattr(self.profile.active, self.child_name(), True)
+
+    def get_label(self):
+        return getattr(self.profile.label, self.child_name(), None)
 
     def update_form_url(self):
         cls = self.__class__.__name__
-        return reverse("profiles:update-child", kwargs={"cls": cls, "id": self.id})
+        return reverse("profiles:update-child", kwargs={"klass": cls, "id": self.id})
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
@@ -143,9 +153,17 @@ class Photo(AbstractChild):
 
 
 class Description(AbstractChild):
-    hide_label = True
-    label = models.CharField(max_length=32, default=_("About me"))
     text = models.TextField()
+
+
+class Label(AbstractChild):
+    description = models.CharField(max_length=32, default=_("About me"))
+    skill = models.CharField(max_length=32, default=_("Skills"))
+
+
+class Active(AbstractChild):
+    description = models.BooleanField(default=True)
+    skill = models.BooleanField(default=False)
 
 
 class Fullname(AbstractChild):
@@ -171,7 +189,6 @@ class Location(AbstractChild):
 
 class Birth(AbstractChild):
     text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
-    active = models.BooleanField(default=False)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Date of birth")
@@ -193,7 +210,6 @@ class Email(AbstractChild):
 
 class Website(AbstractChild):
     text = models.CharField(verbose_name=_("Website"), **null_blank_16)
-    active = models.BooleanField(default=False)
 
     class Meta(AbstractChild.Meta):
         verbose_name = _("Website")
@@ -206,10 +222,8 @@ class Skill(AbstractChild):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
     """
 
-    label = models.CharField(max_length=100, default=_("Skills"))
-
     class Meta(auto_prefetch.Model.Meta):
-        default_related_name = "skill_set"
+        default_related_name = "skill"
 
 
 class SkillItem(auto_prefetch.Model):
@@ -231,6 +245,16 @@ class SkillItem(auto_prefetch.Model):
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("-level",)
         default_related_name = "items"
+
+
+@cache
+def get_profile_child_models():
+    class_objs = [
+        cls_obj
+        for _, cls_obj in inspect.getmembers(sys.modules[__name__])
+        if (inspect.isclass(cls_obj) and (AbstractChild in cls_obj.__bases__))
+    ]
+    return class_objs
 
 
 # class Language(auto_prefetch.Model):

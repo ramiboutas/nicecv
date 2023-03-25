@@ -1,4 +1,4 @@
-{% if form.instance.active  %}
+{% if form.instance.is_active  %}
   <form
     hx-post="{{ form.instance.update_form_url }}"
     hx-trigger="change"
@@ -11,11 +11,11 @@
 
     {% for field in form.visible_fields %}
       <div class="mt-4 relative" x-data="{ active: false }" x-on:mouseenter="active = true" x-on:mouseleave="active = false">
-        {% if not form.instance.hide_label %}
+
         <label for="id_{{ field.name }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-          {{ field.label }}
+          {% if form.instance.get_label %} {{ form.instance.get_label }} {% else %} {{ field.label }} {% endif %}
         </label>
-        {% endif %}
+
 
         {{ field }}
 

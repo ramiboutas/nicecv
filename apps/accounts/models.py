@@ -23,6 +23,10 @@ class CustomUser(AbstractUser):
         return get_free_plan()
 
     @property
+    def fullname(self):
+        return self.first_name + " " + self.last_name
+
+    @property
     def number_of_profiles(self):
         return self.get_actual_plan().profiles
 

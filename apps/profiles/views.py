@@ -8,8 +8,8 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 
-from . import models as profile_models
-from . import forms as profile_forms
+
+from .forms import get_child_modelform
 from .models import Profile
 from apps.core.http import HTTPResponseHXRedirect
 
@@ -36,10 +36,9 @@ def profile_update(request, id):
 
 
 @require_POST
-def update_child(request, cls, id):
-    Child = getattr(profile_models, cls)
-    ChildForm = getattr(profile_forms, cls + "Form")
-    obj = get_object_or_404(Child, id=id)
+def update_child(request, klass, id):
+    ChildModel, ChildForm = get_child_modelform(klass)
+    obj = get_object_or_404(ChildModel, id=id)
     form = ChildForm(request.POST, instance=obj)
     if form.is_valid():
         form.save()

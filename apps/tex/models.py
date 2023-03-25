@@ -3,6 +3,20 @@ from django.db import models
 from django.urls import reverse
 
 
+from apps.profiles.models import Profile
+
+
+class TexProfile(Profile):
+    # DO NOT IMPMENT THIS....
+    pass
+
+    def get_fullname(self):
+        return self.fullname.text
+
+    class Meta(Profile.Meta):
+        proxy = True
+
+
 class ResumeTemplate(auto_prefetch.Model):
     name = models.CharField(max_length=50)
     template_name = models.CharField(default="test.tex", max_length=20)
