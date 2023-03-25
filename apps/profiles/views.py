@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 
 from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
@@ -10,29 +11,49 @@ from django_htmx.http import trigger_client_event
 
 
 from .forms import get_child_modelform
+from .forms import ActiveSettingForm
+from .forms import LabelSettingForm
 from .models import Profile
 from apps.core.http import HTTPResponseHXRedirect
-
+from apps.core.sessions import get_or_create_session
 
 from .utils import create_initial_profile
 from .utils import collect_profile_context
+from .utils import get_profile_instance
+from .utils import get_profile_list
 
 
-@login_required
 def profile_list(request):
-    context = {"object_list": Profile.objects.filter(user=request.user)}
+    profiles, request = get_profile_list(request)
+    context = {"object_list": profiles}
     return render(request, "profiles/profile_list.html", context)
 
 
 def profile_create(request):
-    profile = create_initial_profile(request)
+    profile, request = create_initial_profile(request)
     return HTTPResponseHXRedirect(redirect_to=profile.update_url)
 
 
 def profile_update(request, id):
-    profile = get_object_or_404(Profile, id=id, user=request.user)
+    profile, request = get_profile_instance(request, id)
     context = collect_profile_context(profile)
     return render(request, "profiles/profile_update.html", context)
+
+
+def profile_settings(request, id):
+    profile, request = get_profile_instance(request, id)
+    if request.method == "POST":
+        active_form = ActiveSettingForm(request.POST, instance=profile.activesetting)
+        label_form = LabelSettingForm(request.POST, instance=profile.labelsetting)
+        if active_form.is_valid() and label_form.is_valid():
+            active_form.save()
+            label_form.save()
+            HttpResponseRedirect(profile.update_url)
+    else:
+        active_form = ActiveSettingForm(instance=profile.activesetting)
+        label_form = LabelSettingForm(instance=profile.labelsetting)
+    context = {"active_form": active_form, "label_form": label_form}
+    return render(request, "profiles/profile_settings.html", context)
 
 
 @require_POST
@@ -54,10 +75,11 @@ def update_child(request, klass, id):
 
 
 # htmx - profile - delete object
-@login_required
+
+
 @require_POST
 def delete_object(request, id):
-    object = get_object_or_404(Profile, id=id, user=request.user)
+    object = get_object_or_404(Profile, id=id)
     object.delete()
     return HttpResponse(status=200)
 

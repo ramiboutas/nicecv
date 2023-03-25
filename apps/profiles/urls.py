@@ -11,6 +11,7 @@ urlpatterns = [
     path("", views.profile_list, name="list"),
     path("create/", views.profile_create, name="create"),
     path("profile/<uuid:id>/", views.profile_update, name="update"),
+    path("profile/<uuid:id>/settings/", views.profile_settings, name="settings"),
     path("delete/profile/<uuid:id>/", views.delete_object, name="delete"),
     # child methods
     path("update-child/<str:klass>/<int:id>/", views.update_child, name="update-child"),

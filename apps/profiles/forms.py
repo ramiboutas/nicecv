@@ -96,11 +96,6 @@ class WebsiteForm(AbstractChildForm):
         model = models.Website
 
 
-class LabelForm(AbstractChildForm):
-    class Meta(AbstractChildForm.Meta):
-        model = models.Label
-
-
 class DescriptionForm(AbstractChildForm):
     class Meta(AbstractChildForm.Meta):
         model = models.Description
@@ -109,6 +104,25 @@ class DescriptionForm(AbstractChildForm):
 class SkillForm(AbstractChildForm):
     class Meta(AbstractChildForm.Meta):
         model = models.Skill
+
+
+class AbstractSettingForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # build_child_input_widgets(self, *args, **kwargs)
+
+    class Meta:
+        fields = "__all__"
+
+
+class LabelSettingForm(AbstractSettingForm):
+    class Meta(AbstractSettingForm.Meta):
+        model = models.LabelSetting
+
+
+class ActiveSettingForm(AbstractSettingForm):
+    class Meta(AbstractSettingForm.Meta):
+        model = models.ActiveSetting
 
 
 @cache

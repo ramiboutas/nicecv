@@ -5,13 +5,13 @@ import auto_prefetch
 from PIL import Image
 from functools import cache
 
-from django.db import transaction
+from django.db.models import Q, UniqueConstraint
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib.sessions.models import Session
 
 null_blank = {"null": True, "blank": True}
 null_blank_16 = {"null": True, "blank": True, "max_length": 16}
@@ -38,6 +38,13 @@ def manage_instance_order_field(self):
             pass  # exception if objects do not exist
 
 
+PROFILE_CATEGORIES = (
+    ("temporal", _("Temporal")),
+    ("user_profile", _("User profile")),
+    ("template", _("Template")),
+)
+
+
 class Profile(auto_prefetch.Model):
     """
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
@@ -50,12 +57,19 @@ class Profile(auto_prefetch.Model):
         related_name="profile_set",
         **null_blank,
     )
-
+    session = auto_prefetch.ForeignKey(
+        Session,
+        related_name="profile_set",
+        on_delete=models.CASCADE,
+        **null_blank,
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    is_temporary = models.BooleanField(default=False)
-    is_template = models.BooleanField(default=False)
-    is_public = models.BooleanField(default=False)
+    category = models.CharField(
+        max_length=16, choices=PROFILE_CATEGORIES, default="user_profile"
+    )
+    public = models.BooleanField(default=False)
+    slug = models.SlugField(**null_blank_16, unique=True)
 
     # profile object
     @property
@@ -86,10 +100,10 @@ class AbstractChild(auto_prefetch.Model):
         return self.__class__._meta.model_name
 
     def is_active(self):
-        return getattr(self.profile.active, self.child_name(), True)
+        return getattr(self.profile.activesetting, self.child_name(), True)
 
     def get_label(self):
-        return getattr(self.profile.label, self.child_name(), None)
+        return getattr(self.profile.labelsetting, self.child_name(), None)
 
     def update_form_url(self):
         cls = self.__class__.__name__
@@ -102,6 +116,23 @@ class AbstractChild(auto_prefetch.Model):
 class AbstractGrandchild(auto_prefetch.Model):
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
+
+
+class AbstractProfileSetting(auto_prefetch.Model):
+    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+
+
+class LabelSetting(AbstractProfileSetting):
+    description = models.CharField(max_length=32, default=_("About me"))
+    skill = models.CharField(max_length=32, default=_("Skills"))
+
+
+class ActiveSetting(AbstractProfileSetting):
+    description = models.BooleanField(default=True)
+    skill = models.BooleanField(default=False)
 
 
 class Photo(AbstractChild):
@@ -154,16 +185,6 @@ class Photo(AbstractChild):
 
 class Description(AbstractChild):
     text = models.TextField()
-
-
-class Label(AbstractChild):
-    description = models.CharField(max_length=32, default=_("About me"))
-    skill = models.CharField(max_length=32, default=_("Skills"))
-
-
-class Active(AbstractChild):
-    description = models.BooleanField(default=True)
-    skill = models.BooleanField(default=False)
 
 
 class Fullname(AbstractChild):
@@ -222,7 +243,7 @@ class Skill(AbstractChild):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
     """
 
-    class Meta(auto_prefetch.Model.Meta):
+    class Meta(AbstractChild.Meta):
         default_related_name = "skill"
 
 
@@ -253,6 +274,15 @@ def get_profile_child_models():
         cls_obj
         for _, cls_obj in inspect.getmembers(sys.modules[__name__])
         if (inspect.isclass(cls_obj) and (AbstractChild in cls_obj.__bases__))
+    ]
+    return class_objs
+
+
+def get_profile_setting_models():
+    class_objs = [
+        cls_obj
+        for _, cls_obj in inspect.getmembers(sys.modules[__name__])
+        if (inspect.isclass(cls_obj) and (AbstractProfileSetting in cls_obj.__bases__))
     ]
     return class_objs
 
