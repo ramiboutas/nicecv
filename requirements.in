@@ -1,9 +1,9 @@
 tblib
 celery
+django
 pillow
 dj-stripe
 factory-boy
-django==4.1.7
 django-auto-prefetch
 django-rosetta
 django-allauth

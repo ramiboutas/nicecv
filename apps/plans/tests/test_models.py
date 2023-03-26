@@ -8,7 +8,6 @@ from apps.plans.factories import PlanFAQFactory
 from apps.plans.factories import PremiumPlanFactory
 from apps.plans.models import PremiumPlan
 from apps.plans.models import FreePlan
-from apps.plans.models import get_free_plan
 
 
 @pytest.mark.django_db
@@ -32,14 +31,14 @@ class PremiumPlanTests(TestCase):
 @pytest.mark.django_db
 class FreePlanTests(TestCase):
     def test_one_instance_is_allowed(self):
+        plan = FreePlan.get()
         with pytest.raises((IntegrityError, ValidationError)):
             FreePlan.objects.create(
                 name="Free Plan 2", description="Description of free plan 2"
             )
 
     def test_when_instance_does_not_exist(self):
-        FreePlan.objects.all().delete()
-        plan = get_free_plan()
+        plan = FreePlan.get()
         assert plan.name == "Free Plan"
 
 

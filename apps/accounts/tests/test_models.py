@@ -27,14 +27,14 @@ class CustomUserTests:
 
     def test_user_just_created_with_free_plan(self):
         user = UserFactory()
-        assert isinstance(user.get_actual_plan(), FreePlan)
-        assert user.number_of_profiles == user.get_actual_plan().profiles
+        assert isinstance(user.plan, FreePlan)
+        assert user.number_of_profiles == user.plan.profiles
 
     def test_user_with_premium_plan(self):
         user_plan = UserPremiumPlanFactory()
         assert user_plan.expires > datetime.date.today()
         assert isinstance(user_plan.plan, PremiumPlan)
-        assert user_plan.user.get_actual_plan() == user_plan.plan
+        assert user_plan.user.plan == user_plan.plan
         assert user_plan.user.number_of_profiles == user_plan.plan.profiles
 
 

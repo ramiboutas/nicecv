@@ -3,27 +3,29 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.http import Http404
 
-from . import forms
-from . import models
+
+from .forms import SettingForm
+from .forms import get_profile_child_modelforms
+from .models import Profile
+from .models import ProfileSetting
+from .models import get_profile_child_models
 
 from apps.core.sessions import get_or_create_session
 
 
 @transaction.atomic
-def create_initial_profile(request) -> models.Profile:
-    # TODO: refactore this because it looks awful
-
+def create_initial_profile(request) -> Profile:
     # create an empty profile
-    profile = models.Profile.objects.create()
+    profile = Profile.objects.create()
 
     # Add children objects
-    ChildKlasses = models.get_profile_child_models()
+    ChildKlasses = get_profile_child_models()
     for ChildKlass in ChildKlasses:
         ChildKlass.objects.create(profile=profile)
 
-    SettingKlasses = models.get_profile_setting_models()
-    for SettingKlass in SettingKlasses:
-        SettingKlass.objects.create(profile=profile)
+    # Add setting class
+    ProfileSetting.objects.create(profile=profile)
+
     if request.user.is_authenticated:
         profile.user = request.user
         profile.fullname.text = request.user.fullname
@@ -33,9 +35,9 @@ def create_initial_profile(request) -> models.Profile:
         profile.email.save()
     else:
         session, request = get_or_create_session(request)
-        if models.Profile.objects.filter(session=session).count() >= 1:
+        if Profile.objects.filter(session=session).count() >= 1:
             messages.warning(request, _("Only one profile is allowed for guest users"))
-            return models.Profile.objects.filter(session=session).first(), request
+            return Profile.objects.filter(session=session).first(), request
         profile.category = "temporal"
         profile.session = session
         profile.save()
@@ -43,27 +45,21 @@ def create_initial_profile(request) -> models.Profile:
 
 
 def get_profile_instance(request, id):
-    # TODO: refactore this because it looks awful
-    if request.user.is_authenticated:
-        try:
-            return models.Profile.objects.get(id=id, user=request.user), request
-        except models.Profile.DoesNotExist:
-            pass
-
     try:
+        if request.user.is_authenticated:
+            return Profile.objects.get(id=id, user=request.user), request
+
         session, request = get_or_create_session(request)
-        return models.Profile.objects.get(id=id, session=session), request
-    except models.Profile.DoesNotExist:
+        return Profile.objects.get(id=id, session=session), request
+    except Profile.DoesNotExist:
         raise Http404
 
 
 def get_profile_list(request):
-    # TODO: refactore this because it looks awful
     if request.user.is_authenticated:
-        return models.Profile.objects.filter(user=request.user), request
-
+        return Profile.objects.filter(user=request.user), request
     session, request = get_or_create_session(request)
-    return models.Profile.objects.filter(session=session), request
+    return Profile.objects.filter(session=session), request
 
 
 def collect_profile_context(profile) -> dict:
@@ -81,9 +77,13 @@ def collect_profile_context(profile) -> dict:
 
     {key:value for key, value in dict_instance.items()}
     """
-    modelforms = forms.get_profile_child_modelforms()
-    context = {
+    childforms = get_profile_child_modelforms()
+    childs = {
         Model._meta.model_name: Form(instance=getattr(profile, Model._meta.model_name))
-        for Model, Form in modelforms.items()
+        for Model, Form in childforms.items()
     }
-    return context
+
+    return childs | {
+        "profile": profile,
+        "setting": SettingForm(instance=profile.setting),
+    }

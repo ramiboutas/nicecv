@@ -71,10 +71,13 @@ class Profile(auto_prefetch.Model):
     public = models.BooleanField(default=False)
     slug = models.SlugField(**null_blank_16, unique=True)
 
-    # profile object
     @property
     def update_url(self):
         return reverse("profiles:update", kwargs={"id": self.id})
+
+    @property
+    def settings_url(self):
+        return reverse("profiles:settings", kwargs={"id": self.id})
 
     @property
     def delete_object_url(self):
@@ -86,11 +89,6 @@ class Profile(auto_prefetch.Model):
         # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
         pass
 
-    def save(self, *args, **kwargs):
-        if not self._state.adding:
-            pass
-        super().save(*args, **kwargs)
-
 
 class AbstractChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
@@ -99,11 +97,11 @@ class AbstractChild(auto_prefetch.Model):
     def child_name(self):
         return self.__class__._meta.model_name
 
-    def is_active(self):
-        return getattr(self.profile.activesetting, self.child_name(), True)
+    def active(self):
+        return getattr(self.profile.setting, "active_" + self.child_name(), True)
 
-    def get_label(self):
-        return getattr(self.profile.labelsetting, self.child_name(), None)
+    def label(self):
+        return getattr(self.profile.setting, "label_" + self.child_name(), None)
 
     def update_form_url(self):
         cls = self.__class__.__name__
@@ -118,21 +116,14 @@ class AbstractGrandchild(auto_prefetch.Model):
         abstract = True
 
 
-class AbstractProfileSetting(auto_prefetch.Model):
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
-
-
-class LabelSetting(AbstractProfileSetting):
-    description = models.CharField(max_length=32, default=_("About me"))
-    skill = models.CharField(max_length=32, default=_("Skills"))
-
-
-class ActiveSetting(AbstractProfileSetting):
-    description = models.BooleanField(default=True)
-    skill = models.BooleanField(default=False)
+class ProfileSetting(auto_prefetch.Model):
+    profile = auto_prefetch.OneToOneField(
+        Profile, on_delete=models.CASCADE, related_name="setting"
+    )
+    active_skill = models.BooleanField(default=False)
+    active_description = models.BooleanField(default=True)
+    label_skill = models.CharField(max_length=32, default=_("Skills"))
+    label_description = models.CharField(max_length=32, default=_("About me"))
 
 
 class Photo(AbstractChild):
@@ -270,19 +261,11 @@ class SkillItem(auto_prefetch.Model):
 
 @cache
 def get_profile_child_models():
+    # TODO: use the django app_config get_models
     class_objs = [
         cls_obj
         for _, cls_obj in inspect.getmembers(sys.modules[__name__])
         if (inspect.isclass(cls_obj) and (AbstractChild in cls_obj.__bases__))
-    ]
-    return class_objs
-
-
-def get_profile_setting_models():
-    class_objs = [
-        cls_obj
-        for _, cls_obj in inspect.getmembers(sys.modules[__name__])
-        if (inspect.isclass(cls_obj) and (AbstractProfileSetting in cls_obj.__bases__))
     ]
     return class_objs
 

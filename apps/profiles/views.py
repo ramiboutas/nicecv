@@ -7,15 +7,15 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
+from django.contrib import messages
+
 from django_htmx.http import trigger_client_event
 
 
 from .forms import get_child_modelform
-from .forms import ActiveSettingForm
-from .forms import LabelSettingForm
+from .forms import SettingForm
 from .models import Profile
 from apps.core.http import HTTPResponseHXRedirect
-from apps.core.sessions import get_or_create_session
 
 from .utils import create_initial_profile
 from .utils import collect_profile_context
@@ -40,20 +40,18 @@ def profile_update(request, id):
     return render(request, "profiles/profile_update.html", context)
 
 
+@require_POST
 def profile_settings(request, id):
     profile, request = get_profile_instance(request, id)
-    if request.method == "POST":
-        active_form = ActiveSettingForm(request.POST, instance=profile.activesetting)
-        label_form = LabelSettingForm(request.POST, instance=profile.labelsetting)
-        if active_form.is_valid() and label_form.is_valid():
-            active_form.save()
-            label_form.save()
-            HttpResponseRedirect(profile.update_url)
-    else:
-        active_form = ActiveSettingForm(instance=profile.activesetting)
-        label_form = LabelSettingForm(instance=profile.labelsetting)
-    context = {"active_form": active_form, "label_form": label_form}
-    return render(request, "profiles/profile_settings.html", context)
+    form = SettingForm(request.POST, instance=profile.setting)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(profile.update_url)
+    messages.warning(request, _("Error with profile settings"))
+    context = collect_profile_context(profile)
+    context["setting"] = form
+    context["settings_open"] = True
+    return render(request, "profiles/profile_update.html", context)
 
 
 @require_POST
@@ -75,8 +73,6 @@ def update_child(request, klass, id):
 
 
 # htmx - profile - delete object
-
-
 @require_POST
 def delete_object(request, id):
     object = get_object_or_404(Profile, id=id)

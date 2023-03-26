@@ -5,14 +5,15 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from apps.plans.models import PremiumPlan
-from apps.plans.models import get_free_plan
+from apps.plans.models import FreePlan
 
 
 class CustomUser(AbstractUser):
     avatar_url = models.URLField(null=True, blank=True)
     notify_when_plan_expires = models.BooleanField(default=False)
 
-    def get_actual_plan(self):
+    @property
+    def plan(self):
         """Return a PremiumPlan instance if the user has one.
         If not, return the FreePlan instance"""
         user_premium_plan = self.user_premium_plans.filter(
@@ -20,7 +21,7 @@ class CustomUser(AbstractUser):
         ).first()
         if user_premium_plan:
             return user_premium_plan.plan
-        return get_free_plan()
+        return FreePlan.get()
 
     @property
     def fullname(self):
@@ -28,7 +29,7 @@ class CustomUser(AbstractUser):
 
     @property
     def number_of_profiles(self):
-        return self.get_actual_plan().profiles
+        return self.plan.profiles
 
 
 class UserPremiumPlan(auto_prefetch.Model):

@@ -22,4 +22,4 @@ class HomeViewTests(TestCase):
         request = request_factory.get("/")
         request.user = UserFactory()
         response = HomeView.as_view()(request)
-        assert response.status_code == HTTPStatus.FOUND
+        assert response.status_code == HTTPStatus.OK

@@ -14,9 +14,9 @@ from wagtail.snippets.models import register_snippet
 class AbractPlan(auto_prefetch.Model):
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=64, null=True)
-    profiles = models.PositiveSmallIntegerField(default=5)
-    coverletters = models.PositiveSmallIntegerField(default=10)
-    support = models.BooleanField(default=True)
+    profiles = models.PositiveSmallIntegerField(default=1)
+    coverletters = models.PositiveSmallIntegerField(default=5)
+    support = models.BooleanField(default=False)
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
@@ -24,6 +24,8 @@ class AbractPlan(auto_prefetch.Model):
 
 @register_snippet
 class FreePlan(AbractPlan):
+    the_singleton = models.BooleanField(primary_key=True, default=True)
+    name = models.CharField(max_length=32, default="Free Plan")
     panels = [
         FieldPanel("name"),
         FieldPanel("description"),
@@ -37,13 +39,17 @@ class FreePlan(AbractPlan):
         if self.__class__.objects.count() > 0 and self._state.adding:
             raise ValidationError(_("Only one instance is allowed"))
 
-    class Meta(auto_prefetch.Model.Meta):
-        constraints = [
+    class Meta:
+        constraints = (
             models.CheckConstraint(
-                name="%(app_label)s_%(class)s_single_instance",
-                check=models.Q(id=1),
+                name="single_free_plan",
+                check=models.Q(the_singleton=True),
             ),
-        ]
+        )
+
+    @classmethod
+    def get(cls):
+        return cls.objects.get_or_create(the_singleton=True)[0]
 
 
 @register_snippet
@@ -102,13 +108,3 @@ class PlanFAQ(auto_prefetch.Model):
 
     def __str__(self) -> str:
         return self.question
-
-
-def get_free_plan():
-    try:
-        plan = FreePlan.objects.get(id=1)
-    except FreePlan.DoesNotExist:
-        plan = FreePlan.objects.create(
-            name="Free Plan", description=_("Enjoy the free plan")
-        )
-    return plan
