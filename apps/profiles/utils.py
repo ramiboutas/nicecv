@@ -3,14 +3,17 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.http import Http404
 
-
-from .forms import SettingForm
 from .forms import get_profile_child_modelforms
+from .forms import ActivationSettingsForm
+from .forms import LabelSettingsForm
+
 from .models import Profile
-from .models import ProfileSetting
-from .models import get_profile_child_models
+from .models import SingleItemChild
+from .models import ActivationSettings
+from .models import LabelSettings
 
 from apps.core.sessions import get_or_create_session
+from apps.core.classes import get_child_models
 
 
 @transaction.atomic
@@ -19,12 +22,14 @@ def create_initial_profile(request) -> Profile:
     profile = Profile.objects.create()
 
     # Add children objects
-    ChildKlasses = get_profile_child_models()
+    ChildKlasses = get_child_models("profiles", SingleItemChild)
+
     for ChildKlass in ChildKlasses:
         ChildKlass.objects.create(profile=profile)
 
-    # Add setting class
-    ProfileSetting.objects.create(profile=profile)
+    # Add setting objects
+    ActivationSettings.objects.create(profile=profile)
+    LabelSettings.objects.create(profile=profile)
 
     if request.user.is_authenticated:
         profile.user = request.user
@@ -75,15 +80,20 @@ def collect_profile_context(profile) -> dict:
 
     We use dict comprehension to collect all the childs
 
-    {key:value for key, value in dict_instance.items()}
     """
     childforms = get_profile_child_modelforms()
-    childs = {
-        Model._meta.model_name: Form(instance=getattr(profile, Model._meta.model_name))
-        for Model, Form in childforms.items()
-    }
+    context = {}
+    for Model, Form in childforms.items():
+        field = Model._meta.model_name
+        context[field] = Form(
+            instance=getattr(profile, field), auto_id="id_%s_" + field
+        )
+    context["profile"] = profile
+    context["activationsettings"] = ActivationSettingsForm(
+        instance=profile.activationsettings, auto_id="id_%s_active"
+    )
+    context["labelsettings"] = LabelSettingsForm(
+        instance=profile.labelsettings, auto_id="id_%s_label"
+    )
 
-    return childs | {
-        "profile": profile,
-        "setting": SettingForm(instance=profile.setting),
-    }
+    return context

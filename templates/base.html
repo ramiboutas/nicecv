@@ -17,10 +17,9 @@
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
       {% include "_messages.html" %}
-      {% include "_header.html" %}
+
       {% block content %}{% endblock %}
 
-    {% include "_footer.html" %}
 
     {% block extra_body %}{% endblock %}
 

@@ -5,7 +5,6 @@
     hx-swap="innerHTML"
     hx-target="#notifications"
     >
-
     {% for hidden in form.hidden_fields %}
       {{ hidden }}
     {% endfor %}
@@ -13,8 +12,8 @@
     {% for field in form.visible_fields %}
       <div class="mt-4 relative" x-data="{ active: false }" @mouseenter="active = true" @mouseleave = "active = false" >
 
-        <label for="id_{{ field.name }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-          {% if form.instance.label %} {{ form.instance.label }} {% else %} {{ field.label }} {% endif %}
+        <label for="{{ field.id_for_label }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+          {{ form.instance.label }}
         </label>
         {{ field }}
       </div>

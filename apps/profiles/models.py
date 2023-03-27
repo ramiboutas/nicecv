@@ -1,6 +1,5 @@
-import sys
 import uuid
-import inspect
+
 import auto_prefetch
 from PIL import Image
 from functools import cache
@@ -90,18 +89,24 @@ class Profile(auto_prefetch.Model):
         pass
 
 
-class AbstractChild(auto_prefetch.Model):
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-    # active = models.BooleanField(default=True)
-
-    def child_name(self):
+class ChildMixin(auto_prefetch.Model):
+    @property
+    def field_name(self):
         return self.__class__._meta.model_name
 
+    @property
     def active(self):
-        return getattr(self.profile.setting, "active_" + self.child_name(), True)
+        return getattr(
+            self.profile.activationsettings, self.field_name + "_is_active", True
+        )
 
+    @property
     def label(self):
-        return getattr(self.profile.setting, "label_" + self.child_name(), None)
+        return getattr(
+            self.profile.labelsettings,
+            self.field_name,
+            self.__class__._meta.verbose_name,
+        )
 
     def update_form_url(self):
         cls = self.__class__.__name__
@@ -111,22 +116,43 @@ class AbstractChild(auto_prefetch.Model):
         abstract = True
 
 
-class AbstractGrandchild(auto_prefetch.Model):
+class SingleItemChild(auto_prefetch.Model):
+    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
+
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
 
 
-class ProfileSetting(auto_prefetch.Model):
+class MultipleItemChild(auto_prefetch.Model):
+    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+
+
+# Profiele settings models
+
+
+class AbstractProfileSettings(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(
-        Profile, on_delete=models.CASCADE, related_name="setting"
+        Profile, on_delete=models.CASCADE, related_name="%(class)s"
     )
-    active_skill = models.BooleanField(default=False)
-    active_description = models.BooleanField(default=True)
-    label_skill = models.CharField(max_length=32, default=_("Skills"))
-    label_description = models.CharField(max_length=32, default=_("About me"))
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
 
 
-class Photo(AbstractChild):
+class ActivationSettings(AbstractProfileSettings):
+    skill_set_is_active = models.BooleanField(default=False)
+    description_is_active = models.BooleanField(default=True)
+
+
+class LabelSettings(AbstractProfileSettings):
+    skill_set = models.CharField(max_length=32, default=_("Skills"))
+    description = models.CharField(max_length=32, default=_("About me"))
+
+
+class Photo(SingleItemChild, ChildMixin):
     full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
@@ -174,74 +200,68 @@ class Photo(AbstractChild):
                 pass
 
 
-class Description(AbstractChild):
+class Description(SingleItemChild, ChildMixin):
     text = models.TextField()
 
 
-class Fullname(AbstractChild):
+class Fullname(SingleItemChild, ChildMixin):
     text = models.CharField(verbose_name=_("Full name"), **null_blank_32)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Full name")
 
 
-class Jobtitle(AbstractChild):
+class Jobtitle(SingleItemChild, ChildMixin):
     text = models.CharField(verbose_name=_("Job title"), **null_blank_16)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Job title")
 
 
-class Location(AbstractChild):
+class Location(SingleItemChild, ChildMixin):
     text = models.CharField(verbose_name=_("Location"), **null_blank_16)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Location")
 
 
-class Birth(AbstractChild):
+class Birth(SingleItemChild, ChildMixin):
     text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Date of birth")
 
 
-class Phone(AbstractChild):
+class Phone(SingleItemChild, ChildMixin):
     text = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Phone number")
 
 
-class Email(AbstractChild):
+class Email(SingleItemChild, ChildMixin):
     text = models.CharField(verbose_name=_("Email"), **null_blank_32)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Email")
 
 
-class Website(AbstractChild):
-    text = models.CharField(verbose_name=_("Website"), **null_blank_16)
+class Website(SingleItemChild, ChildMixin):
+    text = models.CharField(verbose_name=_("Website"), **null_blank_32)
 
-    class Meta(AbstractChild.Meta):
+    class Meta(SingleItemChild.Meta):
         verbose_name = _("Website")
 
 
-class Skill(AbstractChild):
+class Skill(MultipleItemChild, ChildMixin):
     """
     An object representing the skills that the member holds.
     See Skill Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
     """
 
-    class Meta(AbstractChild.Meta):
-        default_related_name = "skill"
-
-
-class SkillItem(auto_prefetch.Model):
-    skill = auto_prefetch.ForeignKey(Skill, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    level = models.IntegerField(default=50)  # Linkedin does not include this
+    level = models.IntegerField(default=50)
 
     def __str__(self):
         return self.name
@@ -256,18 +276,7 @@ class SkillItem(auto_prefetch.Model):
 
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("-level",)
-        default_related_name = "items"
-
-
-@cache
-def get_profile_child_models():
-    # TODO: use the django app_config get_models
-    class_objs = [
-        cls_obj
-        for _, cls_obj in inspect.getmembers(sys.modules[__name__])
-        if (inspect.isclass(cls_obj) and (AbstractChild in cls_obj.__bases__))
-    ]
-    return class_objs
+        default_related_name = "skill_set"
 
 
 # class Language(auto_prefetch.Model):

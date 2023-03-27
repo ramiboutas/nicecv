@@ -13,7 +13,8 @@ from django_htmx.http import trigger_client_event
 
 
 from .forms import get_child_modelform
-from .forms import SettingForm
+from .forms import ActivationSettingsForm
+from .forms import LabelSettingsForm
 from .models import Profile
 from apps.core.http import HTTPResponseHXRedirect
 
@@ -43,13 +44,18 @@ def profile_update(request, id):
 @require_POST
 def profile_settings(request, id):
     profile, request = get_profile_instance(request, id)
-    form = SettingForm(request.POST, instance=profile.setting)
-    if form.is_valid():
-        form.save()
+    activation_form = ActivationSettingsForm(
+        request.POST, instance=profile.activationsettings
+    )
+    label_form = LabelSettingsForm(request.POST, instance=profile.labelsettings)
+    if activation_form.is_valid() and label_form.is_valid():
+        activation_form.save()
+        label_form.save()
         return HttpResponseRedirect(profile.update_url)
     messages.warning(request, _("Error with profile settings"))
     context = collect_profile_context(profile)
-    context["setting"] = form
+    context["activationsettings"] = activation_form
+    context["labelsettings"] = label_form
     context["settings_open"] = True
     return render(request, "profiles/profile_update.html", context)
 
