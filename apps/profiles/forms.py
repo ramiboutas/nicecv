@@ -6,7 +6,9 @@ import warnings
 from django import forms
 from django.utils.safestring import mark_safe
 
+from apps.core.classes import get_child_models
 from . import models
+from .models import SingleItemChild
 
 
 def build_widget_attrs(
@@ -136,7 +138,11 @@ class DescriptionForm(SingleItemChildForm):
         model = models.Description
 
 
-class ActivationSettingsForm(forms.ModelForm):
+class ProfileSettingsForm(forms.ModelForm):
+    pass
+
+
+class ActivationSettingsForm(ProfileSettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         create_activation_settingform_widgets(self, *args, **kwargs)
@@ -146,7 +152,7 @@ class ActivationSettingsForm(forms.ModelForm):
         model = models.ActivationSettings
 
 
-class LabelSettingsForm(forms.ModelForm):
+class LabelSettingsForm(ProfileSettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         create_label_settingform_widgets(self, *args, **kwargs)
@@ -157,23 +163,23 @@ class LabelSettingsForm(forms.ModelForm):
 
 
 @cache
-def get_profile_child_modelforms() -> dict:
+def get_profile_modelforms(settings=False, single_item=True) -> dict:
     """Returns a dict with model classes and form classes asociated with Profile model"""
+    KlassDict = {}
+    Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
 
-    class_objs = {
-        cls_obj.Meta.model: cls_obj
-        for _, cls_obj in inspect.getmembers(sys.modules[__name__])
-        if (inspect.isclass(cls_obj) and (SingleItemChildForm in cls_obj.__bases__))
-    }
+    for Form in Forms:
+        if single_item and (SingleItemChildForm in Form.__bases__):
+            KlassDict[Form.Meta.model] = Form
+        if settings and (ProfileSettingsForm in Form.__bases__):
+            KlassDict[Form.Meta.model] = Form
 
-    return class_objs
+    return KlassDict
 
 
 @cache
-def get_child_modelform(Klass):
-    """Returns the ModelForm associated with a Child Model"""
-    ChildModel = getattr(models, Klass) if isinstance(Klass, str) else Klass
-
-    if models.SingleItemChild in ChildModel.__bases__:
-        modelforms = get_profile_child_modelforms()
-        return ChildModel, modelforms[ChildModel]
+def get_modelform(Klass):
+    """Returns the ModelForm associated with a Profile Model"""
+    Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
+    modelforms = get_profile_modelforms(settings=True)
+    return Model, modelforms[Model]

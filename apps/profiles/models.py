@@ -75,10 +75,6 @@ class Profile(auto_prefetch.Model):
         return reverse("profiles:update", kwargs={"id": self.id})
 
     @property
-    def settings_url(self):
-        return reverse("profiles:settings", kwargs={"id": self.id})
-
-    @property
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
 
@@ -96,9 +92,7 @@ class ChildMixin(auto_prefetch.Model):
 
     @property
     def active(self):
-        return getattr(
-            self.profile.activationsettings, self.field_name + "_is_active", True
-        )
+        return getattr(self.profile.activationsettings, self.field_name, True)
 
     @property
     def label(self):
@@ -116,6 +110,9 @@ class ChildMixin(auto_prefetch.Model):
         abstract = True
 
 
+# Abract models
+
+
 class SingleItemChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
@@ -130,29 +127,35 @@ class MultipleItemChild(auto_prefetch.Model):
         abstract = True
 
 
-# Profiele settings models
-
-
-class AbstractProfileSettings(auto_prefetch.Model):
+class ProfileSettings(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(
         Profile, on_delete=models.CASCADE, related_name="%(class)s"
     )
+
+    def update_settings_url(self):
+        cls = self.__class__.__name__
+        return reverse("profiles:update-settings", kwargs={"klass": cls, "id": self.id})
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
 
 
-class ActivationSettings(AbstractProfileSettings):
-    skill_set_is_active = models.BooleanField(default=False)
-    description_is_active = models.BooleanField(default=True)
+# Profile settings models
 
 
-class LabelSettings(AbstractProfileSettings):
+class ActivationSettings(ProfileSettings):
+    skill_set = models.BooleanField(default=False)
+    description = models.BooleanField(default=True)
+    website = models.BooleanField(default=True)
+
+
+class LabelSettings(ProfileSettings):
     skill_set = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("About me"))
+    website = models.CharField(max_length=32, default=_("Website"))
 
 
-class Photo(SingleItemChild, ChildMixin):
+class Photo(SingleItemChild):
     full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)

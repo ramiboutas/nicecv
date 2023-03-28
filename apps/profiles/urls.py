@@ -1,6 +1,13 @@
 from django.urls import path
 
 from . import views
+from .views import profile_list
+from .views import profile_create
+from .views import profile_update
+from .views import delete_object
+from .views import update_child
+from .views import update_settings
+
 
 # from .views import save_personal_information_view, update_description_view
 
@@ -8,20 +15,23 @@ app_name = "profiles"
 # general
 
 urlpatterns = [
-    path("", views.profile_list, name="list"),
-    path("create/", views.profile_create, name="create"),
-    path("profile/<uuid:id>/", views.profile_update, name="update"),
-    path("profile/<uuid:id>/settings/", views.profile_settings, name="settings"),
-    path("delete/profile/<uuid:id>/", views.delete_object, name="delete"),
-    # child methods
-    path("update-child/<str:klass>/<int:id>/", views.update_child, name="update-child"),
+    # profile list
+    path("", profile_list, name="list"),
+    # create a profile (redirect)
+    path("create/", profile_create, name="create"),
+    # profile update (edit view)
+    path("profile/<uuid:id>/", profile_update, name="update"),
+    # delete profile
+    path("delete/profile/<uuid:id>/", delete_object, name="delete"),
+    # update child form
+    path("child/<str:klass>/<int:id>/", update_child, name="update-child"),
+    # update settings form
+    path("settings/<str:klass>/<int:id>/", update_settings, name="update-settings"),
 ]
 
 
 from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
-
 from .views import get_photo_modal_view, remove_photo_modal_view
-
 
 # photo
 urlpatterns += [

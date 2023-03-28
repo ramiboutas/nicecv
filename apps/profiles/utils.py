@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.http import Http404
 
-from .forms import get_profile_child_modelforms
+from .forms import get_profile_modelforms
 from .forms import ActivationSettingsForm
 from .forms import LabelSettingsForm
 
@@ -31,10 +31,12 @@ def create_initial_profile(request) -> Profile:
     ActivationSettings.objects.create(profile=profile)
     LabelSettings.objects.create(profile=profile)
 
-    if request.user.is_authenticated:
-        profile.user = request.user
-        profile.fullname.text = request.user.fullname
-        profile.email.text = request.user.email
+    user = getattr(request.user, "is_authenticated", None)
+
+    if user:
+        profile.user = user
+        profile.fullname.text = user.fullname
+        profile.email.text = user.email
         profile.save()
         profile.fullname.save()
         profile.email.save()
@@ -81,19 +83,14 @@ def collect_profile_context(profile) -> dict:
     We use dict comprehension to collect all the childs
 
     """
-    childforms = get_profile_child_modelforms()
+    childforms = get_profile_modelforms(settings=True)
     context = {}
     for Model, Form in childforms.items():
         field = Model._meta.model_name
         context[field] = Form(
             instance=getattr(profile, field), auto_id="id_%s_" + field
         )
+        print(f"{field=}")
     context["profile"] = profile
-    context["activationsettings"] = ActivationSettingsForm(
-        instance=profile.activationsettings, auto_id="id_%s_active"
-    )
-    context["labelsettings"] = LabelSettingsForm(
-        instance=profile.labelsettings, auto_id="id_%s_label"
-    )
 
     return context
