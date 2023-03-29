@@ -70,9 +70,14 @@ class Profile(auto_prefetch.Model):
     public = models.BooleanField(default=False)
     slug = models.SlugField(**null_blank_16, unique=True)
 
-    @property
-    def update_url(self):
-        return reverse("profiles:update", kwargs={"id": self.id})
+    def update_url(self, params=None):
+        url = reverse("profiles:update", kwargs={"id": self.id})
+        extra = (
+            "?" + "&".join([f"{k}={v}" for k, v in params.items()])
+            if bool(params)
+            else ""
+        )
+        return url + extra
 
     @property
     def delete_object_url(self):
@@ -87,18 +92,18 @@ class Profile(auto_prefetch.Model):
 
 class ChildMixin(auto_prefetch.Model):
     @property
-    def field_name(self):
+    def related_name(self):
         return self.__class__._meta.model_name
 
     @property
     def active(self):
-        return getattr(self.profile.activationsettings, self.field_name, True)
+        return getattr(self.profile.activationsettings, self.related_name, True)
 
     @property
     def label(self):
         return getattr(
             self.profile.labelsettings,
-            self.field_name,
+            self.related_name,
             self.__class__._meta.verbose_name,
         )
 
@@ -113,7 +118,7 @@ class ChildMixin(auto_prefetch.Model):
 # Abract models
 
 
-class SingleItemChild(auto_prefetch.Model):
+class SimpleChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     class Meta(auto_prefetch.Model.Meta):
@@ -155,7 +160,7 @@ class LabelSettings(ProfileSettings):
     website = models.CharField(max_length=32, default=_("Website"))
 
 
-class Photo(SingleItemChild):
+class Photo(SimpleChild):
     full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
@@ -203,56 +208,56 @@ class Photo(SingleItemChild):
                 pass
 
 
-class Description(SingleItemChild, ChildMixin):
+class Description(SimpleChild, ChildMixin):
     text = models.TextField()
 
 
-class Fullname(SingleItemChild, ChildMixin):
+class Fullname(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Full name"), **null_blank_32)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Full name")
 
 
-class Jobtitle(SingleItemChild, ChildMixin):
+class Jobtitle(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Job title"), **null_blank_16)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Job title")
 
 
-class Location(SingleItemChild, ChildMixin):
+class Location(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Location"), **null_blank_16)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Location")
 
 
-class Birth(SingleItemChild, ChildMixin):
+class Birth(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Date of birth")
 
 
-class Phone(SingleItemChild, ChildMixin):
+class Phone(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Phone number")
 
 
-class Email(SingleItemChild, ChildMixin):
+class Email(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Email"), **null_blank_32)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Email")
 
 
-class Website(SingleItemChild, ChildMixin):
+class Website(SimpleChild, ChildMixin):
     text = models.CharField(verbose_name=_("Website"), **null_blank_32)
 
-    class Meta(SingleItemChild.Meta):
+    class Meta(SimpleChild.Meta):
         verbose_name = _("Website")
 
 

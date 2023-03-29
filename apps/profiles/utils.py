@@ -8,7 +8,7 @@ from .forms import ActivationSettingsForm
 from .forms import LabelSettingsForm
 
 from .models import Profile
-from .models import SingleItemChild
+from .models import SimpleChild
 from .models import ActivationSettings
 from .models import LabelSettings
 
@@ -22,7 +22,7 @@ def create_initial_profile(request) -> Profile:
     profile = Profile.objects.create()
 
     # Add children objects
-    ChildKlasses = get_child_models("profiles", SingleItemChild)
+    ChildKlasses = get_child_models("profiles", SimpleChild)
 
     for ChildKlass in ChildKlasses:
         ChildKlass.objects.create(profile=profile)

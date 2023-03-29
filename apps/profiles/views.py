@@ -32,7 +32,7 @@ def profile_list(request):
 
 def profile_create(request):
     profile, request = create_initial_profile(request)
-    return HTTPResponseHXRedirect(redirect_to=profile.update_url)
+    return HTTPResponseHXRedirect(redirect_to=profile.update_url())
 
 
 def profile_update(request, id):
@@ -48,12 +48,14 @@ def update_settings(request, klass, id):
     form = ChildForm(request.POST, instance=obj)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(obj.profile.update_url)
+        return HttpResponseRedirect(
+            obj.profile.update_url(params={"settingsopen": "true"})
+        )
 
     messages.warning(request, _("Error with profile settings"))
     context = collect_profile_context(obj.profile)
     context[ChildModel._meta.model_name] = form
-    context["settings_open"] = True
+    context["settingsopen"] = True
     return render(request, "profiles/profile_update.html", context)
 
 

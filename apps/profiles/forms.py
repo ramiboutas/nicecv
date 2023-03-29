@@ -6,76 +6,75 @@ import warnings
 from django import forms
 from django.utils.safestring import mark_safe
 
-from apps.core.classes import get_child_models
 from . import models
-from .models import SingleItemChild
+from .models import Fullname
+from .models import Jobtitle
+from .models import Location
+from .models import Birth
+from .models import Phone
+from .models import Email
+from .models import Website
+from .models import Description
 
 
-def build_widget_attrs(
-    html_class=None,  # html class
-    x_bind_class=None,  # alpinejs :class attr.
-    hx_post=None,  # htmx hx-post method
-    hx_trigger=None,  # htmx hx-trigger method
-):
+TEXT_INPUT_CLASS = (
+    "border-1 rounded-md hover:bg-slate-100 placeholder:italic border-slate-100"
+)
+TEXT_INPUT_XBIND_CLASS = "active ? 'border-slate-500' : 'border-slate-100'"
+TEXT_INPUT_HX_TRIGGER = "keyup changed delay:2s"
+
+
+def build_widget_attrs(html_class=None, x_class=None, hx_post=None, hx_trigger=None):
     attrs = {}
+
     if html_class:
+        # html class
         attrs = attrs | {"class": mark_safe(html_class)}
-    if x_bind_class:
-        attrs = attrs | {":class": mark_safe(x_bind_class)}
+
+    if x_class:
+        # alpinejs :class attr.
+        attrs = attrs | {":class": mark_safe(x_class)}
+
     if hx_post:
+        # htmx hx-post method
         attrs = attrs | {"hx-post": mark_safe(hx_post)}
+
     if hx_trigger:
+        # htmx hx-trigger method
         attrs = attrs | {"hx-trigger": mark_safe(hx_trigger)}
 
     return attrs
 
 
-def set_hidden(form, fields: list):
-    for field_name in fields:
-        try:
-            form.fields[field_name].widget = forms.HiddenInput()
-        except KeyError:
-            warnings.warn(f"{field_name} not found in {form.__class__.__name__}")
-
-
-def set_widget_attrs(form, widget_attrs: dict, fields: list = None):
+def set_widget_attrs(form, attrs: dict, fields: list = None):
     field_list = form.fields if fields is None else fields
     for field_name in field_list:
         try:
-            form.fields[field_name].widget.attrs.update(widget_attrs)
+            form.fields[field_name].widget.attrs.update(attrs)
         except KeyError:
             warnings.warn(f"{field_name} not found in {form.__class__.__name__}")
 
 
 def create_childform_widgets(form_obj, *args, **kwargs):
-    # Getting instance for building a post url
     instance = kwargs.get("instance", None)
-    # Building the widgets
-    widget_attrs = build_widget_attrs(
-        html_class="border-1 rounded-md hover:bg-slate-100 placeholder:italic border-slate-100",
-        x_bind_class="active ? 'border-slate-500' : 'border-slate-100'",
+    attrs = build_widget_attrs(
+        html_class=TEXT_INPUT_CLASS,
+        x_class=TEXT_INPUT_XBIND_CLASS,
         hx_post=instance.update_form_url() if instance is not None else "",
-        hx_trigger="keyup changed delay:2s",
+        hx_trigger=TEXT_INPUT_HX_TRIGGER,
     )
-    set_widget_attrs(form_obj, widget_attrs)
-    set_hidden(form_obj, ["profile"])
+    set_widget_attrs(form_obj, attrs)
 
 
-def create_label_settingform_widgets(form_obj, *args, **kwargs):
-    set_hidden(form_obj, ["profile"])
+def create_label_settingform(form_obj, *args, **kwargs):
     for field_name in form_obj.fields:
-        textinput_attrs = build_widget_attrs(
-            html_class="""block w-full rounded-md  py-1.5 border-slate-100
-        text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
-        placeholder:text-gray-400 focus:ring-2 focus:ring-inset
-        focus:ring-indigo-600 sm:text-sm sm:leading-6""",
-            x_bind_class="active ? 'border-indigo-500' : 'border-indigo-100'",
+        attrs = build_widget_attrs(
+            html_class=TEXT_INPUT_CLASS, x_class=TEXT_INPUT_XBIND_CLASS
         )
-        set_widget_attrs(form_obj, textinput_attrs, fields=[field_name])
+        set_widget_attrs(form_obj, attrs, fields=[field_name])
 
 
-def create_activation_settingform_widgets(form_obj, *args, **kwargs):
-    set_hidden(form_obj, ["profile"])
+def process_activation_settingform(form_obj, *args, **kwargs):
     for field_name in form_obj.fields:
         bool_attrs = build_widget_attrs(
             html_class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600",
@@ -89,53 +88,53 @@ class ProfileForm(forms.ModelForm):
         fields = ["public"]
 
 
-class SingleItemChildForm(forms.ModelForm):
+class SimpleChildForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         create_childform_widgets(self, *args, **kwargs)
 
     class Meta:
-        fields = ["profile", "text"]
+        fields = ["text"]
 
 
-class FullnameForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Fullname
+class FullnameForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Fullname
 
 
-class JobtitleForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Jobtitle
+class JobtitleForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Jobtitle
 
 
-class LocationForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Location
+class LocationForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Location
 
 
-class BirthForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Birth
+class BirthForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Birth
 
 
-class PhoneForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Phone
+class PhoneForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Phone
 
 
-class EmailForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Email
+class EmailForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Email
 
 
-class WebsiteForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Website
+class WebsiteForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Website
 
 
-class DescriptionForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
-        model = models.Description
+class DescriptionForm(SimpleChildForm):
+    class Meta(SimpleChildForm.Meta):
+        model = Description
 
 
 class ProfileSettingsForm(forms.ModelForm):
@@ -145,20 +144,22 @@ class ProfileSettingsForm(forms.ModelForm):
 class ActivationSettingsForm(ProfileSettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        create_activation_settingform_widgets(self, *args, **kwargs)
+        process_activation_settingform(self, *args, **kwargs)
 
     class Meta(forms.ModelForm):
         fields = "__all__"
+        exclude = ["profile"]
         model = models.ActivationSettings
 
 
 class LabelSettingsForm(ProfileSettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        create_label_settingform_widgets(self, *args, **kwargs)
+        create_label_settingform(self, *args, **kwargs)
 
     class Meta(forms.ModelForm):
         fields = "__all__"
+        exclude = ["profile"]
         model = models.LabelSettings
 
 
@@ -169,7 +170,7 @@ def get_profile_modelforms(settings=False, single_item=True) -> dict:
     Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
 
     for Form in Forms:
-        if single_item and (SingleItemChildForm in Form.__bases__):
+        if single_item and (SimpleChildForm in Form.__bases__):
             KlassDict[Form.Meta.model] = Form
         if settings and (ProfileSettingsForm in Form.__bases__):
             KlassDict[Form.Meta.model] = Form
