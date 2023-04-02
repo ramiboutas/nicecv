@@ -1,17 +1,21 @@
+import inspect
+from functools import cache
+
 from django.db import transaction
+from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.http import Http404
 
-from .forms import get_profile_modelforms
-from .forms import ActivationSettingsForm
-from .forms import LabelSettingsForm
 
 from .models import Profile
-from .models import SimpleChild
-from .models import ActivationSettings
-from .models import LabelSettings
+from .models import ProfileOneChild
+from .models import ProfileSettings
 
+from .forms import SingleItemChildForm
+from .forms import ProfileSettingsForm
+
+from apps.accounts.models import CustomUser
 from apps.core.sessions import get_or_create_session
 from apps.core.classes import get_child_models
 
@@ -21,19 +25,16 @@ def create_initial_profile(request) -> Profile:
     # create an empty profile
     profile = Profile.objects.create()
 
-    # Add children objects
-    ChildKlasses = get_child_models("profiles", SimpleChild)
-
-    for ChildKlass in ChildKlasses:
-        ChildKlass.objects.create(profile=profile)
+    # Add single item children objects
+    for Klass in get_child_models("profiles", ProfileOneChild):
+        Klass.objects.create(profile=profile)
 
     # Add setting objects
-    ActivationSettings.objects.create(profile=profile)
-    LabelSettings.objects.create(profile=profile)
+    for Klass in get_child_models("profiles", ProfileSettings):
+        Klass.objects.create(profile=profile)
 
-    user = getattr(request.user, "is_authenticated", None)
-
-    if user:
+    user = getattr(request, "user", AnonymousUser())
+    if isinstance(user, CustomUser):
         profile.user = user
         profile.fullname.text = user.fullname
         profile.email.text = user.email
@@ -86,11 +87,42 @@ def collect_profile_context(profile) -> dict:
     childforms = get_profile_modelforms(settings=True)
     context = {}
     for Model, Form in childforms.items():
-        field = Model._meta.model_name
-        context[field] = Form(
-            instance=getattr(profile, field), auto_id="id_%s_" + field
+        field_name = Model._meta.model_name
+        context[field_name] = Form(
+            instance=getattr(profile, field_name), auto_id="id_%s_" + field_name
         )
-        print(f"{field=}")
-    context["profile"] = profile
 
+    context["profile"] = profile
+    from .forms import SkillFormSet
+    from .forms import SkillForm
+
+    context["skills"] = SkillFormSet(profile=profile)
+    context["skill"] = SkillForm()
     return context
+
+
+@cache
+def get_profile_modelforms(settings=False, singles=True, many=True) -> dict:
+    """Returns a dict with model classes and form classes asociated with Profile model"""
+    from . import forms
+
+    KlassDict = {}
+    Forms = [k for _, k in inspect.getmembers(forms, inspect.isclass)]
+
+    for Form in Forms:
+        if singles and (SingleItemChildForm in Form.__bases__):
+            KlassDict[Form.Meta.model] = Form
+        if settings and (ProfileSettingsForm in Form.__bases__):
+            KlassDict[Form.Meta.model] = Form
+
+    return KlassDict
+
+
+@cache
+def get_modelform(Klass):
+    """Returns the ModelForm associated with a Profile Model"""
+    from . import models
+
+    Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
+    modelforms = get_profile_modelforms(settings=True)
+    return Model, modelforms[Model]

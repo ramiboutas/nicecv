@@ -1,12 +1,13 @@
-from functools import cache
-import sys
-import inspect
 import warnings
 
-from django import forms
+from django.forms import ModelForm
+from django.forms import formset_factory
+from django.forms import BaseFormSet
+from django.forms.widgets import Input
+
 from django.utils.safestring import mark_safe
 
-from . import models
+from .models import Profile
 from .models import Fullname
 from .models import Jobtitle
 from .models import Location
@@ -15,13 +16,17 @@ from .models import Phone
 from .models import Email
 from .models import Website
 from .models import Description
+from .models import LabelSettings
+from .models import ActivationSettings
+from .models import Skill
 
 
-TEXT_INPUT_CLASS = (
-    "border-1 rounded-md hover:bg-slate-100 placeholder:italic border-slate-100"
-)
-TEXT_INPUT_XBIND_CLASS = "active ? 'border-slate-500' : 'border-slate-100'"
-TEXT_INPUT_HX_TRIGGER = "keyup changed delay:2s"
+# text input html attributes
+INPUT_CLASS = "border-1 rounded-md hover:bg-indigo-100 border-indigo-100"
+INPUT_XBIND_CLASS = "active ? 'border-indigo-400' : 'border-indigo-100'"
+INPUT_HX_TRIGGER = "keyup changed delay:2s"
+# checkbox html attributes
+CHECKBOX_CLASS = "h-4 w-4 rounded border-indigo-400 focus:ring-indigo-400"
 
 
 def build_widget_attrs(html_class=None, x_class=None, hx_post=None, hx_trigger=None):
@@ -52,135 +57,124 @@ def set_widget_attrs(form, attrs: dict, fields: list = None):
         try:
             form.fields[field_name].widget.attrs.update(attrs)
         except KeyError:
-            warnings.warn(f"{field_name} not found in {form.__class__.__name__}")
+            pass
 
 
-def create_childform_widgets(form_obj, *args, **kwargs):
-    instance = kwargs.get("instance", None)
-    attrs = build_widget_attrs(
-        html_class=TEXT_INPUT_CLASS,
-        x_class=TEXT_INPUT_XBIND_CLASS,
-        hx_post=instance.update_form_url() if instance is not None else "",
-        hx_trigger=TEXT_INPUT_HX_TRIGGER,
-    )
-    set_widget_attrs(form_obj, attrs)
+class RangeInput(Input):
+    input_type = "range"
+    template_name = "django/forms/widgets/number.html"
 
 
-def create_label_settingform(form_obj, *args, **kwargs):
-    for field_name in form_obj.fields:
-        attrs = build_widget_attrs(
-            html_class=TEXT_INPUT_CLASS, x_class=TEXT_INPUT_XBIND_CLASS
-        )
-        set_widget_attrs(form_obj, attrs, fields=[field_name])
-
-
-def process_activation_settingform(form_obj, *args, **kwargs):
-    for field_name in form_obj.fields:
-        bool_attrs = build_widget_attrs(
-            html_class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600",
-        )
-        set_widget_attrs(form_obj, bool_attrs, fields=[field_name])
-
-
-class ProfileForm(forms.ModelForm):
+class ProfileForm(ModelForm):
     class Meta:
-        model = models.Profile
+        model = Profile
         fields = ["public"]
 
 
-class SimpleChildForm(forms.ModelForm):
+class SingleItemChildForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        create_childform_widgets(self, *args, **kwargs)
+        obj = kwargs.get("instance", None)
+        hx_post = "" if obj is None else obj.update_form_url()
+        attrs = build_widget_attrs(
+            html_class=INPUT_CLASS,
+            x_class=INPUT_XBIND_CLASS,
+            hx_post=hx_post,
+            hx_trigger=INPUT_HX_TRIGGER,
+        )
+        set_widget_attrs(self, attrs)
 
     class Meta:
         fields = ["text"]
 
 
-class FullnameForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class FullnameForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Fullname
 
 
-class JobtitleForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class JobtitleForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Jobtitle
 
 
-class LocationForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class LocationForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Location
 
 
-class BirthForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class BirthForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Birth
 
 
-class PhoneForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class PhoneForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Phone
 
 
-class EmailForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class EmailForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Email
 
 
-class WebsiteForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class WebsiteForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Website
 
 
-class DescriptionForm(SimpleChildForm):
-    class Meta(SimpleChildForm.Meta):
+class DescriptionForm(SingleItemChildForm):
+    class Meta(SingleItemChildForm.Meta):
         model = Description
 
 
-class ProfileSettingsForm(forms.ModelForm):
+class ProfileSettingsForm(ModelForm):
     pass
 
 
 class ActivationSettingsForm(ProfileSettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        process_activation_settingform(self, *args, **kwargs)
+        attrs = build_widget_attrs(html_class=CHECKBOX_CLASS)
+        set_widget_attrs(self, attrs)
 
-    class Meta(forms.ModelForm):
+    class Meta(ModelForm):
         fields = "__all__"
         exclude = ["profile"]
-        model = models.ActivationSettings
+        model = ActivationSettings
 
 
 class LabelSettingsForm(ProfileSettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        create_label_settingform(self, *args, **kwargs)
+        attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
+        set_widget_attrs(self, attrs)
 
-    class Meta(forms.ModelForm):
+    class Meta(ModelForm):
         fields = "__all__"
         exclude = ["profile"]
-        model = models.LabelSettings
+        model = LabelSettings
 
 
-@cache
-def get_profile_modelforms(settings=False, single_item=True) -> dict:
-    """Returns a dict with model classes and form classes asociated with Profile model"""
-    KlassDict = {}
-    Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
+class SkillForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
+        set_widget_attrs(self, attrs, fields=["name"])
+        self.fields["level"].widget = RangeInput()
 
-    for Form in Forms:
-        if single_item and (SimpleChildForm in Form.__bases__):
-            KlassDict[Form.Meta.model] = Form
-        if settings and (ProfileSettingsForm in Form.__bases__):
-            KlassDict[Form.Meta.model] = Form
-
-    return KlassDict
+    class Meta(ModelForm):
+        fields = "__all__"
+        exclude = ["profile"]
+        model = Skill
 
 
-@cache
-def get_modelform(Klass):
-    """Returns the ModelForm associated with a Profile Model"""
-    Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
-    modelforms = get_profile_modelforms(settings=True)
-    return Model, modelforms[Model]
+class BaseChildItemFormSet(BaseFormSet):
+    def __init__(self, profile, *args, **kwargs):
+        self.profile = profile
+        super().__init__(*args, **kwargs)
+
+
+SkillFormSet = formset_factory(
+    SkillForm, formset=BaseChildItemFormSet, can_order=False, can_delete=False
+)

@@ -90,7 +90,7 @@ class Profile(auto_prefetch.Model):
         pass
 
 
-class ChildMixin(auto_prefetch.Model):
+class ProfileChildMixin(auto_prefetch.Model):
     @property
     def related_name(self):
         return self.__class__._meta.model_name
@@ -118,14 +118,14 @@ class ChildMixin(auto_prefetch.Model):
 # Abract models
 
 
-class SimpleChild(auto_prefetch.Model):
+class ProfileOneChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
 
 
-class MultipleItemChild(auto_prefetch.Model):
+class ProfileManyChildren(auto_prefetch.Model):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE)
 
     class Meta(auto_prefetch.Model.Meta):
@@ -149,18 +149,18 @@ class ProfileSettings(auto_prefetch.Model):
 
 
 class ActivationSettings(ProfileSettings):
-    skill_set = models.BooleanField(default=False)
+    skill = models.BooleanField(default=True)
     description = models.BooleanField(default=True)
     website = models.BooleanField(default=True)
 
 
 class LabelSettings(ProfileSettings):
-    skill_set = models.CharField(max_length=32, default=_("Skills"))
+    skill = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("About me"))
     website = models.CharField(max_length=32, default=_("Website"))
 
 
-class Photo(SimpleChild):
+class Photo(ProfileOneChild):
     full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
@@ -208,66 +208,60 @@ class Photo(SimpleChild):
                 pass
 
 
-class Description(SimpleChild, ChildMixin):
+class Description(ProfileOneChild, ProfileChildMixin):
     text = models.TextField()
 
 
-class Fullname(SimpleChild, ChildMixin):
+class Fullname(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Full name"), **null_blank_32)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Full name")
 
 
-class Jobtitle(SimpleChild, ChildMixin):
+class Jobtitle(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Job title"), **null_blank_16)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Job title")
 
 
-class Location(SimpleChild, ChildMixin):
+class Location(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Location"), **null_blank_16)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Location")
 
 
-class Birth(SimpleChild, ChildMixin):
+class Birth(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Date of birth")
 
 
-class Phone(SimpleChild, ChildMixin):
+class Phone(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Phone number")
 
 
-class Email(SimpleChild, ChildMixin):
+class Email(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Email"), **null_blank_32)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Email")
 
 
-class Website(SimpleChild, ChildMixin):
+class Website(ProfileOneChild, ProfileChildMixin):
     text = models.CharField(verbose_name=_("Website"), **null_blank_32)
 
-    class Meta(SimpleChild.Meta):
+    class Meta(ProfileOneChild.Meta):
         verbose_name = _("Website")
 
 
-class Skill(MultipleItemChild, ChildMixin):
-    """
-    An object representing the skills that the member holds.
-    See Skill Fields for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/skill
-    """
-
+class Skill(ProfileManyChildren, ProfileChildMixin):
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50)
 
@@ -284,7 +278,7 @@ class Skill(MultipleItemChild, ChildMixin):
 
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("-level",)
-        default_related_name = "skill_set"
+        verbose_name = _("Skills")
 
 
 # class Language(auto_prefetch.Model):

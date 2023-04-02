@@ -9,20 +9,15 @@ django-rosetta
 django-allauth
 django-htmx
 django-crispy-forms
-crispy-bootstrap5
 django-tex
 django-celery-results
 django-analytical
 python-dotenv
 psycopg2-binary
-pytest-cov
-pytest-xdist
-pytest-django
-pytest-reverse
 django-coverage-plugin
 pdf2image
 flake8
-coverage
+coverage[toml]
 gunicorn
 redis
 hiredis
@@ -35,6 +30,8 @@ django-cleanup
 crispy-tailwind
 
 ipython
+unittest-parametrize
+django-browser-reload
 django-debug-toolbar
 pyclean
 pylint

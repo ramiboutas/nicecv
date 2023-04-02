@@ -3,6 +3,16 @@ from __future__ import annotations
 from django.test.runner import DiscoverRunner
 from django.test.utils import override_settings
 
+from django import test
+from unittest_parametrize import ParametrizedTestCase
+
+
+TEST_SETTINGS = {
+    "PAGE_SIZE": 10,  # Remove if not necessary
+    "DEBUG": False,
+    "USE_POSTGRES": True,
+}
+
 
 class TestRunner(DiscoverRunner):
     def run_tests(self, *args, **kwargs):
@@ -22,8 +32,17 @@ class TestRunner(DiscoverRunner):
         parallel_action.default = parallel_action.const
 
 
-TEST_SETTINGS = {
-    "PAGE_SIZE": 10,  # Remove if not necessary
-    "DEBUG": False,
-    "USE_POSTGRES": True,
-}
+class SimpleTestCase(ParametrizedTestCase, test.SimpleTestCase):
+    pass
+
+
+class TestCase(SimpleTestCase, test.TestCase):
+    pass
+
+
+class TransactionTestCase(SimpleTestCase, test.TransactionTestCase):
+    pass
+
+
+class LiveServerTestCase(SimpleTestCase, test.LiveServerTestCase):
+    pass

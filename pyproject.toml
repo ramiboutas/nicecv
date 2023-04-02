@@ -10,28 +10,20 @@ profile = "black"
 add_imports = "from __future__ import annotations"
 
 
-
 [tool.coverage.run]
 branch = true
+parallel = true
 omit = [
-    "manage.py",
-    "celery_progress_htmx/*",
-    "config/wsgi.py",
-    "config/asgi.py",
-    "config/celery.py",
-    "config/conftest.py",
-    "config/settings.py",
-    "config/storage_backends.py",
-    "config/test.py",
-    "config/urls.py",
-    "config/jinja2.py",
-    "venv/*",
-    "_ideas/*",
-    "geoip2dbs/*",
-    "*/migrations/*",
-    "media/*",
-    "static/*",
-    "apps/celery_progress_htmx/*",
+  "manage.py",
+  "*/node_modules/*",
+  "celery_progress_htmx/*",
+  "venv/*",
+  "_ideas/*",
+  "geoip2dbs/*",
+  "*/migrations/*",
+  "media/*",
+  "static/*",
+  "apps/celery_progress_htmx/*",
 ]
 [tool.coverage.report]
 skip_covered = true

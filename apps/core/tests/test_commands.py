@@ -1,11 +1,9 @@
 from io import StringIO
 
-import pytest
 from django.core.management import call_command
-from django.test import TestCase
+from config.test import TestCase
 
 
-@pytest.mark.django_db
 class LoadInitDataTests(TestCase):
     def call_command(self, *args, **kwargs):
         out = StringIO()
@@ -20,4 +18,4 @@ class LoadInitDataTests(TestCase):
 
     def test_objs_created(self):
         out = self.call_command()
-        assert out == "Objects created.\n"
+        self.assertEqual(out, "Objects created.\n")

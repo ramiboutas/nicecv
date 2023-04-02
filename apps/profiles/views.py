@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-from django.utils.safestring import mark_safe
+
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.translation import gettext as _
@@ -11,17 +11,13 @@ from django.contrib import messages
 
 from django_htmx.http import trigger_client_event
 
-
-from .forms import get_modelform
-from .forms import ActivationSettingsForm
-from .forms import LabelSettingsForm
 from .models import Profile
-from apps.core.http import HTTPResponseHXRedirect
-
+from .utils import get_modelform
 from .utils import create_initial_profile
 from .utils import collect_profile_context
 from .utils import get_profile_instance
 from .utils import get_profile_list
+from apps.core.http import HTTPResponseHXRedirect
 
 
 def profile_list(request):

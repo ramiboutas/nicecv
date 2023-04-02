@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_tailwind",
     "debug_toolbar",
+    "django_browser_reload",
 ]
 
 # Authentication
@@ -167,6 +168,7 @@ MIDDLEWARE = [
     # third-party middlewares
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 
@@ -377,6 +379,10 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get(
     "GOOGLE_ANALYTICS_GTAG_PROPERTY_ID", "G-XXXXXXXX"
 )
+
+# rosseta
+
+DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 
 
 # Https for production environment

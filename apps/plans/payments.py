@@ -2,35 +2,10 @@ import stripe
 from django.db.models import Model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
+
 from djstripe import models as djstripe_models
 from djstripe import settings as djstripe_settings
-
-from .models import PremiumPlan
-from apps.accounts.models import CustomUser
-from apps.accounts.models import UserPremiumPlan
-
-
-def fulfill_order(user_id: int = None, plan_id: int = None):
-    # fulfills the order and assigns premium to user.
-    # returns False if the order was not fulfilled.
-    # returns True if the order was fulfilled.
-    proceed = user_id is not None and plan_id is not None
-
-    if not proceed:
-        return False
-
-    try:
-        plan = PremiumPlan.objects.get(id=plan_id)
-    except PremiumPlan.DoesNotExist:
-        return False
-
-    try:
-        user = CustomUser.objects.get(id=user_id)
-    except CustomUser.DoesNotExist:
-        return False
-
-    UserPremiumPlan.objects.create(plan=plan, user=user)
-    return True
 
 
 def create_stripe_session(request, plan: Model):
@@ -39,11 +14,13 @@ def create_stripe_session(request, plan: Model):
     """
 
     success_url = (
-        request.build_absolute_uri(reverse("plans:success"))
+        request.build_absolute_uri(reverse("plans:payment-successed"))
         + "?session_id={CHECKOUT_SESSION_ID}"
     )
 
-    cancel_url = request.build_absolute_uri(reverse("core:home"))
+    cancel_url = request.build_absolute_uri(
+        reverse("plans:payment-failed") + "?session_id={CHECKOUT_SESSION_ID}"
+    )
 
     # get the id of the Model instance of djstripe_settings.djstripe_settings.get_subscriber_model()
     # here we have assumed it is the Django User model. It could be a Team, Company model too.

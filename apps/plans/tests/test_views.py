@@ -1,29 +1,23 @@
 from http import HTTPStatus
 
-import pytest
-from pytest_django.asserts import assertTemplateUsed
-
 from django.urls import reverse
-from django.test import TestCase
+from config.test import TestCase
+from django.test import RequestFactory
 
-from apps.plans import views
+
+from apps.accounts.factories import UserFactory
 from apps.plans.factories import PremiumPlanFactory
+from apps.plans import views
 
 
-@pytest.mark.django_db
-def test_plan_list_view(rf):
-    request = rf.get(reverse("plans:list"))
-    response = views.plan_list_view(request)
-    assert response.status_code == HTTPStatus.OK
+class PlanViewTest(TestCase):
+    def test_plan_list_view(self):
+        response = self.client.get(reverse("plans:list"))
+        assert response.status_code == HTTPStatus.OK
 
-
-@pytest.mark.django_db
-def test_plan_detail_view(rf, django_user_model):
-    user = django_user_model.objects.create_user(
-        username="username", password="password"
-    )
-    plan = PremiumPlanFactory()
-    request = rf.get(plan.detail_url)
-    request.user = user
-    response = views.plan_detail_view(request, plan.id)
-    assert response.status_code == HTTPStatus.OK
+    def test_plan_detail_view(self):
+        plan = PremiumPlanFactory()
+        request = RequestFactory().get(plan.checkout_url)
+        request.user = UserFactory()
+        response = views.plan_detail_view(request, plan.id)
+        self.assertEqual(response.status_code, HTTPStatus.OK)

@@ -4,7 +4,6 @@ import logging
 import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -12,19 +11,20 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from djstripe import settings as djstripe_settings
+from django.contrib.auth import get_user_model
 
-logger = logging.getLogger(__name__)
+from djstripe import settings as djstripe_settings
 
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 stripe.api_key = djstripe_settings.djstripe_settings.STRIPE_SECRET_KEY
 
 
+from apps.accounts.models import UserPremiumPlan
 from .models import PremiumPlan
 from .models import PlanFAQ
 from .payments import create_stripe_session
-from .payments import fulfill_order
 
 
 def plan_list_view(request):
@@ -86,7 +86,13 @@ def stripe_webhook_view(request):  # pragma: no cover
         data = json.loads(payload)
         plan_id = data["data"]["object"]["metadata"]["plan_id"]
         user_id = data["data"]["object"]["metadata"]["user_id"]
-        fulfill_order(user_id=user_id, plan_id=plan_id)
+        try:
+            user = User.objects.get(id=user_id)
+            plan = PremiumPlan.objects.get(id=plan_id)
+        except (User.DoesNotExist, PremiumPlan.DoesNotExist):
+            return payment_fail_view(request)
+
+        UserPremiumPlan.objects.create(plan=plan, user=user)
 
     # Passed signature verification
     return HttpResponse(status=200)
