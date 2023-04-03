@@ -1,10 +1,8 @@
-import warnings
-
 from django.forms import ModelForm
 from django.forms import formset_factory
 from django.forms import BaseFormSet
-from django.forms.widgets import Input
-
+from django.forms import CheckboxInput
+from django.forms import HiddenInput
 from django.utils.safestring import mark_safe
 
 from .models import Profile
@@ -58,11 +56,6 @@ def set_widget_attrs(form, attrs: dict, fields: list = None):
             form.fields[field_name].widget.attrs.update(attrs)
         except KeyError:
             pass
-
-
-class RangeInput(Input):
-    input_type = "range"
-    template_name = "django/forms/widgets/number.html"
 
 
 class ProfileForm(ModelForm):
@@ -159,9 +152,17 @@ class LabelSettingsForm(ProfileSettingsForm):
 class SkillForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
+        obj = kwargs.get("instance", None)
+        hx_post = "new/formset/ModelKlass/" if obj is None else obj.update_form_url()
+        attrs = build_widget_attrs(
+            html_class=INPUT_CLASS,
+            x_class=INPUT_XBIND_CLASS,
+            hx_post=hx_post,
+            hx_trigger=INPUT_HX_TRIGGER,
+        )
+        # attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
         set_widget_attrs(self, attrs, fields=["name"])
-        self.fields["level"].widget = RangeInput()
+        self.fields["level"].widget.input_type = "range"
 
     class Meta(ModelForm):
         fields = "__all__"
@@ -174,7 +175,13 @@ class BaseChildItemFormSet(BaseFormSet):
         self.profile = profile
         super().__init__(*args, **kwargs)
 
+    def get_ordering_widget(self):
+        return HiddenInput(attrs={"class": "ordering"})
+
+    def get_deletion_widget(self):
+        return CheckboxInput(attrs={"class": "deletion"})
+
 
 SkillFormSet = formset_factory(
-    SkillForm, formset=BaseChildItemFormSet, can_order=False, can_delete=False
+    SkillForm, formset=BaseChildItemFormSet, can_order=True, can_delete=True, extra=1
 )

@@ -141,14 +141,11 @@
   {% include "profiles/partials/child_form.html" with form=description %}
 
 
-  {% include "profiles/partials/child_form.html" with form=skill %}
-
-
-
-
-
+  <!-- formset skills -->
+{% if profile.activationsettings.skill %}
+  {{ profile.labelsettings.skill }}
   {% include "profiles/partials/child_formset.html" with formset=skills %}
-
+{% endif %}
 
 
 {% endblock %}
