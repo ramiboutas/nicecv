@@ -54,14 +54,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "django.forms",
     # My own apps
-    "apps.accounts.AccountsConfig",
-    "apps.forms.FormsConfig",
-    "apps.resumes.ResumesConfig",
-    "apps.core.CoreConfig",
-    "apps.plans.PlansConfig",
-    "apps.profiles.ProfilesConfig",
-    "apps.tex.TexConfig",
+    # "apps.forms.apps.FormsConfig",
+    "apps.accounts.apps.AccountsConfig",
+    "apps.resumes.apps.ResumesConfig",
+    "apps.core.apps.CoreConfig",
+    "apps.plans.apps.PlansConfig",
+    "apps.profiles.apps.ProfilesConfig",
+    "apps.tex.apps.TexConfig",
     "apps.celery_progress_htmx",  # Actually a thid party but adapted
     # Wagtail apps
     "wagtail.contrib.forms",
@@ -78,6 +79,7 @@ INSTALLED_APPS = [
     "taggit",
     "modelcluster",
     # Third-party apps
+    "django_extensions",
     "rosetta",
     "modeltranslation",
     "djmoney",

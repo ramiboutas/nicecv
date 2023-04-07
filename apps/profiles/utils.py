@@ -9,11 +9,12 @@ from django.http import Http404
 
 
 from .models import Profile
-from .models import ProfileOneChild
+from .models import ProfileChild
 from .models import ProfileSettings
 
-from .forms import SingleItemChildForm
-from .forms import ProfileSettingsForm
+from .forms import ChildForm
+from .forms import BaseChildFormSet
+from .forms import SettingsForm
 
 from apps.accounts.models import CustomUser
 from apps.core.sessions import get_or_create_session
@@ -26,7 +27,7 @@ def create_initial_profile(request) -> Profile:
     profile = Profile.objects.create()
 
     # Add single item children objects
-    for Klass in get_child_models("profiles", ProfileOneChild):
+    for Klass in get_child_models("profiles", ProfileChild):
         Klass.objects.create(profile=profile)
 
     # Add setting objects
@@ -84,45 +85,80 @@ def collect_profile_context(profile) -> dict:
     We use dict comprehension to collect all the childs
 
     """
-    childforms = get_profile_modelforms(settings=True)
     context = {}
-    for Model, Form in childforms.items():
-        field_name = Model._meta.model_name
-        context[field_name] = Form(
-            instance=getattr(profile, field_name), auto_id="id_%s_" + field_name
+
+    # Adding the profile instance itself
+    context["profile"] = profile
+
+    # gather child forms (one to one relationship to profile)
+    setting_and_child_forms = get_childforms() | get_settingforms()
+    for Model, Form in setting_and_child_forms.items():
+        name = Model._meta.model_name
+        context[name] = Form(instance=getattr(profile, name), auto_id="id_%s_" + name)
+
+    # gather child formsets (many to one relationship to profile)
+    for Model, FormSet in get_childformsets().items():
+        name = Model._meta.model_name
+        context[name] = FormSet(
+            profile=profile,
+            update_url=profile.update_formset_url(Model.__name__),
+            auto_id="id_%s_" + name,
         )
 
-    context["profile"] = profile
-    from .forms import SkillFormSet
-    from .forms import SkillForm
-
-    context["skills"] = SkillFormSet(profile=profile)
-    context["skill"] = SkillForm()
     return context
 
 
 @cache
-def get_profile_modelforms(settings=False, singles=True, many=True) -> dict:
-    """Returns a dict with model classes and form classes asociated with Profile model"""
+def get_classes_from_forms() -> list:
     from . import forms
 
-    KlassDict = {}
-    Forms = [k for _, k in inspect.getmembers(forms, inspect.isclass)]
-
-    for Form in Forms:
-        if singles and (SingleItemChildForm in Form.__bases__):
-            KlassDict[Form.Meta.model] = Form
-        if settings and (ProfileSettingsForm in Form.__bases__):
-            KlassDict[Form.Meta.model] = Form
-
-    return KlassDict
+    return [k for _, k in inspect.getmembers(forms, inspect.isclass)]
 
 
 @cache
-def get_modelform(Klass):
-    """Returns the ModelForm associated with a Profile Model"""
+def get_model(Klass):
     from . import models
 
-    Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
-    modelforms = get_profile_modelforms(settings=True)
+    return getattr(models, Klass) if isinstance(Klass, str) else Klass
+
+
+@cache
+def get_childforms() -> dict:
+    Forms = get_classes_from_forms()
+    return {Form.Meta.model: Form for Form in Forms if ChildForm in Form.__bases__}
+
+
+@cache
+def get_settingforms() -> dict:
+    Forms = get_classes_from_forms()
+    return {Form.Meta.model: Form for Form in Forms if SettingsForm in Form.__bases__}
+
+
+@cache
+def get_childformsets() -> dict:
+    Forms = get_classes_from_forms()
+    return {Form.model: Form for Form in Forms if BaseChildFormSet in Form.__bases__}
+
+
+@cache
+def get_child_model_and_form(Klass):
+    """Returns a tuple: ChildModel, ChildModelForm"""
+    Model = get_model(Klass)
+    modelforms = get_childforms()
+    return Model, modelforms[Model]
+
+
+@cache
+def get_setting_model_and_form(Klass):
+    """Returns a tuple: SettingModel, SettingModelForm"""
+    Model = get_model(Klass)
+    modelforms = get_settingforms()
+    return Model, modelforms[Model]
+
+
+@cache
+def get_child_model_and_formset(Klass):
+    """Returns a tuple: ChildSetModel, ChildSetModelForm"""
+    Model = get_model(Klass)
+    modelforms = get_childformsets()
     return Model, modelforms[Model]

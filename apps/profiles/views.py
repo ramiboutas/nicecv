@@ -12,7 +12,9 @@ from django.contrib import messages
 from django_htmx.http import trigger_client_event
 
 from .models import Profile
-from .utils import get_modelform
+from .utils import get_child_model_and_form
+from .utils import get_child_model_and_formset
+from .utils import get_setting_model_and_form
 from .utils import create_initial_profile
 from .utils import collect_profile_context
 from .utils import get_profile_instance
@@ -39,27 +41,26 @@ def profile_update(request, id):
 
 @require_POST
 def update_settings(request, klass, id):
-    ChildModel, ChildForm = get_modelform(klass)
-    obj = get_object_or_404(ChildModel, id=id)
-    form = ChildForm(request.POST, instance=obj)
+    Model, Form = get_setting_model_and_form(klass)
+    obj = get_object_or_404(Model, id=id)
+    form = Form(request.POST, instance=obj)
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(
             obj.profile.update_url(params={"settingsopen": "true"})
         )
-
     messages.warning(request, _("Error with profile settings"))
     context = collect_profile_context(obj.profile)
-    context[ChildModel._meta.model_name] = form
+    context[Model._meta.model_name] = form
     context["settingsopen"] = True
     return render(request, "profiles/profile_update.html", context)
 
 
 @require_POST
-def update_child(request, klass, id):
-    ChildModel, ChildForm = get_modelform(klass)
-    obj = get_object_or_404(ChildModel, id=id)
-    form = ChildForm(request.POST, instance=obj)
+def update_child_form(request, klass, id):
+    Model, Form = get_child_model_and_form(klass)
+    obj = get_object_or_404(Model, id=id)
+    form = Form(request.POST, instance=obj)
     if form.is_valid():
         form.save()
         context = {"message": _("Saved"), "icon": "✅"}
@@ -70,6 +71,27 @@ def update_child(request, klass, id):
             "description": mark_safe(form.errors.as_ul()),
             "disappearing_time": 5000,
         }
+    return render(request, "components/hx_notification.html", context)
+
+
+def update_child_formset(request, klass, id):
+    print(request.POST)
+    Model, ChildFormSet = get_child_model_and_formset(klass)
+
+    profile = get_object_or_404(Profile, id=id)
+    # formset = ChildFormSet(request.POST)
+    # if formset.is_valid():
+    #     formset.profile = profile
+    #     formset.save()
+    #     context = {"message": _("Saved"), "icon": "✅"}
+    # else:
+    #     context = {
+    #         "message": _("Error during save process"),
+    #         "icon": "⚠️",
+    #         "description": mark_safe(formset.errors.as_ul()),
+    #         "disappearing_time": 5000,
+    #     }
+    context = {"message": _("Testing..."), "icon": "✅"}
     return render(request, "components/hx_notification.html", context)
 
 

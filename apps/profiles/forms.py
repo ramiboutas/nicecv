@@ -1,7 +1,6 @@
 from django.forms import ModelForm
-from django.forms import formset_factory
-from django.forms import BaseFormSet
-from django.forms import CheckboxInput
+from django.forms import modelformset_factory
+from django.forms import BaseModelFormSet
 from django.forms import HiddenInput
 from django.utils.safestring import mark_safe
 
@@ -18,11 +17,10 @@ from .models import LabelSettings
 from .models import ActivationSettings
 from .models import Skill
 
-
 # text input html attributes
 INPUT_CLASS = "border-1 rounded-md hover:bg-indigo-100 border-indigo-100"
 INPUT_XBIND_CLASS = "active ? 'border-indigo-400' : 'border-indigo-100'"
-INPUT_HX_TRIGGER = "keyup changed delay:2s"
+INPUT_HX_TRIGGER = "keyup changed delay:2s, change"
 # checkbox html attributes
 CHECKBOX_CLASS = "h-4 w-4 rounded border-indigo-400 focus:ring-indigo-400"
 
@@ -50,10 +48,21 @@ def build_widget_attrs(html_class=None, x_class=None, hx_post=None, hx_trigger=N
 
 
 def set_widget_attrs(form, attrs: dict, fields: list = None):
+    """Sets widget attributes to a list of fields of a form .
+    If 'fields' is not provided: tries with all form fields"""
     field_list = form.fields if fields is None else fields
     for field_name in field_list:
         try:
             form.fields[field_name].widget.attrs.update(attrs)
+        except KeyError:
+            pass
+
+
+def set_widget_types(form, widget_types={}):
+    """Sets the widget types of a form mapping the field name and its type"""
+    for field_name, input_type in widget_types.items():
+        try:
+            form.fields[field_name].widget.input_type = input_type
         except KeyError:
             pass
 
@@ -64,7 +73,10 @@ class ProfileForm(ModelForm):
         fields = ["public"]
 
 
-class SingleItemChildForm(ModelForm):
+# profile child forms
+
+
+class ChildForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         obj = kwargs.get("instance", None)
@@ -81,107 +93,112 @@ class SingleItemChildForm(ModelForm):
         fields = ["text"]
 
 
-class FullnameForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class FullnameForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Fullname
 
 
-class JobtitleForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class JobtitleForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Jobtitle
 
 
-class LocationForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class LocationForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Location
 
 
-class BirthForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class BirthForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Birth
 
 
-class PhoneForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class PhoneForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Phone
 
 
-class EmailForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class EmailForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Email
 
 
-class WebsiteForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class WebsiteForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Website
 
 
-class DescriptionForm(SingleItemChildForm):
-    class Meta(SingleItemChildForm.Meta):
+class DescriptionForm(ChildForm):
+    class Meta(ChildForm.Meta):
         model = Description
 
 
-class ProfileSettingsForm(ModelForm):
-    pass
+# profile settings
 
 
-class ActivationSettingsForm(ProfileSettingsForm):
+class SettingsForm(ModelForm):
+    class Meta(ModelForm):
+        fields = "__all__"
+        exclude = ["profile"]
+
+
+class ActivationSettingsForm(SettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         attrs = build_widget_attrs(html_class=CHECKBOX_CLASS)
         set_widget_attrs(self, attrs)
 
-    class Meta(ModelForm):
-        fields = "__all__"
-        exclude = ["profile"]
+    class Meta(SettingsForm.Meta):
         model = ActivationSettings
 
 
-class LabelSettingsForm(ProfileSettingsForm):
+class LabelSettingsForm(SettingsForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
         set_widget_attrs(self, attrs)
 
-    class Meta(ModelForm):
-        fields = "__all__"
-        exclude = ["profile"]
+    class Meta(SettingsForm.Meta):
         model = LabelSettings
 
 
-class SkillForm(ModelForm):
+# profile child formsets
+
+
+class ChildFormSet(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        obj = kwargs.get("instance", None)
-        hx_post = "new/formset/ModelKlass/" if obj is None else obj.update_form_url()
-        attrs = build_widget_attrs(
-            html_class=INPUT_CLASS,
-            x_class=INPUT_XBIND_CLASS,
-            hx_post=hx_post,
-            hx_trigger=INPUT_HX_TRIGGER,
-        )
-        # attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
-        set_widget_attrs(self, attrs, fields=["name"])
-        self.fields["level"].widget.input_type = "range"
+        attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
+        set_widget_attrs(self, attrs)
+        set_widget_types(self, widget_types={"level": "range"})
 
-    class Meta(ModelForm):
-        fields = "__all__"
-        exclude = ["profile"]
+    class Meta:
+        pass
+        # exclude = ["profile"]
+
+
+class BaseChildFormSet(BaseModelFormSet):
+    def __init__(self, profile, update_url=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.profile = profile
+        self.update_url = update_url
+        self.queryset = self.model.objects.filter(profile=profile)
+
+    def get_ordering_widget(self):
+        return HiddenInput(attrs={"class": "sortable"})
+
+
+class SkillForm(ChildFormSet):
+    class Meta(ChildFormSet.Meta):
+        fields = ["name", "level", "profile"]
         model = Skill
 
 
-class BaseChildItemFormSet(BaseFormSet):
-    def __init__(self, profile, *args, **kwargs):
-        self.profile = profile
-        super().__init__(*args, **kwargs)
-
-    def get_ordering_widget(self):
-        return HiddenInput(attrs={"class": "ordering"})
-
-    def get_deletion_widget(self):
-        return CheckboxInput(attrs={"class": "deletion"})
-
-
-SkillFormSet = formset_factory(
-    SkillForm, formset=BaseChildItemFormSet, can_order=True, can_delete=True, extra=1
+SkillFormSet = modelformset_factory(
+    Skill,
+    form=SkillForm,
+    formset=BaseChildFormSet,
+    can_order=True,
+    can_delete=False,
+    extra=1,
 )

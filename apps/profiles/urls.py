@@ -5,7 +5,8 @@ from .views import profile_list
 from .views import profile_create
 from .views import profile_update
 from .views import delete_object
-from .views import update_child
+from .views import update_child_form
+from .views import update_child_formset
 from .views import update_settings
 
 
@@ -24,7 +25,9 @@ urlpatterns = [
     # delete profile
     path("delete/profile/<uuid:id>/", delete_object, name="delete"),
     # update child form
-    path("child/<str:klass>/<int:id>/", update_child, name="update-child"),
+    path("form/<str:klass>/<int:id>/", update_child_form, name="update-form"),
+    # update child formset
+    path("formset/<str:klass>/<uuid:id>/", update_child_formset, name="update-formset"),
     # update settings form
     path("settings/<str:klass>/<int:id>/", update_settings, name="update-settings"),
 ]

@@ -38,3 +38,4 @@ pylint
 autopep8
 black
 pylint-django
+django-extensions
