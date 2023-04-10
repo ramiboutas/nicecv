@@ -165,7 +165,7 @@ class LabelSettingsForm(SettingsForm):
 # profile child formsets
 
 
-class ChildFormSet(ModelForm):
+class ChildSetForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
@@ -178,18 +178,21 @@ class ChildFormSet(ModelForm):
 
 
 class BaseChildFormSet(BaseModelFormSet):
-    def __init__(self, profile, update_url=None, *args, **kwargs):
+    def __init__(self, profile=None, update_url=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.profile = profile
         self.update_url = update_url
-        self.queryset = self.model.objects.filter(profile=profile)
+        print("BaseChildFormSet")
+        print(profile)
+        if profile:
+            self.profile = profile
+            self.queryset = self.model.objects.filter(profile=profile)
 
     def get_ordering_widget(self):
         return HiddenInput(attrs={"class": "sortable"})
 
 
-class SkillForm(ChildFormSet):
-    class Meta(ChildFormSet.Meta):
+class SkillForm(ChildSetForm):
+    class Meta(ChildSetForm.Meta):
         fields = ["name", "level", "profile"]
         model = Skill
 

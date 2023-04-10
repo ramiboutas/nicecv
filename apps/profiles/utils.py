@@ -102,7 +102,7 @@ def collect_profile_context(profile) -> dict:
         context[name] = FormSet(
             profile=profile,
             update_url=profile.update_formset_url(Model.__name__),
-            auto_id="id_%s_" + name,
+            # initial=[{"profile": profile}], # this is actually for extras in formset, but not used now
         )
 
     return context

@@ -75,13 +75,13 @@ def update_child_form(request, klass, id):
 
 
 def update_child_formset(request, klass, id):
-    print(request.POST)
     Model, ChildFormSet = get_child_model_and_formset(klass)
-
     profile = get_object_or_404(Profile, id=id)
-    # formset = ChildFormSet(request.POST)
+    print(request.POST)
+    print(ChildFormSet)
+    print(Model)
+    formset = ChildFormSet(request.POST)
     # if formset.is_valid():
-    #     formset.profile = profile
     #     formset.save()
     #     context = {"message": _("Saved"), "icon": "✅"}
     # else:

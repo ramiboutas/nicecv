@@ -129,7 +129,8 @@ class ProfileChild(auto_prefetch.Model):
 
 
 class ProfileChildSet(auto_prefetch.Model):
-    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    order = models.PositiveSmallIntegerField(default=0)
 
     def update_formset_url(self):
         cls = self.__class__.__name__
