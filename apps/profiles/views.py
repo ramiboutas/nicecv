@@ -77,21 +77,24 @@ def update_child_form(request, klass, id):
 def update_child_formset(request, klass, id):
     Model, ChildFormSet = get_child_model_and_formset(klass)
     profile = get_object_or_404(Profile, id=id)
-    print(request.POST)
-    print(ChildFormSet)
-    print(Model)
-    formset = ChildFormSet(request.POST)
-    # if formset.is_valid():
-    #     formset.save()
-    #     context = {"message": _("Saved"), "icon": "✅"}
-    # else:
-    #     context = {
-    #         "message": _("Error during save process"),
-    #         "icon": "⚠️",
-    #         "description": mark_safe(formset.errors.as_ul()),
-    #         "disappearing_time": 5000,
-    #     }
-    context = {"message": _("Testing..."), "icon": "✅"}
+    formset = ChildFormSet(
+        profile,
+        update_url=profile.update_formset_url(Model.__name__),
+        data=request.POST,
+    )
+    print(formset)
+
+    if formset.is_valid():
+        print("formset is valid!!")
+        formset.save()
+        context = {"message": _("Saved"), "icon": "✅"}
+    else:
+        context = {
+            "message": _("Error during save process"),
+            "icon": "⚠️",
+            "description": mark_safe(formset.errors),
+            "disappearing_time": 5000,
+        }
     return render(request, "components/hx_notification.html", context)
 
 

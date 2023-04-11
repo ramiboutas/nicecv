@@ -181,8 +181,6 @@ class BaseChildFormSet(BaseModelFormSet):
     def __init__(self, profile=None, update_url=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.update_url = update_url
-        print("BaseChildFormSet")
-        print(profile)
         if profile:
             self.profile = profile
             self.queryset = self.model.objects.filter(profile=profile)
@@ -193,7 +191,7 @@ class BaseChildFormSet(BaseModelFormSet):
 
 class SkillForm(ChildSetForm):
     class Meta(ChildSetForm.Meta):
-        fields = ["name", "level", "profile"]
+        fields = ["name", "level"]
         model = Skill
 
 
@@ -201,7 +199,7 @@ SkillFormSet = modelformset_factory(
     Skill,
     form=SkillForm,
     formset=BaseChildFormSet,
-    can_order=True,
+    can_order=False,
     can_delete=False,
-    extra=1,
+    extra=0,
 )
