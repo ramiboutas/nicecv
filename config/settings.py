@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [
     "www.nicecv.online",
     "127.0.0.1",
     "testserver",
+    "nicecv.local",
 ]
 
 
@@ -57,12 +58,12 @@ INSTALLED_APPS = [
     "django.forms",
     # My own apps
     # "apps.forms.apps.FormsConfig",
-    "apps.accounts.apps.AccountsConfig",
-    "apps.resumes.apps.ResumesConfig",
-    "apps.core.apps.CoreConfig",
-    "apps.plans.apps.PlansConfig",
-    "apps.profiles.apps.ProfilesConfig",
-    "apps.tex.apps.TexConfig",
+    "apps.accounts",
+    "apps.resumes",
+    "apps.core",
+    "apps.plans",
+    "apps.profiles",
+    "apps.tex",
     "apps.celery_progress_htmx",  # Actually a thid party but adapted
     # Wagtail apps
     "wagtail.contrib.forms",
@@ -317,8 +318,8 @@ if USE_SPACES:  # pragma: no cover
     AWS_DEFAULT_ACL = "public-read"
     AWS_S3_SIGNATURE_VERSION = "s3v4"
 
-    DEFAULT_FILE_STORAGE = "config.storage_backends.MediaRootStorage"
-    STATICFILES_STORAGE = "config.storage_backends.StaticRootStorage"
+    DEFAULT_FILE_STORAGE = "config.storage.MediaRootStorage"
+    STATICFILES_STORAGE = "config.storage.StaticRootStorage"
 
     AWS_STATIC_LOCATION = "nicecv-static"
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"

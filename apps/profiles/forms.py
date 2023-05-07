@@ -1,6 +1,8 @@
 from django.forms import ModelForm
 from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
 from django.forms import BaseModelFormSet
+from django.forms import BaseInlineFormSet
 from django.forms import HiddenInput
 from django.utils.safestring import mark_safe
 
@@ -76,7 +78,7 @@ class ProfileForm(ModelForm):
 # profile child forms
 
 
-class ChildForm(ModelForm):
+class BaseChildForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         obj = kwargs.get("instance", None)
@@ -93,79 +95,79 @@ class ChildForm(ModelForm):
         fields = ["text"]
 
 
-class FullnameForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class FullnameForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Fullname
 
 
-class JobtitleForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class JobtitleForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Jobtitle
 
 
-class LocationForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class LocationForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Location
 
 
-class BirthForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class BirthForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Birth
 
 
-class PhoneForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class PhoneForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Phone
 
 
-class EmailForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class EmailForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Email
 
 
-class WebsiteForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class WebsiteForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Website
 
 
-class DescriptionForm(ChildForm):
-    class Meta(ChildForm.Meta):
+class DescriptionForm(BaseChildForm):
+    class Meta(BaseChildForm.Meta):
         model = Description
 
 
 # profile settings
 
 
-class SettingsForm(ModelForm):
+class BaseSettingForm(ModelForm):
     class Meta(ModelForm):
         fields = "__all__"
         exclude = ["profile"]
 
 
-class ActivationSettingsForm(SettingsForm):
+class ActivationSettingsForm(BaseSettingForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         attrs = build_widget_attrs(html_class=CHECKBOX_CLASS)
         set_widget_attrs(self, attrs)
 
-    class Meta(SettingsForm.Meta):
+    class Meta(BaseSettingForm.Meta):
         model = ActivationSettings
 
 
-class LabelSettingsForm(SettingsForm):
+class LabelSettingsForm(BaseSettingForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
         set_widget_attrs(self, attrs)
 
-    class Meta(SettingsForm.Meta):
+    class Meta(BaseSettingForm.Meta):
         model = LabelSettings
 
 
 # profile child formsets
 
 
-class ChildSetForm(ModelForm):
+class BaseChildFormSet(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
@@ -177,29 +179,27 @@ class ChildSetForm(ModelForm):
         # exclude = ["profile"]
 
 
-class BaseChildFormSet(BaseModelFormSet):
-    def __init__(self, profile=None, update_url=None, *args, **kwargs):
+class BaseChildInlineFormSet(BaseInlineFormSet):  # BaseInlineFormSet
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.update_url = update_url
-        if profile:
-            self.profile = profile
-            self.queryset = self.model.objects.filter(profile=profile)
 
     def get_ordering_widget(self):
         return HiddenInput(attrs={"class": "sortable"})
 
 
-class SkillForm(ChildSetForm):
-    class Meta(ChildSetForm.Meta):
+class SkillForm(BaseChildFormSet):
+    class Meta(BaseChildFormSet.Meta):
         fields = ["name", "level"]
         model = Skill
 
 
-SkillFormSet = modelformset_factory(
-    Skill,
-    form=SkillForm,
-    formset=BaseChildFormSet,
-    can_order=False,
-    can_delete=False,
-    extra=0,
-)
+def get_inlineformset(ModelKlass, FormKlass):
+    return inlineformset_factory(
+        Profile,
+        ModelKlass,
+        form=FormKlass,
+        formset=BaseChildInlineFormSet,
+        can_order=True,
+        can_delete=True,
+        extra=1,
+    )

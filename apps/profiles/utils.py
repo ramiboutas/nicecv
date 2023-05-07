@@ -5,20 +5,47 @@ from django.db import transaction
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from django.http import Http404
+from django.forms import inlineformset_factory
 
-
+from apps import profiles
 from .models import Profile
 from .models import ProfileChild
-from .models import ProfileSettings
+from .models import ProfileSetting
 
-from .forms import ChildForm
+from .forms import BaseChildForm
 from .forms import BaseChildFormSet
-from .forms import SettingsForm
+from .forms import BaseSettingForm
+
+from .forms import get_inlineformset
 
 from apps.accounts.models import CustomUser
 from apps.core.sessions import get_or_create_session
 from apps.core.classes import get_child_models
+
+
+@cache
+def get_forms(singles=False, inlines=False, settings=False, get_all=False) -> dict:
+    out = {}
+    Forms = [k for _, k in inspect.getmembers(profiles.forms, inspect.isclass)]
+
+    if singles or get_all:
+        out = out | {F.Meta.model: F for F in Forms if BaseChildForm in F.__bases__}
+
+    if settings or get_all:
+        out = out | {F.Meta.model: F for F in Forms if BaseSettingForm in F.__bases__}
+
+    if inlines or get_all:
+        out = out | {F.Meta.model: F for F in Forms if BaseChildFormSet in F.__bases__}
+
+    return out
+
+
+@cache
+def get_model_and_form(Klass):
+    """Returns a tuple: ChildModel, ChildModelForm"""
+    Model = getattr(profiles.models, Klass) if isinstance(Klass, str) else Klass
+    modelforms = get_forms(get_all=True)
+    return Model, modelforms[Model]
 
 
 @transaction.atomic
@@ -31,7 +58,7 @@ def create_initial_profile(request) -> Profile:
         Klass.objects.create(profile=profile)
 
     # Add setting objects
-    for Klass in get_child_models("profiles", ProfileSettings):
+    for Klass in get_child_models("profiles", ProfileSetting):
         Klass.objects.create(profile=profile)
 
     user = getattr(request, "user", AnonymousUser())
@@ -51,24 +78,6 @@ def create_initial_profile(request) -> Profile:
         profile.session = session
         profile.save()
     return profile, request
-
-
-def get_profile_instance(request, id):
-    try:
-        if request.user.is_authenticated:
-            return Profile.objects.get(id=id, user=request.user), request
-
-        session, request = get_or_create_session(request)
-        return Profile.objects.get(id=id, session=session), request
-    except Profile.DoesNotExist:
-        raise Http404
-
-
-def get_profile_list(request):
-    if request.user.is_authenticated:
-        return Profile.objects.filter(user=request.user), request
-    session, request = get_or_create_session(request)
-    return Profile.objects.filter(session=session), request
 
 
 def collect_profile_context(profile) -> dict:
@@ -91,74 +100,17 @@ def collect_profile_context(profile) -> dict:
     context["profile"] = profile
 
     # gather child forms (one to one relationship to profile)
-    setting_and_child_forms = get_childforms() | get_settingforms()
-    for Model, Form in setting_and_child_forms.items():
-        name = Model._meta.model_name
-        context[name] = Form(instance=getattr(profile, name), auto_id="id_%s_" + name)
+    for Model, Form in get_forms(singles=True, settings=True).items():
+        model_name = Model._meta.model_name
+        context[model_name] = Form(
+            instance=getattr(profile, model_name), auto_id="id_%s_" + model_name
+        )
 
     # gather child formsets (many to one relationship to profile)
-    for Model, FormSet in get_childformsets().items():
-        name = Model._meta.model_name
-        context[name] = FormSet(
-            profile=profile,
-            update_url=profile.update_formset_url(Model.__name__),
-            # initial=[{"profile": profile}], # this is actually for extras in formset, but not used now
+    for Model, FormSet in get_forms(inlines=True).items():
+        InlineFormSet = get_inlineformset(Model, FormSet)
+        context[Model._meta.model_name] = InlineFormSet(
+            instance=profile, queryset=Model.objects.filter(profile=profile)
         )
 
     return context
-
-
-@cache
-def get_classes_from_forms() -> list:
-    from . import forms
-
-    return [k for _, k in inspect.getmembers(forms, inspect.isclass)]
-
-
-@cache
-def get_model(Klass):
-    from . import models
-
-    return getattr(models, Klass) if isinstance(Klass, str) else Klass
-
-
-@cache
-def get_childforms() -> dict:
-    Forms = get_classes_from_forms()
-    return {Form.Meta.model: Form for Form in Forms if ChildForm in Form.__bases__}
-
-
-@cache
-def get_settingforms() -> dict:
-    Forms = get_classes_from_forms()
-    return {Form.Meta.model: Form for Form in Forms if SettingsForm in Form.__bases__}
-
-
-@cache
-def get_childformsets() -> dict:
-    Forms = get_classes_from_forms()
-    return {Form.model: Form for Form in Forms if BaseChildFormSet in Form.__bases__}
-
-
-@cache
-def get_child_model_and_form(Klass):
-    """Returns a tuple: ChildModel, ChildModelForm"""
-    Model = get_model(Klass)
-    modelforms = get_childforms()
-    return Model, modelforms[Model]
-
-
-@cache
-def get_setting_model_and_form(Klass):
-    """Returns a tuple: SettingModel, SettingModelForm"""
-    Model = get_model(Klass)
-    modelforms = get_settingforms()
-    return Model, modelforms[Model]
-
-
-@cache
-def get_child_model_and_formset(Klass):
-    """Returns a tuple: ChildSetModel, ChildSetModelForm"""
-    Model = get_model(Klass)
-    modelforms = get_childformsets()
-    return Model, modelforms[Model]

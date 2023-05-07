@@ -83,10 +83,12 @@ class Profile(auto_prefetch.Model):
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
 
-    def update_formset_url(self, Klass):
+    def update_formset_url(self, KlassName):
         return reverse(
-            "profiles:update-formset", kwargs={"klass": Klass, "id": self.id}
+            "profiles:update-formset", kwargs={"klass": KlassName, "id": self.id}
         )
+
+    # update_formset_url
 
     def build_xml(self):
         # TODO: build xml for the deepl API
@@ -132,17 +134,18 @@ class ProfileChildSet(auto_prefetch.Model):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     order = models.PositiveSmallIntegerField(default=0)
 
-    def update_formset_url(self):
+    def update_form_url(self):
         cls = self.__class__.__name__
-        return reverse(
-            "profiles:update-formset", kwargs={"klass": cls, "id": self.profile.id}
-        )
+        if self.id:
+            return reverse("profiles:update-form", kwargs={"klass": cls, "id": self.id})
+
+        return reverse("profiles:create-child-object", kwargs={"klass": cls})
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
 
 
-class ProfileSettings(auto_prefetch.Model):
+class ProfileSetting(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(
         Profile, on_delete=models.CASCADE, related_name="%(class)s"
     )
@@ -158,13 +161,13 @@ class ProfileSettings(auto_prefetch.Model):
 # Profile settings models
 
 
-class ActivationSettings(ProfileSettings):
+class ActivationSettings(ProfileSetting):
     skill = models.BooleanField(default=True)
     description = models.BooleanField(default=True)
     website = models.BooleanField(default=True)
 
 
-class LabelSettings(ProfileSettings):
+class LabelSettings(ProfileSetting):
     skill = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("About me"))
     website = models.CharField(max_length=32, default=_("Website"))

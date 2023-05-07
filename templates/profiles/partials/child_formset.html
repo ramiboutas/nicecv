@@ -1,21 +1,24 @@
-<form method="post" hx-post="{{ formset.update_url }}" hx-trigger="change">
 
 
+<formset  >
   {{ formset.management_form }}
-
   {% for form in formset %}
-    {% for field in form.visible_fields %}
-      <div class="mt-4 relative" x-data="{ active: false }" @mouseenter="active = true" @mouseleave = "active = false">
-        {% if field.widget_type == "text" %}
-          <label for="{{ field.id_for_label }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-             {{ field.label }}
-          </label>
-        {% endif %}
+    <form hx-post="{{ form.instance.update_form_url }}" hx-trigger="change" hx-swap="innerHTML" hx-target="#notifications">
 
-        {{ field }}
-      </div>
-    {% endfor %}
-    {% if formset.can_delete %} {{ form.DELETE }} {% endif %}
-    {% if formset.can_order %} {{ form.ORDER }} {% endif %}
+      {% for field in form.visible_fields %}
+        <div class="mt-4 relative" x-data="{ active: false }" @mouseenter="active = true" @mouseleave = "active = false">
+          {% if field.widget_type == "text" %}
+            <label for="{{ field.id_for_label }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+              {{ field.label }}
+            </label>
+          {% endif %}
+
+          {{ field }}
+        </div>
+
+      {% endfor %}
+      {% if formset.can_delete %} {{ form.DELETE }} {% endif %}
+      {% if formset.can_order %} {{ form.ORDER }} {% endif %}
+    </form>
   {% endfor %}
-</form>
+</formset>

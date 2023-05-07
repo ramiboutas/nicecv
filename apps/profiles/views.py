@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http import Http404
 
 from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
@@ -12,18 +13,22 @@ from django.contrib import messages
 from django_htmx.http import trigger_client_event
 
 from .models import Profile
-from .utils import get_child_model_and_form
-from .utils import get_child_model_and_formset
-from .utils import get_setting_model_and_form
+from .utils import get_model_and_form
 from .utils import create_initial_profile
 from .utils import collect_profile_context
-from .utils import get_profile_instance
-from .utils import get_profile_list
+from .forms import get_inlineformset
+
 from apps.core.http import HTTPResponseHXRedirect
+from apps.core.sessions import get_or_create_session
 
 
 def profile_list(request):
-    profiles, request = get_profile_list(request)
+    if request.user.is_authenticated:
+        profiles = Profile.objects.filter(user=request.user)
+    else:
+        session, request = get_or_create_session(request)
+        profiles = Profile.objects.filter(session=session)
+
     context = {"object_list": profiles}
     return render(request, "profiles/profile_list.html", context)
 
@@ -34,14 +39,22 @@ def profile_create(request):
 
 
 def profile_update(request, id):
-    profile, request = get_profile_instance(request, id)
+    try:
+        if request.user.is_authenticated:
+            profile = Profile.objects.get(id=id, user=request.user), request
+        else:
+            session, request = get_or_create_session(request)
+            profile = Profile.objects.get(id=id, session=session)
+    except Profile.DoesNotExist:
+        raise Http404
+
     context = collect_profile_context(profile)
     return render(request, "profiles/profile_update.html", context)
 
 
 @require_POST
 def update_settings(request, klass, id):
-    Model, Form = get_setting_model_and_form(klass)
+    Model, Form = get_model_and_form(klass)
     obj = get_object_or_404(Model, id=id)
     form = Form(request.POST, instance=obj)
     if form.is_valid():
@@ -58,7 +71,7 @@ def update_settings(request, klass, id):
 
 @require_POST
 def update_child_form(request, klass, id):
-    Model, Form = get_child_model_and_form(klass)
+    Model, Form = get_model_and_form(klass)
     obj = get_object_or_404(Model, id=id)
     form = Form(request.POST, instance=obj)
     if form.is_valid():
@@ -74,15 +87,36 @@ def update_child_form(request, klass, id):
     return render(request, "components/hx_notification.html", context)
 
 
+def create_child_object(request, klass):
+    Model, Form = get_model_and_form(klass)
+    print(Model)
+    print(Form)
+    form = Form(request.POST)
+    form.is_valid()
+    form.save()
+    print(request.POST)
+    print(form.errors)
+
+    context = {"message": _("Saved"), "icon": "✅"}
+
+    return render(request, "components/hx_notification.html", context)
+
+
 def update_child_formset(request, klass, id):
-    Model, ChildFormSet = get_child_model_and_formset(klass)
+    Model, ChildFormSet = get_model_and_form(klass)
+
+    InlineFormSet = get_inlineformset(Model, ChildFormSet)
+    print(InlineFormSet)
+
     profile = get_object_or_404(Profile, id=id)
     formset = ChildFormSet(
         profile,
         update_url=profile.update_formset_url(Model.__name__),
         data=request.POST,
     )
-    print(formset)
+    for form in formset:
+        form.profile = profile
+        form.save()
 
     if formset.is_valid():
         print("formset is valid!!")
