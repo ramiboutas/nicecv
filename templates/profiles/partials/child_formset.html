@@ -1,11 +1,11 @@
+<form hx-post="{{ update_url }}" hx-swap="outerHTML" hx-target="this" hx-trigger="change" >
 
-
-<formset  >
   {{ formset.management_form }}
-  {% for form in formset %}
-    <form hx-post="{{ form.instance.update_form_url }}" hx-trigger="change" hx-swap="innerHTML" hx-target="#notifications">
 
-      {% for field in form.visible_fields %}
+  {% for form in formset %}
+
+  {% if form.instance.id %}
+      {% for field in form %}
         <div class="mt-4 relative" x-data="{ active: false }" @mouseenter="active = true" @mouseleave = "active = false">
           {% if field.widget_type == "text" %}
             <label for="{{ field.id_for_label }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
@@ -15,10 +15,32 @@
 
           {{ field }}
         </div>
-
       {% endfor %}
-      {% if formset.can_delete %} {{ form.DELETE }} {% endif %}
-      {% if formset.can_order %} {{ form.ORDER }} {% endif %}
-    </form>
+
+  {% else %}
+
+    <div  x-data="{ open: false }" >
+      <button x-on:mouseenter="open = true" x-transition > Add </button>
+      <div x-show="open" x-on:mouseenter="open = true" x-on:mouseleave="open = false" x-transition>
+
+      {% for field in form %}
+        <div class="mt-4 relative" x-data="{ active: false }" @mouseenter="active = true" @mouseleave = "active = false">
+          {% if field.widget_type == "text" %}
+            <label for="{{ field.id_for_label }}" class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+              {{ field.label }}
+            </label>
+          {% endif %}
+
+          {{ field }}
+        </div>
+      {% endfor %}
+
+      <button >Add</button>
+
+      </div>
+    </div>
+
+
+    {% endif %}
   {% endfor %}
-</formset>
+</form>

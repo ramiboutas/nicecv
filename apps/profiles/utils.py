@@ -102,15 +102,18 @@ def collect_profile_context(profile) -> dict:
     # gather child forms (one to one relationship to profile)
     for Model, Form in get_forms(singles=True, settings=True).items():
         model_name = Model._meta.model_name
+
         context[model_name] = Form(
             instance=getattr(profile, model_name), auto_id="id_%s_" + model_name
         )
 
     # gather child formsets (many to one relationship to profile)
-    for Model, FormSet in get_forms(inlines=True).items():
-        InlineFormSet = get_inlineformset(Model, FormSet)
-        context[Model._meta.model_name] = InlineFormSet(
-            instance=profile, queryset=Model.objects.filter(profile=profile)
-        )
+    # for Model, FormSet in get_forms(inlines=True).items():
+    #     InlineFormSet = get_inlineformset(Model, FormSet)
+    #     context[Model._meta.model_name] = InlineFormSet(
+    #         instance=profile, queryset=Model.objects.filter(profile=profile)
+    #     )
+    for Model, Form in get_forms(inlines=True).items():
+        context[Model._meta.model_name] = get_inlineformset(Form)(instance=profile)
 
     return context

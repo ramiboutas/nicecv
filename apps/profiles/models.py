@@ -33,7 +33,7 @@ def manage_instance_order_field(self):
         try:
             current_maximum_order = self.__class__.objects.latest("order").order
             self.order = current_maximum_order + 1
-        except:
+        except Exception:
             pass  # exception if objects do not exist
 
 
@@ -79,16 +79,20 @@ class Profile(auto_prefetch.Model):
         )
         return url + extra
 
+    def update_formset_url(self, Klass):
+        return reverse(
+            "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
+        )
+
+    def update_skill_url(self):
+        """This method is made for being called from Templates"""
+        return reverse(
+            "profiles:update-formset", kwargs={"klass": Skill.__name__, "id": self.id}
+        )
+
     @property
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
-
-    def update_formset_url(self, KlassName):
-        return reverse(
-            "profiles:update-formset", kwargs={"klass": KlassName, "id": self.id}
-        )
-
-    # update_formset_url
 
     def build_xml(self):
         # TODO: build xml for the deepl API
@@ -133,13 +137,6 @@ class ProfileChild(auto_prefetch.Model):
 class ProfileChildSet(auto_prefetch.Model):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     order = models.PositiveSmallIntegerField(default=0)
-
-    def update_form_url(self):
-        cls = self.__class__.__name__
-        if self.id:
-            return reverse("profiles:update-form", kwargs={"klass": cls, "id": self.id})
-
-        return reverse("profiles:create-child-object", kwargs={"klass": cls})
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
@@ -290,7 +287,6 @@ class Skill(ProfileChildSet):
         return self.level * 6 / 100
 
     class Meta(ProfileChildSet.Meta):
-        ordering = ("-level",)
         verbose_name = _("Skills")
 
 

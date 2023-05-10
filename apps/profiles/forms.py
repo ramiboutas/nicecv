@@ -170,36 +170,32 @@ class LabelSettingsForm(BaseSettingForm):
 class BaseChildFormSet(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
+        attrs = build_widget_attrs(
+            html_class=INPUT_CLASS,
+            x_class=INPUT_XBIND_CLASS,
+        )
         set_widget_attrs(self, attrs)
         set_widget_types(self, widget_types={"level": "range"})
 
-    class Meta:
-        pass
-        # exclude = ["profile"]
 
-
-class BaseChildInlineFormSet(BaseInlineFormSet):  # BaseInlineFormSet
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
+class BaseChildInlineFormSet(BaseInlineFormSet):
     def get_ordering_widget(self):
         return HiddenInput(attrs={"class": "sortable"})
 
 
 class SkillForm(BaseChildFormSet):
-    class Meta(BaseChildFormSet.Meta):
+    class Meta:
         fields = ["name", "level"]
         model = Skill
 
 
-def get_inlineformset(ModelKlass, FormKlass):
+def get_inlineformset(FormKlass):
     return inlineformset_factory(
         Profile,
-        ModelKlass,
+        FormKlass.Meta.model,
         form=FormKlass,
-        formset=BaseChildInlineFormSet,
-        can_order=True,
-        can_delete=True,
+        formset=BaseInlineFormSet,
+        can_order=False,
+        can_delete=False,
         extra=1,
     )

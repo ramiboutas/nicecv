@@ -87,41 +87,21 @@ def update_child_form(request, klass, id):
     return render(request, "components/hx_notification.html", context)
 
 
-def create_child_object(request, klass):
-    Model, Form = get_model_and_form(klass)
-    print(Model)
-    print(Form)
-    form = Form(request.POST)
-    form.is_valid()
-    form.save()
-    print(request.POST)
-    print(form.errors)
-
-    context = {"message": _("Saved"), "icon": "✅"}
-
-    return render(request, "components/hx_notification.html", context)
-
-
 def update_child_formset(request, klass, id):
-    Model, ChildFormSet = get_model_and_form(klass)
+    Model, Form = get_model_and_form(klass)
+    FormSet = get_inlineformset(Form)
 
-    InlineFormSet = get_inlineformset(Model, ChildFormSet)
-    print(InlineFormSet)
-
-    profile = get_object_or_404(Profile, id=id)
-    formset = ChildFormSet(
-        profile,
-        update_url=profile.update_formset_url(Model.__name__),
-        data=request.POST,
-    )
-    for form in formset:
-        form.profile = profile
-        form.save()
-
+    profile = Profile.objects.get(id=id)
+    formset = FormSet(request.POST, instance=profile)
     if formset.is_valid():
-        print("formset is valid!!")
         formset.save()
-        context = {"message": _("Saved"), "icon": "✅"}
+        new_formset = get_inlineformset(Form)(instance=profile)
+        context = {
+            "update_url": profile.update_formset_url(Model),
+            "formset": new_formset,
+        }
+
+        return render(request, "profiles/partials/child_formset.html", context)
     else:
         context = {
             "message": _("Error during save process"),

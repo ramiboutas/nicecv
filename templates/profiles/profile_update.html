@@ -44,8 +44,10 @@
 
       <!-- formset skills -->
     {% if profile.activationsettings.skill %}
-      {{ profile.labelsettings.skill }}
-      {% include "profiles/partials/child_formset.html" with formset=skill %}
+      <h2>{{ profile.labelsettings.skill }}</h2>
+
+      {% include "profiles/partials/child_formset.html" with formset=skill update_url=profile.update_skill_url  %}
+
     {% endif %}
 
 
