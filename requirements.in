@@ -29,6 +29,7 @@ django-modeltranslation
 django-cleanup
 crispy-tailwind
 
+djlint
 ipython
 unittest-parametrize
 django-browser-reload

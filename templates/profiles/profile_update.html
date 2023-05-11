@@ -1,60 +1,39 @@
 {% extends "base.html" %}
-{% load static i18n  %}
-
-{% block title %} | {% translate "My profile" %}
+{% load static i18n %}
+{% block title %}
+  | {% translate "My profile" %}
 {% endblock %}
-
 {% block css %}
   <!-- cropper  -->
   <link rel="stylesheet" href="{% static 'css/cropper.css' %}" />
 {% endblock %}
-
 {% block content %}
-
-
-<div class="md:container md:mx-auto">
-
-  <!-- notifications -->
-  <div id="notifications"></div>
-
+  <div class="md:container md:mx-auto">
+    <!-- notifications -->
+    <div id="notifications"></div>
     <!-- Settings -->
     {% include "profiles/partials/setting_forms.html" %}
-
     <!-- fullname -->
     {% include "profiles/partials/child_form.html" with form=fullname %}
-
     <!-- jobtitle -->
     {% include "profiles/partials/child_form.html" with form=jobtitle %}
-
     <!-- location -->
     {% include "profiles/partials/child_form.html" with form=location %}
-
     <!-- phone -->
     {% include "profiles/partials/child_form.html" with form=phone %}
-
     <!-- email -->
     {% include "profiles/partials/child_form.html" with form=email %}
-
     <!-- website -->
     {% include "profiles/partials/child_form.html" with form=website %}
-
     <!-- description -->
     {% include "profiles/partials/child_form.html" with form=description %}
-
-
-      <!-- formset skills -->
+    <!-- formset skills -->
     {% if profile.activationsettings.skill %}
       <h2>{{ profile.labelsettings.skill }}</h2>
-
-      {% include "profiles/partials/child_formset.html" with formset=skill update_url=profile.update_skill_url  %}
-
+      {% include "profiles/partials/child_formset.html" with formset=skill update_url=profile.update_skill_url %}
     {% endif %}
-
-
-</div>
-
+  </div>
 {% endblock %}
-
 {% block extra_body %}
   <!-- cropper js -->
   <script src="{% static 'js/cropper.js' %}"></script>
