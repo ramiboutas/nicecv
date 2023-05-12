@@ -1,33 +1,52 @@
 {% load i18n %}
-<form hx-post="{{ update_url }}" hx-swap="outerHTML" hx-target="this">
+<form hx-post="{{ update_url }}"
+      hx-swap="outerHTML settle:1s"
+      hx-target="this">
   {{ formset.management_form }}
   {% for form in formset %}
     {% if form.instance.id %}
-      <div hx-post="{{ update_url }}"
-           hx-swap="outerHTML"
-           hx-target="closest form"
-           hx-trigger="change">
-        {% for field in form %}
-          <div class="mt-4 relative"
-               x-data="{ active: false }"
-               @mouseenter="active = true"
-               @mouseleave="active = false">
-            {% if field.widget_type == "text" %}
-              <label for="{{ field.id_for_label }}"
-                     class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-                {{ field.label }}
-              </label>
-            {% endif %}
-            {{ field }}
-          </div>
-        {% endfor %}
+      <div id="{{ form.instance.generate_html_id }}"
+           x-data="{ open: false }"
+           x-on:mouseenter="open = true"
+           x-on:mouseleave="open = false"
+           :class="open ? 'border-dashed border-2 border-indigo-200 bg-indigo-50 rounded-lg ' : ''">
+        <div hx-post="{{ update_url }}"
+             hx-swap="outerHTML"
+             hx-target="closest form"
+             hx-trigger="change">
+          {% for field in form %}
+            <div class="mt-4 relative"
+                 x-data="{ active: false }"
+                 @mouseenter="active = true"
+                 @mouseleave="active = false">
+              {% if field.widget_type == "text" %}
+                <label for="{{ field.id_for_label }}"
+                       :class="open ? ' bg-indigo-50' : ''"
+                       class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+                  {{ field.label }}
+                </label>
+              {% endif %}
+              {{ field }}
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" x-show="open" hx-delete={{ form.instance.get_delete_url }} hx-target="closest form" hx-swap="outerHTML swap:0.5s">
+          🗑️
+        </button>
       </div>
     {% else %}
       <div x-data="{ open: false }"
            x-on:mouseenter="open = true"
-           x-on:mouseleave="open = false">
+           x-on:mouseleave="open = false"
+           x-transition:enter="transition ease-out duration-300"
+           x-transition:enter-start="opacity-0 scale-90"
+           x-transition:enter-end="opacity-100 scale-100"
+           x-transition:leave="transition ease-in duration-300"
+           x-transition:leave-start="opacity-100 scale-100"
+           x-transition:leave-end="opacity-0 scale-90"
+           :class="open ? 'border-dashed border-2 border-indigo-600' : ''">
         <button x-show="!open" type="button" x-on:click="open = true">{% trans "New" %}</button>
-        <div x-show="open"  x-transition>
+        <div x-show="open">
           {% for field in form %}
             <div class="mt-4 relative"
                  x-data="{ active: false }"

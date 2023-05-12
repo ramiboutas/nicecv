@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
 from django_htmx.http import trigger_client_event
@@ -112,9 +113,23 @@ def update_child_formset(request, klass, id):
     return render(request, "components/hx_notification.html", context)
 
 
+@require_http_methods(["DELETE"])
+def delete_child(request, klass, id):
+    Model, Form = get_model_and_form(klass)
+    object = get_object_or_404(Model, id=id)
+    object.delete()
+    new_formset = get_inlineformset(Form)(instance=object.profile)
+    context = {
+        "update_url": object.profile.update_formset_url(Model),
+        "formset": new_formset,
+    }
+
+    return render(request, "profiles/partials/child_formset.html", context)
+
+
 # htmx - profile - delete object
 @require_POST
-def delete_object(request, id):
+def delete_profile(request, id):
     object = get_object_or_404(Profile, id=id)
     object.delete()
     return HttpResponse(status=200)

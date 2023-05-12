@@ -104,7 +104,12 @@ class Profile(auto_prefetch.Model):
 # Abract models
 
 
-class ProfileChild(auto_prefetch.Model):
+class ProfileChildMixin:
+    def generate_html_id(self):
+        return f"{self.__class__.__name__}-{self.id}"
+
+
+class ProfileChild(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     @property
@@ -130,13 +135,14 @@ class ProfileChild(auto_prefetch.Model):
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
 
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
 
-
-class ProfileChildSet(auto_prefetch.Model):
+class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     order = models.PositiveSmallIntegerField(default=0)
+
+    def get_delete_url(self):
+        cls = self.__class__.__name__
+        return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
