@@ -84,10 +84,21 @@ class Profile(auto_prefetch.Model):
             "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
 
+    def order_formset_url(self, Klass):
+        return reverse(
+            "profiles:order-formset", kwargs={"klass": Klass.__name__, "id": self.id}
+        )
+
     def update_skill_url(self):
         """This method is made for being called from Templates"""
         return reverse(
             "profiles:update-formset", kwargs={"klass": Skill.__name__, "id": self.id}
+        )
+
+    def order_skill_url(self):
+        """This method is made for being called from Templates"""
+        return reverse(
+            "profiles:order-formset", kwargs={"klass": Skill.__name__, "id": self.id}
         )
 
     @property
@@ -138,7 +149,7 @@ class ProfileChild(auto_prefetch.Model, ProfileChildMixin):
 
 class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    order = models.PositiveSmallIntegerField(default=0)
+    order = models.PositiveSmallIntegerField(**null_blank)
 
     def get_delete_url(self):
         cls = self.__class__.__name__
@@ -146,6 +157,12 @@ class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
+        ordering = ("order", "id")
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.order = self.__class__.objects.latest("order").order + 1
+        super().save(*args, **kwargs)
 
 
 class ProfileSetting(auto_prefetch.Model):

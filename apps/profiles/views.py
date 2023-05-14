@@ -101,7 +101,6 @@ def update_child_formset(request, klass, id):
             "update_url": profile.update_formset_url(Model),
             "formset": new_formset,
         }
-
         return render(request, "profiles/partials/child_formset.html", context)
     else:
         context = {
@@ -111,6 +110,20 @@ def update_child_formset(request, klass, id):
             "disappearing_time": 5000,
         }
     return render(request, "components/hx_notification.html", context)
+
+
+def order_child_formset(request, klass, id):
+    Model, Form = get_model_and_form(klass)
+    ids = request.POST.getlist("order")
+    print(ids)
+
+    profile = Profile.objects.get(id=id)
+    new_formset = get_inlineformset(Form)(instance=profile)
+    context = {
+        "update_url": profile.update_formset_url(Model),
+        "formset": new_formset,
+    }
+    return render(request, "profiles/partials/child_formset.html", context)
 
 
 @require_http_methods(["DELETE"])

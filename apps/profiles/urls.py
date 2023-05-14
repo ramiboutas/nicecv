@@ -9,6 +9,7 @@ from .views import delete_child
 from .views import update_child_form
 from .views import update_settings
 from .views import update_child_formset
+from .views import order_child_formset
 
 
 # from .views import save_personal_information_view, update_description_view
@@ -33,6 +34,8 @@ urlpatterns = [
     path("delete-object/<str:klass>/<int:id>/", delete_child, name="delete-child"),
     # update child formset
     path("formset/<str:klass>/<uuid:id>/", update_child_formset, name="update-formset"),
+    # order child formset
+    path("order/<str:klass>/<uuid:id>/", order_child_formset, name="order-formset"),
 ]
 
 

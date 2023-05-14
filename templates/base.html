@@ -10,19 +10,23 @@
     <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" />
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <!-- for more css in a specific page -->
-    {% block css %}{% endblock %}
+    {% block css %}
+    {% endblock css %}
     <title>Nice CV
-      {% block title %}{% endblock %}
+      {% block title %}
+      {% endblock title %}
     </title>
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include "_messages.html" %}
-    {% block content %}{% endblock %}
-    {% block extra_body %}{% endblock %}
+    {% block content %}
+    {% endblock content %}
+    {% block extra_body %}
+    {% endblock extra_body %}
     <!-- js files -->
-    <script src="{% static 'js/base.js' %}"></script>
+    <script defer src="https://unpkg.com/htmx.org@1.8.6/dist/htmx.min.js"></script>
     <script defer src="{% static 'js/alpine.js' %}"></script>
-    <script src="https://unpkg.com/htmx.org@1.8.6/dist/htmx.min.js"></script>
+    <script defer src="{% static 'js/base.js' %}"></script>
     {% django_htmx_script %}
   </body>
 </html>

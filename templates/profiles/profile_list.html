@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block head_title %} {% translate "My profiles" %} {% endblock %}
+{% block head_title %}
+  {% translate "My profiles" %}
+{% endblock head_title %}
 {% block content %}
   <div class="container">
     <h1 class="display-4 text-center my-5">{% translate "My profiles" %}</h1>
@@ -17,32 +19,24 @@
             <small>{{ object.pk }}</small>
           </div>
           <div class="col-lg-4 offset-lg-1 p-0">
-
             <a type="button"
                href="{{ object.update_url }}"
-               class="btn btn-outline-success btn-lg px-4 me-md-2 fw-bold">{% translate "Edit" %}
-            </a>
-
+               class="btn btn-outline-success btn-lg px-4 me-md-2 fw-bold">{% translate "Edit" %}</a>
             <a type="button"
                href="{{ object.get_resume_file_list_url }}"
-               class="btn btn-outline-primary btn-lg px-4 me-md-2 fw-bold">{% translate "View resumes" %}
-            </a>
-
+               class="btn btn-outline-primary btn-lg px-4 me-md-2 fw-bold">{% translate "View resumes" %}</a>
             <a type="button"
                class="btn btn-outline-danger btn-lg px-4"
                hx-post="{{ object.delete_object_url }}"
                hx-target="#object_{{ object.pk }}"
                hx-confirm="{% translate 'Are you sure to delete this profile?' %}"
-               hx-swap="outerHTML"> {% translate "Delete" %}
-            </a>
-
+               hx-swap="outerHTML">{% translate "Delete" %}</a>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
-
-  <a hx-boost="true" href="{% url 'profiles:create' %}" hx-push-url="{% url 'profiles:list' %}">
-    {% translate "Create profile" %}
-  </a>
-{% endblock %}
+  <a hx-boost="true"
+     href="{% url 'profiles:create' %}"
+     hx-push-url="{% url 'profiles:list' %}">{% translate "Create profile" %}</a>
+{% endblock content %}

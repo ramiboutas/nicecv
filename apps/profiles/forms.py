@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 from django.forms import modelformset_factory
 from django.forms import inlineformset_factory
@@ -20,11 +21,13 @@ from .models import ActivationSettings
 from .models import Skill
 
 # text input html attributes
-INPUT_CLASS = "border-1 rounded-md hover:bg-indigo-100 border-indigo-100"
-INPUT_XBIND_CLASS = "active ? 'border-indigo-400' : 'border-indigo-100'"
+INPUT_CLASS = "border-1 w-full rounded-md hover:bg-indigo-200 border-indigo-50"
+INPUT_XBIND_CLASS = "active ? 'border-indigo-200' : 'border-indigo-50'"
 INPUT_HX_TRIGGER = "keyup changed delay:2s, change"
 # checkbox html attributes
 CHECKBOX_CLASS = "h-4 w-4 rounded border-indigo-400 focus:ring-indigo-400"
+
+from config import html
 
 
 def build_widget_attrs(html_class=None, x_class=None, hx_post=None, hx_trigger=None):
@@ -168,23 +171,30 @@ class LabelSettingsForm(BaseSettingForm):
 
 
 class BaseChildFormSet(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(
-            html_class=INPUT_CLASS,
-            x_class=INPUT_XBIND_CLASS,
-        )
-        set_widget_attrs(self, attrs)
-        set_widget_types(self, widget_types={"level": "range"})
+    class Meta:
+        pass
+        # widgets = {"order": forms.HiddenInput()}
 
 
 class BaseChildInlineFormSet(BaseInlineFormSet):
     def get_ordering_widget(self):
-        return HiddenInput(attrs={"class": "sortable"})
+        return HiddenInput(attrs={"class": "hidden"})
 
 
 class SkillForm(BaseChildFormSet):
-    class Meta:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        text_input_attrs = build_widget_attrs(
+            html_class=html.Form.TextInput.html_class,
+            x_class=html.Form.TextInput.x_bind_class,
+        )
+        slider_attrs = build_widget_attrs(html_class="range pr-6 accent-red-500")
+
+        set_widget_attrs(self, text_input_attrs, fields=["name"])
+        set_widget_attrs(self, slider_attrs, fields=["level"])
+        set_widget_types(self, widget_types={"level": "range"})
+
+    class Meta(BaseChildFormSet.Meta):
         fields = ["name", "level"]
         model = Skill
 
