@@ -4,78 +4,82 @@
       hx-swap="outerHTML settle:1s"
       hx-target="this">
   {{ formset.management_form }}
-  {% for form in formset %}
-    {% if form.instance.id %}
-      <div id="{{ form.instance.generate_html_id }}"
-           x-data="{ open: false }"
-           x-on:mouseenter="open = true"
-           x-on:mouseleave="open = false"
-           hx-post="{{ order_url }}"
-           class="my-2"
-           hx-target="closest form"
-           hx-trigger="end"
-           :class="open ? 'border-dashed border-2 border-indigo-50 bg-indigo-50 rounded' : ''">
-        <div class="draggable container m-auto grid md:grid-cols-12 gap-4"
+  <div class="draggable-container"
+       hx-post="{{ order_url }}"
+       hx-target="closest form"
+       hx-swap="outerHTML"
+       hx-trigger="orderChanged">
+    {% for form in formset %}
+      {% if form.instance.id %}
+        <div id="{{ form.instance.generate_html_id }}"
+             x-data="{ open: false }"
+             x-on:mouseenter="open = true"
+             x-on:mouseleave="open = false"
+             class="draggable my-2"
              draggable="true"
-             hx-post="{{ update_url }}"
-             hx-swap="outerHTML"
-             hx-target="closest form"
-             hx-trigger="change, orderChanged">
-          <div class="md:col-span-1">
-            <button type="button"
-                    hx-delete="{{ form.instance.get_delete_url }}"
-                    hx-target="closest form"
-                    hx-swap="outerHTML swap:200ms">🗑️</button>
-            <!-- ordering -->
-            <input type="hidden" name="order" value="{{ form.instance.id }}" />
+             :class="open ? 'border-dashed border-2 border-indigo-50 bg-indigo-50 rounded' : ''">
+          <div class="m-auto grid md:grid-cols-12 gap-4"
+               hx-post="{{ update_url }}"
+               hx-swap="outerHTML"
+               hx-target="closest form"
+               hx-trigger="change">
+            <div class="md:col-span-1">
+              <button type="button"
+                      hx-delete="{{ form.instance.get_delete_url }}"
+                      hx-target="closest form"
+                      hx-swap="outerHTML swap:200ms">🗑️</button>
+              <!-- ordering -->
+              <input type="hidden" name="order" value="{{ form.instance.id }}" />
+            </div>
+            {% for field in form %}
+              <div class="mt-4 relative md:col-span-4"
+                   x-data="{ active: false }"
+                   @mouseenter="active = true"
+                   @mouseleave="active = false">
+                {% if field.widget_type == "text" %}
+                  <label for="{{ field.id_for_label }}"
+                         :class="open ? ' bg-indigo-50' : ''"
+                         class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+                    {{ field.label }}
+                  </label>
+                {% endif %}
+                {{ field }}
+              </div>
+            {% endfor %}
           </div>
-          {% for field in form %}
-            <div class="mt-4 relative md:col-span-4"
-                 x-data="{ active: false }"
-                 @mouseenter="active = true"
-                 @mouseleave="active = false">
-              {% if field.widget_type == "text" %}
-                <label for="{{ field.id_for_label }}"
-                       :class="open ? ' bg-indigo-50' : ''"
-                       class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-                  {{ field.label }}
-                </label>
-              {% endif %}
-              {{ field }}
-            </div>
-          {% endfor %}
         </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% for form in formset.extra_forms %}
+    <div x-data="{ open: false }"
+         x-on:mouseenter="open = true"
+         x-on:mouseleave="open = false"
+         :class="open ? 'transition delay-200 border-dashed border-2 border-indigo-100' : ''">
+      <button type="button"
+              class="rounded-md w-full px-3 py-2 text-sm text-indigo-600  "
+              :class="open ? '' : 'border-dashed border-2 border-indigo-100'"
+              x-on:click="open = true">{% trans "New" %}</button>
+      <div x-show="open"
+           x-transition:enter.delay.200ms
+           x-transition:leave.delay.1200ms>
+        {% for field in form %}
+          <div class="mt-4 relative"
+               x-data="{ active: false }"
+               @mouseenter="active = true"
+               @mouseleave="active = false">
+            {% if field.widget_type == "text" %}
+              <label for="{{ field.id_for_label }}"
+                     class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+                {{ field.label }}
+              </label>
+            {% endif %}
+            {{ field }}
+          </div>
+        {% endfor %}
+        <button class="rounded-md w-full bg-indigo-100 px-3 py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-200"
+                type="submit">Add</button>
       </div>
-    {% else %}
-      <div x-data="{ open: false }"
-           x-on:mouseenter="open = true"
-           x-on:mouseleave="open = false"
-           :class="open ? 'transition delay-200 border-dashed border-2 border-indigo-100' : ''">
-        <button type="button"
-                class="rounded-md w-full px-3 py-2 text-sm text-indigo-600  "
-                :class="open ? '' : 'border-dashed border-2 border-indigo-100'"
-                x-on:click="open = true">{% trans "New" %}</button>
-        <div x-show="open"
-             x-transition:enter.delay.200ms
-             x-transition:leave.delay.1200ms>
-          {% for field in form %}
-            <div class="mt-4 relative"
-                 x-data="{ active: false }"
-                 @mouseenter="active = true"
-                 @mouseleave="active = false">
-              {% if field.widget_type == "text" %}
-                <label for="{{ field.id_for_label }}"
-                       class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-                  {{ field.label }}
-                </label>
-              {% endif %}
-              {{ field }}
-            </div>
-          {% endfor %}
-          <button class="rounded-md w-full bg-indigo-100 px-3 py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-200"
-                  type="submit">Add</button>
-        </div>
-      </div>
-    {% endif %}
+    </div>
   {% endfor %}
 </form>

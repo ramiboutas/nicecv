@@ -180,6 +180,9 @@ class BaseChildInlineFormSet(BaseInlineFormSet):
     def get_ordering_widget(self):
         return HiddenInput(attrs={"class": "hidden"})
 
+    def instance_forms(self):
+        return [form for form in self.forms if form.instance]
+
 
 class SkillForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
@@ -204,7 +207,7 @@ def get_inlineformset(FormKlass):
         Profile,
         FormKlass.Meta.model,
         form=FormKlass,
-        formset=BaseInlineFormSet,
+        formset=BaseChildInlineFormSet,
         can_order=False,
         can_delete=False,
         extra=1,
