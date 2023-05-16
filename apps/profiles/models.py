@@ -24,19 +24,6 @@ def get_uploading_photo_path(instance):
     return "profiles/photos/{0}".format(instance.profile.id)
 
 
-def manage_instance_order_field(self):
-    """
-    This function manages the ordering of an instance when it is created
-    new_instance.order > max_order_of_objects + 1
-    """
-    if self._state.adding:
-        try:
-            current_maximum_order = self.__class__.objects.latest("order").order
-            self.order = current_maximum_order + 1
-        except Exception:
-            pass  # exception if objects do not exist
-
-
 PROFILE_CATEGORIES = (
     ("temporal", _("Temporal")),
     ("user_profile", _("User profile")),
@@ -155,14 +142,14 @@ class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
         cls = self.__class__.__name__
         return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
 
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
-        ordering = ("order", "id")
-
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.order = self.__class__.objects.latest("order").order + 1
+            self.order = self.__class__.objects.filter(profile=self.profile).count() + 1
         super().save(*args, **kwargs)
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+        ordering = ("order",)
 
 
 class ProfileSetting(auto_prefetch.Model):

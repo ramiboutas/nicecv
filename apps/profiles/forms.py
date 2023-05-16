@@ -181,6 +181,7 @@ class BaseChildInlineFormSet(BaseInlineFormSet):
         return HiddenInput(attrs={"class": "hidden"})
 
     def instance_forms(self):
+        # not working, check another way
         return [form for form in self.forms if form.instance]
 
 
@@ -208,7 +209,7 @@ def get_inlineformset(FormKlass):
         FormKlass.Meta.model,
         form=FormKlass,
         formset=BaseChildInlineFormSet,
-        can_order=False,
+        can_order=True,
         can_delete=False,
         extra=1,
     )

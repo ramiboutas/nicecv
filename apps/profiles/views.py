@@ -1,8 +1,9 @@
+import copy
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
-
 from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -99,6 +100,7 @@ def update_child_formset(request, klass, id):
         new_formset = get_inlineformset(Form)(instance=profile)
         context = {
             "update_url": profile.update_formset_url(Model),
+            "order_url": profile.order_formset_url(Model),
             "formset": new_formset,
         }
         return render(request, "profiles/partials/child_formset.html", context)
@@ -114,13 +116,25 @@ def update_child_formset(request, klass, id):
 
 def order_child_formset(request, klass, id):
     Model, Form = get_model_and_form(klass)
-    ids = request.POST.getlist("order")
-    print(ids)
-
+    FormSet = get_inlineformset(Form)
     profile = Profile.objects.get(id=id)
+    formset = FormSet(request.POST, instance=profile)
+    if formset.is_valid():
+        old_orders = [int(i) for i in request.POST.getlist("order")]
+        print(old_orders)
+        copy_queryset = copy.deepcopy(formset.queryset)
+        # queryset = profile.get_children(Model) # fetch from database!
+        for index, old_order in enumerate(old_orders):
+            obj = copy_queryset.filter(order=old_order)[0]
+            print(old_order)
+            print(index + 1)
+            obj.order = index + 1
+            obj.save()
+
     new_formset = get_inlineformset(Form)(instance=profile)
     context = {
         "update_url": profile.update_formset_url(Model),
+        "order_url": profile.order_formset_url(Model),
         "formset": new_formset,
     }
     return render(request, "profiles/partials/child_formset.html", context)

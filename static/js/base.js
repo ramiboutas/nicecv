@@ -1,43 +1,35 @@
-const draggables = document.querySelectorAll('.draggable');
-const containers = document.querySelectorAll('.draggable-container');
 
+htmx.onLoad(function (content) {
+  var sortables = content.querySelectorAll(".sortable");
+  for (var i = 0; i < sortables.length; i++) {
+    var sortable = sortables[i];
+    new Sortable(sortable, {
+      handle: '.handle',
+      animation: 150,
+      ghostClass: 'blue-background-class',
+      // onEnd: function (evt) {
+      //   var itemEl = evt.item;  // dragged HTMLElement
+      //   evt.to;    // target list
+      //   evt.from;  // previous list
+      //   evt.oldIndex;  // element's old index within old parent
+      //   evt.newIndex;  // element's new index within new parent
+      //   evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+      //   evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+      //   evt.clone // the clone element
+      //   evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
 
-draggables.forEach(draggable => {
-  draggable.addEventListener('dragstart', () => {
-    draggable.classList.add('dragging');
-  })
+      //   let i = 0;
 
-  draggable.addEventListener('dragend', () => {
-    draggable.classList.remove('dragging');
-    htmx.trigger(draggable.parentElement, "orderChanged", {});
+      //   Array.prototype.forEach.call(evt.from.children, child => {
+      //     const indexInputElement = child.querySelector("input[name='index']");
+      //     console.log(indexInputElement);
+      //     //indexInputElement.value = i;
+      //     i = i + 1;
+      //   });
 
-  })
+      // },
+    });
+  }
 })
 
-containers.forEach(container => {
-  container.addEventListener('dragover', e => {
-    e.preventDefault();
-    const afterElement = getDragAfterElement(container, e.clientY);
-    const draggable = document.querySelector('.dragging');
-    if (afterElement == null) {
-      container.appendChild(draggable);
-    }
-    else {
-      container.insertBefore(draggable, afterElement);
-    }
 
-  })
-})
-
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect()
-    const offset = y - box.top - box.height / 2
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child }
-    } else {
-      return closest
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element
-}
