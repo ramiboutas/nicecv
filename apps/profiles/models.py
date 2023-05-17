@@ -4,6 +4,7 @@ import auto_prefetch
 from PIL import Image
 from functools import cache
 
+from django.db.models import Max
 from django.db.models import Q, UniqueConstraint
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -115,16 +116,16 @@ class ProfileChild(auto_prefetch.Model, ProfileChildMixin):
         return self.__class__._meta.model_name
 
     @property
+    def verbose_name(self):
+        return self.__class__._meta.verbose_name
+
+    @property
     def active(self):
         return getattr(self.profile.activationsettings, self.related_name, True)
 
     @property
     def label(self):
-        return getattr(
-            self.profile.labelsettings,
-            self.related_name,
-            self.__class__._meta.verbose_name,
-        )
+        return getattr(self.profile.labelsettings, self.related_name, self.verbose_name)
 
     def update_form_url(self):
         cls = self.__class__.__name__
@@ -136,7 +137,7 @@ class ProfileChild(auto_prefetch.Model, ProfileChildMixin):
 
 class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    order = models.PositiveSmallIntegerField(**null_blank)
+    order = models.PositiveSmallIntegerField(default=1)
 
     def get_delete_url(self):
         cls = self.__class__.__name__
@@ -144,7 +145,10 @@ class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.order = self.__class__.objects.filter(profile=self.profile).count() + 1
+            self.order = (
+                self.__class__.objects.filter(profile=self.profile).last().order + 1
+            )
+
         super().save(*args, **kwargs)
 
     class Meta(auto_prefetch.Model.Meta):
@@ -169,13 +173,13 @@ class ProfileSetting(auto_prefetch.Model):
 
 
 class ActivationSettings(ProfileSetting):
-    skill = models.BooleanField(default=True)
+    skill_set = models.BooleanField(default=True)
     description = models.BooleanField(default=True)
     website = models.BooleanField(default=True)
 
 
 class LabelSettings(ProfileSetting):
-    skill = models.CharField(max_length=32, default=_("Skills"))
+    skill_set = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("About me"))
     website = models.CharField(max_length=32, default=_("Website"))
 

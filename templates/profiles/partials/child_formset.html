@@ -23,13 +23,14 @@
                hx-target="closest form"
                hx-trigger="change">
             <div class="md:col-span-1">
+              <!-- order -->
+              <button class="handle">🟰</button>
+              <input type="hidden" name="child-id" value="{{ form.instance.id }}" />
+              <!-- delete -->
               <button type="button"
                       hx-delete="{{ form.instance.get_delete_url }}"
                       hx-target="closest form"
                       hx-swap="outerHTML swap:200ms">🗑️</button>
-              <!-- ordering -->
-              <button class="handle">Drag {{ form.instance.order }}</button>
-              <input type="hidden" name="child-id" value="{{ form.instance.id }}" />
             </div>
             {% for field in form %}
               <div class="mt-4 relative md:col-span-4"

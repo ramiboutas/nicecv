@@ -33,8 +33,8 @@
       </div>
       <div class="md:col-span-7">
         <!-- formset skills -->
-        {% if profile.activationsettings.skill %}
-          <h2>{{ profile.labelsettings.skill }}</h2>
+        {% if profile.activationsettings.skill_set %}
+          <h2>{{ profile.labelsettings.skill_set }}</h2>
           {% include "profiles/partials/child_formset.html" with formset=skill update_url=profile.update_skill_url order_url=profile.order_skill_url %}
         {% endif %}
       </div>
