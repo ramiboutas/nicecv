@@ -120,14 +120,9 @@ def order_child_formset(request, klass, id):
     profile = Profile.objects.get(id=id)
     formset = FormSet(request.POST, instance=profile)
     if formset.is_valid():
-        old_orders = [int(i) for i in request.POST.getlist("order")]
-        print(old_orders)
-        copy_queryset = copy.deepcopy(formset.queryset)
-        # queryset = profile.get_children(Model) # fetch from database!
-        for index, old_order in enumerate(old_orders):
-            obj = copy_queryset.filter(order=old_order)[0]
-            print(old_order)
-            print(index + 1)
+        ids = [int(i) for i in request.POST.getlist("child-id")]
+        for index, id in enumerate(ids):
+            obj = formset.queryset.get(id=id)
             obj.order = index + 1
             obj.save()
 

@@ -29,7 +29,7 @@
                       hx-swap="outerHTML swap:200ms">🗑️</button>
               <!-- ordering -->
               <button class="handle">Drag {{ form.instance.order }}</button>
-              <input type="hidden" name="order" value="{{ form.instance.order }}" />
+              <input type="hidden" name="child-id" value="{{ form.instance.id }}" />
             </div>
             {% for field in form %}
               <div class="mt-4 relative md:col-span-4"
