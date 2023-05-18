@@ -33,19 +33,7 @@
                       hx-swap="outerHTML swap:200ms">🗑️</button>
             </div>
             {% for field in form %}
-              <div class="mt-4 relative md:col-span-4"
-                   x-data="{ active: false }"
-                   @mouseenter="active = true"
-                   @mouseleave="active = false">
-                {% if field.widget_type == "text" %}
-                  <label for="{{ field.id_for_label }}"
-                         :class="open ? ' bg-indigo-50' : ''"
-                         class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-                    {{ field.label }}
-                  </label>
-                {% endif %}
-                {{ field }}
-              </div>
+              {% include "profiles/partials/formset_field.html" %}
             {% endfor %}
           </div>
         </div>
@@ -64,20 +52,12 @@
       <div x-show="open"
            x-transition:enter.delay.200ms
            x-transition:leave.delay.1200ms>
-        {% for field in form %}
-          <div class="mt-4 relative"
-               x-data="{ active: false }"
-               @mouseenter="active = true"
-               @mouseleave="active = false">
-            {% if field.widget_type == "text" %}
-              <label for="{{ field.id_for_label }}"
-                     class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
-                {{ field.label }}
-              </label>
-            {% endif %}
-            {{ field }}
-          </div>
-        {% endfor %}
+        <div class="m-auto grid md:grid-cols-12 gap-4">
+          <div class="md:col-span-1"></div>
+          {% for field in form %}
+            {% include "profiles/partials/formset_field.html" %}
+          {% endfor %}
+        </div>
         <button class="rounded-md w-full bg-indigo-100 px-3 py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-200"
                 type="submit">Add</button>
       </div>

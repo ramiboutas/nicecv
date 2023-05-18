@@ -1,0 +1,13 @@
+<div class="mt-4 relative md:col-span-4"
+     x-data="{ active: false }"
+     @mouseenter="active = true"
+     @mouseleave="active = false">
+  {% if field.widget_type == "text" %}
+    <label for="{{ field.id_for_label }}"
+           :class="open ? ' bg-indigo-50' : ''"
+           class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
+      {{ field.label }}
+    </label>
+  {% endif %}
+  {{ field }}
+</div>

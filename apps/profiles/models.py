@@ -145,9 +145,8 @@ class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.order = (
-                self.__class__.objects.filter(profile=self.profile).last().order + 1
-            )
+            last = self.__class__.objects.filter(profile=self.profile).last()
+            self.order = last.order + 1 if last else 1
 
         super().save(*args, **kwargs)
 
