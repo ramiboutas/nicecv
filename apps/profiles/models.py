@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.sessions.models import Session
 
+
 null_blank = {"null": True, "blank": True}
 null_blank_16 = {"null": True, "blank": True, "max_length": 16}
 null_blank_32 = {"null": True, "blank": True, "max_length": 32}
@@ -79,19 +80,33 @@ class Profile(auto_prefetch.Model):
 
     def update_skill_url(self):
         """This method is made for being called from Templates"""
-        return reverse(
-            "profiles:update-formset", kwargs={"klass": Skill.__name__, "id": self.id}
-        )
+        return self.update_formset_url(Skill)
 
     def order_skill_url(self):
         """This method is made for being called from Templates"""
-        return reverse(
-            "profiles:order-formset", kwargs={"klass": Skill.__name__, "id": self.id}
-        )
+        return self.order_formset_url(Skill)
 
-    @property
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
+
+    def collect_context(self) -> dict:
+        from .forms import get_forms
+        from .forms import get_inlineformset
+
+        context = {}
+        context["profile"] = self
+        # one to one children
+        for Model, Form in get_forms(singles=True, settings=True).items():
+            name = Model._meta.model_name
+            context[name + "_form"] = Form(
+                instance=getattr(self, name), auto_id="id_%s_" + name
+            )
+        # one to many children
+        for Model, Form in get_forms(inlines=True).items():
+            name = Model._meta.model_name
+            context[name + "_formset"] = get_inlineformset(Form)(instance=self)
+
+        return context
 
     def build_xml(self):
         # TODO: build xml for the deepl API
@@ -106,10 +121,6 @@ class Profile(auto_prefetch.Model):
 class ProfileChildMixin:
     def generate_html_id(self):
         return f"{self.__class__.__name__}-{self.id}"
-
-
-class ProfileChild(auto_prefetch.Model, ProfileChildMixin):
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     @property
     def related_name(self):
@@ -126,6 +137,10 @@ class ProfileChild(auto_prefetch.Model, ProfileChildMixin):
     @property
     def label(self):
         return getattr(self.profile.labelsettings, self.related_name, self.verbose_name)
+
+
+class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
+    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     def update_form_url(self):
         cls = self.__class__.__name__
@@ -155,7 +170,7 @@ class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
         ordering = ("order",)
 
 
-class ProfileSetting(auto_prefetch.Model):
+class AbstractProfileSetting(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(
         Profile, on_delete=models.CASCADE, related_name="%(class)s"
     )
@@ -171,19 +186,19 @@ class ProfileSetting(auto_prefetch.Model):
 # Profile settings models
 
 
-class ActivationSettings(ProfileSetting):
+class ActivationSettings(AbstractProfileSetting):
     skill_set = models.BooleanField(default=True)
     description = models.BooleanField(default=True)
     website = models.BooleanField(default=True)
 
 
-class LabelSettings(ProfileSetting):
+class LabelSettings(AbstractProfileSetting):
     skill_set = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("About me"))
     website = models.CharField(max_length=32, default=_("Website"))
 
 
-class Photo(ProfileChild):
+class Photo(AbstractProfileChild):
     full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
@@ -231,56 +246,59 @@ class Photo(ProfileChild):
                 pass
 
 
-class Description(ProfileChild):
+class Description(AbstractProfileChild):
     text = models.TextField()
 
+    class Meta(AbstractProfileChild.Meta):
+        verbose_name = _("Description")
 
-class Fullname(ProfileChild):
+
+class Fullname(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Full name"), **null_blank_32)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Full name")
 
 
-class Jobtitle(ProfileChild):
+class Jobtitle(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Job title"), **null_blank_16)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Job title")
 
 
-class Location(ProfileChild):
+class Location(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Location"), **null_blank_16)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Location")
 
 
-class Birth(ProfileChild):
+class Birth(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Date of birth")
 
 
-class Phone(ProfileChild):
+class Phone(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Phone number")
 
 
-class Email(ProfileChild):
+class Email(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Email"), **null_blank_32)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Email")
 
 
-class Website(ProfileChild):
+class Website(AbstractProfileChild):
     text = models.CharField(verbose_name=_("Website"), **null_blank_32)
 
-    class Meta(ProfileChild.Meta):
+    class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Website")
 
 

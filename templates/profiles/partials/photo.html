@@ -1,0 +1,130 @@
+{% load static i18n %}
+<div {% if photoopen or request.GET.photoopen %} x-data="{ show : true }" {% else %} x-data="{ show : false }" {% endif %}>
+  <div>
+    {% if photo %}
+      <button class="w-full" @click="show = true">
+        <img class="inline-block w-full rounded-full"
+             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+             alt="">
+      </button>
+    {% else %}
+      <button class="rounded-md w-full px-3 py-2 text-sm text-indigo-600 border-dashed border-2 border-indigo-100 "
+              @click="show = true"
+              type="button">{% trans "Add photo" %} 🧑‍💼</button>
+    {% endif %}
+  </div>
+  <div x-show="show"
+       class="relative z-10"
+       aria-labelledby="slide-over-title"
+       role="dialog"
+       aria-modal="true">
+    <div class="fixed inset-0"></div>
+    <div class="fixed inset-0 overflow-hidden">
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+          <div x-show="show"
+               class="pointer-events-auto w-screen max-w-2xl"
+               x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+               x-transition:enter-start="translate-x-full"
+               x-transition:enter-end="translate-x-0"
+               x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+               x-transition:leave-start="translate-x-0"
+               x-transition:leave-end="translate-x-full">
+            <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+              <div class="px-4 sm:px-6">
+                <div class="flex items-start justify-between">
+                  <h2 class="text-base font-semibold leading-6 text-gray-900"
+                      id="slide-over-title">{% trans "Edit photo" %}</h2>
+                  <div class="ml-3 flex h-7 items-center">
+                    <button type="button"
+                            class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                      <a href="{{ profile.update_url }}"
+                         hx-boost="true"
+                         hx-push-url="{{ profile.update_url }}">
+                        <span class="sr-only">Close panel</span>
+                        <svg class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke-width="1.5"
+                             stroke="currentColor"
+                             aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </a>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="relative mt-6 flex-1 px-4 sm:px-6">
+                <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
+                  <div class="px-4 py-5 sm:p-6">
+                    <p>{% trans "Deactivate or activate fields" %}</p>
+                    <form action="{{ activationsettings.instance.update_settings_url }}"
+                          method="POST"
+                          hx-boost="true"
+                          hx-push-url="{{ profile.update_url }}">
+                      {% csrf_token %}
+                      {% for hidden in activationsettings.hidden_fields %}{{ hidden }}{% endfor %}
+                      {% for field in activationsettings.visible_fields %}
+                        <div class="sm:col-span-4 my-5">
+                          <div class="relative flex items-start">
+                            <div class="flex h-6 items-center">{{ field }}</div>
+                            <div class="ml-3 text-sm leading-6">
+                              <label for="{{ field.id_for_label }}" class="text-gray-900">{{ field.label }}</label>
+                              <p class="text-gray-500">{{ field.help_text }}</p>
+                            </div>
+                          </div>
+                          <p class="mt-2 text-sm text-red-600" id="email-error">{{ field.errors }}</p>
+                        </div>
+                      {% endfor %}
+                      <div class="flex items-center justify-end gap-x-6 py-4">
+                        <button type="submit"
+                                class="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                          {% trans "Save" %}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
+                  <div class="px-4 py-5 sm:p-6">
+                    <p>{% trans "Name your own labels" %}</p>
+                    <form action="{{ labelsettings.instance.update_settings_url }}"
+                          method="POST"
+                          hx-boost="true"
+                          hx-push-url="{{ profile.update_url }}">
+                      {% csrf_token %}
+                      {% for hidden in labelsettings.hidden_fields %}{{ hidden }}{% endfor %}
+                      {% for field in labelsettings.visible_fields %}
+                        <div class="sm:col-span-4 my-5"
+                             x-data="{ active: false }"
+                             @mouseenter="active = true"
+                             @mouseleave="active = false">
+                          <div class="relative">
+                            <label for="{{ field.id_for_label }}"
+                                   class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs text-gray-600">
+                              {{ field.label }}
+                            </label>
+                            {{ field }}
+                            <p class="mt-2 text-sm text-gray-500" id="email-description">{{ field.help_text }}</p>
+                            <p class="mt-2 text-sm text-red-600" id="email-error">{{ field.errors }}</p>
+                          </div>
+                        </div>
+                      {% endfor %}
+                      <div class="flex items-center justify-end gap-x-6  py-4">
+                        <button type="submit"
+                                class="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                          {% trans "Save" %}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

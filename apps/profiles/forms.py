@@ -1,45 +1,68 @@
-from django import forms
+import sys
+import inspect
+from functools import cache
+
 from django.forms import ModelForm
-from django.forms import modelformset_factory
 from django.forms import inlineformset_factory
-from django.forms import BaseModelFormSet
 from django.forms import BaseInlineFormSet
 from django.forms import HiddenInput
 from django.utils.safestring import mark_safe
+from django.conf import settings
 
-from .models import Profile
-from .models import Fullname
-from .models import Jobtitle
-from .models import Location
-from .models import Birth
-from .models import Phone
-from .models import Email
-from .models import Website
-from .models import Description
-from .models import LabelSettings
-from .models import ActivationSettings
-from .models import Skill
-
-# text input html attributes
-INPUT_CLASS = "border-1 w-full rounded-md hover:bg-indigo-200 border-indigo-50"
-INPUT_XBIND_CLASS = "active ? 'border-indigo-200' : 'border-indigo-50'"
-INPUT_HX_TRIGGER = "keyup changed delay:2s, change"
-# checkbox html attributes
-CHECKBOX_CLASS = "h-4 w-4 rounded border-indigo-400 focus:ring-indigo-400"
-
-from config import html
+from apps.profiles import models
 
 
-def build_widget_attrs(html_class=None, x_class=None, hx_post=None, hx_trigger=None):
+@cache
+def get_forms(singles=False, inlines=False, settings=False, get_all=False) -> dict:
+    out = {}
+
+    Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
+
+    if singles or get_all:
+        out = out | {F.Meta.model: F for F in Forms if BaseChildForm in F.__bases__}
+
+    if settings or get_all:
+        out = out | {F.Meta.model: F for F in Forms if BaseSettingForm in F.__bases__}
+
+    if inlines or get_all:
+        out = out | {F.Meta.model: F for F in Forms if BaseChildFormSet in F.__bases__}
+
+    return out
+
+
+@cache
+def get_model_and_form(Klass):
+    """Returns a tuple: ChildModel, ChildModelForm"""
+    Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
+    modelforms = get_forms(get_all=True)
+    return Model, modelforms[Model]
+
+
+@cache
+def get_inlineformset(FormKlass):
+    return inlineformset_factory(
+        models.Profile,
+        FormKlass.Meta.model,
+        form=FormKlass,
+        formset=BaseChildInlineFormSet,
+        can_order=True,
+        can_delete=False,
+        extra=1,
+    )
+
+
+def build_widget_attrs(
+    html_class=None, x_bind_class=None, hx_post=None, hx_trigger=None
+):
     attrs = {}
 
     if html_class:
         # html class
         attrs = attrs | {"class": mark_safe(html_class)}
 
-    if x_class:
+    if x_bind_class:
         # alpinejs :class attr.
-        attrs = attrs | {":class": mark_safe(x_class)}
+        attrs = attrs | {":class": mark_safe(x_bind_class)}
 
     if hx_post:
         # htmx hx-post method
@@ -74,7 +97,7 @@ def set_widget_types(form, widget_types={}):
 
 class ProfileForm(ModelForm):
     class Meta:
-        model = Profile
+        model = models.Profile
         fields = ["public"]
 
 
@@ -87,10 +110,10 @@ class BaseChildForm(ModelForm):
         obj = kwargs.get("instance", None)
         hx_post = "" if obj is None else obj.update_form_url()
         attrs = build_widget_attrs(
-            html_class=INPUT_CLASS,
-            x_class=INPUT_XBIND_CLASS,
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             hx_post=hx_post,
-            hx_trigger=INPUT_HX_TRIGGER,
+            hx_trigger=settings.HTML_FORMS["textinput"]["hx_trigger"],
         )
         set_widget_attrs(self, attrs)
 
@@ -100,42 +123,42 @@ class BaseChildForm(ModelForm):
 
 class FullnameForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Fullname
+        model = models.Fullname
 
 
 class JobtitleForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Jobtitle
+        model = models.Jobtitle
 
 
 class LocationForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Location
+        model = models.Location
 
 
 class BirthForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Birth
+        model = models.Birth
 
 
 class PhoneForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Phone
+        model = models.Phone
 
 
 class EmailForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Email
+        model = models.Email
 
 
 class WebsiteForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Website
+        model = models.Website
 
 
 class DescriptionForm(BaseChildForm):
     class Meta(BaseChildForm.Meta):
-        model = Description
+        model = models.Description
 
 
 # profile settings
@@ -150,21 +173,24 @@ class BaseSettingForm(ModelForm):
 class ActivationSettingsForm(BaseSettingForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(html_class=CHECKBOX_CLASS)
+        attrs = build_widget_attrs(html_class=settings.HTML_FORMS["checkbox"]["class"])
         set_widget_attrs(self, attrs)
 
     class Meta(BaseSettingForm.Meta):
-        model = ActivationSettings
+        model = models.ActivationSettings
 
 
 class LabelSettingsForm(BaseSettingForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(html_class=INPUT_CLASS, x_class=INPUT_XBIND_CLASS)
+        attrs = build_widget_attrs(
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
         set_widget_attrs(self, attrs)
 
     class Meta(BaseSettingForm.Meta):
-        model = LabelSettings
+        model = models.LabelSettings
 
 
 # profile child formsets
@@ -189,9 +215,10 @@ class SkillForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         text_input_attrs = build_widget_attrs(
-            html_class=html.Form.TextInput.html_class,
-            x_class=html.Form.TextInput.x_bind_class,
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
         )
+
         slider_attrs = build_widget_attrs(html_class="range pr-6 accent-red-500")
 
         set_widget_attrs(self, text_input_attrs, fields=["name"])
@@ -200,16 +227,4 @@ class SkillForm(BaseChildFormSet):
 
     class Meta(BaseChildFormSet.Meta):
         fields = ["name", "level"]
-        model = Skill
-
-
-def get_inlineformset(FormKlass):
-    return inlineformset_factory(
-        Profile,
-        FormKlass.Meta.model,
-        form=FormKlass,
-        formset=BaseChildInlineFormSet,
-        can_order=True,
-        can_delete=False,
-        extra=1,
-    )
+        model = models.Skill

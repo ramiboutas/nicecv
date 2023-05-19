@@ -191,8 +191,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # my own context processors
-                "apps.tex.context_processors.tex_objects",
+                # project context processors
+                "config.project.context_processors",
             ],
             "debug": DEBUG,
         },
@@ -203,7 +203,7 @@ TEMPLATES = [
         "DIRS": [BASE_DIR / "apps" / "templates" / "tex"],
         "APP_DIRS": False,
         "OPTIONS": {
-            "environment": "apps.tex.environment.my_environment",
+            "environment": "apps.tex.environment.tex_environment",
         },
     },
 ]
@@ -397,3 +397,22 @@ if HTTPS:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
+
+
+# html elements
+
+HTML_FORMS = {
+    "textinput": {
+        "class": "border-1 w-full rounded-md hover:bg-indigo-200 border-indigo-50",
+        "x_bind_class": "active ? 'border-indigo-200' : 'border-indigo-50'",
+        "hx_trigger": "keyup changed delay:2s, change",
+        "label": {
+            "class": "absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400",
+            "x_bind_class": "active ? ' bg-indigo-50' : ''",
+        },
+    },
+    "rangeinput": {
+        "class": "",
+    },
+    "checkbox": {"class": "h-4 w-4 rounded border-indigo-400 focus:ring-indigo-400"},
+}

@@ -1,5 +1,6 @@
 import copy
 
+from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -11,17 +12,53 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.contrib.auth.models import AnonymousUser
 
 from django_htmx.http import trigger_client_event
 
 from .models import Profile
-from .utils import get_model_and_form
-from .utils import create_initial_profile
-from .utils import collect_profile_context
+from .models import AbstractProfileChild
+from .models import AbstractProfileSetting
+from .forms import get_model_and_form
 from .forms import get_inlineformset
 
 from apps.core.http import HTTPResponseHXRedirect
 from apps.core.sessions import get_or_create_session
+from apps.accounts.models import CustomUser
+from apps.core.sessions import get_or_create_session
+from apps.core.objects import get_child_models
+
+
+@transaction.atomic
+def _create_initial_profile(request):
+    # create an empty profile
+    profile = Profile.objects.create()
+
+    # Add single item children objects
+    for Klass in get_child_models("profiles", AbstractProfileChild):
+        Klass.objects.create(profile=profile)
+
+    # Add setting objects
+    for Klass in get_child_models("profiles", AbstractProfileSetting):
+        Klass.objects.create(profile=profile)
+
+    user = getattr(request, "user", AnonymousUser())
+    if isinstance(user, CustomUser):
+        profile.user = user
+        profile.fullname.text = user.fullname
+        profile.email.text = user.email
+        profile.save()
+        profile.fullname.save()
+        profile.email.save()
+    else:
+        session, request = get_or_create_session(request)
+        if Profile.objects.filter(session=session).count() >= 1:
+            messages.warning(request, _("Only one profile is allowed for guest users"))
+            return Profile.objects.filter(session=session).first(), request
+        profile.category = "temporal"
+        profile.session = session
+        profile.save()
+    return profile, request
 
 
 def profile_list(request):
@@ -36,7 +73,7 @@ def profile_list(request):
 
 
 def profile_create(request):
-    profile, request = create_initial_profile(request)
+    profile, request = _create_initial_profile(request)
     return HTTPResponseHXRedirect(redirect_to=profile.update_url())
 
 
@@ -50,7 +87,7 @@ def profile_update(request, id):
     except Profile.DoesNotExist:
         raise Http404
 
-    context = collect_profile_context(profile)
+    context = profile.collect_context()
     return render(request, "profiles/profile_update.html", context)
 
 
@@ -65,7 +102,7 @@ def update_settings(request, klass, id):
             obj.profile.update_url(params={"settingsopen": "true"})
         )
     messages.warning(request, _("Error with profile settings"))
-    context = collect_profile_context(obj.profile)
+    context = obj.profile.collect_context()
     context[Model._meta.model_name] = form
     context["settingsopen"] = True
     return render(request, "profiles/profile_update.html", context)
@@ -103,7 +140,7 @@ def update_child_formset(request, klass, id):
             "order_url": profile.order_formset_url(Model),
             "formset": new_formset,
         }
-        return render(request, "profiles/partials/child_formset.html", context)
+        return render(request, "profiles/partials/childset.html", context)
     else:
         context = {
             "message": _("Error during save process"),
@@ -132,7 +169,7 @@ def order_child_formset(request, klass, id):
         "order_url": profile.order_formset_url(Model),
         "formset": new_formset,
     }
-    return render(request, "profiles/partials/child_formset.html", context)
+    return render(request, "profiles/partials/childset.html", context)
 
 
 @require_http_methods(["DELETE"])
@@ -143,10 +180,11 @@ def delete_child(request, klass, id):
     new_formset = get_inlineformset(Form)(instance=object.profile)
     context = {
         "update_url": object.profile.update_formset_url(Model),
+        "order_url": object.profile.order_formset_url(Model),
         "formset": new_formset,
     }
 
-    return render(request, "profiles/partials/child_formset.html", context)
+    return render(request, "profiles/partials/childset.html", context)
 
 
 # htmx - profile - delete object
