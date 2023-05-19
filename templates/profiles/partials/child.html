@@ -8,7 +8,7 @@
            x-data="{ active: false }"
            @mouseenter="active = true"
            @mouseleave="active = false">
-        {% if field.widget_type == "text" %}
+        {% if field.widget_type == "text" or field.widget_type == "textarea" %}
           <label for="{{ field.id_for_label }}"
                  class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400">
             {% if form.instance %}

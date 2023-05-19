@@ -414,5 +414,7 @@ HTML_FORMS = {
     "rangeinput": {
         "class": "",
     },
-    "checkbox": {"class": "h-4 w-4 rounded border-indigo-400 focus:ring-indigo-400"},
+    "checkbox": {
+        "class": "h-4 w-4 rounded border-indigo-600 focus:ring-indigo-400 accent-indigo-600",
+    },
 }

@@ -187,15 +187,17 @@ class AbstractProfileSetting(auto_prefetch.Model):
 
 
 class ActivationSettings(AbstractProfileSetting):
-    skill_set = models.BooleanField(default=True)
-    description = models.BooleanField(default=True)
+    photo = models.BooleanField(default=True)
+    jobtitle = models.BooleanField(default=True)
     website = models.BooleanField(default=True)
+    description = models.BooleanField(default=True)
+    skill_set = models.BooleanField(default=True)
 
 
 class LabelSettings(AbstractProfileSetting):
-    skill_set = models.CharField(max_length=32, default=_("Skills"))
-    description = models.CharField(max_length=32, default=_("About me"))
     website = models.CharField(max_length=32, default=_("Website"))
+    skill_set = models.CharField(max_length=32, default=_("Skills"))
+    description = models.CharField(max_length=32, default=_("Description"))
 
 
 class Photo(AbstractProfileChild):

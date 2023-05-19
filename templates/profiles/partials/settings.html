@@ -47,13 +47,13 @@
                 <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
                   <div class="px-4 py-5 sm:p-6">
                     <p>{% trans "Deactivate or activate fields" %}</p>
-                    <form action="{{ activationsettings.instance.update_settings_url }}"
+                    <form action="{{ activationsettings_form.instance.update_settings_url }}"
                           method="POST"
                           hx-boost="true"
                           hx-push-url="{{ profile.update_url }}">
                       {% csrf_token %}
-                      {% for hidden in activationsettings.hidden_fields %}{{ hidden }}{% endfor %}
-                      {% for field in activationsettings.visible_fields %}
+                      {% for hidden in activationsettings_form.hidden_fields %}{{ hidden }}{% endfor %}
+                      {% for field in activationsettings_form.visible_fields %}
                         <div class="sm:col-span-4 my-5">
                           <div class="relative flex items-start">
                             <div class="flex h-6 items-center">{{ field }}</div>
@@ -77,13 +77,13 @@
                 <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
                   <div class="px-4 py-5 sm:p-6">
                     <p>{% trans "Name your own labels" %}</p>
-                    <form action="{{ labelsettings.instance.update_settings_url }}"
+                    <form action="{{ labelsettings_form.instance.update_settings_url }}"
                           method="POST"
                           hx-boost="true"
                           hx-push-url="{{ profile.update_url }}">
                       {% csrf_token %}
-                      {% for hidden in labelsettings.hidden_fields %}{{ hidden }}{% endfor %}
-                      {% for field in labelsettings.visible_fields %}
+                      {% for hidden in labelsettings_form.hidden_fields %}{{ hidden }}{% endfor %}
+                      {% for field in labelsettings_form.visible_fields %}
                         <div class="sm:col-span-4 my-5"
                              x-data="{ active: false }"
                              @mouseenter="active = true"

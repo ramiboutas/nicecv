@@ -2,7 +2,7 @@
      x-data="{ active: false }"
      @mouseenter="active = true"
      @mouseleave="active = false">
-  {% if field.widget_type == "text" %}
+  {% if field.widget_type == "text" or field.widget_type == "textarea" %}
     <label for="{{ field.id_for_label }}"
            :class="{{ html_forms.textinput.label.x_bind_class }}"
            class="{{ html_forms.textinput.label.class }}">{{ field.label }}</label>
@@ -10,6 +10,13 @@
     <label for="{{ field.id_for_label }}"
            :class="{{ html_forms.rangeinput.label.x_bind_class }}"
            class="{{ html_forms.rangeinput.label.class }}">{{ field.label }}</label>
+    <datalist id="values">
+      <option value="0" label="very cold!"></option>
+      <option value="25" label="cool"></option>
+      <option value="50" label="medium"></option>
+      <option value="75" label="getting warm!"></option>
+      <option value="100" label="hot!"></option>
+    </datalist>
   {% endif %}
   {{ field }}
 </div>

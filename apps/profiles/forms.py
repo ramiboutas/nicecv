@@ -44,16 +44,23 @@ def get_inlineformset(FormKlass):
         models.Profile,
         FormKlass.Meta.model,
         form=FormKlass,
-        formset=BaseChildInlineFormSet,
-        can_order=True,
+        formset=BaseInlineFormSet,
+        can_order=False,
         can_delete=False,
         extra=1,
     )
 
 
-def build_widget_attrs(
-    html_class=None, x_bind_class=None, hx_post=None, hx_trigger=None
+def build_widgets(
+    form: object,
+    fields: list = [],
+    widget_types: dict = {},
+    html_class: str = None,
+    x_bind_class: str = None,
+    hx_post: str = None,
+    hx_trigger: str = None,
 ):
+    # Gather all html and frontend attributes
     attrs = {}
 
     if html_class:
@@ -72,27 +79,21 @@ def build_widget_attrs(
         # htmx hx-trigger method
         attrs = attrs | {"hx-trigger": mark_safe(hx_trigger)}
 
-    return attrs
-
-
-def set_widget_attrs(form, attrs: dict, fields: list = None):
-    """Sets widget attributes to a list of fields of a form .
-    If 'fields' is not provided: tries with all form fields"""
-    field_list = form.fields if fields is None else fields
-    for field_name in field_list:
+    # Set this attrs to the fields
+    for field_name in fields:
         try:
             form.fields[field_name].widget.attrs.update(attrs)
-        except KeyError:
-            pass
+        except Exception:
+            raise Exception(f"Exception by setting attrs to the field {field_name}")
 
-
-def set_widget_types(form, widget_types={}):
-    """Sets the widget types of a form mapping the field name and its type"""
+    # Set widget types
     for field_name, input_type in widget_types.items():
         try:
             form.fields[field_name].widget.input_type = input_type
-        except KeyError:
-            pass
+        except Exception:
+            raise Exception(
+                f"Exception by setting the field {field_name} to {input_type}"
+            )
 
 
 class ProfileForm(ModelForm):
@@ -109,13 +110,14 @@ class BaseChildForm(ModelForm):
         super().__init__(*args, **kwargs)
         obj = kwargs.get("instance", None)
         hx_post = "" if obj is None else obj.update_form_url()
-        attrs = build_widget_attrs(
+        build_widgets(
+            self,
+            fields=["text"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             hx_post=hx_post,
             hx_trigger=settings.HTML_FORMS["textinput"]["hx_trigger"],
         )
-        set_widget_attrs(self, attrs)
 
     class Meta:
         fields = ["text"]
@@ -173,58 +175,62 @@ class BaseSettingForm(ModelForm):
 class ActivationSettingsForm(BaseSettingForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(html_class=settings.HTML_FORMS["checkbox"]["class"])
-        set_widget_attrs(self, attrs)
+        build_widgets(
+            self,
+            fields=self.Meta.fields,
+            html_class=settings.HTML_FORMS["checkbox"]["class"],
+        )
 
     class Meta(BaseSettingForm.Meta):
         model = models.ActivationSettings
+        fields = ["photo", "jobtitle", "website", "description", "skill_set"]
 
 
 class LabelSettingsForm(BaseSettingForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        attrs = build_widget_attrs(
+        build_widgets(
+            self,
+            fields=self.Meta.fields,
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
         )
-        set_widget_attrs(self, attrs)
 
     class Meta(BaseSettingForm.Meta):
         model = models.LabelSettings
+        fields = ["website", "description", "skill_set"]
 
 
 # profile child formsets
 
 
 class BaseChildFormSet(ModelForm):
-    class Meta:
-        pass
-        # widgets = {"order": forms.HiddenInput()}
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        try:
+            has_level = "level" in self.__class__.Meta.fields
+            if has_level:
+                build_widgets(
+                    self,
+                    fields=["level"],
+                    widget_types={"level": "range"},
+                    html_class=settings.HTML_FORMS["rangeinput"]["class"],
+                )
 
-
-class BaseChildInlineFormSet(BaseInlineFormSet):
-    def get_ordering_widget(self):
-        return HiddenInput(attrs={"class": "hidden"})
-
-    def instance_forms(self):
-        # not working, check another way
-        return [form for form in self.forms if form.instance]
+        except Exception:
+            pass
 
 
 class SkillForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        text_input_attrs = build_widget_attrs(
+        build_widgets(
+            self,
+            fields=["name"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
         )
 
-        slider_attrs = build_widget_attrs(html_class="range pr-6 accent-red-500")
-
-        set_widget_attrs(self, text_input_attrs, fields=["name"])
-        set_widget_attrs(self, slider_attrs, fields=["level"])
-        set_widget_types(self, widget_types={"level": "range"})
-
-    class Meta(BaseChildFormSet.Meta):
+    class Meta:
         fields = ["name", "level"]
         model = models.Skill
