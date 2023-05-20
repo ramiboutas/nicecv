@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="{% static 'css/cropper.css' %}" />
 {% endblock css %}
 {% block content %}
-  <div class="md:container md:mx-auto">
+  <div class="md:container md:mx-auto ">
     <!-- notifications -->
     <div id="notifications"></div>
     <!-- Settings -->
-    {% include "profiles/partials/settings.html" %}
+    {% include "profiles/partials/options.html" %}
     <div class="container m-auto grid md:grid-cols-12 gap-10">
       <div class="md:col-span-3">
         <h2>{% trans "Personal info" %}</h2>

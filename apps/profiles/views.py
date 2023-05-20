@@ -99,12 +99,12 @@ def update_settings(request, klass, id):
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(
-            obj.profile.update_url(params={"settingsopen": "true"})
+            obj.profile.update_url(params={"showSettings": "true"})
         )
     messages.warning(request, _("Error with profile settings"))
     context = obj.profile.collect_context()
     context[Model._meta.model_name] = form
-    context["settingsopen"] = True
+    context["showSettings"] = True
     return render(request, "profiles/profile_update.html", context)
 
 
@@ -115,17 +115,31 @@ def update_child_form(request, klass, id):
     form = Form(request.POST, instance=obj)
     if form.is_valid():
         form.save()
-        context = {"message": _("Saved"), "icon": "✅"}
+        context = {
+            "message": _("Saved: ") + form.Meta.model._meta.verbose_name,
+            "icon": "✅",
+        }
     else:
         context = {
-            "message": _("Error during save process"),
+            "message": _("Error with: ") + form.Meta.model._meta.verbose_name,
             "icon": "⚠️",
-            "description": mark_safe(form.errors.as_ul()),
+            "description": mark_safe(form.errors),
             "disappearing_time": 5000,
         }
     return render(request, "components/hx_notification.html", context)
 
 
+def _render_child_formset(request, Model, Form, profile):
+    new_formset = get_inlineformset(Form)(instance=profile)
+    context = {
+        "formset": new_formset,
+        "update_url": profile.update_formset_url(Model),
+        "order_url": profile.order_formset_url(Model),
+    }
+    return render(request, "profiles/partials/childset.html", context)
+
+
+@require_POST
 def update_child_formset(request, klass, id):
     Model, Form = get_model_and_form(klass)
     FormSet = get_inlineformset(Form)
@@ -134,23 +148,18 @@ def update_child_formset(request, klass, id):
     formset = FormSet(request.POST, instance=profile)
     if formset.is_valid():
         formset.save()
-        new_formset = get_inlineformset(Form)(instance=profile)
-        context = {
-            "update_url": profile.update_formset_url(Model),
-            "order_url": profile.order_formset_url(Model),
-            "formset": new_formset,
-        }
-        return render(request, "profiles/partials/childset.html", context)
-    else:
-        context = {
-            "message": _("Error during save process"),
-            "icon": "⚠️",
-            "description": mark_safe(formset.errors),
-            "disappearing_time": 5000,
-        }
+        return _render_child_formset(request, Model, Form, profile)
+
+    context = {
+        "message": _("Error during save process"),
+        "icon": "⚠️",
+        "description": mark_safe(formset.errors),
+        "disappearing_time": 5000,
+    }
     return render(request, "components/hx_notification.html", context)
 
 
+@require_POST
 def order_child_formset(request, klass, id):
     Model, Form = get_model_and_form(klass)
     FormSet = get_inlineformset(Form)
@@ -158,18 +167,11 @@ def order_child_formset(request, klass, id):
     formset = FormSet(request.POST, instance=profile)
     if formset.is_valid():
         ids = [int(i) for i in request.POST.getlist("child-id")]
-        for index, id in enumerate(ids):
+        for order, id in enumerate(ids, start=1):
             obj = formset.queryset.get(id=id)
-            obj.order = index + 1
+            obj.order = order
             obj.save()
-
-    new_formset = get_inlineformset(Form)(instance=profile)
-    context = {
-        "update_url": profile.update_formset_url(Model),
-        "order_url": profile.order_formset_url(Model),
-        "formset": new_formset,
-    }
-    return render(request, "profiles/partials/childset.html", context)
+    return _render_child_formset(request, Model, Form, profile)
 
 
 @require_http_methods(["DELETE"])
@@ -177,14 +179,7 @@ def delete_child(request, klass, id):
     Model, Form = get_model_and_form(klass)
     object = get_object_or_404(Model, id=id)
     object.delete()
-    new_formset = get_inlineformset(Form)(instance=object.profile)
-    context = {
-        "update_url": object.profile.update_formset_url(Model),
-        "order_url": object.profile.order_formset_url(Model),
-        "formset": new_formset,
-    }
-
-    return render(request, "profiles/partials/childset.html", context)
+    return _render_child_formset(request, Model, Form, object.profile)
 
 
 # htmx - profile - delete object

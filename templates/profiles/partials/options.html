@@ -1,7 +1,14 @@
 {% load static i18n %}
-<div {% if settingsopen or request.GET.settingsopen %} x-data="{ show : true }" {% else %} x-data="{ show : false }" {% endif %}>
-  <button @click="show = true" type="button" class="">{% trans "Settings" %}</button>
-  <div x-show="show"
+<div {% if showSettings or request.GET.showSettings %}x-data="{ showSettings : true }" {% else %} x-data="{ showSettings : false }"{% endif %}>
+  <nav class=" lg:flex lg:space-x-8 lg:py-2" aria-label="Global">
+    <button class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium"
+            @click="showSettings = true"
+            :class="showSettings ? 'bg-gray-100 text-gray-900' : 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'"
+            type="button">⚙️ {% trans "Settings" %}</button>
+    <button class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium"
+            type="button">📰 {% trans "CV templates" %}</button>
+  </nav>
+  <div x-show="showSettings"
        class="relative z-10"
        aria-labelledby="slide-over-title"
        role="dialog"
@@ -10,12 +17,13 @@
     <div class="fixed inset-0 overflow-hidden">
       <div class="absolute inset-0 overflow-hidden">
         <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
-          <div x-show="show"
+          <div x-show="showSettings"
+               @click.outside="showSettings = false"
                class="pointer-events-auto w-screen max-w-2xl"
-               x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+               x-transition:enter="transform transition ease-in-out duration-500 sm:duration-1"
                x-transition:enter-start="translate-x-full"
                x-transition:enter-end="translate-x-0"
-               x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+               x-transition:leave="transform transition ease-in-out duration-500 sm:duration-1"
                x-transition:leave-start="translate-x-0"
                x-transition:leave-end="translate-x-full">
             <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">

@@ -403,11 +403,11 @@ if HTTPS:
 
 HTML_FORMS = {
     "textinput": {
-        "class": "border-1 w-full rounded-md hover:bg-indigo-200 border-indigo-50",
-        "x_bind_class": "active ? 'border-indigo-200' : 'border-indigo-50'",
+        "class": "border-1 w-full rounded-md hover:bg-indigo-200 border-indigo-100 bg-slate-50",
+        "x_bind_class": "active ? 'border-indigo-200' : 'border-indigo-100'",
         "hx_trigger": "keyup changed delay:2s, change",
         "label": {
-            "class": "absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400",
+            "class": "absolute -top-2 left-2 inline-block bg-white px-1 text-xs font-medium text-gray-400 bg-slate-50",
             "x_bind_class": "active ? ' bg-indigo-50' : ''",
         },
     },

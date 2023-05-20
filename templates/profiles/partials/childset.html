@@ -1,6 +1,5 @@
 {% load i18n %}
-<form class="my-2"
-      hx-post="{{ update_url }}"
+<form hx-post="{{ update_url }}"
       hx-swap="outerHTML settle:1s"
       hx-target="this">
   {{ formset.management_form }}
@@ -8,14 +7,13 @@
        hx-post="{{ order_url }}"
        hx-target="closest form"
        hx-swap="outerHTML settle:1s"
-       hx-trigger="end delay:1s">
+       hx-trigger="end delay:200ms">
     {% for form in formset %}
       {% if form.instance.id %}
         <div id="{{ form.instance.generate_html_id }}"
              x-data="{ open: false }"
              x-on:mouseenter="open = true"
              x-on:mouseleave="open = false"
-             class="my-2"
              :class="open ? 'border-dashed border-2 border-indigo-50 bg-indigo-50 rounded' : ''">
           <div class="m-auto grid md:grid-cols-12 gap-4"
                hx-post="{{ update_url }}"
@@ -30,7 +28,7 @@
               <button type="button"
                       hx-delete="{{ form.instance.get_delete_url }}"
                       hx-target="closest form"
-                      hx-swap="outerHTML swap:200ms">🗑️</button>
+                      hx-swap="outerHTML swap:100ms">🗑️</button>
             </div>
             {% for field in form %}
               {% include "profiles/partials/formset_field.html" %}
@@ -46,7 +44,7 @@
          x-on:mouseleave="open = false"
          :class="open ? 'transition delay-200 border-dashed border-2 border-indigo-100' : ''">
       <button type="button"
-              class="rounded-md w-full px-3 py-2 text-sm text-indigo-600  "
+              class="rounded-md w-full px-3 py-2 text-sm text-indigo-600"
               :class="open ? '' : 'border-dashed border-2 border-indigo-100'"
               x-on:click="open = true">{% trans "New" %}</button>
       <div x-show="open"

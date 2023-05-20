@@ -4,7 +4,7 @@
     {% if photo %}
       <button class="w-full" @click="show = true">
         <img class="inline-block w-full rounded-full"
-             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+             src="https://tn.com.ar/resizer/Y8KqsU0vEbPKi6l4Yr2f7xQ0nKY=/767x0/smart/filters:format(webp)/cloudfront-us-east-1.images.arcpublishing.com/artear/CEDQ7NLUHFCXF7V6TJ5L2ETQE4.jpg"
              alt="">
       </button>
     {% else %}
@@ -59,7 +59,7 @@
                 <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
                   <div class="px-4 py-5 sm:p-6">
                     <p>{% trans "Deactivate or activate fields" %}</p>
-                    <form action="{{ activationsettings.instance.update_settings_url }}"
+                    <form action="{{ profile.upload_photo_url }}"
                           method="POST"
                           hx-boost="true"
                           hx-push-url="{{ profile.update_url }}">
@@ -78,40 +78,6 @@
                         </div>
                       {% endfor %}
                       <div class="flex items-center justify-end gap-x-6 py-4">
-                        <button type="submit"
-                                class="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                          {% trans "Save" %}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
-                  <div class="px-4 py-5 sm:p-6">
-                    <p>{% trans "Name your own labels" %}</p>
-                    <form action="{{ labelsettings.instance.update_settings_url }}"
-                          method="POST"
-                          hx-boost="true"
-                          hx-push-url="{{ profile.update_url }}">
-                      {% csrf_token %}
-                      {% for hidden in labelsettings.hidden_fields %}{{ hidden }}{% endfor %}
-                      {% for field in labelsettings.visible_fields %}
-                        <div class="sm:col-span-4 my-5"
-                             x-data="{ active: false }"
-                             @mouseenter="active = true"
-                             @mouseleave="active = false">
-                          <div class="relative">
-                            <label for="{{ field.id_for_label }}"
-                                   class="absolute -top-2 left-2 inline-block bg-white px-1 text-xs text-gray-600">
-                              {{ field.label }}
-                            </label>
-                            {{ field }}
-                            <p class="mt-2 text-sm text-gray-500" id="email-description">{{ field.help_text }}</p>
-                            <p class="mt-2 text-sm text-red-600" id="email-error">{{ field.errors }}</p>
-                          </div>
-                        </div>
-                      {% endfor %}
-                      <div class="flex items-center justify-end gap-x-6  py-4">
                         <button type="submit"
                                 class="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                           {% trans "Save" %}
