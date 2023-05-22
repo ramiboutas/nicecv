@@ -1,12 +1,12 @@
 {% load i18n %}
 <form hx-post="{{ update_url }}"
-      hx-swap="outerHTML settle:1s"
+      hx-swap="outerHTML settle:100ms"
       hx-target="this">
   {{ formset.management_form }}
   <div class="sortable"
        hx-post="{{ order_url }}"
        hx-target="closest form"
-       hx-swap="outerHTML settle:1s"
+       hx-swap="outerHTML settle:100ms"
        hx-trigger="end delay:200ms">
     {% for form in formset %}
       {% if form.instance.id %}

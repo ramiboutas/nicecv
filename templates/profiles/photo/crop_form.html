@@ -1,0 +1,26 @@
+{% load i18n %}
+<div id="crop-container">
+  <img class="img-fluid"
+       id="image-to-crop"
+       src="{{ profile.photo.full.url }}">
+  <form hx-post="{{ profile.photo.crop_url }}"
+        hx-swap="outerHTML"
+        hx-target="#photo-cropped">
+    {{ cropphoto_form }}
+    <p class="mt-2 text-sm text-red-600">{{ field.errors }}</p>
+    <div class="flex items-center justify-end gap-x-6 py-4">
+      <button hx-delete="{{ profile.photo.delete_url }}"
+              hx-swap="outerHTML"
+              hx-confirm="{% trans "Delete photo?" %} "
+              hx-target="#crop-container"
+              type="button"
+              class="rounded-md bg-white py-2 px-3  text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        {% trans "Delete" %}
+      </button>
+      <button type="submit"
+              class="rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        {% trans "Save" %}
+      </button>
+    </div>
+  </form>
+</div>

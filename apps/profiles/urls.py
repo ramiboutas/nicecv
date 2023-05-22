@@ -1,6 +1,5 @@
 from django.urls import path
 
-from . import views
 from .views import profile_list
 from .views import profile_create
 from .views import profile_update
@@ -10,6 +9,9 @@ from .views import update_child_form
 from .views import update_settings
 from .views import update_child_formset
 from .views import order_child_formset
+from .views import upload_photo
+from .views import crop_photo
+from .views import delete_photo_files
 
 
 # from .views import save_personal_information_view, update_description_view
@@ -36,31 +38,10 @@ urlpatterns = [
     path("formset/<str:klass>/<uuid:id>/", update_child_formset, name="update-formset"),
     # order child formset
     path("order/<str:klass>/<uuid:id>/", order_child_formset, name="order-formset"),
-]
-
-
-from .views import upload_full_photo_view, crop_photo_view, delete_photos_view
-from .views import get_photo_modal_view, remove_photo_modal_view
-
-# photo
-urlpatterns += [
-    # htmx - photo
-    path(
-        "upload-full-photo/<uuid:id>/",
-        upload_full_photo_view,
-        name="profiles_upload_full_photo",
-    ),
-    path("crop-photo/<uuid:id>/", crop_photo_view, name="profiles_crop_photo"),
-    path("delete-photos/<uuid:id>/", delete_photos_view, name="profiles_delete_photos"),
-    # htmx - photo modal
-    path(
-        "get-photo-modal/<uuid:id>/",
-        get_photo_modal_view,
-        name="profiles_get_photo_modal",
-    ),
-    path(
-        "remove-photo-modal/<uuid:id>/",
-        remove_photo_modal_view,
-        name="profiles_remove_photo_modal",
-    ),
+    # upload photo
+    path("upload-photo/<int:id>/", upload_photo, name="upload-photo"),
+    # crop potho
+    path("crop-photo/<int:id>/", crop_photo, name="crop-photo"),
+    # delete photos files
+    path("delete-photo.files/<int:id>/", delete_photo_files, name="delete-photo-files"),
 ]

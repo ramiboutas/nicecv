@@ -10,6 +10,8 @@ from django.utils.safestring import mark_safe
 from django.conf import settings
 
 from apps.profiles import models
+from apps.core.exceptions import ErrorBySettingFormFieldAttributes
+from apps.core.exceptions import ErrorBySettingFormWidgetInputType
 
 
 @cache
@@ -59,6 +61,7 @@ def build_widgets(
     x_bind_class: str = None,
     hx_post: str = None,
     hx_trigger: str = None,
+    rows: str = None,
 ):
     # Gather all html and frontend attributes
     attrs = {}
@@ -70,6 +73,9 @@ def build_widgets(
     if x_bind_class:
         # alpinejs :class attr.
         attrs = attrs | {":class": mark_safe(x_bind_class)}
+
+    if rows:
+        attrs = attrs | {"rows": mark_safe(rows)}
 
     if hx_post:
         # htmx hx-post method
@@ -83,17 +89,17 @@ def build_widgets(
     for field_name in fields:
         try:
             form.fields[field_name].widget.attrs.update(attrs)
-        except Exception:
-            raise Exception(f"Exception by setting attrs to the field {field_name}")
+        except ErrorBySettingFormFieldAttributes as e:
+            e.add_note(f"Exception by setting attrs to the field {field_name}")
+            raise e
 
     # Set widget types
     for field_name, input_type in widget_types.items():
         try:
             form.fields[field_name].widget.input_type = input_type
-        except Exception:
-            raise Exception(
-                f"Exception by setting the field {field_name} to {input_type}"
-            )
+        except ErrorBySettingFormWidgetInputType as e:
+            e.add_note(f"Exception by setting attrs to the field {field_name}")
+            raise e
 
 
 class ProfileForm(ModelForm):
@@ -109,6 +115,7 @@ class BaseChildForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         obj = kwargs.get("instance", None)
+        rows = getattr(obj, "rows", None)
         hx_post = "" if obj is None else obj.update_form_url()
         build_widgets(
             self,
@@ -117,6 +124,7 @@ class BaseChildForm(ModelForm):
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             hx_post=hx_post,
             hx_trigger=settings.HTML_FORMS["textinput"]["hx_trigger"],
+            rows=rows,
         )
 
     class Meta:
@@ -163,9 +171,37 @@ class DescriptionForm(BaseChildForm):
         model = models.Description
 
 
+class UploadPhotoForm(ModelForm):
+    class Meta:
+        model = models.Photo
+        fields = ["full"]
+
+
+class CropPhotoForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        build_widgets(
+            self,
+            widget_types={
+                "crop_x": "hidden",
+                "crop_y": "hidden",
+                "crop_width": "hidden",
+                "crop_height": "hidden",
+            },
+        )
+
+    class Meta:
+        model = models.Photo
+        fields = [
+            "crop_x",
+            "crop_y",
+            "crop_width",
+            "crop_height",
+        ]
+
+
 # profile settings
-
-
 class BaseSettingForm(ModelForm):
     class Meta(ModelForm):
         fields = "__all__"

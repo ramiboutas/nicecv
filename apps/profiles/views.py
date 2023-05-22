@@ -16,11 +16,14 @@ from django.contrib.auth.models import AnonymousUser
 
 from django_htmx.http import trigger_client_event
 
+from .models import Photo
 from .models import Profile
 from .models import AbstractProfileChild
 from .models import AbstractProfileSetting
 from .forms import get_model_and_form
 from .forms import get_inlineformset
+from .forms import UploadPhotoForm
+from .forms import CropPhotoForm
 
 from apps.core.http import HTTPResponseHXRedirect
 from apps.core.sessions import get_or_create_session
@@ -182,7 +185,6 @@ def delete_child(request, klass, id):
     return _render_child_formset(request, Model, Form, object.profile)
 
 
-# htmx - profile - delete object
 @require_POST
 def delete_profile(request, id):
     object = get_object_or_404(Profile, id=id)
@@ -190,63 +192,38 @@ def delete_profile(request, id):
     return HttpResponse(status=200)
 
 
-# htmx - profile - upload full photo
-@login_required
 @require_POST
-def upload_full_photo_view(request, id):
-    object = get_object_or_404(Profile, id=id, user=request.user)
-    photo_full = request.FILES.get("photo")
-    object.photo_full.save(photo_full.name, photo_full)
-    context = {"object": object}
-    response = HttpResponse(status=200)
-    trigger_client_event(
-        response,
-        "fullPhotoUploadedEvent",
-        {},
-    )
-    return response
+def upload_photo(request, id):
+    obj = get_object_or_404(Photo, id=id)
+    form = UploadPhotoForm(request.POST, request.FILES, instance=obj)
+    if form.is_valid():
+        saved_obj = form.save()
+
+    context = {
+        "cropphoto_form": CropPhotoForm(instance=saved_obj),
+        "profile": obj.profile,
+    }
+    return render(request, "profiles/photo/crop_form.html", context)
 
 
-# htmx - profile - get photo modal
-@login_required
-def get_photo_modal_view(request, id):
-    object = get_object_or_404(Profile, id=id, user=request.user)
-    context = {"object": object}
-    return render(request, "profiles/partials/photo/modal.html", context)
-
-
-# htmx - profile - remove photo modal
-@login_required
-def remove_photo_modal_view(request, id):
-    object = get_object_or_404(Profile, id=id, user=request.user)
-    return HttpResponse(status=200)
-
-
-# htmx - profile - crop photo
-@login_required
 @require_POST
-def crop_photo_view(request, id):
-    object = get_object_or_404(Profile, id=id, user=request.user)
-    crop_x = int(request.POST.get("cropX"))
-    crop_y = int(request.POST.get("cropY"))
-    crop_width = int(request.POST.get("cropWidth"))
-    crop_height = int(request.POST.get("cropHeigth"))
-    object = object.photo.crop_photo(crop_x, crop_y, crop_width, crop_height)
-    context = {"object": object}
-    response = render(request, "profiles/partials/photo/cropped.html", context)
-    trigger_client_event(
-        response,
-        "photoCroppedEvent",
-        {},
-    )
-    return response
+def crop_photo(request, id):
+    obj = get_object_or_404(Photo, id=id)
+    form = CropPhotoForm(request.POST, instance=obj)
+    if form.is_valid():
+        saved_obj = form.save(commit=False)
+        saved_obj.crop()
+    context = {"profile": obj.profile}
+    return render(request, "profiles/photo/cropped.html", context)
 
 
-# htmx - profile - delete photos
-@login_required
-@require_POST
-def delete_photos_view(request, id):
-    object = get_object_or_404(Profile, id=id, user=request.user)
-    object.photo_full.delete()
-    object.photo.delete()
-    return HttpResponse(status=200)
+@require_http_methods(["DELETE"])
+def delete_photo_files(request, id):
+    obj = get_object_or_404(Photo, id=id)
+    obj.full.delete()
+    obj.cropped.delete()
+    context = {
+        "uploadphoto_form": UploadPhotoForm(instance=obj),
+        "profile": obj.profile,
+    }
+    return render(request, "profiles/photo/new.html", context)

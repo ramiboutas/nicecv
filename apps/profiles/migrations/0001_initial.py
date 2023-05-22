@@ -165,7 +165,7 @@ class Migration(migrations.Migration):
                     models.ImageField(
                         blank=True,
                         null=True,
-                        upload_to=apps.profiles.models.get_uploading_photo_path,
+                        upload_to=apps.profiles.models.get_upload_path,
                     ),
                 ),
                 (
@@ -173,7 +173,7 @@ class Migration(migrations.Migration):
                     models.ImageField(
                         blank=True,
                         null=True,
-                        upload_to=apps.profiles.models.get_uploading_photo_path,
+                        upload_to=apps.profiles.models.get_upload_path,
                     ),
                 ),
                 ("crop_x", models.PositiveSmallIntegerField(blank=True, null=True)),

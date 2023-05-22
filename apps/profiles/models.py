@@ -21,16 +21,15 @@ null_blank_64 = {"null": True, "blank": True, "max_length": 34}
 null_blank_128 = {"null": True, "blank": True, "max_length": 128}
 
 
-def get_uploading_photo_path(instance):
-    # file will be uploaded to MEDIA_ROOT
-    return "profiles/photos/{0}".format(instance.profile.id)
-
-
 PROFILE_CATEGORIES = (
     ("temporal", _("Temporal")),
     ("user_profile", _("User profile")),
     ("template", _("Template")),
 )
+
+
+def get_upload_path(instance, filename):
+    return f"profiles/{instance.__class__.__name__}/{filename}"
 
 
 class Profile(auto_prefetch.Model):
@@ -90,6 +89,7 @@ class Profile(auto_prefetch.Model):
         return reverse("profiles:delete", kwargs={"id": self.id})
 
     def collect_context(self) -> dict:
+        from apps.profiles import forms
         from .forms import get_forms
         from .forms import get_inlineformset
 
@@ -105,6 +105,10 @@ class Profile(auto_prefetch.Model):
         for Model, Form in get_forms(inlines=True).items():
             name = Model._meta.model_name
             context[name + "_formset"] = get_inlineformset(Form)(instance=self)
+
+        # photo forms
+        context["uploadphoto_form"] = forms.UploadPhotoForm(instance=self.photo)
+        context["cropphoto_form"] = forms.CropPhotoForm(instance=self.photo)
 
         return context
 
@@ -201,55 +205,69 @@ class LabelSettings(AbstractProfileSetting):
 
 
 class Photo(AbstractProfileChild):
-    full = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
-    cropped = models.ImageField(**null_blank, upload_to=get_uploading_photo_path)
+    full = models.ImageField(null=True, upload_to="profiles/full-photos")
+    cropped = models.ImageField(null=True, upload_to="profiles/cropped-photos")
     crop_x = models.PositiveSmallIntegerField(**null_blank)
     crop_y = models.PositiveSmallIntegerField(**null_blank)
     crop_width = models.PositiveSmallIntegerField(**null_blank)
     crop_height = models.PositiveSmallIntegerField(**null_blank)
 
-    def upload_photo_url(self):
-        return reverse("profiles:photo-upload", kwargs={"pk": self.pk})
+    def upload_url(self):
+        return reverse("profiles:upload-photo", kwargs={"id": self.id})
 
-    def crop_photo_url(self):
-        return reverse("profiles:photo-crop", kwargs={"pk": self.pk})
+    def crop_url(self):
+        return reverse("profiles:crop-photo", kwargs={"id": self.id})
 
-    def save_cropping_points(self, crop_x, crop_y, crop_width, crop_height):
-        self.crop_x = crop_x
-        self.crop_y = crop_y
-        self.crop_width = crop_width
-        self.crop_height = crop_height
-        self.save()
+    def delete_url(self):
+        return reverse("profiles:delete-photo-files", kwargs={"id": self.id})
 
-    def crop_photo(self, crop_x, crop_y, crop_width, crop_height):
+    def crop(self):
         if self.full:
             photo_full_copy = ContentFile(self.full.read())
             cropped_name = "cropped_" + self.full.name.split("/")[-1]
             self.cropped.save(cropped_name, photo_full_copy)
             image = Image.open(self.cropped)
-            cropping_area = (crop_x, crop_y, crop_x + crop_width, crop_y + crop_height)
+            cropping_area = (
+                self.crop_x,
+                self.crop_y,
+                self.crop_x + self.crop_width,
+                self.crop_y + self.crop_height,
+            )
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
-            resized_image.save(self.photo.path)
-            self.save_cropping_points(crop_x, crop_y, crop_width, crop_height)
-            return self
+            resized_image.save(self.cropped.path, commit=False)
+            self.save()
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.full is not None:
+        if self.full:
             try:
                 img = Image.open(self.full)
-                if img.height > 1200 or img.width > 1200:
-                    # image proportion is manteined
-                    new_size = (1200, 1200)
-                    img.thumbnail(new_size)
-                    img.save(self.full.path)
-            except:
-                pass
+            except Exception as e:
+                raise e
+
+            if img.height > 1200 or img.width > 1200:
+                new_size = (1200, 1200)
+                img.thumbnail(new_size)
+                img.save(self.full.path)
+
+            if not self.cropped:
+                d = min([img.height, img.width])
+                print(d)
+                self.crop_width = int(0.9 * d)
+                self.crop_height = int(0.9 * d)
+                self.crop_x = int(img.width - 0.05 * d)
+                self.crop_y = int(img.height - 0.05 * d)
+
+        super().save(*args, **kwargs)
 
 
 class Description(AbstractProfileChild):
     text = models.TextField()
+    rows = models.PositiveSmallIntegerField(default=15)
+
+    def save(self, *args, **kwargs):
+        self.rows = int(len(self.text) / 35)
+        super().save(*args, **kwargs)
 
     class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Description")

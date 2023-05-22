@@ -14,10 +14,10 @@
     <!-- Settings -->
     {% include "profiles/partials/options.html" %}
     <div class="container m-auto grid md:grid-cols-12 gap-10">
-      <div class="md:col-span-3">
-        <h2>{% trans "Personal info" %}</h2>
+      <div class="md:col-span-3 ">
+        <h2 class="my-2 italic">{% trans "Personal info" %}</h2>
         <!-- photo-->
-        {% include "profiles/partials/photo.html" with photo=profile.photo %}
+        {% include "profiles/photo/main.html" %}
         <!-- fullname -->
         {% include "profiles/partials/child.html" with form=fullname_form %}
         <!-- jobtitle -->
