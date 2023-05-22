@@ -1,9 +1,9 @@
 from functools import cache
 
+from django.conf import settings
+
 from apps.tex.models import CoverLetterTemplate
 from apps.tex.models import ResumeTemplate
-
-from django.conf import settings
 
 
 @cache

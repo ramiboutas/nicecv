@@ -1,17 +1,17 @@
-import sys
 import inspect
+import sys
 from functools import cache
 
-from django.forms import ModelForm
-from django.forms import inlineformset_factory
+from django.conf import settings
 from django.forms import BaseInlineFormSet
 from django.forms import HiddenInput
+from django.forms import inlineformset_factory
+from django.forms import ModelForm
 from django.utils.safestring import mark_safe
-from django.conf import settings
 
-from apps.profiles import models
 from apps.core.exceptions import ErrorBySettingFormFieldAttributes
 from apps.core.exceptions import ErrorBySettingFormWidgetInputType
+from apps.profiles import models
 
 
 @cache
@@ -172,6 +172,14 @@ class DescriptionForm(BaseChildForm):
 
 
 class UploadPhotoForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        build_widgets(
+            self,
+            fields=["full"],
+            html_class=settings.HTML_FORMS["fileinput"]["class"],
+        )
+
     class Meta:
         model = models.Photo
         fields = ["full"]

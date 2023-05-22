@@ -1,7 +1,6 @@
-from config.test import TestCase
-
 from ..factories import UserFactory
 from ..models import CustomUser
+from config.test import TestCase
 
 
 class UserFactoryTests(TestCase):

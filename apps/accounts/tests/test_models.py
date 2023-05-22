@@ -1,12 +1,11 @@
 import datetime
-from config.test import TestCase
-
-from apps.plans.models import FreePlan
-from apps.plans.models import PremiumPlan
 
 from apps.accounts.factories import SuperUserFactory
 from apps.accounts.factories import UserFactory
 from apps.accounts.factories import UserPremiumPlanFactory
+from apps.plans.models import FreePlan
+from apps.plans.models import PremiumPlan
+from config.test import TestCase
 
 
 class UserTests(TestCase):

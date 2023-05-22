@@ -2,8 +2,6 @@ import stripe
 from django.db.models import Model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
-
 from djstripe import models as djstripe_models
 from djstripe import settings as djstripe_settings
 

@@ -1,12 +1,12 @@
-from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
-from config.test import TestCase
+from django.db.utils import IntegrityError
 from django.urls import reverse
 
 from apps.plans.factories import PlanFAQFactory
 from apps.plans.factories import PremiumPlanFactory
-from apps.plans.models import PremiumPlan
 from apps.plans.models import FreePlan
+from apps.plans.models import PremiumPlan
+from config.test import TestCase
 
 
 class PremiumPlanTests(TestCase):

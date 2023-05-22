@@ -4,6 +4,7 @@ import logging
 import stripe
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -11,8 +12,6 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import get_user_model
-
 from djstripe import settings as djstripe_settings
 
 
@@ -62,7 +61,7 @@ def checkout_view(request, id):  # pragma: no cover
 @csrf_exempt
 def stripe_webhook_view(request):  # pragma: no cover
     payload = request.body
-    sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
+    sig_header = request.headers["stripe-signature"]
     event = None
     endpoint_secret = settings.DJSTRIPE_WEBHOOK_SECRET
     try:

@@ -1,5 +1,5 @@
-from config.test import TestCase
 from ..models import Settings
+from config.test import TestCase
 
 
 class SettingModelTests(TestCase):

@@ -1,8 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import TemplateView
-from django.http import HttpResponse
 
 
 class HomeView(TemplateView):

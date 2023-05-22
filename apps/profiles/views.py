@@ -1,35 +1,32 @@
 import copy
 
-from django.db import transaction
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
+from django.db import transaction
+from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.http import Http404
-from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
-from django.contrib import messages
-from django.contrib.auth.models import AnonymousUser
-
+from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 
-from .models import Photo
-from .models import Profile
+from .forms import CropPhotoForm
+from .forms import get_inlineformset
+from .forms import get_model_and_form
+from .forms import UploadPhotoForm
 from .models import AbstractProfileChild
 from .models import AbstractProfileSetting
-from .forms import get_model_and_form
-from .forms import get_inlineformset
-from .forms import UploadPhotoForm
-from .forms import CropPhotoForm
-
-from apps.core.http import HTTPResponseHXRedirect
-from apps.core.sessions import get_or_create_session
+from .models import Photo
+from .models import Profile
 from apps.accounts.models import CustomUser
-from apps.core.sessions import get_or_create_session
+from apps.core.http import HTTPResponseHXRedirect
 from apps.core.objects import get_child_models
+from apps.core.sessions import get_or_create_session
 
 
 @transaction.atomic

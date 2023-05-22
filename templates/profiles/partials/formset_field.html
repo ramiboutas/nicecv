@@ -11,7 +11,9 @@
   {% elif field.widget_type == "number" %}
     <label for="{{ field.id_for_label }}"
            :class="active ? 'bg-indigo-50' : 'bg-slate-50'"
-           class="-top-1 left-2 inline-block px-1 text-xs font-medium text-gray-400 ">{{ field.label }}</label>
+           class="-top-1 left-2 inline-block px-1 text-xs font-medium text-gray-400 ">
+      {{ field.label }}
+    </label>
   {% endif %}
   {{ field }}
 </div>

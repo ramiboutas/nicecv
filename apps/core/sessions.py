@@ -1,5 +1,5 @@
-from django.contrib.sessions.models import Session
 from django.contrib.sessions.backends.db import SessionStore
+from django.contrib.sessions.models import Session
 
 
 def get_or_create_session(request):

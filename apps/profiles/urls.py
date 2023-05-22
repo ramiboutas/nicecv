@@ -1,17 +1,17 @@
 from django.urls import path
 
-from .views import profile_list
-from .views import profile_create
-from .views import profile_update
-from .views import delete_profile
-from .views import delete_child
-from .views import update_child_form
-from .views import update_settings
-from .views import update_child_formset
-from .views import order_child_formset
-from .views import upload_photo
 from .views import crop_photo
+from .views import delete_child
 from .views import delete_photo_files
+from .views import delete_profile
+from .views import order_child_formset
+from .views import profile_create
+from .views import profile_list
+from .views import profile_update
+from .views import update_child_form
+from .views import update_child_formset
+from .views import update_settings
+from .views import upload_photo
 
 
 # from .views import save_personal_information_view, update_description_view

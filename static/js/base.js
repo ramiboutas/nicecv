@@ -19,7 +19,7 @@ htmx.onLoad(function (content) {
 function pollImageToCrop(data) {
   console.log(data);
   const element = document.getElementById("image-to-crop");
-  console.log("pollImageToCrop was called");
+
   if (element) {
     // Once the image element showed in the DOM, we can start the cropper event
     startCropperEvent(element);
@@ -60,12 +60,13 @@ function setImageCropProperties(x, y, width, height) {
 
 function getInitData() {
 
-  return {
+  const data = {
     x: parseInt(document.getElementById("id_crop_x").value),
     y: parseInt(document.getElementById("id_crop_y").value),
     width: parseInt(document.getElementById("id_crop_width").value),
     height: parseInt(document.getElementById("id_crop_height").value),
   };
+  console.log(data);
+  return data;
 
 }
-

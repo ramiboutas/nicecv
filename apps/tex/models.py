@@ -2,7 +2,6 @@ import auto_prefetch
 from django.db import models
 from django.urls import reverse
 
-
 from apps.profiles.models import Profile
 
 

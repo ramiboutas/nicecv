@@ -10,6 +10,7 @@ module.exports = {
     "./templates/**/**/**/*.html",
     "./static/js/*.js",
     "./apps/**/forms.py",
+    "./config/settings.py",
   ],
   theme: {
     // colors: {

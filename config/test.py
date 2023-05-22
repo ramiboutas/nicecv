@@ -1,9 +1,8 @@
 from __future__ import annotations
 
+from django import test
 from django.test.runner import DiscoverRunner
 from django.test.utils import override_settings
-
-from django import test
 from unittest_parametrize import ParametrizedTestCase
 
 

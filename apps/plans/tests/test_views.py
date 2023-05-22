@@ -1,13 +1,12 @@
 from http import HTTPStatus
 
-from django.urls import reverse
-from config.test import TestCase
 from django.test import RequestFactory
-
+from django.urls import reverse
 
 from apps.accounts.factories import UserFactory
-from apps.plans.factories import PremiumPlanFactory
 from apps.plans import views
+from apps.plans.factories import PremiumPlanFactory
+from config.test import TestCase
 
 
 class PlanViewTest(TestCase):

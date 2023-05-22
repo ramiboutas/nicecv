@@ -1,6 +1,5 @@
-from django.db import transaction
-
 from django.apps import apps
+from django.db import transaction
 
 
 def get_child_models(app_label: str, AbstractClass):

@@ -1,11 +1,10 @@
-from django.urls import reverse
 from django.test import RequestFactory
-from config.test import TestCase
-
+from django.urls import reverse
 
 from ..utils import _create_initial_profile
 from apps.accounts.factories import UserFactory
 from apps.core.sessions import get_or_create_session
+from config.test import TestCase
 
 
 class ProfileUtilsTests(TestCase):

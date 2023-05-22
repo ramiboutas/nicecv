@@ -1,17 +1,14 @@
 import uuid
-
-import auto_prefetch
-from PIL import Image
 from functools import cache
 
-from django.db.models import Max
-from django.db.models import Q, UniqueConstraint
+import auto_prefetch
 from django.conf import settings
+from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.contrib.sessions.models import Session
+from PIL import Image
 
 
 null_blank = {"null": True, "blank": True}
@@ -29,7 +26,8 @@ PROFILE_CATEGORIES = (
 
 
 def get_upload_path(instance, filename):
-    return f"profiles/{instance.__class__.__name__}/{filename}"
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return "profiles/{0}/{1}".format(instance.profile.id, filename)
 
 
 class Profile(auto_prefetch.Model):
@@ -205,8 +203,8 @@ class LabelSettings(AbstractProfileSetting):
 
 
 class Photo(AbstractProfileChild):
-    full = models.ImageField(null=True, upload_to="profiles/full-photos")
-    cropped = models.ImageField(null=True, upload_to="profiles/cropped-photos")
+    full = models.ImageField(null=True, upload_to=get_upload_path)
+    cropped = models.ImageField(null=True, upload_to=get_upload_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
     crop_y = models.PositiveSmallIntegerField(**null_blank)
     crop_width = models.PositiveSmallIntegerField(**null_blank)
@@ -223,9 +221,10 @@ class Photo(AbstractProfileChild):
 
     def crop(self):
         if self.full:
-            photo_full_copy = ContentFile(self.full.read())
-            cropped_name = "cropped_" + self.full.name.split("/")[-1]
-            self.cropped.save(cropped_name, photo_full_copy)
+            self.cropped.save(
+                "cropped_" + self.full.name.split("/")[-1],
+                ContentFile(self.full.read()),
+            )
             image = Image.open(self.cropped)
             cropping_area = (
                 self.crop_x,
@@ -235,11 +234,13 @@ class Photo(AbstractProfileChild):
             )
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
-            resized_image.save(self.cropped.path, commit=False)
+            resized_image.save(self.cropped.path)
             self.save()
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         if self.full:
+            size_modified = False
             try:
                 img = Image.open(self.full)
             except Exception as e:
@@ -249,16 +250,15 @@ class Photo(AbstractProfileChild):
                 new_size = (1200, 1200)
                 img.thumbnail(new_size)
                 img.save(self.full.path)
+                size_modified = True
 
             if not self.cropped:
-                d = min([img.height, img.width])
-                print(d)
-                self.crop_width = int(0.9 * d)
-                self.crop_height = int(0.9 * d)
-                self.crop_x = int(img.width - 0.05 * d)
-                self.crop_y = int(img.height - 0.05 * d)
-
-        super().save(*args, **kwargs)
+                if size_modified:
+                    img = Image.open(self.full)
+                distance = int(0.95 * min([img.height, img.width]))
+                self.crop_width, self.crop_height = distance, distance
+                self.crop_x = int((img.width - distance) / 2)
+                self.crop_y = int((img.height - distance) / 2)
 
 
 class Description(AbstractProfileChild):

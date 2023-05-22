@@ -1,14 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from wagtail.fields import RichTextField
-from wagtail.contrib.forms.models import AbstractEmailForm
-from wagtail.contrib.forms.models import AbstractFormField
+from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel
-from wagtail.admin.panels import MultiFieldPanel
 from wagtail.admin.panels import FieldRowPanel
 from wagtail.admin.panels import InlinePanel
-from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import MultiFieldPanel
+from wagtail.contrib.forms.models import AbstractEmailForm
+from wagtail.contrib.forms.models import AbstractFormField
+from wagtail.fields import RichTextField
 
 
 class ContactFormField(AbstractFormField):

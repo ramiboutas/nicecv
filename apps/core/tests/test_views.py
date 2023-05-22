@@ -1,12 +1,11 @@
 from http import HTTPStatus
 
 from django.test import RequestFactory
-
-from config.test import TestCase
 from django.urls import resolve
 
 from ..views import HomeView
 from apps.accounts.factories import UserFactory
+from config.test import TestCase
 
 
 class HomeViewTests(TestCase):

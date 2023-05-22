@@ -1,8 +1,7 @@
 """ This module will be used to make some performance checks """
-
 import inspect
-from time import time
 from functools import cache
+from time import time
 
 from django.apps import apps
 

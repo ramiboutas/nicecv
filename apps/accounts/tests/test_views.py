@@ -1,7 +1,8 @@
 from http import HTTPStatus
 
-from config.test import TestCase
 from django.urls import reverse
+
+from config.test import TestCase
 
 
 class CustomUserTests(TestCase):

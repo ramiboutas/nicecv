@@ -1,5 +1,5 @@
-from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 
 
 class HTTPResponseHXRedirect(HttpResponseRedirect):
