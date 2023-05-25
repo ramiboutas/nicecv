@@ -4,7 +4,6 @@ from functools import cache
 
 from django.conf import settings
 from django.forms import BaseInlineFormSet
-from django.forms import HiddenInput
 from django.forms import inlineformset_factory
 from django.forms import ModelForm
 from django.utils.safestring import mark_safe

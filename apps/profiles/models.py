@@ -16,6 +16,9 @@ null_blank_16 = {"null": True, "blank": True, "max_length": 16}
 null_blank_32 = {"null": True, "blank": True, "max_length": 32}
 null_blank_64 = {"null": True, "blank": True, "max_length": 34}
 null_blank_128 = {"null": True, "blank": True, "max_length": 128}
+null_blank_256 = {"null": True, "blank": True, "max_length": 256}
+null_blank_528 = {"null": True, "blank": True, "max_length": 528}
+null_blank_1024 = {"null": True, "blank": True, "max_length": 1024}
 
 
 PROFILE_CATEGORIES = (
@@ -35,7 +38,11 @@ class Profile(auto_prefetch.Model):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
     """
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     user = auto_prefetch.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -48,13 +55,16 @@ class Profile(auto_prefetch.Model):
         on_delete=models.CASCADE,
         **null_blank,
     )
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
     category = models.CharField(
-        max_length=16, choices=PROFILE_CATEGORIES, default="user_profile"
+        max_length=16,
+        choices=PROFILE_CATEGORIES,
+        default="user_profile",
     )
+
     public = models.BooleanField(default=False)
     slug = models.SlugField(**null_blank_16, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def update_url(self, params=None):
         url = reverse("profiles:update", kwargs={"id": self.id})
@@ -88,21 +98,19 @@ class Profile(auto_prefetch.Model):
 
     def collect_context(self) -> dict:
         from apps.profiles import forms
-        from .forms import get_forms
-        from .forms import get_inlineformset
 
         context = {}
         context["profile"] = self
         # one to one children
-        for Model, Form in get_forms(singles=True, settings=True).items():
+        for Model, Form in forms.get_forms(singles=True, settings=True).items():
             name = Model._meta.model_name
             context[name + "_form"] = Form(
                 instance=getattr(self, name), auto_id="id_%s_" + name
             )
         # one to many children
-        for Model, Form in get_forms(inlines=True).items():
+        for Model, Form in forms.get_forms(inlines=True).items():
             name = Model._meta.model_name
-            context[name + "_formset"] = get_inlineformset(Form)(instance=self)
+            context[name + "_formset"] = forms.get_inlineformset(Form)(instance=self)
 
         # photo forms
         context["uploadphoto_form"] = forms.UploadPhotoForm(instance=self.photo)
@@ -117,7 +125,7 @@ class Profile(auto_prefetch.Model):
         pass
 
 
-# Abract models
+# Abract models and mixins
 
 
 class ProfileChildMixin:
@@ -125,23 +133,35 @@ class ProfileChildMixin:
         return f"{self.__class__.__name__}-{self.id}"
 
     @property
-    def related_name(self):
+    def _related_name(self):
         return self.__class__._meta.model_name
 
     @property
-    def verbose_name(self):
+    def _verbose_name(self):
         return self.__class__._meta.verbose_name
 
     @property
     def active(self):
-        return getattr(self.profile.activationsettings, self.related_name, True)
+        return getattr(self.profile.activationsettings, self._related_name, True)
 
     @property
     def label(self):
-        return getattr(self.profile.labelsettings, self.related_name, self.verbose_name)
+        return getattr(
+            self.profile.labelsettings, self._related_name, self._verbose_name
+        )
 
 
-class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
+class LevelMethodsMixin:
+    @property
+    def level_base_5_int(self):
+        return (self.level * 5 / 100).__round__()
+
+    @property
+    def level_base_6_float(self):
+        return self.level * 6 / 100
+
+
+class AbstractProfileChild(auto_prefetch.Model):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     def update_form_url(self):
@@ -152,7 +172,7 @@ class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
         abstract = True
 
 
-class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
+class ProfileChildSet(auto_prefetch.Model):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     order = models.PositiveSmallIntegerField(default=1)
 
@@ -202,7 +222,7 @@ class LabelSettings(AbstractProfileSetting):
     description = models.CharField(max_length=32, default=_("Description"))
 
 
-class Photo(AbstractProfileChild):
+class Photo(AbstractProfileChild, ProfileChildMixin):
     full = models.ImageField(null=True, upload_to=get_upload_path)
     cropped = models.ImageField(null=True, upload_to=get_upload_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
@@ -259,6 +279,7 @@ class Photo(AbstractProfileChild):
                 self.crop_width, self.crop_height = distance, distance
                 self.crop_x = int((img.width - distance) / 2)
                 self.crop_y = int((img.height - distance) / 2)
+                self.save()
 
 
 class Description(AbstractProfileChild):
@@ -266,7 +287,8 @@ class Description(AbstractProfileChild):
     rows = models.PositiveSmallIntegerField(default=15)
 
     def save(self, *args, **kwargs):
-        self.rows = int(len(self.text) / 35)
+        rows = int(len(self.text) / 35)
+        self.rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
 
     class Meta(AbstractProfileChild.Meta):
@@ -322,1175 +344,129 @@ class Website(AbstractProfileChild):
         verbose_name = _("Website")
 
 
-class Skill(ProfileChildSet):
+class Skill(ProfileChildSet, ProfileChildMixin, LevelMethodsMixin):
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50)
 
     def __str__(self):
         return self.name
 
-    @property
-    def level_base_5_int(self):
-        return (self.level * 5 / 100).__round__()
-
-    @property
-    def level_base_6_float(self):
-        return self.level * 6 / 100
-
     class Meta(ProfileChildSet.Meta):
         verbose_name = _("Skills")
 
 
-# class Language(auto_prefetch.Model):
-#     """
-#     An object representing the languages that the member holds.
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="language_set"
-#     )
-#     name = models.CharField(max_length=50)
-#     level = models.IntegerField(default=3)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "id",
-#             "level",
-#         )
-
-#     def __str__(self):
-#         return self.name
-
-#     @property
-#     def level_base_5_int(self):
-#         return (self.level * 5 / 100).__round__()
-
-#     @property
-#     def level_base_6_float(self):
-#         return self.level * 6 / 100
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_LANGUAGE,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_LANGUAGE,
-#             },
-#         )
-
-
-# class Education(auto_prefetch.Model):
-#     """
-#     An object representing the member's educational background.
-#     See Education Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="education_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     grade = models.CharField(null=True, blank=True, max_length=20)
-#     institution = models.CharField(null=True, blank=True, max_length=100)
-#     institution_link = models.CharField(null=True, blank=True, max_length=200)
-#     start_date = models.CharField(null=True, blank=True, max_length=50)
-#     end_date = models.CharField(null=True, blank=True, max_length=50)
-#     description = models.TextField(null=True, blank=True, max_length=300)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def __str__(self):
-#         return self.title
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EDUCATION,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EDUCATION,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EDUCATION,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EDUCATION,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EDUCATION,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Experience(auto_prefetch.Model):
-#     """
-#     Employment history. See Positions for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="experience_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     location = models.CharField(null=True, blank=True, max_length=100)
-#     company = models.CharField(null=True, blank=True, max_length=100)
-#     company_link = models.CharField(null=True, blank=True, max_length=100)
-#     start_date = models.CharField(null=True, blank=True, max_length=100)
-#     end_date = models.CharField(null=True, blank=True, max_length=100)
-#     description = models.TextField(null=True, blank=True, max_length=1000)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def __str__(self):
-#         return self.title
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_EXPERIENCE,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Certification(auto_prefetch.Model):
-#     """
-#     An object representing the certifications that the member holds.
-#     See Certification Fields for a description of the fields available within this object.
-#     https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/certification
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, related_name="certification_set", on_delete=models.CASCADE
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     issuing_date = models.CharField(null=True, blank=True, max_length=100)
-#     issuer = models.CharField(null=True, blank=True, max_length=100)
-#     link = models.CharField(null=True, blank=True, max_length=100)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_CERTIFICATION,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Course(auto_prefetch.Model):
-#     """
-#     An object representing courses the member has taken.
-#     See Course Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/course
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, related_name="course_set", on_delete=models.CASCADE
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     issuing_date = models.CharField(null=True, blank=True, max_length=100)
-#     issuer = models.CharField(null=True, blank=True, max_length=100)
-#     hours = models.CharField(null=True, blank=True, max_length=100)
-#     link = models.CharField(null=True, blank=True, max_length=100)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_COURSE,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_COURSE,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_COURSE,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_COURSE,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_COURSE,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Honor(auto_prefetch.Model):
-#     """
-#     An object representing the various honors and awards the member has received.
-#     See Honor Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/honor
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="honor_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     issuing_date = models.CharField(null=True, blank=True, max_length=100)
-#     issuer = models.CharField(null=True, blank=True, max_length=100)
-#     link = models.CharField(null=True, blank=True, max_length=100)
-#     # description = models.TextField(null=True, blank=True)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_HONOR,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_HONOR,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_HONOR,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_HONOR,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_HONOR,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Organization(auto_prefetch.Model):
-#     """
-#     An object representing the organizations that the member is in.
-#     See Organization Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/organization
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="organization_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     role = models.CharField(null=True, blank=True, max_length=100)
-#     organization = models.CharField(null=True, blank=True, max_length=100)
-#     organization_link = models.CharField(null=True, blank=True, max_length=100)
-#     start_date = models.CharField(null=True, blank=True, max_length=50)
-#     end_date = models.CharField(null=True, blank=True, max_length=50)
-#     description = models.TextField(null=True, blank=True)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_ORGANIZATION,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Patent(auto_prefetch.Model):
-#     """
-#     An object representing the various patents associated with the member.
-#     See Patent Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/patent
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="patent_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     number = models.CharField(null=True, blank=True, max_length=15)
-#     issuer = models.CharField(null=True, blank=True, max_length=100)
-#     issuing_date = models.CharField(
-#         null=True, blank=True, max_length=100
-#     )  # when pending = False
-#     inventors = models.CharField(null=True, blank=True, max_length=200)
-#     link = models.CharField(null=True, blank=True, max_length=100)
-#     description = models.TextField(
-#         null=True, blank=True
-#     )  # suggest to use to include if the patent is patent is pending and more relevant info
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PATENT,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PATENT,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PATENT,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PATENT,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PATENT,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Project(auto_prefetch.Model):
-#     """
-#     An object representing the various projects associated with the member.
-#     See Project Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="project_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     role = models.CharField(null=True, blank=True, max_length=100)
-#     start_date = models.CharField(null=True, blank=True, max_length=100)
-#     end_date = models.CharField(null=True, blank=True, max_length=100)
-#     organization = models.CharField(null=True, blank=True, max_length=100)
-#     link = models.CharField(null=True, blank=True, max_length=100)
-#     description = models.TextField(null=True, blank=True)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PROJECT,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PROJECT,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PROJECT,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PROJECT,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PROJECT,
-#             },
-#         )
-
-#     def __str__(self):
-#         return self.title
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Publication(auto_prefetch.Model):
-#     """
-#     An object representing the various publications associated with the member.
-#     See Publication Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="publication_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=200)
-#     issuing_date = models.CharField(null=True, blank=True, max_length=20)
-#     authors = models.CharField(null=True, blank=True, max_length=200)
-#     publisher = models.CharField(null=True, blank=True, max_length=100)
-#     link = models.CharField(null=True, blank=True, max_length=100)
-#     description = models.TextField(null=True, blank=True, max_length=1000)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PUBLICATION,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PUBLICATION,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PUBLICATION,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PUBLICATION,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_PUBLICATION,
-#             },
-#         )
-
-#     def __str__(self):
-#         return self.name
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# class Volunteering(auto_prefetch.Model):
-#     """
-#     An object representing the member's volunteering experience.
-#     See Volunteering Experience Fields for a description of the fields available within this object.
-#     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/volunteering-experience
-#     """
-
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, on_delete=models.CASCADE, related_name="volunteering_set"
-#     )
-#     order = models.SmallIntegerField(default=0)
-
-#     title = models.CharField(null=True, blank=True, max_length=100)
-#     location = models.CharField(null=True, blank=True, max_length=100)
-#     organization = models.CharField(null=True, blank=True, max_length=100)
-#     organization_link = models.CharField(null=True, blank=True, max_length=100)
-#     start_date = models.CharField(null=True, blank=True, max_length=100)
-#     end_date = models.CharField(null=True, blank=True, max_length=100)
-#     description = models.TextField(null=True, blank=True, max_length=1000)
-
-#     class Meta(auto_prefetch.Model.Meta):
-#         ordering = (
-#             "order",
-#             "id",
-#         )
-
-#     def update_object_url(self):
-#         return reverse(
-#             "profiles_update_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
-#             },
-#         )
-
-#     def delete_object_url(self):
-#         return reverse(
-#             "profiles_delete_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
-#             },
-#         )
-
-#     def move_up_object_url(self):
-#         return reverse(
-#             "profiles_move_up_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
-#             },
-#         )
-
-#     def move_down_object_url(self):
-#         return reverse(
-#             "profiles_move_down_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
-#             },
-#         )
-
-#     def copy_object_url(self):
-#         return reverse(
-#             "profiles_copy_child_object",
-#             kwargs={
-#                 "pk": self.pk,
-#                 "pk_parent": self.profile.pk,
-#                 "slug": SLUG_FOR_CHILD_OBJECT_VOLUNTEERING,
-#             },
-#         )
-
-#     def save(self, *args, **kwargs):
-#         manage_instance_ordering(self)
-#         super().save(*args, **kwargs)
-
-
-# def get_child_class(slug):
-#     if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
-#         return Skill
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_LANGUAGE:
-#         return Language
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_EDUCATION:
-#         return Education
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_EXPERIENCE:
-#         return Experience
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_CERTIFICATION:
-#         return Certification
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_COURSE:
-#         return Course
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_HONOR:
-#         return Honor
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_ORGANIZATION:
-#         return Organization
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PATENT:
-#         return Patent
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PROJECT:
-#         return Project
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PUBLICATION:
-#         return Publication
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_VOLUNTEERING:
-#         return Volunteering
-
-
-# def update_child_object(slug=None, child_object=None, request=None):
-#     if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
-#         child_object.name = request.POST.get("name")
-#         child_object.level = request.POST.get("level")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_LANGUAGE:
-#         child_object.name = request.POST.get("name")
-#         child_object.level = request.POST.get("level")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_EDUCATION:  # education
-#         child_object.title = request.POST.get("title")
-#         child_object.grade = request.POST.get("grade")
-#         child_object.start_date = request.POST.get("start_date")
-#         child_object.end_date = request.POST.get("end_date")
-#         child_object.institution = request.POST.get("institution")
-#         child_object.institution_link = request.POST.get("institution_link")
-#         child_object.description = request.POST.get("description")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_EXPERIENCE:
-#         child_object.title = request.POST.get("title")
-#         child_object.location = request.POST.get("location")
-#         child_object.company = request.POST.get("company")
-#         child_object.company_link = request.POST.get("company_link")
-#         child_object.start_date = request.POST.get("start_date")
-#         child_object.end_date = request.POST.get("end_date")
-#         child_object.description = request.POST.get("description")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_CERTIFICATION:
-#         child_object.title = request.POST.get("title")
-#         child_object.issuing_date = request.POST.get("issuing_date")
-#         child_object.issuer = request.POST.get("issuer")
-#         child_object.link = request.POST.get("link")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_COURSE:
-#         child_object.title = request.POST.get("title")
-#         child_object.issuing_date = request.POST.get("issuing_date")
-#         child_object.issuer = request.POST.get("issuer")
-#         child_object.hours = request.POST.get("hours")
-#         child_object.link = request.POST.get("link")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_HONOR:
-#         child_object.title = request.POST.get("title")
-#         child_object.issuing_date = request.POST.get("issuing_date")
-#         child_object.issuer = request.POST.get("issuer")
-#         child_object.link = request.POST.get("link")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_ORGANIZATION:
-#         child_object.role = request.POST.get("role")
-#         child_object.organization = request.POST.get("organization")
-#         child_object.organization_link = request.POST.get("organization_link")
-#         child_object.start_date = request.POST.get("start_date")
-#         child_object.end_date = request.POST.get("end_date")
-#         child_object.description = request.POST.get("description")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PATENT:
-#         child_object.title = request.POST.get("title")
-#         child_object.number = request.POST.get("number")
-#         child_object.issuer = request.POST.get("issuer")
-#         child_object.issuing_date = request.POST.get("issuing_date")
-#         child_object.inventors = request.POST.get("inventors")
-#         child_object.link = request.POST.get("link")
-#         child_object.description = request.POST.get("description")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PROJECT:
-#         child_object.title = request.POST.get("title")
-#         child_object.role = request.POST.get("role")
-#         child_object.start_date = request.POST.get("start_date")
-#         child_object.end_date = request.POST.get("end_date")
-#         child_object.organization = request.POST.get("organization")
-#         child_object.link = request.POST.get("link")
-#         child_object.description = request.POST.get("description")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PUBLICATION:
-#         child_object.title = request.POST.get("title")
-#         child_object.issuing_date = request.POST.get("issuing_date")
-#         child_object.authors = request.POST.get("authors")
-#         child_object.publisher = request.POST.get("publisher")
-#         child_object.link = request.POST.get("link")
-#         child_object.description = request.POST.get("description")
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_VOLUNTEERING:
-#         child_object.title = request.POST.get("title")
-#         child_object.location = request.POST.get("location")
-#         child_object.organization = request.POST.get("organization")
-#         child_object.organization_link = request.POST.get("organization_link")
-#         child_object.start_date = request.POST.get("start_date")
-#         child_object.end_date = request.POST.get("end_date")
-#         child_object.description = request.POST.get("description")
-
-#     child_object.save()
-
-
-# def set_activation_state(slug=None, object=None, active=True):
-#     if slug == SLUG_FOR_PROFILE_FIELD_FIRSTNAME:
-#         object.firstname_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_LASTNAME:
-#         object.lastname_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_JOBTITLE:
-#         object.jobtitle_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_LOCATION:
-#         object.location_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_BIRTH:
-#         object.birth_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_PHONE:
-#         object.phone_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_EMAIL:
-#         object.email_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_DESCRIPTION:
-#         object.description_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_WEBSITE:
-#         object.website_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_LINKEDIN:
-#         object.linkedin_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_SKYPE:
-#         object.skype_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_INSTAGRAM:
-#         object.instagram_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_TWITTER:
-#         object.twitter_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_FACEBOOK:
-#         object.facebook_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_YOUTUBE:
-#         object.youtube_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_GITHUB:
-#         object.github_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_GITLAB:
-#         object.gitlab_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_STACKOVERFLOW:
-#         object.stackoverflow_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_MEDIUM:
-#         object.medium_active = active
-
-#     if slug == SLUG_FOR_PROFILE_FIELD_ORCID:
-#         object.orcid_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_SKILL:
-#         object.skill_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_LANGUAGE:
-#         object.language_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_EDUCATION:
-#         object.education_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_EXPERIENCE:
-#         object.experience_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_CERTIFICATION:
-#         object.certification_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_COURSE:
-#         object.course_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_HONOR:
-#         object.honor_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_ORGANIZATION:
-#         object.organization_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PATENT:
-#         object.patent_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PROJECT:
-#         object.project_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_PUBLICATION:
-#         object.publication_active = active
-
-#     if slug == SLUG_FOR_CHILD_OBJECT_VOLUNTEERING:
-#         object.volunteering_active = active
-
-#     object.save()
-
-
-# def get_child_object(slug=None, pk=None, profile=None):
-#     """
-#     This function gets an instance object
-#     """
-#     Klass = get_child_class(slug)
-#     return get_object_or_404(Klass, profile=profile, pk=pk)
-
-
-# def create_empty_child_object(slug=None, profile=None):
-#     """
-#     This function creates an empty object associated with a profile instance
-#     """
-#     Klass = get_child_class(slug)
-#     return Klass(profile=profile)
-
-
-# def get_above_child_object(slug=None, child_object=None, profile=None):
-#     """
-#     This function gets an instance object that is located before the "child_object"
-#     """
-#     Klass = get_child_class(slug)
-#     return Klass.objects.filter(order__lt=child_object.order, profile=profile).last()
-
-
-# def get_below_child_object(slug=None, child_object=None, profile=None):
-#     """
-#     This function gets an instance object that is located after the "child_object"
-#     """
-#     Klass = get_child_class(slug)
-#     return Klass.objects.filter(order__gt=child_object.order, profile=profile).first()
-
-
-# ####################################################################################
-
-# from apps.tex.models import ResumeTemplate
-
-
-# class Resume(auto_prefetch.Model):
-#     profile = auto_prefetch.ForeignKey(
-#         Profile, null=True, related_name="resume_set", on_delete=models.SET_NULL
-#     )
-#     template = auto_prefetch.ForeignKey(
-#         ResumeTemplate, null=True, on_delete=models.SET_NULL
-#     )
-#     image = models.ImageField(null=True, upload_to="resumes/images")
-#     pdf = models.FileField(null=True, upload_to="resumes/pdfs")
-
-#     def download_resume_pdf_url(self):
-#         return reverse(
-#             "profiles_get_resume_pdf",
-#             kwargs={"pk": self.pk, "pk_parent": self.profile.pk},
-#         )
-
-#     def download_resume_image_url(self):
-#         return reverse(
-#             "profiles_get_resume_image",
-#             kwargs={"pk": self.pk, "pk_parent": self.profile.pk},
-#         )
+class Language(ProfileChildSet, ProfileChildMixin, LevelMethodsMixin):
+    """
+    An object representing the languages that the member holds.
+    """
+
+    name = models.CharField(max_length=50)
+    level = models.IntegerField(default=3)
+
+    class Meta(ProfileChildSet.Meta):
+        verbose_name = _("Language")
+
+    def __str__(self):
+        return self.name
+
+
+class Education(ProfileChildSet, ProfileChildMixin):
+    """
+    An object representing the member's educational background.
+    See Education Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
+    """
+
+    title = models.CharField(null=True, blank=True, max_length=100)
+    institution = models.CharField(null=True, blank=True, max_length=100)
+    start_date = models.CharField(null=True, blank=True, max_length=50)
+    end_date = models.CharField(null=True, blank=True, max_length=50)
+    description = models.TextField(null=True, blank=True, max_length=300)
+
+    class Meta(ProfileChildSet.Meta):
+        verbose_name = _("Education")
+
+
+class Experience(ProfileChildSet, ProfileChildMixin):
+    """
+    Employment history. See Positions for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
+    """
+
+    title = models.CharField(**null_blank_32)
+    location = models.CharField(**null_blank_16)
+    company = models.CharField(**null_blank_16)
+    start_date = models.CharField(**null_blank_16)
+    end_date = models.CharField(**null_blank_16)
+    description = models.TextField(**null_blank_1024)
+
+    class Meta(ProfileChildSet.Meta):
+        verbose_name = _("Experience")
+
+    def __str__(self):
+        return self.title
+
+
+class Achievement(ProfileChildSet, ProfileChildMixin):
+    """
+    An object representing the various patents associated with the member.
+    See Patent Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/patent
+    """
+
+    title = models.CharField(null=True, blank=True, max_length=100)
+    number = models.CharField(null=True, blank=True, max_length=15)
+    issuer = models.CharField(null=True, blank=True, max_length=100)
+    issuing_date = models.CharField(
+        null=True, blank=True, max_length=100
+    )  # when pending = False
+    inventors = models.CharField(null=True, blank=True, max_length=200)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(
+        null=True, blank=True
+    )  # suggest to use to include if the patent is patent is pending and more relevant info
+
+    class Meta(ProfileChildSet.Meta):
+        verbose_name = _("Achievements")
+
+
+class Project(ProfileChildSet, ProfileChildMixin):
+    """
+    An object representing the various projects associated with the member.
+    See Project Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
+    """
+
+    profile = auto_prefetch.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="project_set"
+    )
+    order = models.SmallIntegerField(default=0)
+
+    title = models.CharField(null=True, blank=True, max_length=100)
+    role = models.CharField(null=True, blank=True, max_length=100)
+    start_date = models.CharField(null=True, blank=True, max_length=100)
+    end_date = models.CharField(null=True, blank=True, max_length=100)
+    organization = models.CharField(null=True, blank=True, max_length=100)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True)
+
+    class Meta(ProfileChildSet.Meta):
+        verbose_name = _("Projects")
+
+
+class Publication(ProfileChildSet, ProfileChildMixin):
+    """
+    An object representing the various publications associated with the member.
+    See Publication Fields for a description of the fields available within this object.
+    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
+    """
+
+    title = models.CharField(null=True, blank=True, max_length=200)
+    issuing_date = models.CharField(null=True, blank=True, max_length=20)
+    authors = models.CharField(null=True, blank=True, max_length=200)
+    publisher = models.CharField(null=True, blank=True, max_length=100)
+    link = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True, max_length=1000)
+
+    class Meta(ProfileChildSet.Meta):
+        verbose_name = _("Publications")
