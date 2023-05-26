@@ -39,6 +39,36 @@
           <h2>{{ profile.labelsettings.skill_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=skill_formset update_url=profile.update_skill_url order_url=profile.order_skill_url %}
         {% endif %}
+        <!-- formset languages -->
+        {% if profile.activationsettings.language_set %}
+          <h2>{{ profile.labelsettings.language_set }}</h2>
+          {% include "profiles/partials/childset.html" with formset=language_formset update_url=profile.update_language_url order_url=profile.order_language_url %}
+        {% endif %}
+        <!-- formset education -->
+        {% if profile.activationsettings.education_set %}
+          <h2>{{ profile.labelsettings.education_set }}</h2>
+          {% include "profiles/partials/childset.html" with formset=education_formset update_url=profile.update_education_url order_url=profile.order_education_url %}
+        {% endif %}
+        <!-- formset experience -->
+        {% if profile.activationsettings.experience_set %}
+          <h2>{{ profile.labelsettings.experience_set }}</h2>
+          {% include "profiles/partials/childset.html" with formset=experience_formset update_url=profile.update_experience_url order_url=profile.order_experience_url %}
+        {% endif %}
+        <!-- formset achievement -->
+        {% if profile.activationsettings.achievement_set %}
+          <h2>{{ profile.labelsettings.achievement_set }}</h2>
+          {% include "profiles/partials/childset.html" with formset=achievement_formset update_url=profile.update_achievement_url order_url=profile.order_achievement_url %}
+        {% endif %}
+        <!-- formset project -->
+        {% if profile.activationsettings.project_set %}
+          <h2>{{ profile.labelsettings.project_set }}</h2>
+          {% include "profiles/partials/childset.html" with formset=project_formset update_url=profile.update_project_url order_url=profile.order_project_url %}
+        {% endif %}
+        <!-- formset publication -->
+        {% if profile.activationsettings.publication_set %}
+          <h2>{{ profile.labelsettings.publication_set }}</h2>
+          {% include "profiles/partials/childset.html" with formset=publication_formset update_url=profile.update_publication_url order_url=profile.order_publication_url %}
+        {% endif %}
       </div>
     </div>
   </div>

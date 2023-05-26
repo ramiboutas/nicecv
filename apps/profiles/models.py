@@ -93,6 +93,54 @@ class Profile(auto_prefetch.Model):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Skill)
 
+    def update_language_url(self):
+        """This method is made for being called from Templates"""
+        return self.update_formset_url(Language)
+
+    def order_language_url(self):
+        """This method is made for being called from Templates"""
+        return self.order_formset_url(Language)
+
+    def update_education_url(self):
+        """This method is made for being called from Templates"""
+        return self.update_formset_url(Education)
+
+    def order_education_url(self):
+        """This method is made for being called from Templates"""
+        return self.order_formset_url(Education)
+
+    def update_experience_url(self):
+        """This method is made for being called from Templates"""
+        return self.update_formset_url(Experience)
+
+    def order_experience_url(self):
+        """This method is made for being called from Templates"""
+        return self.order_formset_url(Experience)
+
+    def update_achievement_url(self):
+        """This method is made for being called from Templates"""
+        return self.update_formset_url(Achievement)
+
+    def order_achievement_url(self):
+        """This method is made for being called from Templates"""
+        return self.order_formset_url(Achievement)
+
+    def update_project_url(self):
+        """This method is made for being called from Templates"""
+        return self.update_formset_url(Project)
+
+    def order_project_url(self):
+        """This method is made for being called from Templates"""
+        return self.order_formset_url(Project)
+
+    def update_publication_url(self):
+        """This method is made for being called from Templates"""
+        return self.update_formset_url(Publication)
+
+    def order_publication_url(self):
+        """This method is made for being called from Templates"""
+        return self.order_formset_url(Publication)
+
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
 
@@ -134,7 +182,10 @@ class ProfileChildMixin:
 
     @property
     def _related_name(self):
-        return self.__class__._meta.model_name
+        model_name = self.__class__._meta.model_name
+        if ProfileChildSet in self.__class__.__bases__:
+            return model_name + "_set"
+        return model_name
 
     @property
     def _verbose_name(self):
@@ -161,7 +212,7 @@ class LevelMethodsMixin:
         return self.level * 6 / 100
 
 
-class AbstractProfileChild(auto_prefetch.Model):
+class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     def update_form_url(self):
@@ -172,7 +223,7 @@ class AbstractProfileChild(auto_prefetch.Model):
         abstract = True
 
 
-class ProfileChildSet(auto_prefetch.Model):
+class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     order = models.PositiveSmallIntegerField(default=1)
 
@@ -214,15 +265,28 @@ class ActivationSettings(AbstractProfileSetting):
     website = models.BooleanField(default=True)
     description = models.BooleanField(default=True)
     skill_set = models.BooleanField(default=True)
+    language_set = models.BooleanField(default=False)
+    education_set = models.BooleanField(default=True)
+    experience_set = models.BooleanField(default=True)
+    achievement_set = models.BooleanField(default=False)
+    project_set = models.BooleanField(default=False)
+    publication_set = models.BooleanField(default=False)
 
 
 class LabelSettings(AbstractProfileSetting):
     website = models.CharField(max_length=32, default=_("Website"))
     skill_set = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("Description"))
+    skill_set = models.CharField(max_length=32, default=_("Skills"))
+    language_set = models.CharField(max_length=32, default=_("Languages"))
+    education_set = models.CharField(max_length=32, default=_("Education"))
+    experience_set = models.CharField(max_length=32, default=_("Work experience"))
+    achievement_set = models.CharField(max_length=32, default=_("Achievements"))
+    project_set = models.CharField(max_length=32, default=_("Projects"))
+    publication_set = models.CharField(max_length=32, default=_("Publications"))
 
 
-class Photo(AbstractProfileChild, ProfileChildMixin):
+class Photo(AbstractProfileChild):
     full = models.ImageField(null=True, upload_to=get_upload_path)
     cropped = models.ImageField(null=True, upload_to=get_upload_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
@@ -279,7 +343,7 @@ class Photo(AbstractProfileChild, ProfileChildMixin):
                 self.crop_width, self.crop_height = distance, distance
                 self.crop_x = int((img.width - distance) / 2)
                 self.crop_y = int((img.height - distance) / 2)
-                self.save()
+                super().save(*args, **kwargs)
 
 
 class Description(AbstractProfileChild):
@@ -344,7 +408,7 @@ class Website(AbstractProfileChild):
         verbose_name = _("Website")
 
 
-class Skill(ProfileChildSet, ProfileChildMixin, LevelMethodsMixin):
+class Skill(ProfileChildSet, LevelMethodsMixin):
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50)
 
@@ -355,7 +419,7 @@ class Skill(ProfileChildSet, ProfileChildMixin, LevelMethodsMixin):
         verbose_name = _("Skills")
 
 
-class Language(ProfileChildSet, ProfileChildMixin, LevelMethodsMixin):
+class Language(ProfileChildSet, LevelMethodsMixin):
     """
     An object representing the languages that the member holds.
     """
@@ -370,24 +434,24 @@ class Language(ProfileChildSet, ProfileChildMixin, LevelMethodsMixin):
         return self.name
 
 
-class Education(ProfileChildSet, ProfileChildMixin):
+class Education(ProfileChildSet):
     """
     An object representing the member's educational background.
     See Education Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
 
-    title = models.CharField(null=True, blank=True, max_length=100)
-    institution = models.CharField(null=True, blank=True, max_length=100)
-    start_date = models.CharField(null=True, blank=True, max_length=50)
-    end_date = models.CharField(null=True, blank=True, max_length=50)
-    description = models.TextField(null=True, blank=True, max_length=300)
+    title = models.CharField(**null_blank_64, verbose_name=_("🎓 Title"))
+    institution = models.CharField(**null_blank_64, verbose_name=_("🏫 Institution"))
+    start_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Start"))
+    end_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ End"))
+    description = models.TextField(**null_blank_1024, verbose_name=_("📝 Description"))
 
     class Meta(ProfileChildSet.Meta):
         verbose_name = _("Education")
 
 
-class Experience(ProfileChildSet, ProfileChildMixin):
+class Experience(ProfileChildSet):
     """
     Employment history. See Positions for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
@@ -407,54 +471,38 @@ class Experience(ProfileChildSet, ProfileChildMixin):
         return self.title
 
 
-class Achievement(ProfileChildSet, ProfileChildMixin):
-    """
-    An object representing the various patents associated with the member.
-    See Patent Fields for a description of the fields available within this object.
-    # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/patent
-    """
+class Achievement(ProfileChildSet):
+    """Archivement object"""
 
-    title = models.CharField(null=True, blank=True, max_length=100)
-    number = models.CharField(null=True, blank=True, max_length=15)
-    issuer = models.CharField(null=True, blank=True, max_length=100)
-    issuing_date = models.CharField(
-        null=True, blank=True, max_length=100
-    )  # when pending = False
-    inventors = models.CharField(null=True, blank=True, max_length=200)
-    link = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(
-        null=True, blank=True
-    )  # suggest to use to include if the patent is patent is pending and more relevant info
+    title = models.CharField(**null_blank_64)
+    issuing_date = models.CharField(**null_blank_16)
+    link = models.CharField(**null_blank_128)
+    description = models.TextField(null_blank_1024)
 
     class Meta(ProfileChildSet.Meta):
         verbose_name = _("Achievements")
 
 
-class Project(ProfileChildSet, ProfileChildMixin):
+class Project(ProfileChildSet):
     """
     An object representing the various projects associated with the member.
     See Project Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
 
-    profile = auto_prefetch.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name="project_set"
-    )
-    order = models.SmallIntegerField(default=0)
-
-    title = models.CharField(null=True, blank=True, max_length=100)
-    role = models.CharField(null=True, blank=True, max_length=100)
-    start_date = models.CharField(null=True, blank=True, max_length=100)
-    end_date = models.CharField(null=True, blank=True, max_length=100)
-    organization = models.CharField(null=True, blank=True, max_length=100)
-    link = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True)
+    title = models.CharField(**null_blank_64)
+    role = models.CharField(**null_blank_32)
+    start_date = models.CharField(**null_blank_16)
+    end_date = models.CharField(**null_blank_16)
+    organization = models.CharField(**null_blank_64)
+    link = models.CharField(**null_blank_128)
+    description = models.TextField(**null_blank_1024)
 
     class Meta(ProfileChildSet.Meta):
         verbose_name = _("Projects")
 
 
-class Publication(ProfileChildSet, ProfileChildMixin):
+class Publication(ProfileChildSet):
     """
     An object representing the various publications associated with the member.
     See Publication Fields for a description of the fields available within this object.

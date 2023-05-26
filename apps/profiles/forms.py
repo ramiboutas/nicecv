@@ -277,3 +277,45 @@ class SkillForm(BaseChildFormSet):
     class Meta:
         fields = ["name", "level"]
         model = models.Skill
+
+
+class LanguageForm(BaseChildFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        build_widgets(
+            self,
+            fields=["name"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+
+    class Meta:
+        fields = ["name", "level"]
+        model = models.Language
+
+
+class EducationForm(BaseChildFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        build_widgets(
+            self,
+            fields=[
+                "title",
+                "institution",
+                "start_date",
+                "end_date",
+                "description",
+            ],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+
+    class Meta:
+        fields = [
+            "title",
+            "institution",
+            "start_date",
+            "end_date",
+            "description",
+        ]
+        model = models.Education
