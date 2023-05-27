@@ -183,7 +183,7 @@ class ProfileChildMixin:
     @property
     def _related_name(self):
         model_name = self.__class__._meta.model_name
-        if ProfileChildSet in self.__class__.__bases__:
+        if AbstractChildSet in self.__class__.__bases__:
             return model_name + "_set"
         return model_name
 
@@ -223,7 +223,7 @@ class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
         abstract = True
 
 
-class ProfileChildSet(auto_prefetch.Model, ProfileChildMixin):
+class AbstractChildSet(auto_prefetch.Model, ProfileChildMixin):
     profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     order = models.PositiveSmallIntegerField(default=1)
 
@@ -408,18 +408,18 @@ class Website(AbstractProfileChild):
         verbose_name = _("Website")
 
 
-class Skill(ProfileChildSet, LevelMethodsMixin):
+class Skill(AbstractChildSet, LevelMethodsMixin):
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=50)
 
     def __str__(self):
         return self.name
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Skills")
 
 
-class Language(ProfileChildSet, LevelMethodsMixin):
+class Language(AbstractChildSet, LevelMethodsMixin):
     """
     An object representing the languages that the member holds.
     """
@@ -427,14 +427,29 @@ class Language(ProfileChildSet, LevelMethodsMixin):
     name = models.CharField(max_length=50)
     level = models.IntegerField(default=3)
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Language")
 
     def __str__(self):
         return self.name
 
 
-class Education(ProfileChildSet):
+class DatesAndDescriptionFields(auto_prefetch.Model):
+    start_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Start"))
+    end_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ End"))
+    description = models.TextField(**null_blank_1024, verbose_name=_("📝 Description"))
+    rows = models.PositiveSmallIntegerField(default=10)
+
+    def save(self, *args, **kwargs):
+        rows = int(len(self.description) / 35)
+        self.rows = rows if rows > 3 else 3
+        super().save(*args, **kwargs)
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+
+
+class Education(AbstractChildSet, DatesAndDescriptionFields):
     """
     An object representing the member's educational background.
     See Education Fields for a description of the fields available within this object.
@@ -443,47 +458,40 @@ class Education(ProfileChildSet):
 
     title = models.CharField(**null_blank_64, verbose_name=_("🎓 Title"))
     institution = models.CharField(**null_blank_64, verbose_name=_("🏫 Institution"))
-    start_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Start"))
-    end_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ End"))
-    description = models.TextField(**null_blank_1024, verbose_name=_("📝 Description"))
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Education")
 
 
-class Experience(ProfileChildSet):
+class Experience(AbstractChildSet, DatesAndDescriptionFields):
     """
     Employment history. See Positions for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
     """
 
-    title = models.CharField(**null_blank_32)
+    title = models.CharField(**null_blank_64, verbose_name=_("🎓 Title"))
     location = models.CharField(**null_blank_16)
     company = models.CharField(**null_blank_16)
-    start_date = models.CharField(**null_blank_16)
-    end_date = models.CharField(**null_blank_16)
-    description = models.TextField(**null_blank_1024)
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Experience")
 
     def __str__(self):
         return self.title
 
 
-class Achievement(ProfileChildSet):
+class Achievement(AbstractChildSet):
     """Archivement object"""
 
-    title = models.CharField(**null_blank_64)
-    issuing_date = models.CharField(**null_blank_16)
+    title = models.CharField(**null_blank_128, verbose_name=_("🎓 Title"))
+    date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Date"))
     link = models.CharField(**null_blank_128)
-    description = models.TextField(null_blank_1024)
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Achievements")
 
 
-class Project(ProfileChildSet):
+class Project(AbstractChildSet):
     """
     An object representing the various projects associated with the member.
     See Project Fields for a description of the fields available within this object.
@@ -492,17 +500,15 @@ class Project(ProfileChildSet):
 
     title = models.CharField(**null_blank_64)
     role = models.CharField(**null_blank_32)
-    start_date = models.CharField(**null_blank_16)
-    end_date = models.CharField(**null_blank_16)
     organization = models.CharField(**null_blank_64)
     link = models.CharField(**null_blank_128)
     description = models.TextField(**null_blank_1024)
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Projects")
 
 
-class Publication(ProfileChildSet):
+class Publication(AbstractChildSet):
     """
     An object representing the various publications associated with the member.
     See Publication Fields for a description of the fields available within this object.
@@ -516,5 +522,5 @@ class Publication(ProfileChildSet):
     link = models.CharField(null=True, blank=True, max_length=100)
     description = models.TextField(null=True, blank=True, max_length=1000)
 
-    class Meta(ProfileChildSet.Meta):
+    class Meta(AbstractChildSet.Meta):
         verbose_name = _("Publications")

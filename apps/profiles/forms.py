@@ -297,6 +297,8 @@ class LanguageForm(BaseChildFormSet):
 class EducationForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        obj = kwargs.get("instance", None)
+        rows = getattr(obj, "rows", 3)
         build_widgets(
             self,
             fields=[
@@ -304,10 +306,18 @@ class EducationForm(BaseChildFormSet):
                 "institution",
                 "start_date",
                 "end_date",
+            ],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+        build_widgets(
+            self,
+            fields=[
                 "description",
             ],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            rows=rows,
         )
 
     class Meta:
