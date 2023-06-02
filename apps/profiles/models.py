@@ -441,7 +441,7 @@ class DatesAndDescriptionFields(auto_prefetch.Model):
     rows = models.PositiveSmallIntegerField(default=10)
 
     def save(self, *args, **kwargs):
-        rows = int(len(self.description) / 35)
+        rows = int(len(self.description) / 80)
         self.rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
 
