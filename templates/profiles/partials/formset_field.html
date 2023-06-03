@@ -1,26 +1,18 @@
-<div
-    {% if field.widget_type == "textarea" %}
-      class="relative col-span-4"
-    {% else %}
-      class="relative col-span-2"
-    {% endif %}
-    x-data="{ active: false }"
-    @click="active = true"
-    @mouseenter="active = true"
-    @mouseleave="active = false"
-    >
+<div {% if field.widget_type == "textarea" %} class="relative col-span-4" {% else %} class="relative col-span-2" {% endif %}
+     x-data="{ active: false }"
+     @click="active = true"
+     @mouseenter="active = true"
+     @mouseleave="active = false">
   {% if field.widget_type == "text" or field.widget_type == "textarea" %}
     <label for="{{ field.id_for_label }}"
-           :class="active ? 'bg-indigo-100' : ''"
-           class="absolute -top-2 left-2 inline-block rounded px-1 text-xs font-medium text-gray-400">
+           :class="active ? 'bg-indigo-300' : ''"
+           class="absolute -top-2 left-2 inline-block rounded px-1 text-xs font-medium text-gray-500">
       {{ field.label }}
     </label>
   {% elif field.widget_type == "number" %}
     <label for="{{ field.id_for_label }}"
-           :class="active ? 'bg-indigo-50' : ''"
-           class="-top-1 left-2 inline-block px-1 text-xs font-medium text-gray-400 ">
-      {{ field.label }}
-    </label>
+           :class="active ? 'bg-indigo-300' : ''"
+           class="-top-1 left-2 inline-block px-1 text-xs font-medium text-gray-500 ">{{ field.label }}</label>
   {% endif %}
   {{ field }}
 </div>

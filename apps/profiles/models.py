@@ -275,7 +275,6 @@ class ActivationSettings(AbstractProfileSetting):
 
 class LabelSettings(AbstractProfileSetting):
     website = models.CharField(max_length=32, default=_("Website"))
-    skill_set = models.CharField(max_length=32, default=_("Skills"))
     description = models.CharField(max_length=32, default=_("Description"))
     skill_set = models.CharField(max_length=32, default=_("Skills"))
     language_set = models.CharField(max_length=32, default=_("Languages"))
@@ -356,7 +355,7 @@ class Description(AbstractProfileChild):
         super().save(*args, **kwargs)
 
     class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Description")
+        verbose_name = _("Profile description")
 
 
 class Fullname(AbstractProfileChild):
@@ -409,8 +408,8 @@ class Website(AbstractProfileChild):
 
 
 class Skill(AbstractChildSet, LevelMethodsMixin):
-    name = models.CharField(max_length=50)
-    level = models.IntegerField(default=50)
+    name = models.CharField(max_length=50, verbose_name=_("📊 Skill"))
+    level = models.IntegerField(default=50, verbose_name=_("Level"))
 
     def __str__(self):
         return self.name
@@ -424,8 +423,8 @@ class Language(AbstractChildSet, LevelMethodsMixin):
     An object representing the languages that the member holds.
     """
 
-    name = models.CharField(max_length=50)
-    level = models.IntegerField(default=3)
+    name = models.CharField(max_length=50, verbose_name=_("🗣️ Language"))
+    level = models.IntegerField(default=50, verbose_name=_("Level"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Language")
@@ -469,9 +468,9 @@ class Experience(AbstractChildSet, DatesAndDescriptionFields):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
     """
 
-    title = models.CharField(**null_blank_64, verbose_name=_("🎓 Title"))
-    location = models.CharField(**null_blank_16)
-    company = models.CharField(**null_blank_16)
+    title = models.CharField(**null_blank_64, verbose_name=_("🧑‍💼 Job title"))
+    location = models.CharField(**null_blank_16, verbose_name=_("📍 Location"))
+    company = models.CharField(**null_blank_16, verbose_name=_("🏢 Company name"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Experience")
@@ -483,9 +482,8 @@ class Experience(AbstractChildSet, DatesAndDescriptionFields):
 class Achievement(AbstractChildSet):
     """Archivement object"""
 
-    title = models.CharField(**null_blank_128, verbose_name=_("🎓 Title"))
+    title = models.CharField(**null_blank_128, verbose_name=_("🏆 Goal achieved"))
     date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Date"))
-    link = models.CharField(**null_blank_128)
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Achievements")
@@ -498,11 +496,10 @@ class Project(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
 
-    title = models.CharField(**null_blank_64)
-    role = models.CharField(**null_blank_32)
-    organization = models.CharField(**null_blank_64)
-    link = models.CharField(**null_blank_128)
-    description = models.TextField(**null_blank_1024)
+    title = models.CharField(**null_blank_64, verbose_name=_("🌍 Project name"))
+    role = models.CharField(**null_blank_32, verbose_name=_("🧑‍💼 Your role in the project"))
+    organization = models.CharField(**null_blank_64, verbose_name=_("🤝 Organization"))
+    link = models.CharField(**null_blank_128, verbose_name=_("🔗 Link"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Projects")
@@ -515,12 +512,11 @@ class Publication(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
 
-    title = models.CharField(null=True, blank=True, max_length=200)
-    issuing_date = models.CharField(null=True, blank=True, max_length=20)
-    authors = models.CharField(null=True, blank=True, max_length=200)
-    publisher = models.CharField(null=True, blank=True, max_length=100)
-    link = models.CharField(null=True, blank=True, max_length=100)
-    description = models.TextField(null=True, blank=True, max_length=1000)
+    date = models.CharField(null=True, blank=True, max_length=20, verbose_name=_("🗓️ Date"))
+    title = models.CharField(null=True, blank=True, max_length=200, verbose_name=_("🔬 Publication title"))
+    publisher = models.CharField(null=True, blank=True, max_length=100, verbose_name=_("📑 Publisher"))
+    link = models.CharField(null=True, blank=True, max_length=100, verbose_name=_("🔗 Link"))
+
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Publications")

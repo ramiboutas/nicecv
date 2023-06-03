@@ -1,76 +1,76 @@
 {% if profile.photo.active %}
-  {% load static i18n %}
-  <div {% if photoopen or request.GET.photoopen %} x-data="{ show : true }" {% else %} x-data="{ show : false }" {% endif %}>
-    <div>
-      {% if profile.photo.cropped %}
-        <button class="w-full" @click="show = true" onclick="pollImageToCrop()">
-          {% include "profiles/photo/cropped.html" %}
-        </button>
-      {% else %}
-        <button class="rounded-md w-full px-3 py-2 text-sm text-indigo-600 border-dashed border-2 border-indigo-100 "
-                @click="show = true"
-                id="photo-cropped"
-                type="button">{% trans "Add photo" %} 🧑‍💼</button>
-      {% endif %}
-    </div>
-    <div x-show="show"
-         class="relative z-10"
-         aria-labelledby="slide-over-title"
-         role="dialog"
-         aria-modal="true">
-      <div class="fixed inset-0"></div>
-      <div class="fixed inset-0 overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden">
-          <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
-            <div x-show="show"
-                 class="pointer-events-auto w-screen max-w-2xl"
-                 x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
-                 x-transition:enter-start="translate-x-full"
-                 x-transition:enter-end="translate-x-0"
-                 x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-                 x-transition:leave-start="translate-x-0"
-                 x-transition:leave-end="translate-x-full">
-              <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
-                <div class="px-4 sm:px-6">
-                  <div class="flex items-start justify-between">
-                    <h2 class="text-base font-semibold leading-6 text-gray-900"
-                        id="slide-over-title">{% trans "Edit photo" %}</h2>
-                    <div class="ml-3 flex h-7 items-center">
-                      <button type="button"
-                              class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <a href="{{ profile.update_url }}"
-                           hx-boost="true"
-                           hx-push-url="{{ profile.update_url }}">
-                          <span class="sr-only">Close panel</span>
-                          <svg class="h-6 w-6"
-                               fill="none"
-                               viewBox="0 0 24 24"
-                               stroke-width="1.5"
-                               stroke="currentColor"
-                               aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </a>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="relative mt-6 flex-1 px-4 sm:px-6">
-                  <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
-                    <div class="px-4 py-5 sm:p-6 border">
-                      {% if profile.photo.full %}
-                        {% include "profiles/photo/crop_form.html" %}
-                      {% else %}
-                        {% include "profiles/photo/new.html" %}
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    {% load static i18n %}
+    <div {% if photoopen or request.GET.photoopen %} x-data="{ show : true }" {% else %} x-data="{ show : false }" {% endif %}>
+        <div>
+            {% if profile.photo.cropped %}
+                <button class="w-full" @click="show = true" onclick="pollImageToCrop()">
+                    {% include "profiles/photo/cropped.html" %}
+                </button>
+            {% else %}
+                <button class="rounded-md w-full px-3 py-2 text-sm text-indigo-600 border-dashed border-2 border-indigo-100 "
+                        @click="show = true"
+                        id="photo-cropped"
+                        type="button">{% trans "Add photo" %} 🧑‍💼</button>
+            {% endif %}
         </div>
-      </div>
+        <div x-show="show"
+             class="relative z-10"
+             aria-labelledby="slide-over-title"
+             role="dialog"
+             aria-modal="true">
+            <div class="fixed inset-0"></div>
+            <div class="fixed inset-0 overflow-hidden">
+                <div class="absolute inset-0 overflow-hidden">
+                    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+                        <div x-show="show"
+                             class="pointer-events-auto w-screen max-w-2xl"
+                             x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                             x-transition:enter-start="translate-x-full"
+                             x-transition:enter-end="translate-x-0"
+                             x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                             x-transition:leave-start="translate-x-0"
+                             x-transition:leave-end="translate-x-full">
+                            <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                                <div class="px-4 sm:px-6">
+                                    <div class="flex items-start justify-between">
+                                        <h2 class="text-base font-semibold leading-6 text-gray-900"
+                                            id="slide-over-title">{% trans "Edit photo" %}</h2>
+                                        <div class="ml-3 flex h-7 items-center">
+                                            <button type="button"
+                                                    class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                <a href="{{ profile.update_url }}"
+                                                   hx-boost="true"
+                                                   hx-push-url="{{ profile.update_url }}">
+                                                    <span class="sr-only">Close panel</span>
+                                                    <svg class="h-6 w-6"
+                                                         fill="none"
+                                                         viewBox="0 0 24 24"
+                                                         stroke-width="1.5"
+                                                         stroke="currentColor"
+                                                         aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative mt-6 flex-1 px-4 sm:px-6">
+                                    <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
+                                        <div class="px-4 py-5 sm:p-6 border">
+                                            {% if profile.photo.full %}
+                                                {% include "profiles/photo/crop_form.html" %}
+                                            {% else %}
+                                                {% include "profiles/photo/new.html" %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 {% endif %}

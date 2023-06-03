@@ -200,12 +200,7 @@ class CropPhotoForm(ModelForm):
 
     class Meta:
         model = models.Photo
-        fields = [
-            "crop_x",
-            "crop_y",
-            "crop_width",
-            "crop_height",
-        ]
+        fields = ["crop_x", "crop_y", "crop_width", "crop_height"]
 
 
 # profile settings
@@ -226,7 +221,19 @@ class ActivationSettingsForm(BaseSettingForm):
 
     class Meta(BaseSettingForm.Meta):
         model = models.ActivationSettings
-        fields = ["photo", "jobtitle", "website", "description", "skill_set"]
+        fields = [
+            "photo",
+            "jobtitle",
+            "website",
+            "description",
+            "skill_set",
+            "language_set",
+            "education_set",
+            "experience_set",
+            "achievement_set",
+            "project_set",
+            "publication_set",
+        ]
 
 
 class LabelSettingsForm(BaseSettingForm):
@@ -241,7 +248,17 @@ class LabelSettingsForm(BaseSettingForm):
 
     class Meta(BaseSettingForm.Meta):
         model = models.LabelSettings
-        fields = ["website", "description", "skill_set"]
+        fields = [
+            "website",
+            "description",
+            "skill_set",
+            "language_set",
+            "education_set",
+            "experience_set",
+            "achievement_set",
+            "project_set",
+            "publication_set",
+        ]
 
 
 # profile child formsets
@@ -301,31 +318,89 @@ class EducationForm(BaseChildFormSet):
         rows = getattr(obj, "rows", 3)
         build_widgets(
             self,
-            fields=[
-                "title",
-                "institution",
-                "start_date",
-                "end_date",
-            ],
+            fields=["title", "institution", "start_date", "end_date"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
         )
         build_widgets(
             self,
-            fields=[
-                "description",
-            ],
+            fields=["description"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             rows=rows,
         )
 
     class Meta:
-        fields = [
-            "title",
-            "institution",
-            "start_date",
-            "end_date",
-            "description",
-        ]
+        fields = ["start_date", "end_date", "title", "institution", "description"]
         model = models.Education
+
+
+class ExperienceForm(BaseChildFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        obj = kwargs.get("instance", None)
+        rows = getattr(obj, "rows", 3)
+        build_widgets(
+            self,
+            fields=["title", "company", "start_date", "end_date"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+        build_widgets(
+            self,
+            fields=["description"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            rows=rows,
+        )
+
+    class Meta:
+        fields = ["start_date", "end_date", "title", "company", "description"]
+        model = models.Experience
+
+
+class AchievementForm(BaseChildFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        build_widgets(
+            self,
+            fields=["title", "date"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+
+    class Meta:
+        fields = ["date", "title"]
+        model = models.Achievement
+
+
+class ProjectForm(BaseChildFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        build_widgets(
+            self,
+            fields=["role", "title", "organization", "link"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+
+    class Meta:
+        fields = ["title", "role", "organization", "link"]
+        model = models.Project
+
+
+class PublicationForm(BaseChildFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        build_widgets(
+            self,
+            fields=["date", "title", "publisher", "link"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+
+    class Meta:
+        fields = ["date", "title", "publisher", "link"]
+        model = models.Publication

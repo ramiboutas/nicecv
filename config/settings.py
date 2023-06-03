@@ -404,11 +404,11 @@ if HTTPS:
 HTML_FORMS = {
     "textinput": {
         "class": "px-2 w-full rounded-md border-transparent focus:border-transparent focus:ring-0",
-        "x_bind_class": "active ? 'bg-indigo-100' : ''",
+        "x_bind_class": "active ? 'bg-indigo-300' : ''",
         "hx_trigger": "keyup changed delay:1s, change",
         "label": {
             "class": "absolute -top-2 left-2 inline-block px-1 text-xs font-medium text-gray-400",
-            "x_bind_class": "active ? ' bg-indigo-100' : ''",
+            "x_bind_class": "active ? ' bg-indigo-300' : ''",
         },
     },
     "rangeinput": {

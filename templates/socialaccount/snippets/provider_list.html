@@ -1,23 +1,23 @@
 {% load socialaccount %}
 {% get_providers as socialaccount_providers %}
 {% for provider in socialaccount_providers %}
-  {% if provider.id == "openid" %}
-    {% for brand in provider.get_brands %}
-      <!-- <li> -->
-      <a title="{{ brand.name }}"
-         class="btn btn-outline-secondary w-100 my-2 socialaccount_provider {{ provider.id }} {{ brand.id }}"
-         href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">
-        <i class="bi bi-{{ provider.id }}"></i>{{ brand.name }}
-      </a>
-      <!-- </li> -->
-    {% endfor %}
-  {% endif %}
-  <!-- <li> -->
-  <a title="{{ provider.name }}"
-     class="btn btn-outline-secondary w-100 my-2 socialaccount_provider {{ provider.id }}"
-     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-    <i class="bi bi-{{ provider.id }}"></i> {{ provider.name }}
-  </a>
-  <!-- </li> -->
+    {% if provider.id == "openid" %}
+        {% for brand in provider.get_brands %}
+            <!-- <li> -->
+            <a title="{{ brand.name }}"
+               class="btn btn-outline-secondary w-100 my-2 socialaccount_provider {{ provider.id }} {{ brand.id }}"
+               href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">
+                <i class="bi bi-{{ provider.id }}"></i>{{ brand.name }}
+            </a>
+            <!-- </li> -->
+        {% endfor %}
+    {% endif %}
+    <!-- <li> -->
+    <a title="{{ provider.name }}"
+       class="btn btn-outline-secondary w-100 my-2 socialaccount_provider {{ provider.id }}"
+       href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+        <i class="bi bi-{{ provider.id }}"></i> {{ provider.name }}
+    </a>
+    <!-- </li> -->
 {% endfor %}
 {# https://stackoverflow.com/questions/30228455/django-allauth-how-do-you-customize-your-own-html-or-css #}

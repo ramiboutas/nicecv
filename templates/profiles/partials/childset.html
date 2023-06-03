@@ -12,33 +12,30 @@
     {% for form in formset %}
       {% if form.instance.id %}
         <div id="{{ form.instance.generate_html_id }}"
-            class="px-2 py-1"
+             class="px-2 py-1"
              x-data="{ open: false }"
              x-on:mouseenter="open = true"
              x-on:mouseleave="open = false"
              :class="open ? ' bg-indigo-50 rounded' : ''">
-            <div class="mb-1 float-right">
-              <!-- delete -->
-              <button type="button"
-                      hx-delete="{{ form.instance.get_delete_url }}"
-                      hx-target="closest form"
-                      hx-swap="outerHTML swap:100ms">
-                🗑️
-              </button>
-              <!-- order -->
-              <button class="handle">🟰</button>
-              <input type="hidden" name="child-id" value="{{ form.instance.id }}" />
-            </div>
-            <div  class="mt-2 grid grid-cols-4 gap-4"
-                  hx-post="{{ update_url }}"
-                  hx-swap="outerHTML"
-                  hx-target="closest form"
-                  hx-trigger="change">
-              {% for field in form %}
+          <div class="mb-1 float-right">
+            <!-- delete -->
+            <button type="button"
+                    hx-delete="{{ form.instance.get_delete_url }}"
+                    hx-target="closest form"
+                    hx-swap="outerHTML swap:100ms">🗑️</button>
+            <!-- order -->
+            <button class="handle">🟰</button>
+            <input type="hidden" name="child-id" value="{{ form.instance.id }}" />
+          </div>
+          <div class="mt-2 grid grid-cols-4 gap-4"
+               hx-post="{{ update_url }}"
+               hx-swap="outerHTML"
+               hx-target="closest form"
+               hx-trigger="change">
+            {% for field in form %}
               {% include "profiles/partials/formset_field.html" %}
-              {% endfor %}
-            </div>
-
+            {% endfor %}
+          </div>
         </div>
       {% endif %}
     {% endfor %}
@@ -47,16 +44,13 @@
     <div x-data="{ open: false }"
          x-on:mouseenter="open = true"
          x-on:mouseleave="open = false"
-         :class="open ? 'transition delay-200 border-dashed border-2 border-indigo-100' : ''">
+         :class="open ? 'transition delay-200 border-dashed border-2 rounded-md  border-indigo-300' : ''">
       <button type="button"
               class="rounded-md w-full py-2 text-sm text-indigo-600"
-              :class="open ? '' : 'border-dashed border border-indigo-100'"
-              x-on:click="open = true">
-        {% trans "New" %}
-      </button>
+              :class="open ? '' : 'border-dashed border border-indigo-300'"
+              x-on:click="open = true">{% trans "New" %}</button>
       <div x-show="open"
-            class="transition delay-200"
-
+           class="transition delay-200"
            x-transition:enter.delay.200ms
            x-transition:leave.delay.400ms>
         <div class="grid grid-cols-4 gap-4">
@@ -64,10 +58,8 @@
             {% include "profiles/partials/formset_field.html" %}
           {% endfor %}
         </div>
-        <button class="rounded-md w-full bg-indigo-100  py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-200"
-                type="submit">
-          {% trans "Add" %}
-        </button>
+        <button class="rounded-md w-full bg-indigo-200  py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-400"
+                type="submit">{% trans "Add" %}</button>
       </div>
     </div>
   {% endfor %}

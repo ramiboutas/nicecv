@@ -15,7 +15,7 @@
     {% include "profiles/partials/options.html" %}
     <div class="container m-auto grid md:grid-cols-12 gap-10">
       <div class="md:col-span-3 ">
-        <h2 class="my-2 italic">{% trans "Personal info" %}</h2>
+        <h2 class="mt-4 text-lg italic  font-light ">{% trans "Personal info" %}</h2>
         <!-- photo-->
         {% include "profiles/photo/main.html" %}
         <!-- fullname -->
@@ -36,37 +36,37 @@
       <div class="md:col-span-7">
         <!-- formset education -->
         {% if profile.activationsettings.education_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.education_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.education_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=education_formset update_url=profile.update_education_url order_url=profile.order_education_url %}
         {% endif %}
         <!-- formset skills -->
         {% if profile.activationsettings.skill_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.skill_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.skill_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=skill_formset update_url=profile.update_skill_url order_url=profile.order_skill_url %}
         {% endif %}
         <!-- formset languages -->
         {% if profile.activationsettings.language_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.language_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.language_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=language_formset update_url=profile.update_language_url order_url=profile.order_language_url %}
         {% endif %}
         <!-- formset experience -->
         {% if profile.activationsettings.experience_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.experience_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.experience_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=experience_formset update_url=profile.update_experience_url order_url=profile.order_experience_url %}
         {% endif %}
         <!-- formset achievement -->
         {% if profile.activationsettings.achievement_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.achievement_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.achievement_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=achievement_formset update_url=profile.update_achievement_url order_url=profile.order_achievement_url %}
         {% endif %}
         <!-- formset project -->
         {% if profile.activationsettings.project_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.project_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.project_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=project_formset update_url=profile.update_project_url order_url=profile.order_project_url %}
         {% endif %}
         <!-- formset publication -->
         {% if profile.activationsettings.publication_set %}
-          <h2 class="mt-4">{{ profile.labelsettings.publication_set }}</h2>
+          <h2 class="mt-4 text-lg italic  font-light">{{ profile.labelsettings.publication_set }}</h2>
           {% include "profiles/partials/childset.html" with formset=publication_formset update_url=profile.update_publication_url order_url=profile.order_publication_url %}
         {% endif %}
       </div>
