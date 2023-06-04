@@ -8,6 +8,7 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.utils.functional import classproperty
 from PIL import Image
 
 
@@ -19,6 +20,14 @@ null_blank_128 = {"null": True, "blank": True, "max_length": 128}
 null_blank_256 = {"null": True, "blank": True, "max_length": 256}
 null_blank_528 = {"null": True, "blank": True, "max_length": 528}
 null_blank_1024 = {"null": True, "blank": True, "max_length": 1024}
+
+null_16 = {"null": True, "max_length": 16}
+null_32 = {"null": True, "max_length": 32}
+null_64 = {"null": True, "max_length": 34}
+null_128 = {"null": True, "max_length": 128}
+null_256 = {"null": True, "max_length": 256}
+null_528 = {"null": True, "max_length": 528}
+null_1024 = {"null": True, "max_length": 1024}
 
 
 PROFILE_CATEGORIES = (
@@ -65,6 +74,12 @@ class Profile(auto_prefetch.Model):
     slug = models.SlugField(**null_blank_16, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    # input fields from user
+    first_name = models.CharField(**null_16)
+    last_name = models.CharField(**null_16)
+    active_photo = models.BooleanField(default=True)
+    label_website = models.CharField(max_length=16, default=_("Website"))
 
     def update_url(self, params=None):
         url = reverse("profiles:update", kwargs={"id": self.id})
@@ -149,7 +164,10 @@ class Profile(auto_prefetch.Model):
 
         context = {}
         context["profile"] = self
-        # one to one children
+
+        context["profile_form"] = forms.ProfileForm(instance=self)
+
+        # one to one children # TODO: remove
         for Model, Form in forms.get_forms(singles=True, settings=True).items():
             name = Model._meta.model_name
             context[name + "_form"] = Form(
@@ -177,19 +195,21 @@ class Profile(auto_prefetch.Model):
 
 
 class ProfileChildMixin:
-    def generate_html_id(self):
-        return f"{self.__class__.__name__}-{self.id}"
-
+    # TODO: remove, use a better approach
     @property
     def _related_name(self):
-        model_name = self.__class__._meta.model_name
-        if AbstractChildSet in self.__class__.__bases__:
+        model_name = type(self)._meta.model_name
+        if AbstractChildSet in type(self).__bases__:
             return model_name + "_set"
         return model_name
 
-    @property
-    def _verbose_name(self):
-        return self.__class__._meta.verbose_name
+    @classproperty
+    def related_name(cls):
+        return cls._meta.default_related_name
+
+    @classproperty
+    def verbose_name(cls):
+        return cls._meta.verbose_name
 
     @property
     def active(self):
@@ -198,7 +218,7 @@ class ProfileChildMixin:
     @property
     def label(self):
         return getattr(
-            self.profile.labelsettings, self._related_name, self._verbose_name
+            self.profile.labelsettings, self._related_name, self.verbose_name
         )
 
 
@@ -213,11 +233,17 @@ class LevelMethodsMixin:
 
 
 class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
+    # TODO: remove
     profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
 
     def update_form_url(self):
-        cls = self.__class__.__name__
-        return reverse("profiles:update-form", kwargs={"klass": cls, "id": self.id})
+        return reverse(
+            "profiles:update-form",
+            kwargs={
+                "klass": type(self)._meta.model_name,
+                "id": self.id,
+            },
+        )
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
@@ -228,12 +254,12 @@ class AbstractChildSet(auto_prefetch.Model, ProfileChildMixin):
     order = models.PositiveSmallIntegerField(default=1)
 
     def get_delete_url(self):
-        cls = self.__class__.__name__
+        cls = type(self).__name__
         return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            last = self.__class__.objects.filter(profile=self.profile).last()
+            last = type(self).objects.filter(profile=self.profile).last()
             self.order = last.order + 1 if last else 1
 
         super().save(*args, **kwargs)
@@ -244,12 +270,13 @@ class AbstractChildSet(auto_prefetch.Model, ProfileChildMixin):
 
 
 class AbstractProfileSetting(auto_prefetch.Model):
+    # TODO: remove
     profile = auto_prefetch.OneToOneField(
         Profile, on_delete=models.CASCADE, related_name="%(class)s"
     )
 
     def update_settings_url(self):
-        cls = self.__class__.__name__
+        cls = type(self).__name__
         return reverse("profiles:update-settings", kwargs={"klass": cls, "id": self.id})
 
     class Meta(auto_prefetch.Model.Meta):
@@ -260,6 +287,7 @@ class AbstractProfileSetting(auto_prefetch.Model):
 
 
 class ActivationSettings(AbstractProfileSetting):
+    # TODO: move to Profile model
     photo = models.BooleanField(default=True)
     jobtitle = models.BooleanField(default=True)
     website = models.BooleanField(default=True)
@@ -274,8 +302,9 @@ class ActivationSettings(AbstractProfileSetting):
 
 
 class LabelSettings(AbstractProfileSetting):
+    # TODO: move to Profile model
     website = models.CharField(max_length=32, default=_("Website"))
-    description = models.CharField(max_length=32, default=_("Description"))
+    description = models.CharField(max_length=32, default=_("About me"))
     skill_set = models.CharField(max_length=32, default=_("Skills"))
     language_set = models.CharField(max_length=32, default=_("Languages"))
     education_set = models.CharField(max_length=32, default=_("Education"))
@@ -346,7 +375,8 @@ class Photo(AbstractProfileChild):
 
 
 class Description(AbstractProfileChild):
-    text = models.TextField()
+    # TODO: move to Profile model
+    text = models.TextField(verbose_name=_("Profile description"))
     rows = models.PositiveSmallIntegerField(default=15)
 
     def save(self, *args, **kwargs):
@@ -354,61 +384,68 @@ class Description(AbstractProfileChild):
         self.rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
 
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Profile description")
-
 
 class Fullname(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Full name"), **null_blank_32)
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Full name")
+    # TODO: move to Profile model
+    html_autocomplete = "name"
+    text = models.CharField(max_length=32, verbose_name=_("Full name"))
 
 
 class Jobtitle(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Job title"), **null_blank_16)
+    # TODO: move to Profile model
+    text = models.CharField(max_length=16)
 
     class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Job title")
 
 
 class Location(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Location"), **null_blank_16)
+    # TODO: move to Profile model
+    html_autocomplete = "address-level2"
+    text = models.CharField(max_length=16)
 
     class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Location")
 
 
 class Birth(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Date of birth"), **null_blank_16)
+    # TODO: move to Profile model
+    html_autocomplete = "bday"
+    text = models.CharField(max_length=16)
 
     class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Date of birth")
 
 
 class Phone(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Phone number"), **null_blank_16)
+    # TODO: move to Profile model
+    html_autocomplete = "tel"
+    text = models.CharField(max_length=16)
 
     class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Phone number")
+        verbose_name = "📞 " + _("Phone number")
 
 
 class Email(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Email"), **null_blank_32)
+    # TODO: move to Profile model
+    html_autocomplete = "email"
+    text = models.EmailField(max_length=64)
 
     class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Email")
 
 
 class Website(AbstractProfileChild):
-    text = models.CharField(verbose_name=_("Website"), **null_blank_32)
+    # TODO: move to Profile model
+    html_autocomplete = "url"
+    text = models.URLField(max_length=32, verbose_name=_("Website"))
 
     class Meta(AbstractProfileChild.Meta):
         verbose_name = _("Website")
 
 
 class Skill(AbstractChildSet, LevelMethodsMixin):
-    name = models.CharField(max_length=50, verbose_name=_("📊 Skill"))
+    name = models.CharField(max_length=50, verbose_name="📊 " + _("Skill"))
     level = models.IntegerField(default=50, verbose_name=_("Level"))
 
     def __str__(self):
@@ -423,7 +460,7 @@ class Language(AbstractChildSet, LevelMethodsMixin):
     An object representing the languages that the member holds.
     """
 
-    name = models.CharField(max_length=50, verbose_name=_("🗣️ Language"))
+    name = models.CharField(max_length=50, verbose_name="🗣️ " + _("Language"))
     level = models.IntegerField(default=50, verbose_name=_("Level"))
 
     class Meta(AbstractChildSet.Meta):
@@ -433,10 +470,12 @@ class Language(AbstractChildSet, LevelMethodsMixin):
         return self.name
 
 
-class DatesAndDescriptionFields(auto_prefetch.Model):
-    start_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Start"))
-    end_date = models.CharField(**null_blank_16, verbose_name=_("🗓️ End"))
-    description = models.TextField(**null_blank_1024, verbose_name=_("📝 Description"))
+class AbstractModelWithDatesAndDescription(auto_prefetch.Model):
+    start_date = models.CharField(max_length=16, verbose_name="🗓️ " + _("Start date"))
+    end_date = models.CharField(max_length=16, verbose_name="🗓️ " + _("End date"))
+    description = models.TextField(
+        **null_blank_1024, verbose_name="📝 " + _("What did you learn?")
+    )
     rows = models.PositiveSmallIntegerField(default=10)
 
     def save(self, *args, **kwargs):
@@ -448,29 +487,29 @@ class DatesAndDescriptionFields(auto_prefetch.Model):
         abstract = True
 
 
-class Education(AbstractChildSet, DatesAndDescriptionFields):
+class Education(AbstractChildSet, AbstractModelWithDatesAndDescription):
     """
     An object representing the member's educational background.
     See Education Fields for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
 
-    title = models.CharField(**null_blank_64, verbose_name=_("🎓 Title"))
-    institution = models.CharField(**null_blank_64, verbose_name=_("🏫 Institution"))
+    title = models.CharField(max_length=64, verbose_name="🎓 " + _("Title"))
+    institution = models.CharField(max_length=32, verbose_name="🏫 " + _("Institution"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Education")
 
 
-class Experience(AbstractChildSet, DatesAndDescriptionFields):
+class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
     """
     Employment history. See Positions for a description of the fields available within this object.
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
     """
 
-    title = models.CharField(**null_blank_64, verbose_name=_("🧑‍💼 Job title"))
-    location = models.CharField(**null_blank_16, verbose_name=_("📍 Location"))
-    company = models.CharField(**null_blank_16, verbose_name=_("🏢 Company name"))
+    title = models.CharField(**null_blank_64, verbose_name="🧑‍💼 " + _("Job title"))
+    location = models.CharField(max_length=32, verbose_name="📍 " + _("Location"))
+    company = models.CharField(max_length=32, verbose_name="🏢 " + _("Company name"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Experience")
@@ -482,8 +521,8 @@ class Experience(AbstractChildSet, DatesAndDescriptionFields):
 class Achievement(AbstractChildSet):
     """Archivement object"""
 
-    title = models.CharField(**null_blank_128, verbose_name=_("🏆 Goal achieved"))
-    date = models.CharField(**null_blank_16, verbose_name=_("🗓️ Date"))
+    title = models.CharField(max_length=64, verbose_name="🏆 " + _("Goal achieved"))
+    date = models.CharField(**null_blank_16, verbose_name="🗓️ " + _("Date"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Achievements")
@@ -496,10 +535,22 @@ class Project(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
 
-    title = models.CharField(**null_blank_64, verbose_name=_("🌍 Project name"))
-    role = models.CharField(**null_blank_32, verbose_name=_("🧑‍💼 Your role in the project"))
-    organization = models.CharField(**null_blank_64, verbose_name=_("🤝 Organization"))
-    link = models.CharField(**null_blank_128, verbose_name=_("🔗 Link"))
+    title = models.CharField(
+        max_length=64,
+        verbose_name="🌍 " + _("Project name"),
+    )
+    role = models.CharField(
+        **null_blank_32,
+        verbose_name="🧑‍💼 " + _("Role in the project"),
+    )
+    organization = models.CharField(
+        **null_blank_64,
+        verbose_name="🤝 " + _("Organization"),
+    )
+    link = models.CharField(
+        **null_blank_128,
+        verbose_name="🔗 " + _("Link"),
+    )
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Projects")
@@ -512,11 +563,10 @@ class Publication(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
 
-    date = models.CharField(null=True, blank=True, max_length=20, verbose_name=_("🗓️ Date"))
-    title = models.CharField(null=True, blank=True, max_length=200, verbose_name=_("🔬 Publication title"))
-    publisher = models.CharField(null=True, blank=True, max_length=100, verbose_name=_("📑 Publisher"))
-    link = models.CharField(null=True, blank=True, max_length=100, verbose_name=_("🔗 Link"))
-
+    date = models.CharField(**null_blank_16, verbose_name="🗓️ " + _("Date"))
+    title = models.CharField(max_length=128, verbose_name="🔬 " + _("Publication title"))
+    publisher = models.CharField(**null_blank_32, verbose_name="📑 " + _("Publisher"))
+    link = models.CharField(**null_blank_128, verbose_name="🔗 " + _("Link"))
 
     class Meta(AbstractChildSet.Meta):
         verbose_name = _("Publications")

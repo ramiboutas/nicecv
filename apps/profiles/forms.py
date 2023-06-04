@@ -57,6 +57,7 @@ def build_widgets(
     fields: list = [],
     widget_types: dict = {},
     html_class: str = None,
+    html_autocomplete=None,
     x_bind_class: str = None,
     hx_post: str = None,
     hx_trigger: str = None,
@@ -68,6 +69,11 @@ def build_widgets(
     if html_class:
         # html class
         attrs = attrs | {"class": mark_safe(html_class)}
+
+    if html_autocomplete:
+        # HTML attribute: autocomplete
+        # https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
+        attrs = attrs | {"autocomplete": mark_safe(html_autocomplete)}
 
     if x_bind_class:
         # alpinejs :class attr.
@@ -104,7 +110,7 @@ def build_widgets(
 class ProfileForm(ModelForm):
     class Meta:
         model = models.Profile
-        fields = ["public"]
+        fields = ["first_name", "last_name"]
 
 
 # profile child forms
@@ -116,6 +122,7 @@ class BaseChildForm(ModelForm):
         obj = kwargs.get("instance", None)
         rows = getattr(obj, "rows", None)
         hx_post = "" if obj is None else obj.update_form_url()
+
         build_widgets(
             self,
             fields=["text"],
@@ -124,6 +131,7 @@ class BaseChildForm(ModelForm):
             hx_post=hx_post,
             hx_trigger=settings.HTML_FORMS["textinput"]["hx_trigger"],
             rows=rows,
+            html_autocomplete=getattr(self.Meta.model, "html_autocomplete", None),
         )
 
     class Meta:
@@ -289,6 +297,7 @@ class SkillForm(BaseChildFormSet):
             fields=["name"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
 
     class Meta:
@@ -304,6 +313,7 @@ class LanguageForm(BaseChildFormSet):
             fields=["name"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
 
     class Meta:
@@ -321,6 +331,7 @@ class EducationForm(BaseChildFormSet):
             fields=["title", "institution", "start_date", "end_date"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
         build_widgets(
             self,
@@ -328,6 +339,7 @@ class EducationForm(BaseChildFormSet):
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             rows=rows,
+            html_autocomplete="off",
         )
 
     class Meta:
@@ -345,6 +357,7 @@ class ExperienceForm(BaseChildFormSet):
             fields=["title", "company", "start_date", "end_date"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
         build_widgets(
             self,
@@ -352,6 +365,7 @@ class ExperienceForm(BaseChildFormSet):
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             rows=rows,
+            html_autocomplete="off",
         )
 
     class Meta:
@@ -368,6 +382,7 @@ class AchievementForm(BaseChildFormSet):
             fields=["title", "date"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
 
     class Meta:
@@ -383,6 +398,7 @@ class ProjectForm(BaseChildFormSet):
             fields=["role", "title", "organization", "link"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
 
     class Meta:
@@ -399,6 +415,7 @@ class PublicationForm(BaseChildFormSet):
             fields=["date", "title", "publisher", "link"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_autocomplete="off",
         )
 
     class Meta:
