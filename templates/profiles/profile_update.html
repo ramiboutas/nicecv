@@ -18,21 +18,8 @@
         <h2 class="mt-4 text-lg italic  font-light ">{% trans "Personal info" %}</h2>
         <!-- photo-->
         {% include "profiles/photo/main.html" %}
-        <!-- fullname -->
-        {% include "profiles/partials/child.html" with form=fullname_form %}
-        <!-- jobtitle -->
-        {% include "profiles/partials/child.html" with form=jobtitle_form %}
-        <!-- location -->
-        {% include "profiles/partials/child.html" with form=location_form %}
-        <!-- phone -->
-        {% include "profiles/partials/child.html" with form=phone_form %}
-        <!-- email -->
-        {% include "profiles/partials/child.html" with form=email_form %}
-        <!-- website -->
-        {% include "profiles/partials/child.html" with form=website_form %}
-        <!-- description -->
-        {% include "profiles/partials/child.html" with form=description_form %}
-        {{ profile_form }}
+        <!-- Personal info -->
+        {% include "profiles/partials/personal_info.html" with form=personal_info_form %}
       </div>
       <div class="md:col-span-7">
         <!-- formset education -->

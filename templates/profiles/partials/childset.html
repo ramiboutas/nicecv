@@ -11,8 +11,7 @@
        hx-trigger="end delay:200ms">
     {% for form in formset %}
       {% if form.instance.id %}
-        <div id="{{ form.instance.generate_html_id }}"
-             class="px-2 py-1"
+        <div class="px-2 py-1"
              x-data="{ open: false }"
              x-on:mouseenter="open = true"
              x-on:mouseleave="open = false"
@@ -33,7 +32,7 @@
                hx-target="closest form"
                hx-trigger="change">
             {% for field in form %}
-              {% include "profiles/partials/formset_field.html" %}
+              {% include "profiles/partials/field_widget.html" %}
             {% endfor %}
           </div>
         </div>
@@ -55,7 +54,7 @@
            x-transition:leave.delay.400ms>
         <div class="grid grid-cols-4 gap-4">
           {% for field in form %}
-            {% include "profiles/partials/formset_field.html" %}
+            {% include "profiles/partials/field_widget.html" %}
           {% endfor %}
         </div>
         <button class="rounded-md w-full bg-indigo-200  py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-400"

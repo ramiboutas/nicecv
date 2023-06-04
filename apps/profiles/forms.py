@@ -14,13 +14,10 @@ from apps.profiles import models
 
 
 @cache
-def get_forms(singles=False, inlines=False, settings=False, get_all=False) -> dict:
+def get_forms(inlines=False, settings=False, get_all=False) -> dict:
     out = {}
 
     Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
-
-    if singles or get_all:
-        out = out | {F.Meta.model: F for F in Forms if BaseChildForm in F.__bases__}
 
     if settings or get_all:
         out = out | {F.Meta.model: F for F in Forms if BaseSettingForm in F.__bases__}
@@ -58,10 +55,10 @@ def build_widgets(
     widget_types: dict = {},
     html_class: str = None,
     html_autocomplete=None,
+    html_rows: str = None,
     x_bind_class: str = None,
     hx_post: str = None,
     hx_trigger: str = None,
-    rows: str = None,
 ):
     # Gather all html and frontend attributes
     attrs = {}
@@ -79,8 +76,8 @@ def build_widgets(
         # alpinejs :class attr.
         attrs = attrs | {":class": mark_safe(x_bind_class)}
 
-    if rows:
-        attrs = attrs | {"rows": mark_safe(rows)}
+    if html_rows:
+        attrs = attrs | {"rows": mark_safe(html_rows)}
 
     if hx_post:
         # htmx hx-post method
@@ -107,75 +104,81 @@ def build_widgets(
             raise e
 
 
-class ProfileForm(ModelForm):
-    class Meta:
-        model = models.Profile
-        fields = ["first_name", "last_name"]
-
-
-# profile child forms
-
-
-class BaseChildForm(ModelForm):
+class PersonalInfoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        obj = kwargs.get("instance", None)
-        rows = getattr(obj, "rows", None)
-        hx_post = "" if obj is None else obj.update_form_url()
+        profile = kwargs.get("instance", None)
 
         build_widgets(
             self,
-            fields=["text"],
+            fields=["fullname", "jobtitle", "location", "birth", "phone", "email"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
-            hx_post=hx_post,
-            hx_trigger=settings.HTML_FORMS["textinput"]["hx_trigger"],
-            rows=rows,
-            html_autocomplete=getattr(self.Meta.model, "html_autocomplete", None),
+            hx_post=profile.update_field_url(),
+            hx_trigger="keyup changed delay:1s",
+        )
+        build_widgets(
+            self,
+            fields=["description"],
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            hx_post=profile.update_field_url(),
+            hx_trigger="keyup changed delay:1s",
+            html_rows=profile.description_rows,
+            html_autocomplete="off",
         )
 
     class Meta:
-        fields = ["text"]
+        model = models.Profile
+        fields = [
+            "fullname",
+            "jobtitle",
+            "location",
+            "birth",
+            "phone",
+            "email",
+            "description",
+        ]
 
 
-class FullnameForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Fullname
+class FieldActiveForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        build_widgets(
+            self,
+            fields=self.Meta.fields,
+            html_class=settings.HTML_FORMS["checkbox"]["class"],
+        )
+
+    class Meta:
+        model = models.Profile
+        fields = [
+            "description_active",
+            "photo_active",
+        ]
 
 
-class JobtitleForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Jobtitle
+class FieldLabelForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        build_widgets(
+            self,
+            fields=self.Meta.fields,
+            html_class=settings.HTML_FORMS["textinput"]["class"],
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+        )
+
+    class Meta:
+        model = models.Profile
+        fields = [
+            "description_label",
+            "website_label",
+        ]
 
 
-class LocationForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Location
-
-
-class BirthForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Birth
-
-
-class PhoneForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Phone
-
-
-class EmailForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Email
-
-
-class WebsiteForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Website
-
-
-class DescriptionForm(BaseChildForm):
-    class Meta(BaseChildForm.Meta):
-        model = models.Description
+# profile child forms
 
 
 class UploadPhotoForm(ModelForm):
@@ -275,18 +278,14 @@ class LabelSettingsForm(BaseSettingForm):
 class BaseChildFormSet(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        try:
-            has_level = "level" in self.__class__.Meta.fields
-            if has_level:
-                build_widgets(
-                    self,
-                    fields=["level"],
-                    widget_types={"level": "range"},
-                    html_class=settings.HTML_FORMS["rangeinput"]["class"],
-                )
 
-        except Exception:
-            pass
+        if "level" in getattr(type(self).Meta, "fields", []):
+            build_widgets(
+                self,
+                fields=["level"],
+                widget_types={"level": "range"},
+                html_class=settings.HTML_FORMS["rangeinput"]["class"],
+            )
 
 
 class SkillForm(BaseChildFormSet):
@@ -338,7 +337,7 @@ class EducationForm(BaseChildFormSet):
             fields=["description"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
-            rows=rows,
+            html_rows=rows,
             html_autocomplete="off",
         )
 
@@ -364,7 +363,7 @@ class ExperienceForm(BaseChildFormSet):
             fields=["description"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
-            rows=rows,
+            html_rows=rows,
             html_autocomplete="off",
         )
 

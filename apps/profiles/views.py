@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 
 from .forms import CropPhotoForm
+from .forms import PersonalInfoForm
 from .forms import get_inlineformset
 from .forms import get_model_and_form
 from .forms import UploadPhotoForm
@@ -106,6 +107,25 @@ def update_settings(request, klass, id):
     context[Model._meta.model_name] = form
     context["showSettings"] = True
     return render(request, "profiles/profile_update.html", context)
+
+
+@require_POST
+def update_field(request, id):
+    profile = get_object_or_404(Profile, id=id)
+    for key in request.POST:
+        setattr(profile, key, request.POST[key])
+        profile.save()
+    return HttpResponse(status=200)
+
+
+@require_POST
+def update_personal_info(request, id):
+    profile = get_object_or_404(Profile, id=id)
+    form = PersonalInfoForm(request.POST, instance=profile)
+    if form.is_valid():
+        form.save()
+    context = {"personal_info_form": form}
+    return render(request, "profiles/partials/personal_info.html", context)
 
 
 @require_POST

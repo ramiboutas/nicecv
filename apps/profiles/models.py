@@ -76,10 +76,23 @@ class Profile(auto_prefetch.Model):
     updated = models.DateTimeField(auto_now=True)
 
     # input fields from user
-    first_name = models.CharField(**null_16)
-    last_name = models.CharField(**null_16)
-    active_photo = models.BooleanField(default=True)
-    label_website = models.CharField(max_length=16, default=_("Website"))
+    fullname = models.CharField(**null_64)
+    jobtitle = models.CharField(**null_64)
+    location = models.CharField(**null_64)
+    birth = models.CharField(**null_16)
+    phone = models.CharField(**null_64)
+    email = models.EmailField(**null_64)
+
+    website = models.URLField(max_length=32, verbose_name=_("Website"))
+    website_label = models.CharField(max_length=16, default=_("Website label"))
+    website_active = models.BooleanField(default=True)
+
+    description = models.TextField(**null_1024)
+    description_rows = models.PositiveSmallIntegerField(default=15)
+    description_label = models.CharField(max_length=16, default=_("About me"))
+    description_active = models.BooleanField(default=True)
+
+    photo_active = models.BooleanField(default=True)
 
     def update_url(self, params=None):
         url = reverse("profiles:update", kwargs={"id": self.id})
@@ -94,6 +107,18 @@ class Profile(auto_prefetch.Model):
         return reverse(
             "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
+
+    def update_personal_info_url(self):
+        return reverse("profiles:update-personal-info", kwargs={"id": self.id})
+
+    def update_field_url(self):
+        return reverse("profiles:update-field", kwargs={"id": self.id})
+
+    def update_field_labels_url(self):
+        return reverse("profiles:update-labels", kwargs={"id": self.id})
+
+    def update_active_fields_url(self):
+        return reverse("profiles:update-active-fields", kwargs={"id": self.id})
 
     def order_formset_url(self, Klass):
         return reverse(
@@ -165,14 +190,12 @@ class Profile(auto_prefetch.Model):
         context = {}
         context["profile"] = self
 
-        context["profile_form"] = forms.ProfileForm(instance=self)
+        context["personal_info_form"] = forms.PersonalInfoForm(instance=self)
 
-        # one to one children # TODO: remove
-        for Model, Form in forms.get_forms(singles=True, settings=True).items():
-            name = Model._meta.model_name
-            context[name + "_form"] = Form(
-                instance=getattr(self, name), auto_id="id_%s_" + name
-            )
+        context["field_active_form"] = forms.FieldActiveForm(instance=self)
+
+        context["field_label_form"] = forms.FieldLabelForm(instance=self)
+
         # one to many children
         for Model, Form in forms.get_forms(inlines=True).items():
             name = Model._meta.model_name
@@ -190,12 +213,57 @@ class Profile(auto_prefetch.Model):
         # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
         pass
 
+    def save(self, *args, **kwargs):
+        if self.description:
+            description_rows = int(len(self.description) / 35)
+            self.description_rows = description_rows if description_rows > 3 else 3
+        super().save(*args, **kwargs)
+
 
 # Abract models and mixins
 
 
-class ProfileChildMixin:
-    # TODO: remove, use a better approach
+class LevelMethodsMixin:
+    @property
+    def level_base_5_int(self):
+        return (self.level * 5 / 100).__round__()
+
+    @property
+    def level_base_6_float(self):
+        return self.level * 6 / 100
+
+
+class AbstractProfileChild(auto_prefetch.Model):
+    # TODO: remove
+    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    def update_form_url(self):
+        return reverse(
+            "profiles:update-form",
+            kwargs={
+                "klass": type(self)._meta.model_name,
+                "id": self.id,
+            },
+        )
+
+    class Meta(auto_prefetch.Model.Meta):
+        abstract = True
+
+
+class AbstractChildSet(auto_prefetch.Model):
+    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    order = models.PositiveSmallIntegerField(default=1)
+
+    def get_delete_url(self):
+        cls = type(self).__name__
+        return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            last = type(self).objects.filter(profile=self.profile).last()
+            self.order = last.order + 1 if last else 1
+        super().save(*args, **kwargs)
+
     @property
     def _related_name(self):
         model_name = type(self)._meta.model_name
@@ -220,49 +288,6 @@ class ProfileChildMixin:
         return getattr(
             self.profile.labelsettings, self._related_name, self.verbose_name
         )
-
-
-class LevelMethodsMixin:
-    @property
-    def level_base_5_int(self):
-        return (self.level * 5 / 100).__round__()
-
-    @property
-    def level_base_6_float(self):
-        return self.level * 6 / 100
-
-
-class AbstractProfileChild(auto_prefetch.Model, ProfileChildMixin):
-    # TODO: remove
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-
-    def update_form_url(self):
-        return reverse(
-            "profiles:update-form",
-            kwargs={
-                "klass": type(self)._meta.model_name,
-                "id": self.id,
-            },
-        )
-
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
-
-
-class AbstractChildSet(auto_prefetch.Model, ProfileChildMixin):
-    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    order = models.PositiveSmallIntegerField(default=1)
-
-    def get_delete_url(self):
-        cls = type(self).__name__
-        return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            last = type(self).objects.filter(profile=self.profile).last()
-            self.order = last.order + 1 if last else 1
-
-        super().save(*args, **kwargs)
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
@@ -372,76 +397,6 @@ class Photo(AbstractProfileChild):
                 self.crop_x = int((img.width - distance) / 2)
                 self.crop_y = int((img.height - distance) / 2)
                 super().save(*args, **kwargs)
-
-
-class Description(AbstractProfileChild):
-    # TODO: move to Profile model
-    text = models.TextField(verbose_name=_("Profile description"))
-    rows = models.PositiveSmallIntegerField(default=15)
-
-    def save(self, *args, **kwargs):
-        rows = int(len(self.text) / 35)
-        self.rows = rows if rows > 3 else 3
-        super().save(*args, **kwargs)
-
-
-class Fullname(AbstractProfileChild):
-    # TODO: move to Profile model
-    html_autocomplete = "name"
-    text = models.CharField(max_length=32, verbose_name=_("Full name"))
-
-
-class Jobtitle(AbstractProfileChild):
-    # TODO: move to Profile model
-    text = models.CharField(max_length=16)
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Job title")
-
-
-class Location(AbstractProfileChild):
-    # TODO: move to Profile model
-    html_autocomplete = "address-level2"
-    text = models.CharField(max_length=16)
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Location")
-
-
-class Birth(AbstractProfileChild):
-    # TODO: move to Profile model
-    html_autocomplete = "bday"
-    text = models.CharField(max_length=16)
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Date of birth")
-
-
-class Phone(AbstractProfileChild):
-    # TODO: move to Profile model
-    html_autocomplete = "tel"
-    text = models.CharField(max_length=16)
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = "📞 " + _("Phone number")
-
-
-class Email(AbstractProfileChild):
-    # TODO: move to Profile model
-    html_autocomplete = "email"
-    text = models.EmailField(max_length=64)
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Email")
-
-
-class Website(AbstractProfileChild):
-    # TODO: move to Profile model
-    html_autocomplete = "url"
-    text = models.URLField(max_length=32, verbose_name=_("Website"))
-
-    class Meta(AbstractProfileChild.Meta):
-        verbose_name = _("Website")
 
 
 class Skill(AbstractChildSet, LevelMethodsMixin):

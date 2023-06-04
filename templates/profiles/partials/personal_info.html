@@ -1,0 +1,20 @@
+<form hx-post="{{ form.instance.update_personal_info_url }}"
+      hx-trigger="change"
+      hx-swap="outerHTML"
+      hx-target="this"
+      novalidate>
+  <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.fullname %}</div>
+  <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.jobtitle %}</div>
+  <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.location %}</div>
+  <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.birth %}</div>
+  <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.phone %}</div>
+  <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.email %}</div>
+  {% if profile.description_active %}
+    <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.website %}</div>
+  {% endif %}
+  {% if profile.description_active %}
+    <div class="mt-2 grid grid-cols-1">
+      {% include "profiles/partials/field_widget.html" with field=form.description field_label=form.instance.description_label %}
+    </div>
+  {% endif %}
+</form>

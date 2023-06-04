@@ -213,7 +213,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 
-USE_POSTGRES = True
+USE_POSTGRES = False
 
 if USE_POSTGRES:
     POSTGRES_DB = os.environ.get("POSTGRES_DB", "testing_db")
