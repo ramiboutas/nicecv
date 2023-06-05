@@ -1,12 +1,12 @@
 {% load i18n %}
-<form hx-post="{{ profile.photo.upload_url }}"
+<form hx-post="{{ profile.upload_photo_url }}"
       hx-encoding="multipart/form-data"
       hx-swap="outerHTML"
       hx-target="this">
   {% csrf_token %}
   <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-         for="{{ uploadphoto_form.full.id_for_label }}">{% trans "Upload photo" %}</label>
-  {{ uploadphoto_form.full }}
+         for="{{ uploadphoto_form.full_photo.id_for_label }}">{% trans "Upload photo" %}</label>
+  {{ uploadphoto_form.full_photo }}
   <p class="mt-2 text-sm text-red-600">{{ field.errors }}</p>
   <div class="flex items-center justify-end gap-x-6 py-4">
     <button type="submit"

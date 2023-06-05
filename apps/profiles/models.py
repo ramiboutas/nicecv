@@ -8,7 +8,6 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.utils.functional import classproperty
 from PIL import Image
 
 
@@ -39,7 +38,7 @@ PROFILE_CATEGORIES = (
 
 def get_upload_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "profiles/{0}/{1}".format(instance.profile.id, filename)
+    return "profiles/{0}/{1}".format(instance.id, filename)
 
 
 class Profile(auto_prefetch.Model):
@@ -83,23 +82,73 @@ class Profile(auto_prefetch.Model):
     phone = models.CharField(**null_64)
     email = models.EmailField(**null_64)
     website = models.URLField(max_length=32, verbose_name=_("Website"))
-    description = models.TextField(**null_1024)
-    description_rows = models.PositiveSmallIntegerField(default=15)
+    about = models.TextField(**null_1024)
+    about_rows = models.PositiveSmallIntegerField(default=15)
 
-    photo_active = models.BooleanField(default=True)
-    jobtitle_active = models.BooleanField(default=True)
-    website_active = models.BooleanField(default=True)
-    description_active = models.BooleanField(default=True)
-    skill_active = models.BooleanField(default=True)
-    language_active = models.BooleanField(default=False)
-    education_active = models.BooleanField(default=True)
-    experience_active = models.BooleanField(default=True)
-    achievement_active = models.BooleanField(default=False)
-    project_active = models.BooleanField(default=False)
-    publication_active = models.BooleanField(default=False)
+    # activation fields and objects
+    photo_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Photo"),
+    )
+    jobtitle_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Job title"),
+    )
+    location_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Location"),
+    )
+    birth_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Birth date"),
+    )
+    phone_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Phone number"),
+    )
+    email_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Email address"),
+    )
+    website_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Website"),
+    )
+    about_active = models.BooleanField(
+        default=True,
+        verbose_name=_("About me"),
+    )
+    skill_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Skills"),
+    )
+    language_active = models.BooleanField(
+        default=False,
+        verbose_name=_("Languages"),
+    )
+    education_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Education"),
+    )
+    experience_active = models.BooleanField(
+        default=True, verbose_name=_("Work experience")
+    )
+    achievement_active = models.BooleanField(
+        default=False, verbose_name=_("Achievements")
+    )
+    project_active = models.BooleanField(default=False, verbose_name=_("Projects"))
+    publication_active = models.BooleanField(
+        default=False, verbose_name=_("Publications")
+    )
 
-    website_label = models.CharField(max_length=32, default=_("Website label"))
-    description_label = models.CharField(max_length=32, default=_("About me"))
+    fullname_label = models.CharField(max_length=32, default=_("Full name"))
+    jobtitle_label = models.CharField(max_length=32, default=_("Job title"))
+    location_label = models.CharField(max_length=32, default=_("Location"))
+    birth_label = models.CharField(max_length=32, default=_("Birth date"))
+    phone_label = models.CharField(max_length=32, default=_("Phone number"))
+    email_label = models.CharField(max_length=32, default=_("Email address"))
+    website_label = models.CharField(max_length=32, default=_("Website"))
+    about_label = models.CharField(max_length=32, default=_("About me"))
     skill_label = models.CharField(max_length=32, default=_("Skills"))
     language_label = models.CharField(max_length=32, default=_("Languages"))
     education_label = models.CharField(max_length=32, default=_("Education"))
@@ -107,6 +156,40 @@ class Profile(auto_prefetch.Model):
     achievement_label = models.CharField(max_length=32, default=_("Achievements"))
     project_label = models.CharField(max_length=32, default=_("Projects"))
     publication_label = models.CharField(max_length=32, default=_("Publications"))
+
+    full_photo = models.ImageField(null=True, upload_to=get_upload_path)
+    cropped_photo = models.ImageField(null=True, upload_to=get_upload_path)
+    crop_x = models.PositiveSmallIntegerField(**null_blank)
+    crop_y = models.PositiveSmallIntegerField(**null_blank)
+    crop_width = models.PositiveSmallIntegerField(**null_blank)
+    crop_height = models.PositiveSmallIntegerField(**null_blank)
+
+    def upload_photo_url(self):
+        return reverse("profiles:upload-photo", kwargs={"id": self.id})
+
+    def crop_photo_url(self):
+        return reverse("profiles:crop-photo", kwargs={"id": self.id})
+
+    def delete_photos_url(self):
+        return reverse("profiles:delete-photos", kwargs={"id": self.id})
+
+    def crop_photo(self):
+        if self.full_photo:
+            self.cropped_photo.save(
+                "cropped_" + self.full_photo.name.split("/")[-1],
+                ContentFile(self.full_photo.read()),
+            )
+            image = Image.open(self.cropped_photo)
+            cropping_area = (
+                self.crop_x,
+                self.crop_y,
+                self.crop_x + self.crop_width,
+                self.crop_y + self.crop_height,
+            )
+            cropped_image = image.crop(cropping_area)
+            resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
+            resized_image.save(self.cropped_photo.path)
+            self.save()
 
     def update_url(self, params=None):
         url = reverse("profiles:update", kwargs={"id": self.id})
@@ -206,14 +289,14 @@ class Profile(auto_prefetch.Model):
             "personal_info_form": forms.PersonalInfoForm(instance=self),
             "activation_form": forms.ActivationForm(instance=self),
             "labelling_form": forms.LabellingForm(instance=self),
-            "uploadphoto_form": forms.UploadPhotoForm(instance=self.photo),
-            "cropphoto_form": forms.CropPhotoForm(instance=self.photo),
+            "uploadphoto_form": forms.UploadPhotoForm(instance=self),
+            "cropphoto_form": forms.CropPhotoForm(instance=self),
         }
 
         # one to many children as formsets
-        for Model, Form in forms.get_forms(inlines=True).items():
-            name = Model._meta.model_name
-            context[name + "_formset"] = forms.get_inlineformset(Form)(instance=self)
+        for Model, Form in forms.get_inlineforms().items():
+            name = Model._meta.model_name + "_formset"
+            context[name] = forms.create_inlineformset(Form)(instance=self)
 
         return context
 
@@ -224,10 +307,35 @@ class Profile(auto_prefetch.Model):
         pass
 
     def save(self, *args, **kwargs):
-        if self.description:
-            description_rows = int(len(self.description) / 35)
-            self.description_rows = description_rows if description_rows > 3 else 3
+        if self.about:
+            rows = int(len(self.about) / 35)
+            self.about_rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
+        # Change this logic: inefficient
+        # ideas:
+        # - https://stackoverflow.com/questions/68584165/create-a-thumbnail-python-django
+        # - https://gist.github.com/valberg/2429288
+        if self.full_photo:
+            size_modified = False
+            try:
+                img = Image.open(self.full_photo)
+            except Exception as e:
+                raise e
+
+            if img.height > 1200 or img.width > 1200:
+                new_size = (1200, 1200)
+                img.thumbnail(new_size)
+                img.save(self.full_photo.path)
+                size_modified = True
+
+            if not self.cropped_photo:
+                if size_modified:
+                    img = Image.open(self.full_photo)
+                distance = int(0.95 * min([img.height, img.width]))
+                self.crop_width, self.crop_height = distance, distance
+                self.crop_x = int((img.width - distance) / 2)
+                self.crop_y = int((img.height - distance) / 2)
+                super().save(*args, **kwargs)
 
 
 # Abract models and mixins
@@ -257,112 +365,12 @@ class AbstractChildSet(auto_prefetch.Model):
             self.order = last.order + 1 if last else 1
         super().save(*args, **kwargs)
 
-    @property
-    def _related_name(self):
-        model_name = type(self)._meta.model_name
-        if AbstractChildSet in type(self).__bases__:
-            return model_name + "_set"
-        return model_name
-
-    @classproperty
-    def related_name(cls):
-        return cls._meta.default_related_name
-
-    @classproperty
-    def verbose_name(cls):
-        return cls._meta.verbose_name
-
-    @property
-    def active(self):
-        return getattr(self.profile.activationsettings, self._related_name, True)
-
-    @property
-    def label(self):
-        return getattr(
-            self.profile.labelsettings, self._related_name, self.verbose_name
-        )
-
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
         ordering = ("order",)
 
 
-class AbstractProfileSetting(auto_prefetch.Model):
-    # TODO: remove
-    profile = auto_prefetch.OneToOneField(
-        Profile, on_delete=models.CASCADE, related_name="%(class)s"
-    )
-
-    def update_settings_url(self):
-        cls = type(self).__name__
-        return reverse("profiles:update-settings", kwargs={"klass": cls, "id": self.id})
-
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
-
-
 # Profile settings models
-
-
-class Photo(auto_prefetch.Model):
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-    full = models.ImageField(null=True, upload_to=get_upload_path)
-    cropped = models.ImageField(null=True, upload_to=get_upload_path)
-    crop_x = models.PositiveSmallIntegerField(**null_blank)
-    crop_y = models.PositiveSmallIntegerField(**null_blank)
-    crop_width = models.PositiveSmallIntegerField(**null_blank)
-    crop_height = models.PositiveSmallIntegerField(**null_blank)
-
-    def upload_url(self):
-        return reverse("profiles:upload-photo", kwargs={"id": self.id})
-
-    def crop_url(self):
-        return reverse("profiles:crop-photo", kwargs={"id": self.id})
-
-    def delete_url(self):
-        return reverse("profiles:delete-photo-files", kwargs={"id": self.id})
-
-    def crop(self):
-        if self.full:
-            self.cropped.save(
-                "cropped_" + self.full.name.split("/")[-1],
-                ContentFile(self.full.read()),
-            )
-            image = Image.open(self.cropped)
-            cropping_area = (
-                self.crop_x,
-                self.crop_y,
-                self.crop_x + self.crop_width,
-                self.crop_y + self.crop_height,
-            )
-            cropped_image = image.crop(cropping_area)
-            resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
-            resized_image.save(self.cropped.path)
-            self.save()
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.full:
-            size_modified = False
-            try:
-                img = Image.open(self.full)
-            except Exception as e:
-                raise e
-
-            if img.height > 1200 or img.width > 1200:
-                new_size = (1200, 1200)
-                img.thumbnail(new_size)
-                img.save(self.full.path)
-                size_modified = True
-
-            if not self.cropped:
-                if size_modified:
-                    img = Image.open(self.full)
-                distance = int(0.95 * min([img.height, img.width]))
-                self.crop_width, self.crop_height = distance, distance
-                self.crop_x = int((img.width - distance) / 2)
-                self.crop_y = int((img.height - distance) / 2)
-                super().save(*args, **kwargs)
 
 
 class Skill(AbstractChildSet, LevelMethodsMixin):

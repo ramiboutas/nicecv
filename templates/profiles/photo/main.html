@@ -2,7 +2,7 @@
   {% load static i18n %}
   <div {% if photoopen or request.GET.photoopen %} x-data="{ show : true }" {% else %} x-data="{ show : false }" {% endif %}>
     <div>
-      {% if profile.photo.cropped %}
+      {% if profile.cropped_photo %}
         <button class="w-full" @click="show = true" onclick="pollImageToCrop()">
           {% include "profiles/photo/cropped.html" %}
         </button>
@@ -58,7 +58,7 @@
                 <div class="relative mt-6 flex-1 px-4 sm:px-6">
                   <div class="m-5 overflow-hidden bg-white shadow sm:rounded-lg">
                     <div class="px-4 py-5 sm:p-6 border">
-                      {% if profile.photo.full %}
+                      {% if profile.full_photo %}
                         {% include "profiles/photo/crop_form.html" %}
                       {% else %}
                         {% include "profiles/photo/new.html" %}

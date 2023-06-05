@@ -2,14 +2,14 @@
 <div id="crop-container">
   <img class="img-fluid"
        id="image-to-crop"
-       src="{{ profile.photo.full.url }}">
-  <form hx-post="{{ profile.photo.crop_url }}"
+       src="{{ profile.full_photo.url }}">
+  <form hx-post="{{ profile.crop_photo_url }}"
         hx-swap="outerHTML"
         hx-target="#photo-cropped">
     {{ cropphoto_form }}
     <p class="mt-2 text-sm text-red-600">{{ field.errors }}</p>
     <div class="flex items-center justify-end gap-x-6 py-4">
-      <button hx-delete="{{ profile.photo.delete_url }}"
+      <button hx-delete="{{ profile.delete_photos_url }}"
               hx-swap="outerHTML"
               hx-confirm="{% trans "Delete photo?" %} "
               hx-target="#crop-container"

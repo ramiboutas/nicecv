@@ -14,31 +14,25 @@ from apps.profiles import models
 
 
 @cache
-def get_forms(inlines=False, get_all=False) -> dict:
-    out = {}
-
+def get_inlineforms() -> dict:
     Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
-
-    if inlines or get_all:
-        out = out | {F.Meta.model: F for F in Forms if BaseChildFormSet in F.__bases__}
-
-    return out
+    return {F.Meta.model: F for F in Forms if BaseChildFormSet in F.__bases__}
 
 
 @cache
 def get_model_and_form(Klass):
     """Returns a tuple: ChildModel, ChildModelForm"""
     Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
-    modelforms = get_forms(get_all=True)
+    modelforms = get_inlineforms()
     return Model, modelforms[Model]
 
 
 @cache
-def get_inlineformset(FormKlass):
+def create_inlineformset(Form):
     return inlineformset_factory(
         models.Profile,
-        FormKlass.Meta.model,
-        form=FormKlass,
+        Form.Meta.model,
+        form=Form,
         formset=BaseInlineFormSet,
         can_order=False,
         can_delete=False,
@@ -116,15 +110,15 @@ class PersonalInfoForm(ModelForm):
             fields=["fullname", "jobtitle", "location", "birth", "phone", "email"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
-            hx_post=profile.update_field_url(),
-            hx_trigger="keyup changed delay:2s",
+            hx_post=profile.update_personal_info_url(),
+            hx_trigger="keyup changed delay:3s, change",
             hx_swap="none",
         )
         build_widgets(
             self,
-            fields=["description"],
+            fields=["about"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
-            html_rows=profile.description_rows,
+            html_rows=profile.about_rows,
             html_autocomplete="off",
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             hx_post=profile.update_field_url(),
@@ -141,7 +135,7 @@ class PersonalInfoForm(ModelForm):
             "birth",
             "phone",
             "email",
-            "description",
+            "about",
         ]
 
 
@@ -158,8 +152,17 @@ class ActivationForm(ModelForm):
     class Meta:
         model = models.Profile
         fields = [
-            "description_active",
             "photo_active",
+            "jobtitle_active",
+            "website_active",
+            "about_active",
+            "skill_active",
+            "language_active",
+            "education_active",
+            "experience_active",
+            "achievement_active",
+            "project_active",
+            "publication_active",
         ]
 
 
@@ -177,8 +180,21 @@ class LabellingForm(ModelForm):
     class Meta:
         model = models.Profile
         fields = [
-            "description_label",
+            "fullname_label",
+            "jobtitle_label",
+            "location_label",
+            "birth_label",
+            "phone_label",
+            "email_label",
             "website_label",
+            "about_label",
+            "skill_label",
+            "language_label",
+            "education_label",
+            "experience_label",
+            "achievement_label",
+            "project_label",
+            "publication_label",
         ]
 
 
@@ -190,13 +206,13 @@ class UploadPhotoForm(ModelForm):
         super().__init__(*args, **kwargs)
         build_widgets(
             self,
-            fields=["full"],
+            fields=["full_photo"],
             html_class=settings.HTML_FORMS["fileinput"]["class"],
         )
 
     class Meta:
-        model = models.Photo
-        fields = ["full"]
+        model = models.Profile
+        fields = ["full_photo"]
 
 
 class CropPhotoForm(ModelForm):
@@ -214,7 +230,7 @@ class CropPhotoForm(ModelForm):
         )
 
     class Meta:
-        model = models.Photo
+        model = models.Profile
         fields = ["crop_x", "crop_y", "crop_width", "crop_height"]
 
 

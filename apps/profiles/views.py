@@ -19,10 +19,9 @@ from .forms import CropPhotoForm
 from .forms import PersonalInfoForm
 from .forms import ActivationForm
 from .forms import LabellingForm
-from .forms import get_inlineformset
+from .forms import create_inlineformset
 from .forms import get_model_and_form
 from .forms import UploadPhotoForm
-from .models import Photo
 from .models import Profile
 from apps.accounts.models import CustomUser
 from apps.core.http import HTTPResponseHXRedirect
@@ -84,23 +83,6 @@ def profile_update(request, id):
     return render(request, "profiles/profile_update.html", context)
 
 
-@require_POST
-def update_settings(request, klass, id):
-    Model, Form = get_model_and_form(klass)
-    obj = get_object_or_404(Model, id=id)
-    form = Form(request.POST, instance=obj)
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect(
-            obj.profile.update_url(params={"showSettings": "true"})
-        )
-    messages.warning(request, _("Error with profile settings"))
-    context = obj.profile.collect_context()
-    context[Model._meta.model_name] = form
-    context["showSettings"] = True
-    return render(request, "profiles/profile_update.html", context)
-
-
 def _process_setting_form(request, form, profile):
     if form.is_valid():
         form.save()
@@ -126,7 +108,7 @@ def update_activation(request, id):
 
 
 @require_POST
-def update_field(request, id):
+def update_profile_field(request, id):
     profile = get_object_or_404(Profile, id=id)
     for key in request.POST:
         setattr(profile, key, request.POST[key])
@@ -145,7 +127,7 @@ def update_personal_info(request, id):
 
 
 def _render_child_formset(request, Model, Form, profile):
-    new_formset = get_inlineformset(Form)(instance=profile)
+    new_formset = create_inlineformset(Form)(instance=profile)
     context = {
         "formset": new_formset,
         "update_url": profile.update_formset_url(Model),
@@ -157,7 +139,7 @@ def _render_child_formset(request, Model, Form, profile):
 @require_POST
 def update_child_formset(request, klass, id):
     Model, Form = get_model_and_form(klass)
-    FormSet = get_inlineformset(Form)
+    FormSet = create_inlineformset(Form)
 
     profile = Profile.objects.get(id=id)
     formset = FormSet(request.POST, instance=profile)
@@ -177,7 +159,7 @@ def update_child_formset(request, klass, id):
 @require_POST
 def order_child_formset(request, klass, id):
     Model, Form = get_model_and_form(klass)
-    FormSet = get_inlineformset(Form)
+    FormSet = create_inlineformset(Form)
     profile = Profile.objects.get(id=id)
     formset = FormSet(request.POST, instance=profile)
     if formset.is_valid():
@@ -206,36 +188,36 @@ def delete_profile(request, id):
 
 @require_POST
 def upload_photo(request, id):
-    obj = get_object_or_404(Photo, id=id)
-    form = UploadPhotoForm(request.POST, request.FILES, instance=obj)
+    profile = get_object_or_404(Profile, id=id)
+    form = UploadPhotoForm(request.POST, request.FILES, instance=profile)
     if form.is_valid():
         saved_obj = form.save()
 
     context = {
         "cropphoto_form": CropPhotoForm(instance=saved_obj),
-        "profile": obj.profile,
+        "profile": profile,
     }
     return render(request, "profiles/photo/crop_form.html", context)
 
 
 @require_POST
 def crop_photo(request, id):
-    obj = get_object_or_404(Photo, id=id)
-    form = CropPhotoForm(request.POST, instance=obj)
+    profile = get_object_or_404(Profile, id=id)
+    form = CropPhotoForm(request.POST, instance=profile)
     if form.is_valid():
         saved_obj = form.save(commit=False)
-        saved_obj.crop()
-    context = {"profile": obj.profile}
+        saved_obj.crop_photo()
+    context = {"profile": profile}
     return render(request, "profiles/photo/cropped.html", context)
 
 
 @require_http_methods(["DELETE"])
 def delete_photo_files(request, id):
-    obj = get_object_or_404(Photo, id=id)
-    obj.full.delete()
-    obj.cropped.delete()
+    profile = get_object_or_404(Profile, id=id)
+    profile.full_photo.delete()
+    profile.cropped_photo.delete()
     context = {
-        "uploadphoto_form": UploadPhotoForm(instance=obj),
-        "profile": obj.profile,
+        "uploadphoto_form": UploadPhotoForm(instance=profile),
+        "profile": profile,
     }
     return render(request, "profiles/photo/new.html", context)
