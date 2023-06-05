@@ -14,13 +14,10 @@ from apps.profiles import models
 
 
 @cache
-def get_forms(inlines=False, settings=False, get_all=False) -> dict:
+def get_forms(inlines=False, get_all=False) -> dict:
     out = {}
 
     Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
-
-    if settings or get_all:
-        out = out | {F.Meta.model: F for F in Forms if BaseSettingForm in F.__bases__}
 
     if inlines or get_all:
         out = out | {F.Meta.model: F for F in Forms if BaseChildFormSet in F.__bases__}
@@ -59,6 +56,7 @@ def build_widgets(
     x_bind_class: str = None,
     hx_post: str = None,
     hx_trigger: str = None,
+    hx_swap: str = None,
 ):
     # Gather all html and frontend attributes
     attrs = {}
@@ -86,6 +84,10 @@ def build_widgets(
     if hx_trigger:
         # htmx hx-trigger method
         attrs = attrs | {"hx-trigger": mark_safe(hx_trigger)}
+
+    if hx_swap:
+        # htmx hx-trigger method
+        attrs = attrs | {"hx-swap": mark_safe(hx_swap)}
 
     # Set this attrs to the fields
     for field_name in fields:
@@ -115,17 +117,19 @@ class PersonalInfoForm(ModelForm):
             html_class=settings.HTML_FORMS["textinput"]["class"],
             x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
             hx_post=profile.update_field_url(),
-            hx_trigger="keyup changed delay:1s",
+            hx_trigger="keyup changed delay:2s",
+            hx_swap="none",
         )
         build_widgets(
             self,
             fields=["description"],
             html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
-            hx_post=profile.update_field_url(),
-            hx_trigger="keyup changed delay:1s",
             html_rows=profile.description_rows,
             html_autocomplete="off",
+            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            hx_post=profile.update_field_url(),
+            hx_trigger="keyup changed delay:2s",
+            hx_swap="none",
         )
 
     class Meta:
@@ -141,7 +145,7 @@ class PersonalInfoForm(ModelForm):
         ]
 
 
-class FieldActiveForm(ModelForm):
+class ActivationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -159,7 +163,7 @@ class FieldActiveForm(ModelForm):
         ]
 
 
-class FieldLabelForm(ModelForm):
+class LabellingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -214,64 +218,6 @@ class CropPhotoForm(ModelForm):
         fields = ["crop_x", "crop_y", "crop_width", "crop_height"]
 
 
-# profile settings
-class BaseSettingForm(ModelForm):
-    class Meta(ModelForm):
-        fields = "__all__"
-        exclude = ["profile"]
-
-
-class ActivationSettingsForm(BaseSettingForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        build_widgets(
-            self,
-            fields=self.Meta.fields,
-            html_class=settings.HTML_FORMS["checkbox"]["class"],
-        )
-
-    class Meta(BaseSettingForm.Meta):
-        model = models.ActivationSettings
-        fields = [
-            "photo",
-            "jobtitle",
-            "website",
-            "description",
-            "skill_set",
-            "language_set",
-            "education_set",
-            "experience_set",
-            "achievement_set",
-            "project_set",
-            "publication_set",
-        ]
-
-
-class LabelSettingsForm(BaseSettingForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        build_widgets(
-            self,
-            fields=self.Meta.fields,
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
-        )
-
-    class Meta(BaseSettingForm.Meta):
-        model = models.LabelSettings
-        fields = [
-            "website",
-            "description",
-            "skill_set",
-            "language_set",
-            "education_set",
-            "experience_set",
-            "achievement_set",
-            "project_set",
-            "publication_set",
-        ]
-
-
 # profile child formsets
 
 
@@ -279,7 +225,7 @@ class BaseChildFormSet(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if "level" in getattr(type(self).Meta, "fields", []):
+        if "level" in getattr(type(self).Meta, "fields", None):
             build_widgets(
                 self,
                 fields=["level"],

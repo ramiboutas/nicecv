@@ -1,8 +1,6 @@
-<form hx-post="{{ form.instance.update_personal_info_url }}"
+<form hx-post="{{ profile.update_personal_info_url }}"
       hx-trigger="change"
-      hx-swap="outerHTML"
-      hx-target="this"
-      novalidate>
+      hx-swap="none">
   <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.fullname %}</div>
   <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.jobtitle %}</div>
   <div class="mt-2 grid grid-cols-1">{% include "profiles/partials/field_widget.html" with field=form.location %}</div>
@@ -14,7 +12,7 @@
   {% endif %}
   {% if profile.description_active %}
     <div class="mt-2 grid grid-cols-1">
-      {% include "profiles/partials/field_widget.html" with field=form.description field_label=form.instance.description_label %}
+      {% include "profiles/partials/field_widget.html" with field=form.description field_label=profile.description_label %}
     </div>
   {% endif %}
 </form>

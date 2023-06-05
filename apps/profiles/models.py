@@ -82,17 +82,31 @@ class Profile(auto_prefetch.Model):
     birth = models.CharField(**null_16)
     phone = models.CharField(**null_64)
     email = models.EmailField(**null_64)
-
     website = models.URLField(max_length=32, verbose_name=_("Website"))
-    website_label = models.CharField(max_length=16, default=_("Website label"))
-    website_active = models.BooleanField(default=True)
-
     description = models.TextField(**null_1024)
     description_rows = models.PositiveSmallIntegerField(default=15)
-    description_label = models.CharField(max_length=16, default=_("About me"))
-    description_active = models.BooleanField(default=True)
 
     photo_active = models.BooleanField(default=True)
+    jobtitle_active = models.BooleanField(default=True)
+    website_active = models.BooleanField(default=True)
+    description_active = models.BooleanField(default=True)
+    skill_active = models.BooleanField(default=True)
+    language_active = models.BooleanField(default=False)
+    education_active = models.BooleanField(default=True)
+    experience_active = models.BooleanField(default=True)
+    achievement_active = models.BooleanField(default=False)
+    project_active = models.BooleanField(default=False)
+    publication_active = models.BooleanField(default=False)
+
+    website_label = models.CharField(max_length=32, default=_("Website label"))
+    description_label = models.CharField(max_length=32, default=_("About me"))
+    skill_label = models.CharField(max_length=32, default=_("Skills"))
+    language_label = models.CharField(max_length=32, default=_("Languages"))
+    education_label = models.CharField(max_length=32, default=_("Education"))
+    experience_label = models.CharField(max_length=32, default=_("Work experience"))
+    achievement_label = models.CharField(max_length=32, default=_("Achievements"))
+    project_label = models.CharField(max_length=32, default=_("Projects"))
+    publication_label = models.CharField(max_length=32, default=_("Publications"))
 
     def update_url(self, params=None):
         url = reverse("profiles:update", kwargs={"id": self.id})
@@ -114,11 +128,11 @@ class Profile(auto_prefetch.Model):
     def update_field_url(self):
         return reverse("profiles:update-field", kwargs={"id": self.id})
 
-    def update_field_labels_url(self):
-        return reverse("profiles:update-labels", kwargs={"id": self.id})
+    def update_labelling_url(self):
+        return reverse("profiles:update-labelling", kwargs={"id": self.id})
 
-    def update_active_fields_url(self):
-        return reverse("profiles:update-active-fields", kwargs={"id": self.id})
+    def update_activation_url(self):
+        return reverse("profiles:update-activation", kwargs={"id": self.id})
 
     def order_formset_url(self, Klass):
         return reverse(
@@ -187,23 +201,19 @@ class Profile(auto_prefetch.Model):
     def collect_context(self) -> dict:
         from apps.profiles import forms
 
-        context = {}
-        context["profile"] = self
+        context = {
+            "profile": self,
+            "personal_info_form": forms.PersonalInfoForm(instance=self),
+            "activation_form": forms.ActivationForm(instance=self),
+            "labelling_form": forms.LabellingForm(instance=self),
+            "uploadphoto_form": forms.UploadPhotoForm(instance=self.photo),
+            "cropphoto_form": forms.CropPhotoForm(instance=self.photo),
+        }
 
-        context["personal_info_form"] = forms.PersonalInfoForm(instance=self)
-
-        context["field_active_form"] = forms.FieldActiveForm(instance=self)
-
-        context["field_label_form"] = forms.FieldLabelForm(instance=self)
-
-        # one to many children
+        # one to many children as formsets
         for Model, Form in forms.get_forms(inlines=True).items():
             name = Model._meta.model_name
             context[name + "_formset"] = forms.get_inlineformset(Form)(instance=self)
-
-        # photo forms
-        context["uploadphoto_form"] = forms.UploadPhotoForm(instance=self.photo)
-        context["cropphoto_form"] = forms.CropPhotoForm(instance=self.photo)
 
         return context
 
@@ -231,23 +241,6 @@ class LevelMethodsMixin:
     @property
     def level_base_6_float(self):
         return self.level * 6 / 100
-
-
-class AbstractProfileChild(auto_prefetch.Model):
-    # TODO: remove
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
-
-    def update_form_url(self):
-        return reverse(
-            "profiles:update-form",
-            kwargs={
-                "klass": type(self)._meta.model_name,
-                "id": self.id,
-            },
-        )
-
-    class Meta(auto_prefetch.Model.Meta):
-        abstract = True
 
 
 class AbstractChildSet(auto_prefetch.Model):
@@ -311,35 +304,8 @@ class AbstractProfileSetting(auto_prefetch.Model):
 # Profile settings models
 
 
-class ActivationSettings(AbstractProfileSetting):
-    # TODO: move to Profile model
-    photo = models.BooleanField(default=True)
-    jobtitle = models.BooleanField(default=True)
-    website = models.BooleanField(default=True)
-    description = models.BooleanField(default=True)
-    skill_set = models.BooleanField(default=True)
-    language_set = models.BooleanField(default=False)
-    education_set = models.BooleanField(default=True)
-    experience_set = models.BooleanField(default=True)
-    achievement_set = models.BooleanField(default=False)
-    project_set = models.BooleanField(default=False)
-    publication_set = models.BooleanField(default=False)
-
-
-class LabelSettings(AbstractProfileSetting):
-    # TODO: move to Profile model
-    website = models.CharField(max_length=32, default=_("Website"))
-    description = models.CharField(max_length=32, default=_("About me"))
-    skill_set = models.CharField(max_length=32, default=_("Skills"))
-    language_set = models.CharField(max_length=32, default=_("Languages"))
-    education_set = models.CharField(max_length=32, default=_("Education"))
-    experience_set = models.CharField(max_length=32, default=_("Work experience"))
-    achievement_set = models.CharField(max_length=32, default=_("Achievements"))
-    project_set = models.CharField(max_length=32, default=_("Projects"))
-    publication_set = models.CharField(max_length=32, default=_("Publications"))
-
-
-class Photo(AbstractProfileChild):
+class Photo(auto_prefetch.Model):
+    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
     full = models.ImageField(null=True, upload_to=get_upload_path)
     cropped = models.ImageField(null=True, upload_to=get_upload_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)

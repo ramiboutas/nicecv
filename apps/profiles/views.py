@@ -17,11 +17,11 @@ from django_htmx.http import trigger_client_event
 
 from .forms import CropPhotoForm
 from .forms import PersonalInfoForm
+from .forms import ActivationForm
+from .forms import LabellingForm
 from .forms import get_inlineformset
 from .forms import get_model_and_form
 from .forms import UploadPhotoForm
-from .models import AbstractProfileChild
-from .models import AbstractProfileSetting
 from .models import Photo
 from .models import Profile
 from apps.accounts.models import CustomUser
@@ -34,14 +34,6 @@ from apps.core.sessions import get_or_create_session
 def _create_initial_profile(request):
     # create an empty profile
     profile = Profile.objects.create()
-
-    # Add single item children objects
-    for Klass in get_child_models("profiles", AbstractProfileChild):
-        Klass.objects.create(profile=profile)
-
-    # Add setting objects
-    for Klass in get_child_models("profiles", AbstractProfileSetting):
-        Klass.objects.create(profile=profile)
 
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, CustomUser):
@@ -109,6 +101,30 @@ def update_settings(request, klass, id):
     return render(request, "profiles/profile_update.html", context)
 
 
+def _process_setting_form(request, form, profile):
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(profile.update_url(params={"showSettings": "true"}))
+    messages.warning(request, _("Error with profile settings"))
+    context = profile.collect_context()
+    context["showSettings"] = True
+    return render(request, "profiles/profile_update.html", context)
+
+
+@require_POST
+def update_labelling(request, id):
+    profile = get_object_or_404(Profile, id=id)
+    form = LabellingForm(request.POST, instance=profile)
+    return _process_setting_form(request, form, profile)
+
+
+@require_POST
+def update_activation(request, id):
+    profile = get_object_or_404(Profile, id=id)
+    form = ActivationForm(request.POST, instance=profile)
+    return _process_setting_form(request, form, profile)
+
+
 @require_POST
 def update_field(request, id):
     profile = get_object_or_404(Profile, id=id)
@@ -126,27 +142,6 @@ def update_personal_info(request, id):
         form.save()
     context = {"personal_info_form": form}
     return render(request, "profiles/partials/personal_info.html", context)
-
-
-@require_POST
-def update_child_form(request, klass, id):
-    Model, Form = get_model_and_form(klass)
-    obj = get_object_or_404(Model, id=id)
-    form = Form(request.POST, instance=obj)
-    if form.is_valid():
-        form.save()
-        context = {
-            "message": _("Saved: ") + form.Meta.model._meta.verbose_name,
-            "icon": "✅",
-        }
-    else:
-        context = {
-            "message": _("Error with: ") + form.Meta.model._meta.verbose_name,
-            "icon": "⚠️",
-            "description": mark_safe(form.errors),
-            "disappearing_time": 5000,
-        }
-    return render(request, "components/hx_notification.html", context)
 
 
 def _render_child_formset(request, Model, Form, profile):

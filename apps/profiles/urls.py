@@ -8,12 +8,13 @@ from .views import order_child_formset
 from .views import profile_create
 from .views import profile_list
 from .views import profile_update
-from .views import update_child_form
 from .views import update_child_formset
 from .views import update_settings
 from .views import upload_photo
 from .views import update_personal_info
 from .views import update_field
+from .views import update_labelling
+from .views import update_activation
 
 
 # from .views import save_personal_information_view, update_description_view
@@ -30,8 +31,6 @@ urlpatterns = [
     path("profile/<uuid:id>/", profile_update, name="update"),
     # delete profile
     path("delete/profile/<uuid:id>/", delete_profile, name="delete"),
-    # update child form
-    path("form/<str:klass>/<int:id>/", update_child_form, name="update-form"),
     # update settings form
     path("settings/<str:klass>/<int:id>/", update_settings, name="update-settings"),
     # delete child (obj from formset)
@@ -42,6 +41,10 @@ urlpatterns = [
     path("personal-info/<uuid:id>/", update_personal_info, name="update-personal-info"),
     # update profile field
     path("update-field/<uuid:id>/", update_field, name="update-field"),
+    # update labelling form
+    path("update-labels/<uuid:id>/", update_labelling, name="update-labelling"),
+    # update activation form
+    path("update-labels/<uuid:id>/", update_activation, name="update-activation"),
     # order child formset
     path("order/<str:klass>/<uuid:id>/", order_child_formset, name="order-formset"),
     # upload photo
