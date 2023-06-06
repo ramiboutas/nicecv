@@ -173,24 +173,6 @@ class Profile(auto_prefetch.Model):
     def delete_photos_url(self):
         return reverse("profiles:delete-photos", kwargs={"id": self.id})
 
-    def crop_photo(self):
-        if self.full_photo:
-            self.cropped_photo.save(
-                "cropped_" + self.full_photo.name.split("/")[-1],
-                ContentFile(self.full_photo.read()),
-            )
-            image = Image.open(self.cropped_photo)
-            cropping_area = (
-                self.crop_x,
-                self.crop_y,
-                self.crop_x + self.crop_width,
-                self.crop_y + self.crop_height,
-            )
-            cropped_image = image.crop(cropping_area)
-            resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
-            resized_image.save(self.cropped_photo.path)
-            self.save()
-
     def update_url(self, params=None):
         url = reverse("profiles:update", kwargs={"id": self.id})
         extra = (
@@ -306,15 +288,25 @@ class Profile(auto_prefetch.Model):
         # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
         pass
 
-    def save(self, *args, **kwargs):
-        if self.about:
-            rows = int(len(self.about) / 35)
-            self.about_rows = rows if rows > 3 else 3
-        super().save(*args, **kwargs)
-        # Change this logic: inefficient
-        # ideas:
-        # - https://stackoverflow.com/questions/68584165/create-a-thumbnail-python-django
-        # - https://gist.github.com/valberg/2429288
+    def crop_photo(self):
+        if self.full_photo:
+            self.cropped_photo.save(
+                "cropped_" + self.full_photo.name.split("/")[-1],
+                ContentFile(self.full_photo.read()),
+            )
+            image = Image.open(self.cropped_photo)
+            cropping_area = (
+                self.crop_x,
+                self.crop_y,
+                self.crop_x + self.crop_width,
+                self.crop_y + self.crop_height,
+            )
+            cropped_image = image.crop(cropping_area)
+            resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
+            resized_image.save(self.cropped_photo.path)
+            self.save()
+
+    def process_photo(self):
         if self.full_photo:
             size_modified = False
             try:
@@ -335,7 +327,13 @@ class Profile(auto_prefetch.Model):
                 self.crop_width, self.crop_height = distance, distance
                 self.crop_x = int((img.width - distance) / 2)
                 self.crop_y = int((img.height - distance) / 2)
-                super().save(*args, **kwargs)
+                self.save()
+
+    def save(self, *args, **kwargs):
+        if self.about:
+            rows = int(len(self.about) / 35)
+            self.about_rows = rows if rows > 3 else 3
+        super().save(*args, **kwargs)
 
 
 # Abract models and mixins

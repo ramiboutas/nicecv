@@ -191,10 +191,11 @@ def upload_photo(request, id):
     profile = get_object_or_404(Profile, id=id)
     form = UploadPhotoForm(request.POST, request.FILES, instance=profile)
     if form.is_valid():
-        saved_obj = form.save()
+        saved_profile = form.save(commit=False)
+        saved_profile.process_photo()
 
     context = {
-        "cropphoto_form": CropPhotoForm(instance=saved_obj),
+        "cropphoto_form": CropPhotoForm(instance=saved_profile),
         "profile": profile,
     }
     return render(request, "profiles/photo/crop_form.html", context)
