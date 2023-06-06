@@ -217,8 +217,12 @@ def delete_photo_files(request, id):
     profile = get_object_or_404(Profile, id=id)
     profile.full_photo.delete()
     profile.cropped_photo.delete()
+    profile.crop_x, profile.crop_y = None, None
+    profile.crop_height, profile.crop_width = None, None
+
+    saved_profile = profile.save()
     context = {
-        "uploadphoto_form": UploadPhotoForm(instance=profile),
-        "profile": profile,
+        "uploadphoto_form": UploadPhotoForm(instance=saved_profile),
+        "profile": saved_profile,
     }
     return render(request, "profiles/photo/new.html", context)
