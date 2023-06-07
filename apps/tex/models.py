@@ -16,7 +16,7 @@ class TexProfile(Profile):
         proxy = True
 
 
-class ResumeTemplate(auto_prefetch.Model):
+class Tex(auto_prefetch.Model):
     name = models.CharField(max_length=50)
     template_name = models.CharField(default="test.tex", max_length=20, unique=True)
     only_one_page_allowed = models.BooleanField(default=False)
@@ -26,6 +26,7 @@ class ResumeTemplate(auto_prefetch.Model):
     credits = models.CharField(max_length=50, blank=True, null=True)
     credits_url = models.URLField(max_length=100, blank=True, null=True)
     downloads = models.IntegerField(default=0)
+    is_cv = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

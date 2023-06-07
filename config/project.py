@@ -1,12 +1,12 @@
 from functools import cache
 
 
-from apps.tex.models import ResumeTemplate
+from apps.tex.models import Tex
 
 
 @cache
 def context_processors(request):
     return {
-        "resume_templates": ResumeTemplate.objects.filter(is_active=True),
+        "resume_templates": Tex.objects.filter(is_active=True),
         "request": request,
     }

@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 from .models import CoverLetterTemplate
-from .models import ResumeTemplate
+from .models import Tex
 
 
 admin.site.register(CoverLetterTemplate)
-admin.site.register(ResumeTemplate)
+admin.site.register(Tex)
