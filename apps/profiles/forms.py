@@ -1,15 +1,13 @@
-import inspect
 import sys
+import inspect
 from functools import cache
 
 from django.conf import settings
 from django.forms import BaseInlineFormSet
 from django.forms import inlineformset_factory
 from django.forms import ModelForm
-from django.utils.safestring import mark_safe
 
-from apps.core.exceptions import ErrorBySettingFormFieldAttributes
-from apps.core.exceptions import ErrorBySettingFormWidgetInputType
+from apps.core.forms import build_form_widgets
 from apps.profiles import models
 
 
@@ -20,7 +18,7 @@ def get_inlineforms() -> dict:
 
 
 @cache
-def get_model_and_form(Klass):
+def get_child_model_and_form(Klass):
     """Returns a tuple: ChildModel, ChildModelForm"""
     Model = getattr(models, Klass) if isinstance(Klass, str) else Klass
     modelforms = get_inlineforms()
@@ -40,87 +38,27 @@ def create_inlineformset(Form):
     )
 
 
-def build_widgets(
-    form: object,
-    fields: list = [],
-    widget_types: dict = {},
-    html_class: str = None,
-    html_autocomplete=None,
-    html_rows: str = None,
-    x_bind_class: str = None,
-    hx_post: str = None,
-    hx_trigger: str = None,
-    hx_swap: str = None,
-):
-    # Gather all html and frontend attributes
-    attrs = {}
-
-    if html_class:
-        # html class
-        attrs = attrs | {"class": mark_safe(html_class)}
-
-    if html_autocomplete:
-        # HTML attribute: autocomplete
-        # https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
-        attrs = attrs | {"autocomplete": mark_safe(html_autocomplete)}
-
-    if x_bind_class:
-        # alpinejs :class attr.
-        attrs = attrs | {":class": mark_safe(x_bind_class)}
-
-    if html_rows:
-        attrs = attrs | {"rows": mark_safe(html_rows)}
-
-    if hx_post:
-        # htmx hx-post method
-        attrs = attrs | {"hx-post": mark_safe(hx_post)}
-
-    if hx_trigger:
-        # htmx hx-trigger method
-        attrs = attrs | {"hx-trigger": mark_safe(hx_trigger)}
-
-    if hx_swap:
-        # htmx hx-trigger method
-        attrs = attrs | {"hx-swap": mark_safe(hx_swap)}
-
-    # Set this attrs to the fields
-    for field_name in fields:
-        try:
-            form.fields[field_name].widget.attrs.update(attrs)
-        except ErrorBySettingFormFieldAttributes as e:
-            e.add_note(f"Exception by setting attrs to the field {field_name}")
-            raise e
-
-    # Set widget types
-    for field_name, input_type in widget_types.items():
-        try:
-            form.fields[field_name].widget.input_type = input_type
-        except ErrorBySettingFormWidgetInputType as e:
-            e.add_note(f"Exception by setting attrs to the field {field_name}")
-            raise e
-
-
 class PersonalInfoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         profile = kwargs.get("instance", None)
 
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["fullname", "jobtitle", "location", "birth", "phone", "email"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             hx_post=profile.update_personal_info_url(),
             hx_trigger="keyup changed delay:3s, change",
             hx_swap="none",
         )
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["about"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
             html_rows=profile.about_rows,
             html_autocomplete="off",
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             hx_post=profile.update_field_url(),
             hx_trigger="keyup changed delay:2s",
             hx_swap="none",
@@ -143,10 +81,10 @@ class ActivationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        build_widgets(
+        build_form_widgets(
             self,
             fields=self.Meta.fields,
-            html_class=settings.HTML_FORMS["checkbox"]["class"],
+            html_class=settings.FORM_ATTRIBUTES["checkbox"]["class"],
         )
 
     class Meta:
@@ -170,11 +108,11 @@ class LabellingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        build_widgets(
+        build_form_widgets(
             self,
             fields=self.Meta.fields,
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
         )
 
     class Meta:
@@ -204,10 +142,10 @@ class LabellingForm(ModelForm):
 class UploadPhotoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["full_photo"],
-            html_class=settings.HTML_FORMS["fileinput"]["class"],
+            html_class=settings.FORM_ATTRIBUTES["fileinput"]["class"],
         )
 
     class Meta:
@@ -219,7 +157,7 @@ class CropPhotoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        build_widgets(
+        build_form_widgets(
             self,
             widget_types={
                 "crop_x": "hidden",
@@ -242,22 +180,22 @@ class BaseChildFormSet(ModelForm):
         super().__init__(*args, **kwargs)
 
         if "level" in getattr(type(self).Meta, "fields", None):
-            build_widgets(
+            build_form_widgets(
                 self,
                 fields=["level"],
                 widget_types={"level": "range"},
-                html_class=settings.HTML_FORMS["rangeinput"]["class"],
+                html_class=settings.FORM_ATTRIBUTES["rangeinput"]["class"],
             )
 
 
 class SkillForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["name"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
 
@@ -269,11 +207,11 @@ class SkillForm(BaseChildFormSet):
 class LanguageForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["name"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
 
@@ -287,18 +225,18 @@ class EducationForm(BaseChildFormSet):
         super().__init__(*args, **kwargs)
         obj = kwargs.get("instance", None)
         rows = getattr(obj, "rows", 3)
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["title", "institution", "start_date", "end_date"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["description"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_rows=rows,
             html_autocomplete="off",
         )
@@ -313,18 +251,18 @@ class ExperienceForm(BaseChildFormSet):
         super().__init__(*args, **kwargs)
         obj = kwargs.get("instance", None)
         rows = getattr(obj, "rows", 3)
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["title", "company", "start_date", "end_date"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["description"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_rows=rows,
             html_autocomplete="off",
         )
@@ -338,11 +276,11 @@ class AchievementForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["title", "date"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
 
@@ -354,11 +292,11 @@ class AchievementForm(BaseChildFormSet):
 class ProjectForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["role", "title", "organization", "link"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
 
@@ -371,11 +309,11 @@ class PublicationForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        build_widgets(
+        build_form_widgets(
             self,
             fields=["date", "title", "publisher", "link"],
-            html_class=settings.HTML_FORMS["textinput"]["class"],
-            x_bind_class=settings.HTML_FORMS["textinput"]["x_bind_class"],
+            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
 

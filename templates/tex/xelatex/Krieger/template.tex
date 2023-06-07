@@ -1,0 +1,230 @@
+\documentclass[%singlesided,
+               doublesided,
+               paper=a4,
+               fontsize=10pt
+              ]{krieger}
+
+\usepackage{graphicx}
+{% graphicspath %}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% set geometry
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength\highlightwidth{8cm}
+\setlength\headerheight{4cm}            % note that margintop gets added to this value, i.e. the header bar is 5cm
+\setlength\marginleft{1cm}
+\setlength\marginright{\marginleft}      % needs to be 1.5 times to be actually equal. why?
+\setlength\margintop{1cm}
+\setlength\marginbottom{1cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FONTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{fontspec}
+\setmainfont{Carlito}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COLORS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\colorlet{highlightbarcolor}{lightgray}
+\colorlet{headerbarcolor}{darkgray}
+
+\colorlet{headerfontcolor}{white}
+\colorlet{accent}{awesome-red}
+\colorlet{heading}{black}
+\colorlet{emphasis}{black}
+\colorlet{body}{black}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% set document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+% fullname
+{% if object.firstname or object.lastname %}
+  \name{ {{ object.firstname | latex_escape }} {{ object.lastname | latex_escape }} }
+{% else %}
+  \name{}
+{% endif %}
+
+% jobtitle
+{% if object.jobtitle_active  %}
+  \jobtitle{ {{- object.jobtitle | latex_escape -}} }
+{% else %}
+  \jobtitle{}
+{% endif %}
+
+% description
+{% if object.description_active and object.description %}
+	\tagline{ {{- object.description | latex_escape  -}} }
+{% else %}
+	\tagline{}
+{% endif %}
+
+% photo
+{% if object.photo and object.photo.path %}
+	\photo[round]{ {{- object.photo.path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
+{% else %}
+  \photo[round]{picture.jpg}{\dimexpr \headerheight-\marginbottom} % Profile picture
+{% endif %}
+
+\makeheader
+
+\highlightbar{
+
+    % personal information
+    % \section{Contact}
+    {% if object.location and object.location_active %}\location{ {{- object.location | latex_escape -}} }{% endif %} {% if object.birth and object.birth_active %}\birth{ {{- object.birth | latex_escape -}} }{% endif %} {% if object.phone and object.phone_active %}\phone{ {{- object.phone | latex_escape -}} }{% endif %} {% if object.email and object.email_active %}\email{ {{- object.email | latex_escape -}} }{% endif %} {% if object.website and object.website_active %}\website{ {{- object.website | latex_escape -}} }{% endif %} {% if object.linkedin and object.linkedin_active %}\linkedin{ {{- object.linkedin | latex_escape -}} }{% endif %} {% if object.website and object.skype_active %}\skype{ {{- object.skype | latex_escape -}} }{% endif %} {% if object.instagram and object.instagram_active %}\instagram{ {{- object.instagram | latex_escape -}} }{% endif %} {% if object.twitter and object.twitter_active %}\twitter{ {{- object.twitter | latex_escape -}} }{% endif %} {% if object.facebook and object.facebook_active %}\facebook{ {{- object.facebook | latex_escape -}} }{% endif %} {% if object.youtube and object.youtube_active %}\youtube{ {{- object.youtube | latex_escape -}} }{% endif %} {% if object.github and object.github_active %}\github{ {{- object.github | latex_escape -}} }{% endif %} {% if object.gitlab and object.gitlab_active %}\gitlab{ {{- object.gitlab | latex_escape -}} }{% endif %} {% if object.stackoverflow and object.stackoverflow_active %}\stackoverflow{ {{- object.stackoverflow | latex_escape -}} }{% endif %} {% if object.medium and object.medium_active %}\medium{ {{- object.medium | latex_escape -}} }{% endif %} {% if object.orcid and object.orcid_active %}\orcid{ {{- object.orcid | latex_escape -}} }{% endif %}
+
+
+    %\skillsection{Programming}
+
+    {% if object.skill_active  %}
+      \section{ {{- object.skill_label | latex_escape -}} }
+      {% for skill in object.skill_set.all() %}
+        \skill{ {{- skill.name | latex_escape -}} }{ {{- skill.level_base_5_int -}} }
+      {% endfor %}
+    {% endif %}
+
+    \vspace{0.5em}
+
+    {% if object.language_active and object.language_set.count() > 0 %}
+      \section{ {{- object.language_label | latex_escape -}} }
+      {% for language in object.language_set.all() %}
+        \skill{ {{- language.name | latex_escape -}} }{ {{- language.level_base_5_int -}} }
+      {% endfor %}
+    {% endif %}
+}
+
+\mainbar{
+    {% if object.education_active and object.education_set.count() > 0 %}
+      \section[\faGraduationCap]{ {{- object.education_label| latex_escape  -}} }
+      {% for education in object.education_set.all() %}
+        \job{ {{ education.start_date | latex_escape  }} - {{ education.end_date | latex_escape  }} }
+            { {{- education.institution | latex_escape -}} }
+            { {{- education.title | latex_escape  -}} }
+            { {{- education.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+
+
+    {% if object.experience_active and object.experience_set.count() > 0 %}
+      \section[\faBriefcase]{ {{- object.experience_label| latex_escape  -}} }
+      {% for experience in object.experience_set.all() %}
+        \job{ {{ experience.start_date | latex_escape  }} - {{ experience.end_date | latex_escape  }} }
+            { {{- experience.company | latex_escape -}} }
+            { {{- experience.title | latex_escape  -}} }
+            { {{- experience.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+
+    {% if object.certification_active and object.certification_set.count() > 0 %}
+      \section[\faCertificate]{ {{- object.certification_label| latex_escape  -}} }
+      {% for certification in object.certification_set.all() %}
+        \certification{ {{- certification.issuing_date | latex_escape  -}} }
+            { {{- certification.issuer | latex_escape -}} }
+            { {{- certification.title | latex_escape  -}} }
+      {% endfor %}
+    {% endif %}
+
+
+    {% if object.course_active and object.course_set.count() > 0 %}
+      \section[\faCertificate]{ {{- object.course_label| latex_escape  -}} }
+      {% for course in object.course_set.all() %}
+        \course{ {{- course.issuing_date | latex_escape  -}} }
+            { {{- course.issuer | latex_escape -}} }
+            { {{- course.title | latex_escape  -}}  {% if course.hours %}, {{ course.hours | latex_escape  }} {% endif %} }
+            { }
+      {% endfor %}
+    {% endif %}
+
+
+    {% if object.honor_active and object.honor_set.count() > 0 %}
+      \section[\faTrophy]{ {{- object.honor_label| latex_escape  -}} }
+      {% for honor in object.honor_set.all() %}
+        \honor{ {{- honor.issuing_date | latex_escape  -}} }
+            { {{- honor.issuer | latex_escape -}} }
+            { {{- honor.title | latex_escape  -}} }
+            { }
+      {% endfor %}
+    {% endif %}
+
+
+    {% if object.organization_active and object.organization_set.count() > 0 %}
+      \section[\faBuilding]{ {{- object.organization_label| latex_escape  -}} }
+      {% for organization in object.organization_set.all() %}
+        \organization{ {{ organization.start_date | latex_escape  }} - {{ organization.end_date | latex_escape  }} }
+            { {{- organization.organization | latex_escape -}} }
+            { {{- organization.role | latex_escape  -}} }
+            { {{- organization.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+    {% if object.patent_active and object.patent_set.count() > 0 %}
+      \section[\faBook]{ {{- object.patent_label| latex_escape  -}} }
+      {% for patent in object.patent_set.all() %}
+        \patent{ {{- patent.issuing_date | latex_escape  -}} }
+            { {{- patent.issuer | latex_escape -}} }
+            { {{- patent.title | latex_escape  -}} {% if patent.number %} ({{ patent.number | latex_escape  }}){% endif %} }
+            { {{- patent.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+    {% if object.project_active and object.project_set.count() > 0 %}
+      \section[\faLightbulb]{ {{- object.project_label| latex_escape  -}} }
+      {% for project in object.project_set.all() %}
+        \project{ {{ project.start_date | latex_escape  }} - {{ project.end_date | latex_escape  }}  }
+            { {{- project.organization | latex_escape -}} }
+            { {{- project.title | latex_escape  -}} }
+            { {{- project.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+    {% if object.publication_active and object.publication_set.count() > 0 %}
+      \section[\faLightbulb]{ {{- object.publication_label| latex_escape  -}} }
+      {% for publication in object.publication_set.all() %}
+        \publication
+            { {{- publication.title | latex_escape -}}  }
+            { {{- publication.authors | latex_escape -}} }
+            { {{- publication.issuing_date | latex_escape  -}} }
+            { {{- publication.publisher | latex_escape -}} }
+            { {{- publication.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+    {% if object.volunteering_active and object.volunteering_set.count() > 0 %}
+      \section[\faGears]{ {{- object.volunteering_label| latex_escape  -}} }
+      {% for volunteering in object.volunteering_set.all() %}
+        \volunteering{ {{ volunteering.start_date | latex_escape  }} - {{ volunteering.end_date | latex_escape  }} }
+            { {{- volunteering.company | latex_escape -}} }
+            { {{- volunteering.title | latex_escape  -}} }
+            { {{- volunteering.description | latex_escape  | linebreaks -}} }
+      {% endfor %}
+    {% endif %}
+
+}
+\makebody
+\clearpage
+
+
+\pagestyle{highlightmain}
+
+% The highlightbar needs to be filled to display mainbar contents correctly in singlesised mode
+% For an empty highlightbar, fill with empty space
+\highlightbar{\hfill}
+\makebody
+
+
+\end{document}

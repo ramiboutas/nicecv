@@ -18,7 +18,7 @@ class TexProfile(Profile):
 
 class ResumeTemplate(auto_prefetch.Model):
     name = models.CharField(max_length=50)
-    template_name = models.CharField(default="test.tex", max_length=20)
+    template_name = models.CharField(default="test.tex", max_length=20, unique=True)
     only_one_page_allowed = models.BooleanField(default=False)
     interpreter = models.CharField(max_length=20, default="lualatex")
     image = models.ImageField(upload_to="tex-screenshots")

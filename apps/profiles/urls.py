@@ -12,8 +12,7 @@ from .views import update_child_formset
 from .views import upload_photo
 from .views import update_personal_info
 from .views import update_profile_field
-from .views import update_labelling
-from .views import update_activation
+from .views import update_settings
 
 
 # from .views import save_personal_information_view, update_description_view
@@ -38,10 +37,8 @@ urlpatterns = [
     path("personal-info/<uuid:id>/", update_personal_info, name="update-personal-info"),
     # update profile field
     path("update-field/<uuid:id>/", update_profile_field, name="update-field"),
-    # update labelling form
-    path("update-labels/<uuid:id>/", update_labelling, name="update-labelling"),
-    # update activation form
-    path("update-activation/<uuid:id>/", update_activation, name="update-activation"),
+    # update settings forms
+    path("settings/<str:klass>/<uuid:id>/", update_settings, name="update-settings"),
     # order child formset
     path("order/<str:klass>/<uuid:id>/", order_child_formset, name="order-formset"),
     # upload photo

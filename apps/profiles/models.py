@@ -194,10 +194,16 @@ class Profile(auto_prefetch.Model):
         return reverse("profiles:update-field", kwargs={"id": self.id})
 
     def update_labelling_url(self):
-        return reverse("profiles:update-labelling", kwargs={"id": self.id})
+        return reverse(
+            "profiles:update-settings",
+            kwargs={"klass": "LabellingForm", "id": self.id},
+        )
 
     def update_activation_url(self):
-        return reverse("profiles:update-activation", kwargs={"id": self.id})
+        return reverse(
+            "profiles:update-settings",
+            kwargs={"klass": "ActivationForm", "id": self.id},
+        )
 
     def order_formset_url(self, Klass):
         return reverse(

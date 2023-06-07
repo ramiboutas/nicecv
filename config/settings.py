@@ -14,6 +14,8 @@ TEMP_DIR = BASE_DIR / "temp"
 
 TESTS_TEMP_DIR = TEMP_DIR / "tests"
 
+TEX_DIR = BASE_DIR / "templates" / "tex"
+
 # Load env vars from .env file
 dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
 
@@ -200,7 +202,7 @@ TEMPLATES = [
     {
         "NAME": "tex",
         "BACKEND": "django_tex.engine.TeXEngine",
-        "DIRS": [BASE_DIR / "apps" / "templates" / "tex"],
+        "DIRS": [TEX_DIR],
         "APP_DIRS": False,
         "OPTIONS": {
             "environment": "apps.tex.environment.tex_environment",
@@ -399,9 +401,9 @@ if HTTPS:
     SECURE_HSTS_PRELOAD = True
 
 
-# html elements
+# html form elements
 
-HTML_FORMS = {
+FORM_ATTRIBUTES = {
     "textinput": {
         "class": "px-2 w-full rounded-md border-transparent focus:border-transparent focus:ring-0",
         "x_bind_class": "active ? 'bg-indigo-200' : ''",
@@ -412,7 +414,7 @@ HTML_FORMS = {
         },
     },
     "rangeinput": {
-        "class": "",
+        "class": "w-full",
     },
     "checkbox": {
         "class": "h-4 w-4 rounded border-indigo-600 focus:ring-indigo-400 accent-indigo-600",

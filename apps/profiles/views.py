@@ -15,12 +15,13 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 
+from . import forms
 from .forms import CropPhotoForm
 from .forms import PersonalInfoForm
 from .forms import ActivationForm
 from .forms import LabellingForm
 from .forms import create_inlineformset
-from .forms import get_model_and_form
+from .forms import get_child_model_and_form
 from .forms import UploadPhotoForm
 from .models import Profile
 from apps.accounts.models import CustomUser
@@ -83,7 +84,14 @@ def profile_update(request, id):
     return render(request, "profiles/profile_update.html", context)
 
 
-def _process_setting_form(request, form, profile):
+@require_POST
+def update_settings(request, klass, id):
+    profile = get_object_or_404(Profile, id=id)
+    Form = getattr(forms, klass, None)
+    if Form is None:
+        return HTTPResponseHXRedirect(redirect_to=profile.update_url())
+
+    form = Form(request.POST, instance=profile)
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(profile.update_url(params={"showSettings": "true"}))
@@ -91,20 +99,6 @@ def _process_setting_form(request, form, profile):
     context = profile.collect_context()
     context["showSettings"] = True
     return render(request, "profiles/profile_update.html", context)
-
-
-@require_POST
-def update_labelling(request, id):
-    profile = get_object_or_404(Profile, id=id)
-    form = LabellingForm(request.POST, instance=profile)
-    return _process_setting_form(request, form, profile)
-
-
-@require_POST
-def update_activation(request, id):
-    profile = get_object_or_404(Profile, id=id)
-    form = ActivationForm(request.POST, instance=profile)
-    return _process_setting_form(request, form, profile)
 
 
 @require_POST
@@ -126,7 +120,7 @@ def update_personal_info(request, id):
     return render(request, "profiles/partials/personal_info.html", context)
 
 
-def _render_child_formset(request, Model, Form, profile):
+def _render_new_child_formset(request, Model, Form, profile):
     new_formset = create_inlineformset(Form)(instance=profile)
     context = {
         "formset": new_formset,
@@ -138,45 +132,34 @@ def _render_child_formset(request, Model, Form, profile):
 
 @require_POST
 def update_child_formset(request, klass, id):
-    Model, Form = get_model_and_form(klass)
-    FormSet = create_inlineformset(Form)
-
     profile = Profile.objects.get(id=id)
-    formset = FormSet(request.POST, instance=profile)
+    Model, Form = get_child_model_and_form(klass)
+    formset = create_inlineformset(Form)(request.POST, instance=profile)
     if formset.is_valid():
         formset.save()
-        return _render_child_formset(request, Model, Form, profile)
-
-    context = {
-        "message": _("Error during save process"),
-        "icon": "⚠️",
-        "description": mark_safe(formset.errors),
-        "disappearing_time": 5000,
-    }
-    return render(request, "components/hx_notification.html", context)
+    return _render_new_child_formset(request, Model, Form, profile)
 
 
 @require_POST
 def order_child_formset(request, klass, id):
-    Model, Form = get_model_and_form(klass)
-    FormSet = create_inlineformset(Form)
     profile = Profile.objects.get(id=id)
-    formset = FormSet(request.POST, instance=profile)
+    Model, Form = get_child_model_and_form(klass)
+    formset = create_inlineformset(Form)(request.POST, instance=profile)
     if formset.is_valid():
         ids = [int(i) for i in request.POST.getlist("child-id")]
         for order, id in enumerate(ids, start=1):
             obj = formset.queryset.get(id=id)
             obj.order = order
             obj.save()
-    return _render_child_formset(request, Model, Form, profile)
+    return _render_new_child_formset(request, Model, Form, profile)
 
 
 @require_http_methods(["DELETE"])
 def delete_child(request, klass, id):
-    Model, Form = get_model_and_form(klass)
-    object = get_object_or_404(Model, id=id)
-    object.delete()
-    return _render_child_formset(request, Model, Form, object.profile)
+    Model, Form = get_child_model_and_form(klass)
+    child = get_object_or_404(Model, id=id)
+    child.delete()
+    return _render_new_child_formset(request, Model, Form, child.profile)
 
 
 @require_POST
