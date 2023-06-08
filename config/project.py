@@ -1,12 +1,12 @@
 from functools import cache
 
 
-from apps.tex.models import Tex
+from apps.tex.models import CvTex
 
 
 @cache
 def context_processors(request):
     return {
-        "resume_templates": Tex.objects.filter(is_active=True),
+        "resume_templates": CvTex.objects.filter(is_active=True),
         "request": request,
     }

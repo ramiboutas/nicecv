@@ -38,7 +38,7 @@ def create_inlineformset(Form):
     )
 
 
-class PersonalInfoForm(ModelForm):
+class ProfileFieldForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         profile = kwargs.get("instance", None)
@@ -48,7 +48,7 @@ class PersonalInfoForm(ModelForm):
             fields=["fullname", "jobtitle", "location", "birth", "phone", "email"],
             html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
-            hx_post=profile.update_personal_info_url(),
+            hx_post=profile.update_fields_url(),
             hx_trigger="keyup changed delay:3s, change",
             hx_swap="none",
         )
@@ -59,8 +59,8 @@ class PersonalInfoForm(ModelForm):
             html_rows=profile.about_rows,
             html_autocomplete="off",
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
-            hx_post=profile.update_field_url(),
-            hx_trigger="keyup changed delay:2s",
+            hx_post=profile.update_fields_url(),
+            hx_trigger="keyup changed delay:5s, change",
             hx_swap="none",
         )
 

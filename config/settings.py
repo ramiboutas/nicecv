@@ -14,7 +14,9 @@ TEMP_DIR = BASE_DIR / "temp"
 
 TESTS_TEMP_DIR = TEMP_DIR / "tests"
 
-TEX_DIR = BASE_DIR / "templates" / "tex"
+BASE_TEX_DIR = BASE_DIR / "templates" / "tex"
+
+CV_TEX_DIR = BASE_TEX_DIR / "cvs"
 
 # Load env vars from .env file
 dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
@@ -177,7 +179,7 @@ MIDDLEWARE = [
 ]
 
 
-SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 ROOT_URLCONF = "config.urls"
 
@@ -202,7 +204,7 @@ TEMPLATES = [
     {
         "NAME": "tex",
         "BACKEND": "django_tex.engine.TeXEngine",
-        "DIRS": [TEX_DIR],
+        "DIRS": [BASE_TEX_DIR],
         "APP_DIRS": False,
         "OPTIONS": {
             "environment": "apps.tex.environment.tex_environment",
@@ -343,6 +345,14 @@ else:  # pragma: no cover
 
 MESSAGE_TAGS = {messages.ERROR: "danger"}
 
+
+# caching
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

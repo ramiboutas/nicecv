@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from django_htmx.http import trigger_client_event
 from django_tex.shortcuts import render_to_pdf
 
-from .models import Tex
+from .models import CvTex
 from apps.profiles.models import Profile
 
 
@@ -19,7 +19,7 @@ from apps.profiles.models import Profile
 def download_resume_view(request, pk):
     pk_profile = request.POST.get("pk_profile")
     profile_object = get_object_or_404(Profile, pk=pk_profile, user=request.user)
-    resume = get_object_or_404(Tex, pk=pk)
+    resume = get_object_or_404(CvTex, pk=pk)
     resume.add_one_download()
     settings.LATEX_INTERPRETER = resume.interpreter
     context = {"object": profile_object}

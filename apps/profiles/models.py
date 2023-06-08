@@ -187,11 +187,8 @@ class Profile(auto_prefetch.Model):
             "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
 
-    def update_personal_info_url(self):
-        return reverse("profiles:update-personal-info", kwargs={"id": self.id})
-
-    def update_field_url(self):
-        return reverse("profiles:update-field", kwargs={"id": self.id})
+    def update_fields_url(self):
+        return reverse("profiles:update-fields", kwargs={"id": self.id})
 
     def update_labelling_url(self):
         return reverse(
@@ -274,7 +271,7 @@ class Profile(auto_prefetch.Model):
 
         context = {
             "profile": self,
-            "personal_info_form": forms.PersonalInfoForm(instance=self),
+            "personal_info_form": forms.ProfileFieldForm(instance=self),
             "activation_form": forms.ActivationForm(instance=self),
             "labelling_form": forms.LabellingForm(instance=self),
             "uploadphoto_form": forms.UploadPhotoForm(instance=self),
@@ -340,6 +337,9 @@ class Profile(auto_prefetch.Model):
             rows = int(len(self.about) / 35)
             self.about_rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
+
+
+# proxy profile
 
 
 # Abract models and mixins

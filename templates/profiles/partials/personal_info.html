@@ -1,6 +1,4 @@
-<form hx-post="{{ profile.update_personal_info_url }}"
-      hx-trigger="change"
-      hx-swap="none">
+<form hx-post="{{ profile.update_fields_url }}" hx-swap="none">
   <div class="mt-2 grid grid-cols-1">
     {% include "profiles/partials/field_widget.html" with field=form.fullname field_label=profile.fullname_label %}
   </div>

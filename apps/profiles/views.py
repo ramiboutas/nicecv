@@ -1,7 +1,4 @@
-import copy
-
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser
 from django.db import transaction
 from django.http import Http404
@@ -9,24 +6,15 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+from django.views.decorators.csrf import requires_csrf_token
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
-from django_htmx.http import trigger_client_event
 
 from . import forms
-from .forms import CropPhotoForm
-from .forms import PersonalInfoForm
-from .forms import ActivationForm
-from .forms import LabellingForm
-from .forms import create_inlineformset
-from .forms import get_child_model_and_form
-from .forms import UploadPhotoForm
 from .models import Profile
 from apps.accounts.models import CustomUser
 from apps.core.http import HTTPResponseHXRedirect
-from apps.core.objects import get_child_models
 from apps.core.sessions import get_or_create_session
 
 
@@ -38,19 +26,16 @@ def _create_initial_profile(request):
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, CustomUser):
         profile.user = user
-        profile.fullname.text = user.fullname
-        profile.email.text = user.email
-        profile.save()
-        profile.fullname.save()
-        profile.email.save()
+        profile.fullname = user.fullname
+        profile.email = user.email
     else:
         session, request = get_or_create_session(request)
         if Profile.objects.filter(session=session).count() >= 1:
             messages.warning(request, _("Only one profile is allowed for guest users"))
             return Profile.objects.filter(session=session).first(), request
         profile.category = "temporal"
-        profile.session = session
-        profile.save()
+
+    profile.save()
     return profile, request
 
 
@@ -101,27 +86,18 @@ def update_settings(request, klass, id):
     return render(request, "profiles/profile_update.html", context)
 
 
+@requires_csrf_token
 @require_POST
-def update_profile_field(request, id):
+def update_profile_fields(request, id):
     profile = get_object_or_404(Profile, id=id)
     for key in request.POST:
         setattr(profile, key, request.POST[key])
-        profile.save()
+    profile.save()
     return HttpResponse(status=200)
 
 
-@require_POST
-def update_personal_info(request, id):
-    profile = get_object_or_404(Profile, id=id)
-    form = PersonalInfoForm(request.POST, instance=profile)
-    if form.is_valid():
-        form.save()
-    context = {"personal_info_form": form}
-    return render(request, "profiles/partials/personal_info.html", context)
-
-
 def _render_new_child_formset(request, Model, Form, profile):
-    new_formset = create_inlineformset(Form)(instance=profile)
+    new_formset = forms.create_inlineformset(Form)(instance=profile)
     context = {
         "formset": new_formset,
         "update_url": profile.update_formset_url(Model),
@@ -133,8 +109,8 @@ def _render_new_child_formset(request, Model, Form, profile):
 @require_POST
 def update_child_formset(request, klass, id):
     profile = Profile.objects.get(id=id)
-    Model, Form = get_child_model_and_form(klass)
-    formset = create_inlineformset(Form)(request.POST, instance=profile)
+    Model, Form = forms.get_child_model_and_form(klass)
+    formset = forms.create_inlineformset(Form)(request.POST, instance=profile)
     if formset.is_valid():
         formset.save()
     return _render_new_child_formset(request, Model, Form, profile)
@@ -143,8 +119,8 @@ def update_child_formset(request, klass, id):
 @require_POST
 def order_child_formset(request, klass, id):
     profile = Profile.objects.get(id=id)
-    Model, Form = get_child_model_and_form(klass)
-    formset = create_inlineformset(Form)(request.POST, instance=profile)
+    Model, Form = forms.get_child_model_and_form(klass)
+    formset = forms.create_inlineformset(Form)(request.POST, instance=profile)
     if formset.is_valid():
         ids = [int(i) for i in request.POST.getlist("child-id")]
         for order, id in enumerate(ids, start=1):
@@ -156,7 +132,7 @@ def order_child_formset(request, klass, id):
 
 @require_http_methods(["DELETE"])
 def delete_child(request, klass, id):
-    Model, Form = get_child_model_and_form(klass)
+    Model, Form = forms.get_child_model_and_form(klass)
     child = get_object_or_404(Model, id=id)
     child.delete()
     return _render_new_child_formset(request, Model, Form, child.profile)
@@ -172,13 +148,13 @@ def delete_profile(request, id):
 @require_POST
 def upload_photo(request, id):
     profile = get_object_or_404(Profile, id=id)
-    form = UploadPhotoForm(request.POST, request.FILES, instance=profile)
+    form = forms.UploadPhotoForm(request.POST, request.FILES, instance=profile)
     if form.is_valid():
         saved_profile = form.save(commit=False)
         saved_profile.process_photo()
 
     context = {
-        "cropphoto_form": CropPhotoForm(instance=saved_profile),
+        "cropphoto_form": forms.CropPhotoForm(instance=saved_profile),
         "profile": profile,
     }
     return render(request, "profiles/photo/crop_form.html", context)
@@ -187,7 +163,7 @@ def upload_photo(request, id):
 @require_POST
 def crop_photo(request, id):
     profile = get_object_or_404(Profile, id=id)
-    form = CropPhotoForm(request.POST, instance=profile)
+    form = forms.CropPhotoForm(request.POST, instance=profile)
     if form.is_valid():
         saved_obj = form.save(commit=False)
         saved_obj.crop_photo()
@@ -205,7 +181,7 @@ def delete_photo_files(request, id):
 
     saved_profile = profile.save()
     context = {
-        "uploadphoto_form": UploadPhotoForm(instance=saved_profile),
+        "uploadphoto_form": forms.UploadPhotoForm(instance=saved_profile),
         "profile": saved_profile,
     }
     return render(request, "profiles/photo/new.html", context)
