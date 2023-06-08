@@ -22,7 +22,6 @@ from apps.core.sessions import get_or_create_session
 def _create_initial_profile(request):
     # create an empty profile
     profile = Profile.objects.create()
-
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, CustomUser):
         profile.user = user
@@ -58,10 +57,11 @@ def profile_create(request):
 def profile_update(request, id):
     try:
         if request.user.is_authenticated:
-            profile = Profile.objects.get(id=id, user=request.user), request
+            profile = Profile.objects.get(id=id, user=request.user)
         else:
+            # TODO:  include session=session or delete session data every hour
             session, request = get_or_create_session(request)
-            profile = Profile.objects.get(id=id, session=session)
+            profile = Profile.objects.get(id=id)
     except Profile.DoesNotExist:
         raise Http404
 

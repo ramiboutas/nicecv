@@ -1,7 +1,7 @@
 from django.test import RequestFactory
 from django.urls import reverse
 
-from ..utils import _create_initial_profile
+from ..views import _create_initial_profile
 from apps.accounts.factories import UserFactory
 from apps.core.sessions import get_or_create_session
 from config.test import TestCase

@@ -1,23 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Twenty Seconds Resume/CV
-% LaTeX Template
-% Version 1.1 (8/1/17)
-%
-% This template has been downloaded from:
-% http://www.LaTeXTemplates.com
-%
-% Original author:
-% Carmine Spagnuolo (cspagnuolo@unisa.it) with major modifications by
-% Vel (vel@LaTeXTemplates.com)
-%
-% License:
-% The MIT License (see included LICENSE file)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%----------------------------------------------------------------------------------------
-%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
 
 \documentclass[letterpaper]{twentysecondcv-alice} % a4paper for A4
 
@@ -233,7 +213,7 @@
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for education in object.education_set.all() %}
-		\twentyitem{\footnotesize{ {{ education.start_date | latex_escape  }} - {{ education.end_date | latex_escape  }}}}
+		\twentyitem{\footnotesize{ {{ education.start_date | latex_escape }} - {{ education.end_date | latex_escape }}}}
 		{ {{- education.title | latex_escape  -}} }
 		{ {{- education.institution | latex_escape  -}} }
 		{ {{- education.description | latex_escape  | linebreaks -}}  }
@@ -248,7 +228,7 @@
 \begin{twenty} % Environment for a list with descriptions
 	%\twentyitem{<dates>}{<title>}{<location>}{<description>}
 	{% for experience in object.experience_set.all() %}
-		\twentyitem{\footnotesize{ {{ experience.start_date | latex_escape  }} - {{ experience.end_date | latex_escape }}}}
+		\twentyitem{\footnotesize{ {{ experience.start_date | latex_escape }} - {{ experience.end_date | latex_escape }}}}
 		{ {{- experience.title | latex_escape  -}} }
 		{ {{- experience.company | latex_escape  -}} }
 		{ {{- experience.description | latex_escape | linebreaks -}}  }

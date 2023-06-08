@@ -217,35 +217,19 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 
-USE_POSTGRES = False
-
-if USE_POSTGRES:
-    POSTGRES_DB = os.environ.get("POSTGRES_DB", "testing_db")
-    POSTGRES_USER = os.environ.get("POSTGRES_USER", "postgres")
-    POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "postgres")
-    POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "localhost")
-    POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "5432")
-
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": POSTGRES_DB,
-            "USER": POSTGRES_USER,
-            "PASSWORD": POSTGRES_PASSWORD,
-            "HOST": POSTGRES_HOST,
-            "PORT": POSTGRES_PORT,
-            "TEST": {
-                "NAME": "test_db",
-            },
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "testing_db"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+        "TEST": {
+            "NAME": "test_db",
+        },
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+}
 
 
 # Password validation
@@ -433,3 +417,8 @@ FORM_ATTRIBUTES = {
         "class": """block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"""
     },
 }
+
+# project settings
+
+CREATE_INITIAL_PLAN_OBJECTS = False
+CREATE_INITIAL_CV_TEX_OBJECTS = True
