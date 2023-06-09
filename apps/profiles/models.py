@@ -10,8 +10,11 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
+from apps.core.models import Language
+
 
 null_blank = {"null": True, "blank": True}
+null_blank_8 = {"null": True, "blank": True, "max_length": 8}
 null_blank_16 = {"null": True, "blank": True, "max_length": 16}
 null_blank_32 = {"null": True, "blank": True, "max_length": 32}
 null_blank_64 = {"null": True, "blank": True, "max_length": 34}
@@ -69,6 +72,9 @@ class Profile(auto_prefetch.Model):
         default="user_profile",
     )
 
+    language_setting = auto_prefetch.ForeignKey(
+        Language, on_delete=models.SET_NULL, null=True
+    )
     public = models.BooleanField(default=False)
     slug = models.SlugField(**null_blank_16, unique=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -284,6 +290,11 @@ class Profile(auto_prefetch.Model):
             context[name] = forms.create_inlineformset(Form)(instance=self)
 
         return context
+
+    def get_tex_proxy(self):
+        from apps.proxies.models import TexProfile
+
+        return TexProfile.objects.get(id=self.id)
 
     def build_xml(self):
         # TODO: build xml for the deepl API

@@ -3,33 +3,13 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.db.utils import IntegrityError
-
+from slugger import AutoSlugField
 from apps.profiles.models import Profile
-
-
-def _escape_latex(s: str):
-    # TODO: escape and line breaks
-    # https://github.com/weinbusch/django-tex/blob/next/django_tex/filters.py
-    return s
-
-
-class TexProfile(Profile):
-    class Meta:
-        proxy = True
-
-    def get_fullname(self):
-        return _escape_latex(getattr(self, "fullname", ""))
-
-    def has_photo(self):
-        return getattr(getattr(self, "cropped_photo"), "name") is not None
-
-    def photo_path(self):
-        if self.has_photo():
-            return self.cropped_photo.path
 
 
 class CvTex(auto_prefetch.Model):
     title = models.CharField(max_length=64)
+    slug = AutoSlugField(populate_from="title")
     template_name = models.CharField(max_length=64, unique=True)
     interpreter = models.CharField(max_length=20, default="lualatex")
     image = models.ImageField(upload_to="tex-screenshots")
@@ -47,13 +27,16 @@ class CvTex(auto_prefetch.Model):
     def update_metadata(self):
         pass
 
-    @staticmethod
-    def create_initial_objects():
+    @classmethod
+    def update_objects(cls):
+        # first remove the previous ones
+        cls.objects.all().delete()
+        # then read the cv tex path and save them
         for path in settings.CV_TEX_DIR.iterdir():
             tex_path = path / "template.tex"
             metadata_path = path / "metadata"
             if tex_path.is_file() and metadata_path.is_file():
-                CvTex.create_object_from_path(path)
+                cls.create_object_from_path(path)
 
     @classmethod
     def create_object_from_path(cls, path) -> dict:
@@ -88,7 +71,7 @@ class CvTex(auto_prefetch.Model):
     def download_object_url(self):
         return reverse("tex_download_resume", kwargs={"pk": self.pk})
 
-    def add_one_download(self):
+    def add_download(self):
         self.downloads = self.downloads + 1
         self.save()
 

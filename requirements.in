@@ -11,6 +11,7 @@ django-htmx
 django-crispy-forms
 django-tex
 django-celery-results
+django-slugger
 django-analytical
 python-dotenv
 psycopg2-binary

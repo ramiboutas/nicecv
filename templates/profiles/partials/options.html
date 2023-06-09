@@ -8,6 +8,10 @@
     <!-- TODO -->
     <button class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium"
             type="button">📰 {% trans "CV templates" %}</button>
+    <div>
+      {{ profile.language_setting.code }}
+      {{ profile.language_setting.name }}
+    </div>
   </nav>
   <div x-show="showSettings"
        class="relative z-10"

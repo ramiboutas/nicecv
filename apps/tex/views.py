@@ -20,7 +20,7 @@ def download_resume_view(request, pk):
     pk_profile = request.POST.get("pk_profile")
     profile_object = get_object_or_404(Profile, pk=pk_profile, user=request.user)
     resume = get_object_or_404(CvTex, pk=pk)
-    resume.add_one_download()
+    resume.add_download()
     settings.LATEX_INTERPRETER = resume.interpreter
     context = {"object": profile_object}
     return render_to_pdf(request, resume.template_name, context, filename="your_cv.pdf")

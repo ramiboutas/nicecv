@@ -60,3 +60,24 @@
 #         context,
 #         filename=f"{template_name}_test.pdf",
 #     )
+
+
+# class Cv(auto_prefetch.Model):
+#     tex_profile = auto_prefetch.OneToOneField(TexProfile, on_delete=models.CASCADE)
+#     tex = auto_prefetch.OneToOneField(CvTex, null=True, on_delete=models.SET_NULL)
+#     language = auto_prefetch.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
+#     is_template = models.BooleanField(default=False)
+#     image = models.ImageField()
+#     pdf = models.FileField()
+
+
+# from apps.proxies.models import TexProfile
+# from apps.tex.models import CvTex
+# from django.shortcuts import get_object_or_404
+# from .models import Cv
+
+
+# def create_cv(request, profile_id, tex_id):
+#     tex_profile = get_object_or_404(TexProfile, id=profile_id)
+#     tex = get_object_or_404(CvTex, id=profile_id)
+#     cv = Cv.objects.create(tex_profile=tex_profile, tex=tex)

@@ -63,10 +63,11 @@ INSTALLED_APPS = [
     # My own apps
     # "apps.forms.apps.FormsConfig",
     "apps.accounts",
-    "apps.resumes",
+    "apps.cvs",
     "apps.core",
     "apps.plans",
     "apps.profiles",
+    "apps.proxies",
     "apps.tex",
     "apps.celery_progress_htmx",  # Actually a thid party but adapted
     # Wagtail apps

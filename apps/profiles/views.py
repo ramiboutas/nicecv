@@ -16,12 +16,18 @@ from .models import Profile
 from apps.accounts.models import CustomUser
 from apps.core.http import HTTPResponseHXRedirect
 from apps.core.sessions import get_or_create_session
+from apps.core.models import Language
 
 
 @transaction.atomic
 def _create_initial_profile(request):
+    # get language
+    lang, _ = Language.objects.get_or_create(
+        code=getattr(request, "LANGUAGE_CODE", "other")
+    )
+    print(lang)
     # create an empty profile
-    profile = Profile.objects.create()
+    profile = Profile.objects.create(language_setting=lang)
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, CustomUser):
         profile.user = user
