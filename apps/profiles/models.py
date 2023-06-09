@@ -296,6 +296,10 @@ class Profile(auto_prefetch.Model):
 
         return TexProfile.objects.get(id=self.id)
 
+    def get_cv_templates(self):
+        # TODO:
+        pass
+
     def build_xml(self):
         # TODO: build xml for the deepl API
         # https://www.deepl.com/docs-api/xml/

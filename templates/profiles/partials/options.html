@@ -6,8 +6,8 @@
             :class="showSettings ? 'bg-gray-200 text-gray-900' : 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'"
             type="button">⚙️ {% trans "Settings" %}</button>
     <!-- TODO -->
-    <button class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium"
-            type="button">📰 {% trans "CV templates" %}</button>
+    <a href="#cvs"
+       class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">📰 {% trans "CV templates" %}</a>
     <div>
       {{ profile.language_setting.code }}
       {{ profile.language_setting.name }}

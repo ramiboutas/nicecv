@@ -59,6 +59,14 @@
         {% endif %}
       </div>
     </div>
+    <section id="cvs" class="mt-10 border-t border-gray-200 px-4 py-16 sm:px-0">
+      <h2 id="related-heading" class="text-xl font-bold text-gray-900">{% trans "CV templates" %}</h2>
+      <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+        {% for cv in profile.get_cv_templates %}
+          {% include "profiles/partials/cv_card.html" %}
+        {% endfor %}
+      </div>
+    </section>
   </div>
 {% endblock content %}
 {% block extra_body %}
