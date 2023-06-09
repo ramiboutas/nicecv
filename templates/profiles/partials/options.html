@@ -11,6 +11,7 @@
     <div>
       {{ profile.language_setting.code }}
       {{ profile.language_setting.name }}
+      sessionid = {{ request.session.sessionid }}
     </div>
   </nav>
   <div x-show="showSettings"

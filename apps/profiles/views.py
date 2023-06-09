@@ -22,10 +22,9 @@ from apps.core.models import Language
 @transaction.atomic
 def _create_initial_profile(request):
     # get language
-    lang, _ = Language.objects.get_or_create(
+    lang, created = Language.objects.get_or_create(
         code=getattr(request, "LANGUAGE_CODE", "other")
     )
-    print(lang)
     # create an empty profile
     profile = Profile.objects.create(language_setting=lang)
     user = getattr(request, "user", AnonymousUser())
@@ -36,9 +35,10 @@ def _create_initial_profile(request):
     else:
         session, request = get_or_create_session(request)
         if Profile.objects.filter(session=session).count() >= 1:
-            messages.warning(request, _("Only one profile is allowed for guest users"))
+            messages.info(request, _("Only one profile is allowed for guest users"))
             return Profile.objects.filter(session=session).first(), request
         profile.category = "temporal"
+        profile.session = session
 
     profile.save()
     return profile, request
@@ -65,9 +65,8 @@ def profile_update(request, id):
         if request.user.is_authenticated:
             profile = Profile.objects.get(id=id, user=request.user)
         else:
-            # TODO:  include session=session or delete session data every hour
             session, request = get_or_create_session(request)
-            profile = Profile.objects.get(id=id)
+            profile = Profile.objects.get(id=id, session=session)
     except Profile.DoesNotExist:
         raise Http404
 

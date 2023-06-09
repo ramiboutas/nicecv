@@ -13,7 +13,7 @@ from django_tex.core import compile_template_to_pdf
 
 
 class Cv(auto_prefetch.Model):
-    profile = auto_prefetch.OneToOneField(Profile, on_delete=models.CASCADE)
+    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE)
     tex = auto_prefetch.OneToOneField(CvTex, null=True, on_delete=models.SET_NULL)
     language = auto_prefetch.ForeignKey(Language, null=True, on_delete=models.SET_NULL)
     is_template = models.BooleanField(default=False)
