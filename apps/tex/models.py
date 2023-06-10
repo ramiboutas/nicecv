@@ -46,7 +46,9 @@ class CvTex(auto_prefetch.Model):
         tex_path = path / "template.tex"
         metadata_path = path / "metadata"
         if tex_path.is_file() and metadata_path.is_file():
-            template_name = str(tex_path).replace(str(tex_path.parent.parent) + "/", "")
+            template_name = str(tex_path).replace(
+                str(tex_path.parent.parent.parent) + "/", ""
+            )
 
         with open(metadata_path, "r") as f:
             data = f.read()

@@ -7,5 +7,5 @@ from .views import create_cv
 app_name = "cvs"
 
 urlpatterns = [
-    path("create/", create_cv, name="create"),
+    path("create/<uuid:profile_id>/<id:tex_id>/", create_cv, name="cv-create"),
 ]

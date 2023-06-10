@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 from apps.plans.factories import PremiumPlanFactory
 from apps.tex.models import CvTex
-from apps.proxies.models import TexProfile
+from apps.profiles.models import Profile
 from apps.cvs.models import Cv
 from apps.core.models import Language
 
@@ -21,6 +21,10 @@ class Command(BaseCommand):
         PremiumPlanFactory(price=14, months=6)
         # cv tex objects
         CvTex.update_objects()
+
+        # profile templates
+        Profile.create_template_profiles()
+
         # cv objects
         Cv.render_profile_templates()
 

@@ -22,6 +22,7 @@ null_blank_128 = {"null": True, "blank": True, "max_length": 128}
 null_blank_256 = {"null": True, "blank": True, "max_length": 256}
 null_blank_528 = {"null": True, "blank": True, "max_length": 528}
 null_blank_1024 = {"null": True, "blank": True, "max_length": 1024}
+null_blank_2048 = {"null": True, "blank": True, "max_length": 2048}
 
 null_16 = {"null": True, "max_length": 16}
 null_32 = {"null": True, "max_length": 32}
@@ -30,6 +31,7 @@ null_128 = {"null": True, "max_length": 128}
 null_256 = {"null": True, "max_length": 256}
 null_528 = {"null": True, "max_length": 528}
 null_1024 = {"null": True, "max_length": 1024}
+null_2048 = {"null": True, "max_length": 2048}
 
 
 PROFILE_CATEGORIES = (
@@ -82,13 +84,13 @@ class Profile(auto_prefetch.Model):
 
     # input fields from user
     fullname = models.CharField(**null_64)
-    jobtitle = models.CharField(**null_64)
+    jobtitle = models.CharField(**null_128)
     location = models.CharField(**null_64)
     birth = models.CharField(**null_16)
-    phone = models.CharField(**null_64)
+    phone = models.CharField(**null_32)
     email = models.EmailField(**null_64)
     website = models.URLField(max_length=32, verbose_name=_("Website"))
-    about = models.TextField(**null_1024)
+    about = models.TextField(**null_2048)
     about_rows = models.PositiveSmallIntegerField(default=15)
 
     # activation fields and objects
@@ -101,11 +103,11 @@ class Profile(auto_prefetch.Model):
         verbose_name=_("Job title"),
     )
     location_active = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name=_("Location"),
     )
     birth_active = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name=_("Birth date"),
     )
     phone_active = models.BooleanField(
@@ -117,7 +119,7 @@ class Profile(auto_prefetch.Model):
         verbose_name=_("Email address"),
     )
     website_active = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name=_("Website"),
     )
     about_active = models.BooleanField(
@@ -137,14 +139,20 @@ class Profile(auto_prefetch.Model):
         verbose_name=_("Education"),
     )
     experience_active = models.BooleanField(
-        default=True, verbose_name=_("Work experience")
+        default=True,
+        verbose_name=_("Work experience"),
     )
     achievement_active = models.BooleanField(
-        default=False, verbose_name=_("Achievements")
+        default=False,
+        verbose_name=_("Achievements"),
     )
-    project_active = models.BooleanField(default=False, verbose_name=_("Projects"))
+    project_active = models.BooleanField(
+        default=False,
+        verbose_name=_("Projects"),
+    )
     publication_active = models.BooleanField(
-        default=False, verbose_name=_("Publications")
+        default=False,
+        verbose_name=_("Publications"),
     )
 
     fullname_label = models.CharField(max_length=32, default=_("Full name"))
@@ -292,9 +300,9 @@ class Profile(auto_prefetch.Model):
         return context
 
     def get_tex_proxy(self):
-        from apps.proxies.models import TexProfile
+        from apps.profiles.proxies import TexProxyProfile
 
-        return TexProfile.objects.get(id=self.id)
+        return TexProxyProfile.objects.get(id=self.id)
 
     def get_cv_templates(self):
         # TODO:
@@ -347,6 +355,18 @@ class Profile(auto_prefetch.Model):
                 self.crop_y = int((img.height - distance) / 2)
                 self.save()
 
+    def __str__(self):
+        return f"{self.category.capitalize()} Profile ({self.fullname} - {self.language_setting})"
+
+    @classmethod
+    def create_template_profiles(cls, quantity=5):
+        quantity = getattr(settings, "NUMBER_OF_INITIAL_TEMPLATE_PROFILES", 5)
+        from .factories import ProfileFactory
+
+        for _ in range(quantity):
+            obj = ProfileFactory()
+            print(f"✅ {obj} created.")
+
     def save(self, *args, **kwargs):
         if self.about:
             rows = int(len(self.about) / 35)
@@ -361,9 +381,10 @@ class Profile(auto_prefetch.Model):
 
 
 class LevelMethodsMixin:
+    # TODO: implement this in proxies
     @property
     def level_base_5_int(self):
-        return (self.level * 5 / 100).__round__()
+        return round(self.level * 5 / 100)
 
     @property
     def level_base_6_float(self):
@@ -399,9 +420,6 @@ class Skill(AbstractChildSet, LevelMethodsMixin):
     def __str__(self):
         return self.name
 
-    class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Skills")
-
 
 class Language(AbstractChildSet, LevelMethodsMixin):
     """
@@ -410,9 +428,6 @@ class Language(AbstractChildSet, LevelMethodsMixin):
 
     name = models.CharField(max_length=50, verbose_name="🗣️ " + _("Language"))
     level = models.IntegerField(default=50, verbose_name=_("Level"))
-
-    class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Language")
 
     def __str__(self):
         return self.name
@@ -446,7 +461,7 @@ class Education(AbstractChildSet, AbstractModelWithDatesAndDescription):
     institution = models.CharField(max_length=32, verbose_name="🏫 " + _("Institution"))
 
     class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Education")
+        verbose_name_plural = _("Education")
 
 
 class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
@@ -460,7 +475,7 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
     company = models.CharField(max_length=32, verbose_name="🏢 " + _("Company name"))
 
     class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Experience")
+        verbose_name_plural = _("Experience")
 
     def __str__(self):
         return self.title
@@ -471,9 +486,6 @@ class Achievement(AbstractChildSet):
 
     title = models.CharField(max_length=64, verbose_name="🏆 " + _("Goal achieved"))
     date = models.CharField(**null_blank_16, verbose_name="🗓️ " + _("Date"))
-
-    class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Achievements")
 
 
 class Project(AbstractChildSet):
@@ -500,9 +512,6 @@ class Project(AbstractChildSet):
         verbose_name="🔗 " + _("Link"),
     )
 
-    class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Projects")
-
 
 class Publication(AbstractChildSet):
     """
@@ -515,6 +524,3 @@ class Publication(AbstractChildSet):
     title = models.CharField(max_length=128, verbose_name="🔬 " + _("Publication title"))
     publisher = models.CharField(**null_blank_32, verbose_name="📑 " + _("Publisher"))
     link = models.CharField(**null_blank_128, verbose_name="🔗 " + _("Link"))
-
-    class Meta(AbstractChildSet.Meta):
-        verbose_name = _("Publications")

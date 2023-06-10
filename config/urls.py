@@ -11,10 +11,10 @@ from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [
     # Django
-    path("django-admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     path("i18n/", include("django.conf.urls.i18n")),
     # Wagtail
-    path("admin/", include(wagtailadmin_urls)),
+    path("wagtail/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     # Third-party apps
     path("accounts/", include("allauth.urls")),

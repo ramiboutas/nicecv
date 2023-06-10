@@ -2,7 +2,7 @@ from apps.profiles.models import Profile
 from apps.core.text import escape_latex
 
 
-class TexProfile(Profile):
+class TexProxyProfile(Profile):
     class Meta:
         proxy = True
 

@@ -71,13 +71,16 @@
 #     pdf = models.FileField()
 
 
-# from apps.proxies.models import TexProfile
-# from apps.tex.models import CvTex
-# from django.shortcuts import get_object_or_404
-# from .models import Cv
+from apps.profiles.proxies import TexProxyProfile
+from apps.tex.models import CvTex
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+
+from .models import Cv
 
 
-# def create_cv(request, profile_id, tex_id):
-#     tex_profile = get_object_or_404(TexProfile, id=profile_id)
-#     tex = get_object_or_404(CvTex, id=profile_id)
-#     cv = Cv.objects.create(tex_profile=tex_profile, tex=tex)
+def create_cv(request, profile_id, tex_id):
+    tex_profile = get_object_or_404(TexProxyProfile, id=profile_id)
+    tex = get_object_or_404(CvTex, id=tex_id)
+    cv = Cv.objects.create(tex_profile=tex_profile, tex=tex)
+    return render(request, "profiles/partials/cv_card.html", {"cv": cv})

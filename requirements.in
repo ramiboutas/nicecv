@@ -1,6 +1,7 @@
 tblib
 celery
 django
+deepl
 pillow
 dj-stripe
 factory-boy

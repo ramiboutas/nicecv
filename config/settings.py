@@ -67,7 +67,6 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.plans",
     "apps.profiles",
-    "apps.proxies",
     "apps.tex",
     "apps.celery_progress_htmx",  # Actually a thid party but adapted
     # Wagtail apps
@@ -180,7 +179,7 @@ MIDDLEWARE = [
 ]
 
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 ROOT_URLCONF = "config.urls"
 
@@ -385,6 +384,11 @@ GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get(
 DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 
 
+# shell plus
+
+SHELL_PLUS = "ipython"
+
+
 # Https for production environment
 if HTTPS:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -420,6 +424,3 @@ FORM_ATTRIBUTES = {
 }
 
 # project settings
-
-CREATE_INITIAL_PLAN_OBJECTS = False
-CREATE_INITIAL_CV_TEX_OBJECTS = True
