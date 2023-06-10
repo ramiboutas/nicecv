@@ -51,22 +51,17 @@
 \begin{document}
 
 % fullname
-{% if object.firstname or object.lastname %}
-  \name{ {{ object.firstname | latex_escape }} {{ object.lastname | latex_escape }} }
-{% else %}
-  \name{}
-{% endif %}
+
+\name{ {{- object.get_field_value("fullname") -}} }
+
 
 % jobtitle
-{% if object.jobtitle_active  %}
-  \jobtitle{ {{- object.jobtitle | latex_escape -}} }
-{% else %}
-  \jobtitle{}
-{% endif %}
+\jobtitle{ {{- object.get_field_value("jobtitle") -}} }
+
 
 % description
-{% if object.description_active and object.description %}
-	\tagline{ {{- object.description | latex_escape  -}} }
+{% if object.about_active  %}
+	\tagline{ {{- object.get_field_value("about") -}} }
 {% else %}
 	\tagline{}
 {% endif %}

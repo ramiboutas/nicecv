@@ -2,13 +2,15 @@ import uuid
 from functools import cache
 
 import auto_prefetch
+from PIL import Image
+
 from django.conf import settings
+from django.db.models import Q
 from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from PIL import Image
 
 from apps.core.models import Language
 
@@ -41,9 +43,8 @@ PROFILE_CATEGORIES = (
 )
 
 
-def get_upload_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return "profiles/{0}/{1}".format(instance.id, filename)
+def get_upload_path(obj, filename):
+    return f"profiles/{obj.category}/{obj.id}/photos/{filename}"
 
 
 class Profile(auto_prefetch.Model):
@@ -366,6 +367,17 @@ class Profile(auto_prefetch.Model):
         for _ in range(quantity):
             obj = ProfileFactory()
             print(f"✅ {obj} created.")
+
+    def fetch_cvs(self):
+        from apps.cvs.models import Cv
+
+        return Cv.objects.filter(
+            Q(profile=self)
+            | (
+                Q(profile__category="template")
+                & Q(profile__language_setting=self.language_setting)
+            )
+        )
 
     def save(self, *args, **kwargs):
         if self.about:
