@@ -62,12 +62,12 @@ INSTALLED_APPS = [
     "django.forms",
     # My own apps
     # "apps.forms.apps.FormsConfig",
-    "apps.accounts",
-    "apps.core",
-    "apps.plans",
-    "apps.profiles",
-    "apps.tex",
-    "apps.celery_progress_htmx",  # Actually a thid party but adapted
+    # "apps.accounts",
+    "core.CoreConfig",
+    # "apps.plans",
+    # "apps.profiles",
+    # "apps.tex",
+    # "apps.celery_progress_htmx",  # Actually a thid party but adapted
     # Wagtail apps
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -105,7 +105,7 @@ INSTALLED_APPS = [
 ]
 
 # Authentication
-AUTH_USER_MODEL = "accounts.CustomUser"
+AUTH_USER_MODEL = "core.User"
 
 # allauth
 SITE_ID = 1
@@ -178,7 +178,7 @@ MIDDLEWARE = [
 ]
 
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 ROOT_URLCONF = "config.urls"
 
@@ -206,7 +206,7 @@ TEMPLATES = [
         "DIRS": [BASE_TEX_DIR],
         "APP_DIRS": False,
         "OPTIONS": {
-            "environment": "apps.tex.environment.tex_environment",
+            "environment": "config.environment.tex_environment",
         },
     },
 ]

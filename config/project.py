@@ -1,12 +1,17 @@
+from __future__ import annotations
 from functools import cache
 
 
-from apps.tex.models import CvTex
+from core.models.cvs import Cv
+from core.models.languages import Language
 
 
 @cache
 def context_processors(request):
     return {
-        "resume_templates": CvTex.objects.filter(is_active=True),
+        "resume_templates": Cv.objects.filter(
+            profile__category="template",
+            profile__language_setting=Language.get(request.LANGUAGE_CODE),
+        ),
         "request": request,
     }
