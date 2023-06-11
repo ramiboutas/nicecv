@@ -13,6 +13,7 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     models = get_user_model()
     list_display = [
+        "__str__",
         "email",
         "username",
     ]

@@ -31,6 +31,9 @@ class CustomUser(AbstractUser):
     def number_of_profiles(self):
         return self.plan.profiles
 
+    def __str__(self) -> str:
+        return f"User ({self.username} - {self.email})"
+
 
 class UserPremiumPlan(auto_prefetch.Model):
     user = auto_prefetch.ForeignKey(

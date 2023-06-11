@@ -64,6 +64,8 @@ def profile_update(request, id):
     try:
         if request.user.is_authenticated:
             profile = Profile.objects.get(id=id, user=request.user)
+        elif request.user.is_staff:
+            profile = Profile.objects.get(id=id)
         else:
             session, request = get_or_create_session(request)
             profile = Profile.objects.get(id=id, session=session)

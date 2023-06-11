@@ -58,10 +58,6 @@ class Cv(auto_prefetch.Model):
             profile__language_setting__code=lang_code,
         )
 
-    @cached_property
-    def is_template(self):
-        return self.profile.category == "template"
-
     def save(self, *args, **kwargs):
         if self.pdf is None:
             self.render_files()

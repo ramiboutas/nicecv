@@ -6,6 +6,7 @@ class PremiumPlanFactory(factory.django.DjangoModelFactory):
     description = "This is a description of the plan"
     months = 3
     price = 10.0
+    profile_translation = True
 
     class Meta:
         model = "plans.PremiumPlan"

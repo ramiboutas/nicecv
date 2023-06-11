@@ -7,6 +7,7 @@ from apps.tex.models import CvTex
 from apps.profiles.models import Profile
 from apps.cvs.models import Cv
 from apps.core.models import Language
+from apps.core.models import Settings
 
 
 class Command(BaseCommand):
@@ -14,6 +15,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write("Creating objects...")
+        # db-based settings
+        Settings.get()  # this gets
         # language objects
         Language.create_initial_objects()
         # plan objects

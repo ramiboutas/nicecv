@@ -14,6 +14,7 @@ class LanguageAdmin(admin.ModelAdmin):
         "use_in_faker",
     ]
     list_display = ["name", "code"] + list_filter
+    fields = [f.name for f in Language._meta.get_fields()].remove("profile")
 
 
 @admin.register(Settings)
