@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     # My own apps
     # "apps.forms.apps.FormsConfig",
     "apps.accounts",
-    "apps.cvs",
     "apps.core",
     "apps.plans",
     "apps.profiles",

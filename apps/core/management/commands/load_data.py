@@ -5,7 +5,8 @@ from django.core.management.base import BaseCommand
 from apps.plans.factories import PremiumPlanFactory
 from apps.tex.models import CvTex
 from apps.profiles.models import Profile
-from apps.cvs.models import Cv
+from apps.profiles.models import Cv
+
 from apps.core.models import Language
 from apps.core.models import Settings
 
@@ -29,6 +30,6 @@ class Command(BaseCommand):
         Profile.create_template_profiles()
 
         # cv objects
-        Cv.render_profile_templates()
+        Cv.crete_cvs_from_profile_templates()
 
         self.stdout.write("Objects created.")

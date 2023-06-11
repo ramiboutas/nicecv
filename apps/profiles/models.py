@@ -1,16 +1,22 @@
 import uuid
+import tempfile
 from functools import cache
 
 import auto_prefetch
 from PIL import Image
+from pdf2image import convert_from_path
+from django_tex.core import compile_template_to_pdf
+
 
 from django.conf import settings
 from django.db.models import Q
+from django.db import models
 from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
 
 from apps.core.models import Language
 
@@ -43,8 +49,12 @@ PROFILE_CATEGORIES = (
 )
 
 
-def get_upload_path(obj, filename):
-    return f"profiles/{obj.category}/{obj.id}/photos/{filename}"
+def get_photo_upload_path(profile, filename):
+    return f"profiles/{profile.category}/{profile.id}/photos/{filename}"
+
+
+def get_cv_upload_path(cv, filename):
+    return f"profiles/{cv.profile.category}/{cv.profile.id}/cvs/{filename}"
 
 
 class Profile(auto_prefetch.Model):
@@ -172,8 +182,8 @@ class Profile(auto_prefetch.Model):
     project_label = models.CharField(max_length=32, default=_("Projects"))
     publication_label = models.CharField(max_length=32, default=_("Publications"))
 
-    full_photo = models.ImageField(null=True, upload_to=get_upload_path)
-    cropped_photo = models.ImageField(null=True, upload_to=get_upload_path)
+    full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
+    cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
     crop_y = models.PositiveSmallIntegerField(**null_blank)
     crop_width = models.PositiveSmallIntegerField(**null_blank)
@@ -369,8 +379,6 @@ class Profile(auto_prefetch.Model):
             print(f"✅ {obj} created.")
 
     def fetch_cvs(self):
-        from apps.cvs.models import Cv
-
         return Cv.objects.filter(
             Q(profile=self)
             | (
@@ -536,3 +544,54 @@ class Publication(AbstractChildSet):
     title = models.CharField(max_length=128, verbose_name="🔬 " + _("Publication title"))
     publisher = models.CharField(**null_blank_32, verbose_name="📑 " + _("Publisher"))
     link = models.CharField(**null_blank_128, verbose_name="🔗 " + _("Link"))
+
+
+class Cv(auto_prefetch.Model):
+    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE)
+    tex = auto_prefetch.ForeignKey("tex.CvTex", null=True, on_delete=models.SET_NULL)
+    image = models.ImageField(upload_to=get_cv_upload_path)
+    pdf = models.FileField(upload_to=get_cv_upload_path)
+
+    # def render_files(self):
+    #     bytes_pdf = compile_template_to_pdf(
+    #         self.tex.template_name,
+    #         {"object": self.profile.get_tex_proxy()},
+    #     )
+    #     self.pdf.save(f"{self.id}.pdf", ContentFile(bytes_pdf))
+
+    #     with tempfile.TemporaryDirectory() as temp_path:
+    #         image = convert_from_path(
+    #             pdf_path=self.pdf.path,
+    #             first_page=1,
+    #             last_page=1,
+    #             fmt="jpg",
+    #             output_folder=temp_path,
+    #         )[0]
+    #         with open(image.filename, "rb") as f:
+    #             self.image.save(f"{self.id}.jpg", ContentFile(f.read()))
+
+    @classmethod
+    def crete_cvs_from_profile_templates(cls):
+        from apps.tex.models import CvTex
+
+        for tex in CvTex.objects.all():
+            for profile in Profile.objects.filter(category="template"):
+                print(profile)
+                obj = cls(profile=profile, tex=tex)
+                obj.save()
+                print(f"✅ {obj} created.")
+
+    @classmethod
+    def get_template_objects(cls, lang_code="en"):
+        cls.objects.filter(
+            profile__category="template",
+            profile__language_setting__code=lang_code,
+        )
+
+    # def save(self, *args, **kwargs):
+    #     # self.render_files()
+    #     # self.tex.add_download()
+    #     super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f"CV ({self.profile.fullname} {self.tex})"

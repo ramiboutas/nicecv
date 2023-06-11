@@ -12,6 +12,7 @@ class AbractPlan(auto_prefetch.Model):
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=64, null=True)
     profiles = models.PositiveSmallIntegerField(default=1)
+    cvs_per_profile = models.PositiveSmallIntegerField(default=5)
     support = models.BooleanField(default=False)
     profile_translation = models.BooleanField(default=False)
 

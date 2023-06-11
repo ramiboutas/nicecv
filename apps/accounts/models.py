@@ -3,6 +3,7 @@ import datetime
 import auto_prefetch
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.functional import cached_property
 
 from apps.plans.models import FreePlan
 from apps.plans.models import PremiumPlan
@@ -12,10 +13,10 @@ class CustomUser(AbstractUser):
     avatar_url = models.URLField(null=True, blank=True)
     notify_when_plan_expires = models.BooleanField(default=False)
 
-    @property
+    @cached_property
     def plan(self):
-        """Return a PremiumPlan instance if the user has one.
-        If not, return the FreePlan instance"""
+        """Return a PremiumPlan object if the user has a Premium plan.
+        If not, return the only FreePlan instance"""
         user_premium_plan = self.user_premium_plans.filter(
             expires__gte=datetime.date.today()
         ).first()
@@ -23,13 +24,17 @@ class CustomUser(AbstractUser):
             return user_premium_plan.plan
         return FreePlan.get()
 
-    @property
+    @cached_property
     def fullname(self):
         return self.first_name + " " + self.last_name
 
-    @property
+    @cached_property
     def number_of_profiles(self):
         return self.plan.profiles
+
+    @cached_property
+    def number_of_cvs(self):
+        return self.plan.cvs_per_profile
 
     def __str__(self) -> str:
         return f"User ({self.username} - {self.email})"

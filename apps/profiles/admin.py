@@ -1,8 +1,6 @@
 from django.contrib import admin
 from . import models
 
-from apps.cvs.models import Cv
-
 
 class SkillInline(admin.TabularInline):
     model = models.Skill
@@ -10,7 +8,7 @@ class SkillInline(admin.TabularInline):
 
 
 class CvInline(admin.TabularInline):
-    model = Cv
+    model = models.Cv
     extra = 0
 
 
@@ -58,3 +56,9 @@ class ProfileAdmin(admin.ModelAdmin):
         ProjectInline,
         PublicationInline,
     ]
+
+
+@admin.register(models.Cv)
+class CvAdmin(admin.ModelAdmin):
+    list_display = ["profile", "tex"]
+    list_filter = ["profile__category", "profile__language_setting"]

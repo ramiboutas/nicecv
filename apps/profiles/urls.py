@@ -12,6 +12,7 @@ from .views import update_child_formset
 from .views import upload_photo
 from .views import update_profile_fields
 from .views import update_settings
+from .views import create_cv
 
 
 # from .views import save_personal_information_view, update_description_view
@@ -44,4 +45,6 @@ urlpatterns = [
     path("crop-photo/<uuid:id>/", crop_photo, name="crop-photo"),
     # delete photos files
     path("delete-photos/<uuid:id>/", delete_photo_files, name="delete-photos"),
+    # create cv
+    path("create-cv/<uuid:profile_id>/<int:tex_id>/", create_cv, name="cv-create"),
 ]

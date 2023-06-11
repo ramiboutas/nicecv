@@ -12,6 +12,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 
 from . import forms
+from .models import Cv
 from .models import Profile
 from apps.accounts.models import CustomUser
 from apps.core.http import HTTPResponseHXRedirect
@@ -19,10 +20,21 @@ from apps.core.sessions import get_or_create_session
 from apps.core.models import Language
 
 
+from apps.profiles.proxies import TexProxyProfile
+from apps.tex.models import CvTex
+
+
+def create_cv(request, profile_id, tex_id):
+    tex_profile = get_object_or_404(TexProxyProfile, id=profile_id)
+    tex = get_object_or_404(CvTex, id=tex_id)
+    cv = Cv.objects.create(tex_profile=tex_profile, tex=tex)
+    return render(request, "profiles/partials/cv_card.html", {"cv": cv})
+
+
 @transaction.atomic
 def _create_initial_profile(request):
     # get language
-    lang, created = Language.objects.get_or_create(
+    lang, _ = Language.objects.get_or_create(
         code=getattr(request, "LANGUAGE_CODE", "other")
     )
     # create an empty profile
@@ -62,11 +74,11 @@ def profile_create(request):
 
 def profile_update(request, id):
     try:
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_staff:
             profile = Profile.objects.get(id=id, user=request.user)
-        elif request.user.is_staff:
+        elif request.user.is_authenticated and request.user.is_staff:
             profile = Profile.objects.get(id=id)
-        else:
+        elif not request.user.is_authenticated:
             session, request = get_or_create_session(request)
             profile = Profile.objects.get(id=id, session=session)
     except Profile.DoesNotExist:
