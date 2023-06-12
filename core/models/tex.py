@@ -2,6 +2,8 @@ import auto_prefetch
 from slugger import AutoSlugField
 
 from django.db import models
+from django.utils.functional import cached_property
+from django.db.models import Sum
 from django.urls import reverse
 from django.conf import settings
 
@@ -21,6 +23,12 @@ class CvTex(auto_prefetch.Model):
 
     def update_metadata(self):
         pass
+
+    @cached_property
+    def average_rendering_time(self):
+        total_cvs = self.cv_set.all().count()
+        total_time = sum([obj.rendering_time for obj in self.cv_set.all()])
+        return total_time / total_cvs if total_cvs > 0 else 0
 
     @classmethod
     def update_objects(cls):

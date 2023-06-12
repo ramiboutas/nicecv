@@ -7,7 +7,6 @@ from pdf2image import convert_from_path
 from django_tex.core import compile_template_to_pdf
 
 from django.utils.functional import cached_property
-from django.conf import settings
 from django.db.models import Q
 from django.db import models
 from django.core.files.base import ContentFile
