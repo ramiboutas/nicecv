@@ -1,13 +1,9 @@
 import uuid
-import tempfile
 import factory
 from functools import cache
 
 import auto_prefetch
 from PIL import Image
-from pdf2image import convert_from_path
-from django_tex.core import compile_template_to_pdf
-
 
 from django.conf import settings
 from django.db.models import Q
@@ -19,28 +15,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
-from .languages import Language as CoreLanguage
-
-
-null_blank = {"null": True, "blank": True}
-null_blank_8 = {"null": True, "blank": True, "max_length": 8}
-null_blank_16 = {"null": True, "blank": True, "max_length": 16}
-null_blank_32 = {"null": True, "blank": True, "max_length": 32}
-null_blank_64 = {"null": True, "blank": True, "max_length": 34}
-null_blank_128 = {"null": True, "blank": True, "max_length": 128}
-null_blank_256 = {"null": True, "blank": True, "max_length": 256}
-null_blank_528 = {"null": True, "blank": True, "max_length": 528}
-null_blank_1024 = {"null": True, "blank": True, "max_length": 1024}
-null_blank_2048 = {"null": True, "blank": True, "max_length": 2048}
-
-null_16 = {"null": True, "max_length": 16}
-null_32 = {"null": True, "max_length": 32}
-null_64 = {"null": True, "max_length": 34}
-null_128 = {"null": True, "max_length": 128}
-null_256 = {"null": True, "max_length": 256}
-null_528 = {"null": True, "max_length": 528}
-null_1024 = {"null": True, "max_length": 1024}
-null_2048 = {"null": True, "max_length": 2048}
+from .languages import Language
+from .params import *
 
 
 PROFILE_CATEGORIES = (
@@ -83,7 +59,7 @@ class Profile(auto_prefetch.Model):
     )
 
     language_setting = auto_prefetch.ForeignKey(
-        CoreLanguage, on_delete=models.SET_NULL, null=True
+        Language, on_delete=models.SET_NULL, null=True
     )
     public = models.BooleanField(default=False)
     auto_created = models.BooleanField(default=False)
@@ -324,6 +300,7 @@ class Profile(auto_prefetch.Model):
             self.cropped_photo.save(
                 "cropped_" + self.full_photo.name.split("/")[-1],
                 ContentFile(self.full_photo.read()),
+                save=False,
             )
             image = Image.open(self.cropped_photo)
             cropping_area = (
@@ -334,7 +311,7 @@ class Profile(auto_prefetch.Model):
             )
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
-            resized_image.save(self.cropped_photo.path)
+            resized_image.save(self.cropped_photo.path, save=False)
             self.save()
 
     def process_photo(self):
@@ -369,7 +346,7 @@ class Profile(auto_prefetch.Model):
 
         cls.objects.filter(auto_created=True).delete()
 
-        for lang_obj in [CoreLanguage.get(lang[0]) for lang in settings.LANGUAGES]:
+        for lang_obj in [Language.get(lang[0]) for lang in settings.LANGUAGES]:
             with factory.Faker.override_default_locale(lang_obj.code):
                 obj = ProfileFactory(language_setting=lang_obj)
                 print(f"✅ {obj} created.")

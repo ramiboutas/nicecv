@@ -266,6 +266,7 @@ LANGUAGES = (
     ("en", _("English")),
     ("es", _("Spanish")),
     ("de", _("German")),
+    ("fr", _("French")),
 )
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)

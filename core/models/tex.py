@@ -4,46 +4,40 @@ from slugger import AutoSlugField
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
-from django.db.utils import IntegrityError
+
+from .params import *
 
 
 class CvTex(auto_prefetch.Model):
     title = models.CharField(max_length=64)
     slug = AutoSlugField(populate_from="title")
     template_name = models.CharField(max_length=64, unique=True)
-    interpreter = models.CharField(max_length=20, default="lualatex")
-    image = models.ImageField(upload_to="tex-screenshots")
-    is_active = models.BooleanField(default=True)
+    interpreter = models.CharField(max_length=32, default="lualatex")
     license = models.CharField(max_length=32)
-    credits = models.CharField(max_length=128, blank=True, null=True)
-    credits_url = models.URLField(max_length=128, blank=True, null=True)
+    credits = models.CharField(**null_blank_128)
+    credits_url = models.URLField(**null_blank_128)
     downloads = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
 
     def update_metadata(self):
         pass
 
     @classmethod
     def update_objects(cls):
-        # first remove the previous ones
-        cls.objects.all().delete()
-        # then read the cv tex path and save them
         for path in settings.CV_TEX_DIR.iterdir():
-            tex_path = path / "template.tex"
-            metadata_path = path / "metadata"
+            tex_path, metadata_path = path / "template.tex", path / "metadata"
             if tex_path.is_file() and metadata_path.is_file():
-                cls.create_object_from_path(path)
+                cls.update_object(tex_path, metadata_path)
 
     @classmethod
-    def create_object_from_path(cls, path) -> dict:
+    def update_object(cls, tex_path, metadata_path):
         """
-        Creates a new object from a path (a metadata and template.tex file are required)
+        Updates an object from a path (metadata and template.tex files are required)
         """
-        tex_path = path / "template.tex"
-        metadata_path = path / "metadata"
-        if tex_path.is_file() and metadata_path.is_file():
-            template_name = str(tex_path).replace(
-                str(tex_path.parent.parent.parent) + "/", ""
-            )
+
+        template_name = str(tex_path).replace(
+            str(tex_path.parent.parent.parent) + "/", ""
+        )
 
         with open(metadata_path, "r") as f:
             data = f.read()
@@ -55,12 +49,13 @@ class CvTex(auto_prefetch.Model):
         }
 
         try:
-            cls.objects.create(template_name=template_name, **attrs)
-            print(f"✅ {template_name} created")
-        except IntegrityError:
-            print(f"⚠️  {template_name} was already created")
-        except TypeError as e:
-            print(f"🔴 {template_name} had an error: {e}")
+            obj, _ = cls.objects.get_or_create(template_name=template_name)
+            for key, value in attrs.items():
+                setattr(obj, key, value)
+                obj.save()
+            print(f"✅ {obj} created")
+        except Exception as e:
+            print(f"🔴 The was an error with {obj}: {e}")
 
     def __str__(self):
         return self.title
