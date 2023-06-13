@@ -27,19 +27,21 @@ class Cv(auto_prefetch.Model):
     pdf = models.FileField(upload_to=get_cv_upload_path)
     pdf_time = models.FloatField(default=0)
     image_time = models.FloatField(default=0)
+    rendering_time = models.FloatField(default=0)
 
     def render_files(self):
-        start_time = time.time()
+        pdf_start = time.time()
+        # rendering pdf file
         bytes_pdf = compile_template_to_pdf(
             self.tex.template_name,
             {"object": self.profile.get_tex_proxy()},
         )
 
         self.pdf.save(f"{self.profile.id}.pdf", ContentFile(bytes_pdf), save=False)
-
-        image_start_time = time.time()
-        self.pdf_time = image_start_time - start_time
-
+        # pdf time calculations
+        pdf_end = time.time()
+        self.pdf_time = pdf_end - pdf_start
+        # create the image  file
         with tempfile.TemporaryDirectory() as temp_path:
             image = convert_from_path(
                 pdf_path=self.pdf.path,
@@ -52,11 +54,9 @@ class Cv(auto_prefetch.Model):
                 self.image.save(
                     f"{self.profile.id}.jpg", ContentFile(f.read()), save=False
                 )
-        self.image_time = time.time() - image_start_time
-
-    @cached_property
-    def rendering_time(self):
-        return self.image_time + self.pdf_time
+        # total and image time calculations
+        self.image_time = time.time() - pdf_end
+        self.rendering_time = self.image_time + self.pdf_time
 
     @classmethod
     def crete_cvs_from_profile_templates(cls):

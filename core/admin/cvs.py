@@ -13,3 +13,10 @@ class CvAdmin(admin.ModelAdmin):
         "rendering_time",
     ]
     list_filter = ["profile__category", "profile__language_setting"]
+    readonly_fields = [
+        "pdf_time",
+        "image_time",
+        "rendering_time",
+        "image",
+        "pdf",
+    ]

@@ -6,28 +6,56 @@ from django.utils.functional import cached_property
 from django.db.models import Sum
 from django.urls import reverse
 from django.conf import settings
-
+from django.utils.translation import gettext_lazy as _
 from .params import *
 
 
 class CvTex(auto_prefetch.Model):
-    title = models.CharField(max_length=64)
-    slug = AutoSlugField(populate_from="title")
-    template_name = models.CharField(max_length=64, unique=True)
-    interpreter = models.CharField(max_length=32, default="lualatex")
-    license = models.CharField(max_length=32)
-    credits = models.CharField(**null_blank_128)
-    credits_url = models.URLField(**null_blank_128)
+    title = models.CharField(
+        max_length=64,
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
+    slug = AutoSlugField(
+        populate_from="title",
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
+    template_name = models.CharField(
+        max_length=64,
+        unique=True,
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
+    interpreter = models.CharField(
+        max_length=32,
+        default="lualatex",
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
+    license = models.CharField(
+        max_length=32,
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
+    credits = models.CharField(
+        **null_blank_128,
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
+    credits_url = models.URLField(
+        **null_blank_128,
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
     downloads = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
-    def update_metadata(self):
-        pass
-
     @cached_property
     def average_rendering_time(self):
-        total_cvs = self.cv_set.all().count()
-        total_time = sum([obj.rendering_time for obj in self.cv_set.all()])
+        qs = self.cv_set.all()
+        total_cvs = qs.count()
+        total_time = qs.aggregate(Sum("rendering_time"))["rendering_time__sum"]
         return total_time / total_cvs if total_cvs > 0 else 0
 
     @classmethod
