@@ -1,8 +1,8 @@
-from .profiles import Profile
+from . import profiles
 from ..text import escape_latex
 
 
-class TexProxyProfile(Profile):
+class TexProxyProfile(profiles.Profile):
     class Meta:
         proxy = True
 
@@ -15,3 +15,8 @@ class TexProxyProfile(Profile):
     def photo_path(self):
         if self.has_photo():
             return self.cropped_photo.path
+
+
+class TexProxyLanguage(profiles.LanguageAbility):
+    class Meta:
+        proxy = True

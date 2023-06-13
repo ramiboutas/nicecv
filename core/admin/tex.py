@@ -6,12 +6,7 @@ from ..models.tex import CvTex
 
 @admin.register(CvTex)
 class CvTexAdmin(admin.ModelAdmin):
-    list_display = [
-        "__str__",
-        "template_name",
-        "average_rendering_time",
-        "downloads",
-    ]
+    list_display = ["__str__", "template_name", "average_rendering_time", "downloads"]
 
     readonly_fields = [
         "title",

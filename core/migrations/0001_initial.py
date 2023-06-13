@@ -921,13 +921,15 @@ class Migration(migrations.Migration):
                 (
                     "full_photo",
                     models.ImageField(
-                        null=True, upload_to=core.models.profiles.get_photo_upload_path
+                        null=True,
+                        upload_to=core.models.profiles.profile_photo_upload_path,
                     ),
                 ),
                 (
                     "cropped_photo",
                     models.ImageField(
-                        null=True, upload_to=core.models.profiles.get_photo_upload_path
+                        null=True,
+                        upload_to=core.models.profiles.profile_photo_upload_path,
                     ),
                 ),
                 ("crop_x", models.PositiveSmallIntegerField(blank=True, null=True)),

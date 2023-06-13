@@ -201,10 +201,10 @@
 %	 LANGUAGES
 %----------------------------------------------------------------------------------------
 
-{% if object.language_active and object.language_set.count() > 0 %}
+{% if object.language_active and object.languageability_set.count() > 0 %}
 	\languagelabel{ {{- object.language_label | latex_escape -}} }
-	\numberoflanguages{ {{- object.language_set.count() -}} }
-	\languages{ {% for language in object.language_set.all() %}{ {{- language.name | latex_escape  -}} / {{- language.level_base_6_float -}} }{% if not loop.last %},{% endif %}{% endfor %}}
+	\numberoflanguages{ {{- object.languageability_set.count() -}} }
+	\languages{ {% for language in object.languageability_set.all() %}{ {{- language.name | latex_escape  -}} / {{- language.level_base_6_float -}} }{% if not loop.last %},{% endif %}{% endfor %}}
 {% else %}
 	%\languages{}
 {% endif %}

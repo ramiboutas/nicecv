@@ -19,7 +19,7 @@ class Command(BaseCommand):
         # db-based settings
         Secrets.get()  # this gets
         # language objects
-        Language.create_initial_objects()
+        Language.update_objects()
         # plan objects
         PremiumPlanFactory()
         PremiumPlanFactory(price=14, months=6)

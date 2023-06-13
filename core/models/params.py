@@ -17,3 +17,11 @@ null_256 = {"null": True, "max_length": 256}
 null_528 = {"null": True, "max_length": 528}
 null_1024 = {"null": True, "max_length": 1024}
 null_2048 = {"null": True, "max_length": 2048}
+
+
+def profile_photo_upload_path(profile, filename):
+    return f"profiles/{profile.category}/{profile.id}/photos/{filename}"
+
+
+def cv_upload_path(cv, filename):
+    return f"profiles/{cv.profile.category}/{cv.profile.id}/cvs/{filename}"

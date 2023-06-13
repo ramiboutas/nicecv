@@ -93,9 +93,9 @@
 
     \vspace{0.5em}
 
-    {% if object.language_active and object.language_set.count() > 0 %}
+    {% if object.language_active and object.languageability_set.count() > 0 %}
       \section{ {{- object.language_label | latex_escape -}} }
-      {% for language in object.language_set.all() %}
+      {% for language in object.languageability_set.all() %}
         \skill{ {{- language.name | latex_escape -}} }{ {{- language.level_base_5_int -}} }
       {% endfor %}
     {% endif %}

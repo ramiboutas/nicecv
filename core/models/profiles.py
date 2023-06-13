@@ -19,21 +19,16 @@ from .languages import Language
 from .params import *
 
 
-PROFILE_CATEGORIES = (
-    ("temporal", _("Temporal")),
-    ("user_profile", _("User profile")),
-    ("template", _("Template")),
-)
-
-
-def get_photo_upload_path(profile, filename):
-    return f"profiles/{profile.category}/{profile.id}/photos/{filename}"
-
-
 class Profile(auto_prefetch.Model):
     """
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/full-profile
     """
+
+    PROFILE_CATEGORIES = (
+        ("temporal", _("Temporal")),
+        ("user_profile", _("User profile")),
+        ("template", _("Template")),
+    )
 
     id = models.UUIDField(
         primary_key=True,
@@ -156,8 +151,8 @@ class Profile(auto_prefetch.Model):
     project_label = models.CharField(max_length=32, default=_("Projects"))
     publication_label = models.CharField(max_length=32, default=_("Publications"))
 
-    full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
-    cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
+    full_photo = models.ImageField(null=True, upload_to=profile_photo_upload_path)
+    cropped_photo = models.ImageField(null=True, upload_to=profile_photo_upload_path)
     crop_x = models.PositiveSmallIntegerField(**null_blank)
     crop_y = models.PositiveSmallIntegerField(**null_blank)
     crop_width = models.PositiveSmallIntegerField(**null_blank)
