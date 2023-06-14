@@ -1,47 +1,45 @@
 {% extends "base.html" %}
 {% load i18n l10n djmoney %}
 {% block title %}
-    |{% translate "Plan" %} | {{ plan.name }}
+  |{% translate "Plan" %} | {{ plan.name }}
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="bg-white">
-            <div class="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:px-0">
-                <h1 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ plan.name }}</h1>
-                <form class="mt-12">
-                    <section aria-labelledby="cart-heading">
-                        <h2 id="cart-heading" class="sr-only">{% translate "Your selected plan" %}</h2>
-                        <ul role="list"
-                            class="divide-y divide-gray-200 border-t border-b border-gray-200">
-                            <li class="flex py-6">
-                                <div class="ml-4 flex flex-1 flex-col sm:ml-6">
-                                    <div>
-                                        <div class="flex justify-between">
-                                            <h4 class="text-base font-medium text-gray-700">{{ plan.name }}</h4>
-                                            <p class="ml-4 text-sm font-medium text-gray-900">{% money_localize plan.price %}</p>
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-500">{{ plan.description }}</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="mt-10">
-                            <a href="{{ plan.checkout_url }}">
-                                <button type="button"
-                                        class="w-full rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
-                                    {% translate "Checkout" %}
-                                </button>
-                            </a>
-                        </div>
-                        <div class="mt-6  text-sm">
-                            <a href="{% url 'plans:list' %}"
-                               class="font-medium text-indigo-600 hover:text-indigo-500">
-                                ← {% translate "Back to all plans" %}
-                            </a>
-                        </div>
-                    </section>
-                </form>
+  <div class="container">
+    <div class="bg-white">
+      <div class="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:px-0">
+        <h1 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ plan.name }}</h1>
+        <form class="mt-12">
+          <section aria-labelledby="cart-heading">
+            <h2 id="cart-heading" class="sr-only">{% translate "Your selected plan" %}</h2>
+            <ul role="list"
+                class="divide-y divide-gray-200 border-t border-b border-gray-200">
+              <li class="flex py-6">
+                <div class="ml-4 flex flex-1 flex-col sm:ml-6">
+                  <div>
+                    <div class="flex justify-between">
+                      <h4 class="text-base font-medium text-gray-700">{{ plan.name }}</h4>
+                      <p class="ml-4 text-sm font-medium text-gray-900">{% money_localize plan.price %}</p>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">{{ plan.description }}</p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="mt-10">
+              <a href="{{ plan.checkout_url }}">
+                <button type="button"
+                        class="w-full rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+                  {% translate "Checkout" %}
+                </button>
+              </a>
             </div>
-        </div>
+            <div class="mt-6  text-sm">
+              <a href="{% url 'plans:list' %}"
+                 class="font-medium text-indigo-600 hover:text-indigo-500">← {% translate "Back to all plans" %}</a>
+            </div>
+          </section>
+        </form>
+      </div>
     </div>
+  </div>
 {% endblock content %}

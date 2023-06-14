@@ -21,17 +21,12 @@ urlpatterns = [
     path("rosetta/", include("rosetta.urls")),
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
     # My own apps
-    path("accounts/", include("core.urls.users")),  # this just for my-account url
+    path("accounts/", include("core.urls.users")),
     path("plans/", include("core.urls.plans")),
     path("profiles/", include("core.urls.profiles")),
     path("", include("core.urls.home")),
 ]
 
-
-# urlpatterns = [
-#     path("author-polls/", include("polls.urls", namespace="author-polls")),
-#     path("publisher-polls/", include("polls.urls", namespace="publisher-polls")),
-# ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

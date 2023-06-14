@@ -1,3 +1,4 @@
+import time
 import uuid
 import factory
 from functools import cache
@@ -16,7 +17,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 from .languages import Language
-from .params import *
+
+
+def get_photo_upload_path(profile, filename):
+    return f"profiles/{profile.category}/{profile.id}/photos/{filename}"
 
 
 class Profile(auto_prefetch.Model):
@@ -39,14 +43,17 @@ class Profile(auto_prefetch.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         related_name="profile_set",
-        **null_blank,
+        null=True,
+        blank=True,
     )
     session = auto_prefetch.ForeignKey(
         Session,
         related_name="profile_set",
         on_delete=models.CASCADE,
-        **null_blank,
+        null=True,
+        blank=True,
     )
+
     category = models.CharField(
         max_length=16,
         choices=PROFILE_CATEGORIES,
@@ -54,23 +61,46 @@ class Profile(auto_prefetch.Model):
     )
 
     language_setting = auto_prefetch.ForeignKey(
-        Language, on_delete=models.SET_NULL, null=True
+        Language,
+        on_delete=models.SET_NULL,
+        null=True,
     )
-    public = models.BooleanField(default=False)
+    public = models.BooleanField(
+        default=False,
+    )
     auto_created = models.BooleanField(default=False)
-    slug = models.SlugField(**null_blank_16, unique=True)
+    slug = models.SlugField(null=True, blank=True, max_length=16, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     # input fields from user
-    fullname = models.CharField(**null_64)
-    jobtitle = models.CharField(**null_128)
-    location = models.CharField(**null_64)
-    birth = models.CharField(**null_16)
-    phone = models.CharField(**null_32)
-    email = models.EmailField(**null_64)
-    website = models.URLField(max_length=32, verbose_name=_("Website"))
-    about = models.TextField(**null_2048)
+    fullname = models.CharField(
+        _("Full name"),
+        null=True,
+        max_length=64,
+    )
+    jobtitle = models.CharField(
+        _("Job title"),
+        max_length=64,
+        null=True,
+    )
+    location = models.CharField(
+        _("Location"),
+        max_length=64,
+        null=True,
+    )
+    birth = models.CharField(
+        _("Birth"),
+        max_length=64,
+        null=True,
+    )
+    phone = models.CharField(_("Phone number"), max_length=64, null=True)
+    email = models.EmailField(_("Full name"), max_length=64)
+    website = models.URLField(_("Website"), max_length=32)
+    about = models.TextField(
+        max_length=2048,
+        null=True,
+    )
     about_rows = models.PositiveSmallIntegerField(default=15)
 
     # activation fields and objects
@@ -151,12 +181,24 @@ class Profile(auto_prefetch.Model):
     project_label = models.CharField(max_length=32, default=_("Projects"))
     publication_label = models.CharField(max_length=32, default=_("Publications"))
 
-    full_photo = models.ImageField(null=True, upload_to=profile_photo_upload_path)
-    cropped_photo = models.ImageField(null=True, upload_to=profile_photo_upload_path)
-    crop_x = models.PositiveSmallIntegerField(**null_blank)
-    crop_y = models.PositiveSmallIntegerField(**null_blank)
-    crop_width = models.PositiveSmallIntegerField(**null_blank)
-    crop_height = models.PositiveSmallIntegerField(**null_blank)
+    full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
+    cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
+    crop_x = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+    )
+    crop_y = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+    )
+    crop_width = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+    )
+    crop_height = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+    )
 
     def upload_photo_url(self):
         return reverse("profiles:upload-photo", kwargs={"id": self.id})
@@ -347,6 +389,7 @@ class Profile(auto_prefetch.Model):
                 print(f"✅ {obj} created.")
 
     def fetch_cvs(self):
+        start = time.time()
         from .cvs import Cv
         from .tex import CvTex
 
@@ -361,7 +404,7 @@ class Profile(auto_prefetch.Model):
                     profile__language_setting=self.language_setting,
                 )[0]
             cvs.append(cv)
-
+        print(f"{time.time()- start} seconds")
         return cvs
 
     def save(self, *args, **kwargs):
@@ -389,7 +432,7 @@ class LevelMethodsMixin:
 
 
 class AbstractChildSet(auto_prefetch.Model):
-    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    profile = auto_prefetch.ForeignKey(Profile, on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField(default=1)
 
     def get_delete_url(self):
@@ -411,8 +454,14 @@ class AbstractChildSet(auto_prefetch.Model):
 
 
 class Skill(AbstractChildSet, LevelMethodsMixin):
-    name = models.CharField(max_length=50, verbose_name="📊 " + _("Skill"))
-    level = models.IntegerField(default=50, verbose_name=_("Level"))
+    name = models.CharField(
+        "📊 " + _("Skill"),
+        max_length=50,
+    )
+    level = models.IntegerField(
+        _("Level"),
+        default=50,
+    )
 
     def __str__(self):
         return self.name
@@ -423,18 +472,33 @@ class LanguageAbility(AbstractChildSet, LevelMethodsMixin):
     An object representing the languages that the member holds.
     """
 
-    name = models.CharField(max_length=50, verbose_name="🗣️ " + _("Language"))
-    level = models.IntegerField(default=50, verbose_name=_("Level"))
+    name = models.CharField(
+        "🗣️ " + _("Language"),
+        max_length=50,
+    )
+    level = models.IntegerField(
+        _("Level"),
+        default=50,
+    )
 
     def __str__(self):
         return self.name
 
 
 class AbstractModelWithDatesAndDescription(auto_prefetch.Model):
-    start_date = models.CharField(max_length=16, verbose_name="🗓️ " + _("Start date"))
-    end_date = models.CharField(max_length=16, verbose_name="🗓️ " + _("End date"))
+    start_date = models.CharField(
+        "🗓️ " + _("Start date"),
+        max_length=16,
+    )
+    end_date = models.CharField(
+        "🗓️ " + _("End date"),
+        max_length=16,
+    )
     description = models.TextField(
-        **null_blank_1024, verbose_name="📝 " + _("What did you learn?")
+        "📝 " + _("What did you learn?"),
+        null=True,
+        blank=True,
+        max_length=1024,
     )
     rows = models.PositiveSmallIntegerField(default=10)
 
@@ -454,8 +518,14 @@ class Education(AbstractChildSet, AbstractModelWithDatesAndDescription):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
 
-    title = models.CharField(max_length=64, verbose_name="🎓 " + _("Title"))
-    institution = models.CharField(max_length=32, verbose_name="🏫 " + _("Institution"))
+    title = models.CharField(
+        "🎓 " + _("Title"),
+        max_length=64,
+    )
+    institution = models.CharField(
+        "🏫 " + _("Institution"),
+        max_length=32,
+    )
 
     class Meta(AbstractChildSet.Meta):
         verbose_name_plural = _("Education")
@@ -467,9 +537,20 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/position
     """
 
-    title = models.CharField(**null_blank_64, verbose_name="🧑‍💼 " + _("Job title"))
-    location = models.CharField(max_length=32, verbose_name="📍 " + _("Location"))
-    company = models.CharField(max_length=32, verbose_name="🏢 " + _("Company name"))
+    title = models.CharField(
+        "🧑‍💼 " + _("Job title"),
+        null=True,
+        blank=True,
+        max_length=64,
+    )
+    location = models.CharField(
+        "📍 " + _("Location"),
+        max_length=32,
+    )
+    company = models.CharField(
+        "🏢 " + _("Company name"),
+        max_length=32,
+    )
 
     class Meta(AbstractChildSet.Meta):
         verbose_name_plural = _("Experience")
@@ -481,8 +562,16 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
 class Achievement(AbstractChildSet):
     """Archivement object"""
 
-    title = models.CharField(max_length=64, verbose_name="🏆 " + _("Goal achieved"))
-    date = models.CharField(**null_blank_16, verbose_name="🗓️ " + _("Date"))
+    title = models.CharField(
+        "🏆 " + _("Goal achieved"),
+        max_length=64,
+    )
+    date = models.CharField(
+        "🗓️ " + _("Date"),
+        null=True,
+        blank=True,
+        max_length=16,
+    )
 
 
 class Project(AbstractChildSet):
@@ -493,20 +582,26 @@ class Project(AbstractChildSet):
     """
 
     title = models.CharField(
+        "🌍 " + _("Project name"),
         max_length=64,
-        verbose_name="🌍 " + _("Project name"),
     )
     role = models.CharField(
-        **null_blank_32,
-        verbose_name="🧑‍💼 " + _("Role in the project"),
+        "🧑‍💼 " + _("Role in the project"),
+        null=True,
+        blank=True,
+        max_length=32,
     )
     organization = models.CharField(
-        **null_blank_64,
-        verbose_name="🤝 " + _("Organization"),
+        "🤝 " + _("Organization"),
+        null=True,
+        blank=True,
+        max_length=64,
     )
     link = models.CharField(
-        **null_blank_128,
-        verbose_name="🔗 " + _("Link"),
+        "🔗 " + _("Link"),
+        null=True,
+        blank=True,
+        max_length=128,
     )
 
 
@@ -517,7 +612,25 @@ class Publication(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
 
-    date = models.CharField(**null_blank_16, verbose_name="🗓️ " + _("Date"))
-    title = models.CharField(max_length=128, verbose_name="🔬 " + _("Publication title"))
-    publisher = models.CharField(**null_blank_32, verbose_name="📑 " + _("Publisher"))
-    link = models.CharField(**null_blank_128, verbose_name="🔗 " + _("Link"))
+    date = models.CharField(
+        "🗓️ " + _("Date"),
+        null=True,
+        blank=True,
+        max_length=16,
+    )
+    title = models.CharField(
+        "🔬 " + _("Publication title"),
+        max_length=128,
+    )
+    publisher = models.CharField(
+        "📑 " + _("Publisher"),
+        null=True,
+        blank=True,
+        max_length=32,
+    )
+    link = models.CharField(
+        "🔗 " + _("Link"),
+        null=True,
+        blank=True,
+        max_length=128,
+    )

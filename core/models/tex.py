@@ -7,7 +7,6 @@ from django.db.models import Sum
 from django.urls import reverse
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from .params import *
 
 
 class CvTex(auto_prefetch.Model):
@@ -19,7 +18,7 @@ class CvTex(auto_prefetch.Model):
     slug = AutoSlugField(
         populate_from="title",
         editable=False,
-        help_text=_("Read from metadata"),
+        help_text=_("Calculated from title field"),
     )
     template_name = models.CharField(
         max_length=64,
@@ -35,21 +34,24 @@ class CvTex(auto_prefetch.Model):
     )
     license = models.CharField(
         max_length=32,
+        default="MIT",
         editable=False,
         help_text=_("Read from metadata"),
     )
     credits = models.CharField(
-        **null_blank_128,
+        max_length=128,
+        null=True,
         editable=False,
         help_text=_("Read from metadata"),
     )
     credits_url = models.URLField(
-        **null_blank_128,
+        max_length=128,
+        null=True,
         editable=False,
         help_text=_("Read from metadata"),
     )
     downloads = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
 
     @cached_property
     def average_rendering_time(self):
@@ -91,7 +93,7 @@ class CvTex(auto_prefetch.Model):
                 obj.save()
             print(f"✅ {obj} created")
         except Exception as e:
-            print(f"🔴 The was an error with {obj}: {e}")
+            print(f"🔴 The was an error with {template_name}: {e}")
 
     def __str__(self):
         return self.title

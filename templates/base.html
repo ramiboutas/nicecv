@@ -2,37 +2,33 @@
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- my custom css -->
-        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" />
-        <!-- for more css in a specific page -->
-        {% block css %}
-        {% endblock css %}
-        <title>Nice CV
-            {% block title %}
-            {% endblock title %}
-        </title>
-    </head>
-    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-        {% include "_messages.html" %}
-        {% block content %}
-        {% endblock content %}
-        {% block extra_body %}
-        {% endblock extra_body %}
-        <!-- js files -->
-        <script defer src="https://unpkg.com/htmx.org@1.8.6/dist/htmx.min.js"></script>
-        <script defer src="{% static 'js/cropper.js' %}"></script>
-        <script defer src="{% static 'js/alpine.js' %}"></script>
-        <script defer src="{% static 'js/base.js' %}"></script>
-        <script defer
-                src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"
-                integrity="sha512-Eezs+g9Lq4TCCq0wae01s9PuNWzHYoCMkE97e2qdkYthpI0pzC3UGB03lgEHn2XM85hDOUF6qgqqszs+iXU4UA=="
-                crossorigin="anonymous"
-                referrerpolicy="no-referrer"></script>
-        {% django_htmx_script %}
-    </body>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- my custom css -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" />
+    <!-- for more css in a specific page -->
+    {% block css %}
+    {% endblock css %}
+    <title>Nice CV
+      {% block title %}
+      {% endblock title %}
+    </title>
+  </head>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% include "_messages.html" %}
+    {% block content %}
+    {% endblock content %}
+    {% block extra_body %}
+    {% endblock extra_body %}
+    <!-- js files -->
+    <script defer src="{% static 'js/htmx.js' %}"></script>
+    <script defer src="{% static 'js/cropper.js' %}"></script>
+    <script defer src="{% static 'js/alpine.js' %}"></script>
+    <script defer src="{% static 'js/base.js' %}"></script>
+    <script defer src="{% static 'js/sortable.js' %}"></script>
+    {% django_htmx_script %}
+  </body>
 </html>

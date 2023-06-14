@@ -22,6 +22,10 @@ class Language(auto_prefetch.Model):
         return cls.objects.get_or_create(code=code)[0]
 
     @classmethod
+    def get_default(clas):
+        return clas.objects.get_or_create(code=settings.LANGUAGE_CODE)[0]
+
+    @classmethod
     def update_objects(cls):
         # Languages available in Django global settings
         for code, name in DJANGO_LANGUAGES:
