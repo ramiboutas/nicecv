@@ -348,14 +348,21 @@ class Profile(auto_prefetch.Model):
 
     def fetch_cvs(self):
         from .cvs import Cv
+        from .tex import CvTex
 
-        return Cv.objects.filter(
-            Q(profile=self)
-            | (
-                Q(profile__category="template")
-                & Q(profile__language_setting=self.language_setting)
-            )
-        )
+        cvs = []
+
+        for tex in CvTex.objects.all():
+            try:
+                cv = Cv.objects.get(tex=tex, profile=self)
+            except Cv.DoesNotExist:
+                cv = Cv.objects.filter(
+                    profile__category="template",
+                    profile__language_setting=self.language_setting,
+                )[0]
+            cvs.append(cv)
+
+        return cvs
 
     def save(self, *args, **kwargs):
         if self.about:

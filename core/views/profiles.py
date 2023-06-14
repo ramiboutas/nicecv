@@ -31,9 +31,7 @@ def create_cv(request, profile_id, tex_id):
         cv = Cv.objects.filter(profile=profile, tex=tex).last()
 
     if not created:
-        cv.profile = profile
-        cv.tex = tex
-        cv = cv.save()
+        cv.save()
     context = {"cv": cv, "profile": profile}
     return render(request, "profiles/cvs/cv_card.html", context)
 
