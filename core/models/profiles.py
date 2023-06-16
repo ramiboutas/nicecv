@@ -1,21 +1,18 @@
 import time
 import uuid
-import factory
 from functools import cache
 
 import auto_prefetch
-from PIL import Image
-
+import factory
 from django.conf import settings
-from django.db.models import Q
-from django.db import models
 from django.contrib.sessions.models import Session
-from django.utils.functional import cached_property
-
 from django.core.files.base import ContentFile
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from PIL import Image
 
 from ..latex import escape_latex
 from .languages import Language
@@ -190,10 +187,9 @@ class Profile(auto_prefetch.Model):
     crop_width = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_height = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    @cached_property
-    def tex_fullname(self):
-        # TODO: escape latex tex, do operations  ...
-        return self.fullname
+    def get_tex_value(self, field_name):
+        field = getattr(self, field_name, None)
+        return escape_latex(field) if field else ""
 
     @cached_property
     def upload_photo_url(self):
@@ -216,7 +212,6 @@ class Profile(auto_prefetch.Model):
         )
         return url + extra
 
-    @cached_property
     def update_formset_url(self, Klass):
         return reverse(
             "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
@@ -388,11 +383,12 @@ class Profile(auto_prefetch.Model):
 
     @cached_property
     def has_photo(self):
-        return getattr(getattr(self, "cropped_photo"), "name") is not None
+        to_check = getattr(getattr(self, "cropped_photo"), "name")
+        return to_check != "" and to_check is not None
 
     @cached_property
     def photo_path(self):
-        if self.has_photo():
+        if self.has_photo:
             return self.cropped_photo.path
 
     def __str__(self):
@@ -436,7 +432,6 @@ class Profile(auto_prefetch.Model):
 
 
 class LevelMethodsMixin:
-    # TODO: implement this in proxies
     @property
     def level_base_5_int(self):
         return round(self.level * 5 / 100)
@@ -453,6 +448,10 @@ class AbstractChildSet(auto_prefetch.Model):
     def get_delete_url(self):
         cls = type(self).__name__
         return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
+
+    def get_tex_value(self, field_name):
+        field = getattr(self, field_name, None)
+        return escape_latex(field) if field else ""
 
     def save(self, *args, **kwargs):
         if not self.pk:

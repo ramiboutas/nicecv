@@ -1,14 +1,12 @@
 from django.conf import settings
-
 from django.core.management.base import BaseCommand
 
 from ...factories.plans import PremiumPlanFactory
-from ...models.tex import CvTex
-from ...models.profiles import Profile
-from ...models.cvs import Cv
-
-from core.models.languages import Language
-from core.models.secrets import Secrets
+from ...models import Cv
+from ...models import Profile
+from ...models import CvTex
+from ...models import Language
+from ...models import Secrets
 
 
 class Command(BaseCommand):
@@ -30,6 +28,7 @@ class Command(BaseCommand):
         Profile.create_template_profiles()
 
         # cv objects
-        Cv.crete_cvs_from_profile_templates()
+        if not getattr(settings, "TEST_MODE", False):
+            Cv.crete_cvs_from_profile_templates()
 
         self.stdout.write("Objects created.")

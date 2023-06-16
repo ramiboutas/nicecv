@@ -1,12 +1,11 @@
 import auto_prefetch
-from slugger import AutoSlugField
-
+from django.conf import settings
 from django.db import models
-from django.utils.functional import cached_property
 from django.db.models import Sum
 from django.urls import reverse
-from django.conf import settings
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from slugger import AutoSlugField
 
 
 class CvTex(auto_prefetch.Model):
@@ -77,7 +76,7 @@ class CvTex(auto_prefetch.Model):
             str(tex_path.parent.parent.parent) + "/", ""
         )
 
-        with open(metadata_path, "r") as f:
+        with open(metadata_path) as f:
             data = f.read()
         lines = data.split("\n")
         attrs = {

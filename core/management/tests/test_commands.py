@@ -19,4 +19,5 @@ class LoadInitDataTests(TestCase):
 
     def test_objs_created(self):
         out = self.call_command()
-        self.assertEqual(out, "Objects created.\n")
+        print(out)
+        self.assertEqual(out, "Creating objects...\nObjects created.\n")

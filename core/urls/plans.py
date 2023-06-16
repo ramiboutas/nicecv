@@ -1,11 +1,11 @@
 from django.urls import include
 from django.urls import path
 
-from ..views.plans import plan_list
-from ..views.plans import plan_detail
 from ..views.plans import checkout
-from ..views.plans import payment_success
 from ..views.plans import payment_fail
+from ..views.plans import payment_success
+from ..views.plans import plan_detail
+from ..views.plans import plan_list
 from ..views.plans import stripe_webhook
 
 app_name = "plans"

@@ -1,54 +1,54 @@
 {% load i18n %}
 <footer class="w-100 py-4 flex-shrink-0">
-    <div class="container py-4">
-        <div class="row gy-4 gx-5">
-            <div class="col-lg-4 col-md-6">
-                <h5 class="h1 text">nicecv.online</h5>
-                <p class="small text-muted">
-                    {% translate "This site will enable you to create high quality CVs and related services" %}
-                </p>
-                <!-- <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">nicecv.online</a></p> -->
-            </div>
-            <div class="col-lg-2 col-md-6">
-                <h5 class="text mb-3">{% translate "Quick links" %}</h5>
-                <ul class="list-unstyled text-muted">
-                    <li>
-                        <a href="{% url 'core:home' %}">{% translate "Home" %}</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'account_login' %}">{% translate "Get started" %}</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'plans:list' %}">{% translate "Pricing" %}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-6">
-                <h5 class="text mb-3">{% translate "Legal" %}</h5>
-                <ul class="list-unstyled text-muted">
-                    <li>
-                        <a href="#">Terms and conditions</a>
-                    </li>
-                    <li>
-                        <a href="#">Private policy</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <h5 class="text-black mb-3">Newsletter</h5>
-                <p class="small text-muted">{% translate "Suscribe to our newsletter to get tips" %}</p>
-                <form action="#" method="post">
-                    {% csrf_token %}
-                    <div class="input-group mb-3">
-                        <input name="email"
-                               class="form-control"
-                               type="text"
-                               placeholder="{% trans "Enter your email" %}"
-                               aria-describedby="button-addon2">
-                        <button class="btn btn-primary" id="button-addon2" type="sumbit">{% translate "Subscribe" %}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div class="container py-4">
+    <div class="row gy-4 gx-5">
+      <div class="col-lg-4 col-md-6">
+        <h5 class="h1 text">nicecv.online</h5>
+        <p class="small text-muted">
+          {% translate "This site will enable you to create high quality CVs and related services" %}
+        </p>
+        <!-- <p class="small text-muted mb-0">&copy; Copyrights. All rights reserved. <a class="text-primary" href="#">nicecv.online</a></p> -->
+      </div>
+      <div class="col-lg-2 col-md-6">
+        <h5 class="text mb-3">{% translate "Quick links" %}</h5>
+        <ul class="list-unstyled text-muted">
+          <li>
+            <a href="{% url 'core:home' %}">{% translate "Home" %}</a>
+          </li>
+          <li>
+            <a href="{% url 'account_login' %}">{% translate "Get started" %}</a>
+          </li>
+          <li>
+            <a href="{% url 'plans:list' %}">{% translate "Pricing" %}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6">
+        <h5 class="text mb-3">{% translate "Legal" %}</h5>
+        <ul class="list-unstyled text-muted">
+          <li>
+            <a href="#">Terms and conditions</a>
+          </li>
+          <li>
+            <a href="#">Private policy</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5 class="text-black mb-3">Newsletter</h5>
+        <p class="small text-muted">{% translate "Suscribe to our newsletter to get tips" %}</p>
+        <form action="#" method="post">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input name="email"
+                   class="form-control"
+                   type="text"
+                   placeholder="{% trans "Enter your email" %}"
+                   aria-describedby="button-addon2">
+            <button class="btn btn-primary" id="button-addon2" type="sumbit">{% translate "Subscribe" %}</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </footer>

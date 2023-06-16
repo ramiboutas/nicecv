@@ -30,3 +30,6 @@ skip_covered = true
 fail_under = 100
 show_missing = true
 skip_empty = true
+
+[tool.djlint]
+profile="jinja"

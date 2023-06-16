@@ -3,9 +3,9 @@ from http import HTTPStatus
 from django.test import RequestFactory
 from django.urls import resolve
 
-from ..views import HomeView
-from core.factories.users import UserFactory
+from home import HomeView
 from config.test import TestCase
+from core.factories.users import UserFactory
 
 
 class HomeViewTests(TestCase):

@@ -1,12 +1,11 @@
 import auto_prefetch
-from djmoney.models.fields import MoneyField
-
 from django.conf import settings
-from django.db.models import UniqueConstraint
 from django.db import models
+from django.db.models import UniqueConstraint
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
 
 
 class AbractPlan(auto_prefetch.Model):

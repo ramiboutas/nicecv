@@ -1,5 +1,6 @@
 from django.urls import path
 
+from ..views.profiles import create_cv
 from ..views.profiles import crop_photo
 from ..views.profiles import delete_child
 from ..views.profiles import delete_photo_files
@@ -9,10 +10,9 @@ from ..views.profiles import profile_create
 from ..views.profiles import profile_list
 from ..views.profiles import profile_update
 from ..views.profiles import update_child_formset
-from ..views.profiles import upload_photo
 from ..views.profiles import update_profile_fields
 from ..views.profiles import update_settings
-from ..views.profiles import create_cv
+from ..views.profiles import upload_photo
 
 
 # from ..views.profiles import save_personal_information_view, update_description_view

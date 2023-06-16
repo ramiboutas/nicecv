@@ -1,10 +1,9 @@
 from modeltranslation.translator import register
 from modeltranslation.translator import TranslationOptions
 
-
+from .models.languages import Language
 from .models.plans import PlanFAQ
 from .models.plans import PremiumPlan
-from .models.languages import Language
 
 
 @register(Language)

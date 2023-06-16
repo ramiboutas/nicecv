@@ -1,12 +1,12 @@
 from http import HTTPStatus
 
+from plans import plan_detail_view
+from ...factories.plans import PremiumPlanFactory
 from django.test import RequestFactory
 from django.urls import reverse
 
-from core.factories.users import UserFactory
-from apps.plans import views
-from apps.plans.factories import PremiumPlanFactory
 from config.test import TestCase
+from core.factories.users import UserFactory
 
 
 class PlanViewTest(TestCase):
@@ -18,5 +18,5 @@ class PlanViewTest(TestCase):
         plan = PremiumPlanFactory()
         request = RequestFactory().get(plan.checkout_url)
         request.user = UserFactory()
-        response = views.plan_detail_view(request, plan.id)
+        response = plan_detail_view(request, plan.id)
         self.assertEqual(response.status_code, HTTPStatus.OK)

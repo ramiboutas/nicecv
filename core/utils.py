@@ -1,6 +1,5 @@
 from django.utils.safestring import mark_safe
 
-
 from core.exceptions import ErrorBySettingFormFieldAttributes
 from core.exceptions import ErrorBySettingFormWidgetInputType
 

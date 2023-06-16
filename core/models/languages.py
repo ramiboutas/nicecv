@@ -1,11 +1,8 @@
-import deepl
-
-
 import auto_prefetch
-
-from django.db import models
+import deepl
 from django.conf import settings
 from django.conf.global_settings import LANGUAGES as DJANGO_LANGUAGES
+from django.db import models
 
 from .secrets import Secrets
 

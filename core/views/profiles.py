@@ -12,13 +12,13 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
 
 from ..forms import profiles as profile_forms
-from ..models.cvs import Cv
-from ..models.profiles import Profile
-from ..models.users import User
-from ..models.tex import CvTex
 from ..http import HTTPResponseHXRedirect
-from ..sessions import get_or_create_session
+from ..models.cvs import Cv
 from ..models.languages import Language
+from ..models.profiles import Profile
+from ..models.tex import CvTex
+from ..models.users import User
+from ..sessions import get_or_create_session
 
 
 def create_cv(request, profile_id, tex_id):

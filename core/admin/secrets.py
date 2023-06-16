@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
-
 from ..models.secrets import Secrets
+
+# Register your models here.
 
 
 @admin.register(Secrets)

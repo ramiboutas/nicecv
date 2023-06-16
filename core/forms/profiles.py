@@ -1,5 +1,5 @@
-import sys
 import inspect
+import sys
 from functools import cache
 
 from django.conf import settings
@@ -7,8 +7,8 @@ from django.forms import BaseInlineFormSet
 from django.forms import inlineformset_factory
 from django.forms import ModelForm
 
-from ..utils import build_form_widgets
 from ..models import profiles
+from ..utils import build_form_widgets
 
 
 @cache
@@ -48,7 +48,7 @@ class ProfileFieldForm(ModelForm):
             fields=["fullname", "jobtitle", "location", "birth", "phone", "email"],
             html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
-            hx_post=profile.update_fields_url(),
+            hx_post=profile.update_fields_url,
             hx_trigger="keyup changed delay:3s, change",
             hx_swap="none",
         )
@@ -59,7 +59,7 @@ class ProfileFieldForm(ModelForm):
             html_rows=profile.about_rows,
             html_autocomplete="off",
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
-            hx_post=profile.update_fields_url(),
+            hx_post=profile.update_fields_url,
             hx_trigger="keyup changed delay:5s, change",
             hx_swap="none",
         )

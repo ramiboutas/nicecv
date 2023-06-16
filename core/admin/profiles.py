@@ -1,6 +1,7 @@
 from django.contrib import admin
-from ..models import profiles
+
 from ..models import cvs
+from ..models import profiles
 
 
 class SkillInline(admin.TabularInline):
