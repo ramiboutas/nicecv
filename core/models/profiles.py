@@ -10,12 +10,14 @@ from django.conf import settings
 from django.db.models import Q
 from django.db import models
 from django.contrib.sessions.models import Session
+from django.utils.functional import cached_property
+
 from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-
+from ..latex import escape_latex
 from .languages import Language
 
 
@@ -183,29 +185,25 @@ class Profile(auto_prefetch.Model):
 
     full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
     cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
-    crop_x = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-    )
-    crop_y = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-    )
-    crop_width = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-    )
-    crop_height = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-    )
+    crop_x = models.PositiveSmallIntegerField(null=True, blank=True)
+    crop_y = models.PositiveSmallIntegerField(null=True, blank=True)
+    crop_width = models.PositiveSmallIntegerField(null=True, blank=True)
+    crop_height = models.PositiveSmallIntegerField(null=True, blank=True)
 
+    @cached_property
+    def tex_fullname(self):
+        # TODO: escape latex tex, do operations  ...
+        return self.fullname
+
+    @cached_property
     def upload_photo_url(self):
         return reverse("profiles:upload-photo", kwargs={"id": self.id})
 
+    @cached_property
     def crop_photo_url(self):
         return reverse("profiles:crop-photo", kwargs={"id": self.id})
 
+    @cached_property
     def delete_photos_url(self):
         return reverse("profiles:delete-photos", kwargs={"id": self.id})
 
@@ -218,20 +216,24 @@ class Profile(auto_prefetch.Model):
         )
         return url + extra
 
+    @cached_property
     def update_formset_url(self, Klass):
         return reverse(
             "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
 
+    @cached_property
     def update_fields_url(self):
         return reverse("profiles:update-fields", kwargs={"id": self.id})
 
+    @cached_property
     def update_labelling_url(self):
         return reverse(
             "profiles:update-settings",
             kwargs={"klass": "LabellingForm", "id": self.id},
         )
 
+    @cached_property
     def update_activation_url(self):
         return reverse(
             "profiles:update-settings",
@@ -243,62 +245,77 @@ class Profile(auto_prefetch.Model):
             "profiles:order-formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
 
+    @cached_property
     def update_skill_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(Skill)
 
+    @cached_property
     def order_skill_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Skill)
 
+    @cached_property
     def update_language_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(LanguageAbility)
 
+    @cached_property
     def order_language_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(LanguageAbility)
 
+    @cached_property
     def update_education_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(Education)
 
+    @cached_property
     def order_education_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Education)
 
+    @cached_property
     def update_experience_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(Experience)
 
+    @cached_property
     def order_experience_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Experience)
 
+    @cached_property
     def update_achievement_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(Achievement)
 
+    @cached_property
     def order_achievement_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Achievement)
 
+    @cached_property
     def update_project_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(Project)
 
+    @cached_property
     def order_project_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Project)
 
+    @cached_property
     def update_publication_url(self):
         """This method is made for being called from Templates"""
         return self.update_formset_url(Publication)
 
+    @cached_property
     def order_publication_url(self):
         """This method is made for being called from Templates"""
         return self.order_formset_url(Publication)
 
+    @cached_property
     def delete_object_url(self):
         return reverse("profiles:delete", kwargs={"id": self.id})
 
@@ -320,11 +337,6 @@ class Profile(auto_prefetch.Model):
             context[name] = profiles.create_inlineformset(Form)(instance=self)
 
         return context
-
-    def get_tex_proxy(self):
-        from .proxies import TexProxyProfile
-
-        return TexProxyProfile.objects.get(id=self.id)
 
     def build_xml(self):
         # TODO: build xml for the deepl API
@@ -374,6 +386,15 @@ class Profile(auto_prefetch.Model):
                 self.crop_y = int((img.height - distance) / 2)
                 self.save()
 
+    @cached_property
+    def has_photo(self):
+        return getattr(getattr(self, "cropped_photo"), "name") is not None
+
+    @cached_property
+    def photo_path(self):
+        if self.has_photo():
+            return self.cropped_photo.path
+
     def __str__(self):
         return f"{self.category.capitalize()} Profile ({self.fullname} - {self.language_setting})"
 
@@ -412,12 +433,6 @@ class Profile(auto_prefetch.Model):
             rows = int(len(self.about) / 35)
             self.about_rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
-
-
-# proxy profile
-
-
-# Abract models and mixins
 
 
 class LevelMethodsMixin:

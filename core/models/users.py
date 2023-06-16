@@ -43,12 +43,14 @@ class User(AbstractUser):
 class UserPremiumPlan(auto_prefetch.Model):
     user = auto_prefetch.ForeignKey(
         User,
+        related_name="user_premium_plans",
         on_delete=models.SET_NULL,
         null=True,
-        related_name="user_premium_plans",
     )
     plan = auto_prefetch.OneToOneField(
-        PremiumPlan, on_delete=models.SET_NULL, null=True
+        PremiumPlan,
+        on_delete=models.SET_NULL,
+        null=True,
     )
     created = models.DateField(auto_now_add=True)
     starts = models.DateField()

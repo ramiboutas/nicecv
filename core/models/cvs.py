@@ -33,8 +33,7 @@ class Cv(auto_prefetch.Model):
         pdf_start = time.time()
         # rendering pdf file
         bytes_pdf = compile_template_to_pdf(
-            self.tex.template_name,
-            {"object": self.profile.get_tex_proxy()},
+            self.tex.template_name, {"profile": self.profile}
         )
 
         self.pdf.save(f"{self.profile.id}.pdf", ContentFile(bytes_pdf), save=False)

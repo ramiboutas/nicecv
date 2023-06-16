@@ -6,6 +6,7 @@ from django.db.models import UniqueConstraint
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.utils.functional import cached_property
 
 
 class AbractPlan(auto_prefetch.Model):
@@ -50,11 +51,11 @@ class PremiumPlan(AbractPlan):
             UniqueConstraint(fields=["months"], name="unique_months_field"),
         ]
 
-    @property
+    @cached_property
     def detail_url(self):
         return reverse("plans:detail", kwargs={"id": self.id})
 
-    @property
+    @cached_property
     def checkout_url(self):
         return reverse("plans:checkout", kwargs={"id": self.id})
 

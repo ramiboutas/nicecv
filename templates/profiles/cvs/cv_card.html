@@ -16,11 +16,12 @@
   <div class="mt-3">
     <button class="w-full mb-3">
       <a hx-post="{% url 'profiles:create-cv' profile_id=profile.id tex_id=cv.tex.id %}"
-         class="relative w-full flex items-center justify-center rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-100 hover:bg-gray-900"
+         class="relative h-12 w-full flex items-center justify-center  rounded-md border border-transparent bg-gray-700 px-8 py-2 text-sm font-medium text-gray-100 hover:bg-gray-900"
          hx-target="#cv_{{ cv.id }}"
          hx-swap="outerHTML">
         {% trans "Generate CV" %}
-        <img class="htmx-indicator" src="{% static 'img/animated/puff.svg' %}" />
+        <img class="absolute  right-2  htmx-indicator "
+             src="{% static 'img/animated/puff.svg' %}" />
       </a>
     </button>
     {% if not cv.profile.category == "template" %}

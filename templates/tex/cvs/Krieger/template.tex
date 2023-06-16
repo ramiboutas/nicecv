@@ -67,8 +67,8 @@
 {% endif %}
 
 % photo
-{% if object.photo and object.photo.path %}
-	\photo[round]{ {{- object.photo.path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
+{% if object.has_photo() %}
+	\photo[round]{ {{- object.photo_path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% else %}
   \photo[round]{picture.jpg}{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% endif %}
