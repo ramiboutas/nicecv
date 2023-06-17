@@ -3,7 +3,7 @@
      @click="active = true"
      @mouseenter="active = true"
      @mouseleave="active = false">
-  {% if field.widget_type == "text" or field.widget_type == "textarea" or field.widget_type == "email" %}
+  {% if field.widget_type == "text" or field.widget_type == "textarea" or field.widget_type == "email" or field.widget_type == "url" %}
     <label for="{{ field.id_for_label }}"
            :class="active ? 'bg-indigo-200' : ''"
            class="absolute -top-2 left-2 inline-block rounded px-1 text-xs font-medium text-gray-500">

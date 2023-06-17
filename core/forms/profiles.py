@@ -45,7 +45,15 @@ class ProfileFieldForm(ModelForm):
 
         build_form_widgets(
             self,
-            fields=["fullname", "jobtitle", "location", "birth", "phone", "email"],
+            fields=[
+                "fullname",
+                "jobtitle",
+                "location",
+                "birth",
+                "phone",
+                "email",
+                "website",
+            ],
             html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             hx_post=profile.update_fields_url,
@@ -73,6 +81,7 @@ class ProfileFieldForm(ModelForm):
             "birth",
             "phone",
             "email",
+            "website",
             "about",
         ]
 

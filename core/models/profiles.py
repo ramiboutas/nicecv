@@ -421,7 +421,6 @@ class Profile(auto_prefetch.Model):
                     profile__language_setting=self.language_setting,
                 )[0]
             cvs.append(cv)
-        print(f"{time.time()- start} seconds")
         return cvs
 
     def save(self, *args, **kwargs):

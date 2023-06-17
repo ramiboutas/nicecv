@@ -15,7 +15,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Creating objects...")
         # db-based settings
-        Secrets.get()  # this gets
+        Secrets.get()
         # language objects
         Language.update_objects()
         # plan objects
