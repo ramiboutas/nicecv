@@ -1,232 +1,155 @@
 \documentclass[%singlesided,
-               doublesided,
-               paper=a4,
-               fontsize=10pt
-              ]{krieger}
-
+doublesided,
+paper=a4,
+fontsize=10pt
+]{krieger}
 \usepackage{graphicx}
 {% graphicspath %}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % set geometry
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \setlength\highlightwidth{8cm}
 \setlength\headerheight{4cm}            % note that margintop gets added to this value, i.e. the header bar is 5cm
 \setlength\marginleft{1cm}
 \setlength\marginright{\marginleft}      % needs to be 1.5 times to be actually equal. why?
 \setlength\margintop{1cm}
 \setlength\marginbottom{1cm}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FONTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \RequirePackage{fontspec}
 \setmainfont{Carlito}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % COLORS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \colorlet{highlightbarcolor}{lightgray}
 \colorlet{headerbarcolor}{darkgray}
-
 \colorlet{headerfontcolor}{white}
 \colorlet{accent}{awesome-red}
 \colorlet{heading}{black}
 \colorlet{emphasis}{black}
 \colorlet{body}{black}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % set document
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \begin{document}
-
 \name{ {{- profile.get_tex_value("fullname") -}} }
-
-{% if profile.jobtitle_active  %}
-\jobtitle{ {{- profile.get_tex_value("jobtitle") -}} }
+{% if profile.jobtitle_active %}
+  \jobtitle{ {{- profile.get_tex_value("jobtitle") -}} }
 {% else %}
-	\jobtitle{}
+  \jobtitle{}
 {% endif %}
-
-
 {# this is a comment #}
-{% if profile.about_active  %}
-	\tagline{ {{- profile.get_tex_value("about") -}} }
+{% if profile.about_active %}
+  \tagline{ {{- profile.get_tex_value("about")| linebreaks -}} }
 {% else %}
-	\tagline{}
+  \tagline{}
 {% endif %}
-
 % photo
 {% if profile.has_photo %}
-	\photo[round]{ {{- profile.photo_path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
+  \photo[round]{ {{- profile.photo_path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% else %}
   \photo[round]{picture.jpg}{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% endif %}
-
 \makeheader
-
 \highlightbar{
-
-    % personal information
-    % \section{Contact}
-
-    {% if profile.location_active %} \location{ {{- profile.get_tex_value("location") -}} } {% endif %}
-
-    {% if profile.birth_active %} \birth{ {{- profile.get_tex_value("birth") -}} } {% endif %}
-
-    {% if profile.phone_active %} \phone{ {{- profile.get_tex_value("phone") -}} } {% endif %}
-
-    {% if profile.email_active %}\email{ {{- profile.get_tex_value("email")  -}} }{% endif %}
-
-    {% if profile.website_active %}
-      {% if "linkedin" in profile.get_tex_value("website") %}
-      \linkedin{ {{- profile.get_tex_value("website") -}} }
-
-      {% elif "github" in profile.get_tex_value("website") %}
-      \github{ {{- profile.get_tex_value("website") -}} }
-
-      {% else %}
-      \website{ {{- profile.get_tex_value("website")  -}} }
-      {% endif %}
-    {% endif %}
-
-    %\skillsection{Programming}
-
-    {% if profile.skill_active  %}
-      \section{ {{- profile.skill_label | latex_escape -}} }
-      {% for skill in profile.skill_set.all() %}
-        \skill{ {{- skill.name | latex_escape -}} }{ {{- skill.level_base_5_int -}} }
-      {% endfor %}
-    {% endif %}
-
-    \vspace{0.5em}
-
-    {% if profile.language_active and profile.languageability_set.count() > 0 %}
-      \section{ {{- profile.language_label | latex_escape -}} }
-      {% for language in profile.languageability_set.all() %}
-        \skill{ {{- language.name | latex_escape -}} }{ {{- language.level_base_5_int -}} }
-      {% endfor %}
-    {% endif %}
+% personal information
+% \section{Contact}
+{% if profile.location_active %}\location{ {{- profile.get_tex_value("location") -}} }{% endif %}
+{% if profile.birth_active %}\birth{ {{- profile.get_tex_value("birth") -}} }{% endif %}
+{% if profile.phone_active %}\phone{ {{- profile.get_tex_value("phone") -}} }{% endif %}
+{% if profile.email_active %}\email{ {{- profile.get_tex_value("email")  -}} }{% endif %}
+{% if profile.website_active %}
+  {% if "linkedin." in profile.get_tex_value("website") %}
+    \linkedin{ {{- profile.get_tex_value("website") -}} }
+  {% elif "github." in profile.get_tex_value("website") %}
+    \github{ {{- profile.get_tex_value("website") -}} }
+  {% elif "instagram." in profile.get_tex_value("website") %}
+    \instagram{ {{- profile.get_tex_value("website") -}} }
+  {% elif "twitter." in profile.get_tex_value("website") %}
+    \twitter{ {{- profile.get_tex_value("website") -}} }
+  {% elif "facebook." in profile.get_tex_value("website") %}
+    \facebook{ {{- profile.get_tex_value("website") -}} }
+  {% elif "gitlab." in profile.get_tex_value("website") %}
+    \gitlab{ {{- profile.get_tex_value("website") -}} }
+  {% elif "stackoverflow." in profile.get_tex_value("website") %}
+    \stackoverflow{ {{- profile.get_tex_value("website") -}} }
+  {% elif "medium." in profile.get_tex_value("website") %}
+    \medium{ {{- profile.get_tex_value("website") -}} }
+  {% elif "orcid." in profile.get_tex_value("website") %}
+    \orcid{ {{- profile.get_tex_value("website") -}} }
+  {% else %}
+    \website{ {{- profile.get_tex_value("website")  -}} }
+  {% endif %}
+{% endif %}
+%\skillsection{Programming}
+{% if profile.skill_active %}
+  \section{ {{- profile.get_tex_value("skill_label") -}} }
+  {% for skill in profile.skill_set.all() %}
+    \skill{ {{- skill.get_tex_value("name")  -}} }{ {{- skill.level_base_5_int -}} }
+  {% endfor %}
+{% endif %}
+\vspace{0.5em}
+{% if profile.language_active and profile.languageability_set.count() > 0 %}
+  \section{ {{- profile.get_tex_value("language_label")   -}} }
+  {% for language in profile.languageability_set.all() %}
+    \skill{ {{- language.get_tex_value("name")   -}} }{ {{- language.level_base_5_int -}} }
+  {% endfor %}
+{% endif %}
 }
-
 \mainbar{
-    {% if profile.education_active and profile.education_set.count() > 0 %}
-      \section[\faGraduationCap]{ {{- profile.education_label| latex_escape  -}} }
-      {% for education in profile.education_set.all() %}
-        \job{ {{ education.start_date | latex_escape  }} - {{ education.end_date | latex_escape  }} }
-            { {{- education.institution | latex_escape -}} }
-            { {{- education.title | latex_escape  -}} }
-            { {{- education.description | latex_escape  | linebreaks -}} }
-      {% endfor %}
-    {% endif %}
-
-
-
-    {% if profile.experience_active and profile.experience_set.count() > 0 %}
-      \section[\faBriefcase]{ {{- profile.experience_label| latex_escape  -}} }
-      {% for experience in profile.experience_set.all() %}
-        \job{ {{ experience.start_date | latex_escape  }} - {{ experience.end_date | latex_escape  }} }
-            { {{- experience.company | latex_escape -}} }
-            { {{- experience.title | latex_escape  -}} }
-            { {{- experience.description | latex_escape  | linebreaks -}} }
-      {% endfor %}
-    {% endif %}
-
-
-    {% if profile.certification_active and profile.certification_set.count() > 0 %}
-      \section[\faCertificate]{ {{- profile.certification_label| latex_escape  -}} }
-      {% for certification in profile.certification_set.all() %}
-        \certification{ {{- certification.issuing_date | latex_escape  -}} }
-            { {{- certification.issuer | latex_escape -}} }
-            { {{- certification.title | latex_escape  -}} }
-      {% endfor %}
-    {% endif %}
-
-
-    {% if profile.course_active and profile.course_set.count() > 0 %}
-      \section[\faCertificate]{ {{- profile.course_label| latex_escape  -}} }
-      {% for course in profile.course_set.all() %}
-        \course{ {{- course.issuing_date | latex_escape  -}} }
-            { {{- course.issuer | latex_escape -}} }
-            { {{- course.title | latex_escape  -}}  {% if course.hours %}, {{ course.hours | latex_escape  }} {% endif %} }
-            { }
-      {% endfor %}
-    {% endif %}
-
-
-    {% if profile.honor_active and profile.honor_set.count() > 0 %}
-      \section[\faTrophy]{ {{- profile.honor_label| latex_escape  -}} }
-      {% for honor in profile.honor_set.all() %}
-        \honor{ {{- honor.issuing_date | latex_escape  -}} }
-            { {{- honor.issuer | latex_escape -}} }
-            { {{- honor.title | latex_escape  -}} }
-            { }
-      {% endfor %}
-    {% endif %}
-
-
-    {% if profile.organization_active and profile.organization_set.count() > 0 %}
-      \section[\faBuilding]{ {{- profile.organization_label| latex_escape  -}} }
-      {% for organization in profile.organization_set.all() %}
-        \organization{ {{ organization.start_date | latex_escape  }} - {{ organization.end_date | latex_escape  }} }
-            { {{- organization.organization | latex_escape -}} }
-            { {{- organization.role | latex_escape  -}} }
-            { {{- organization.description | latex_escape  | linebreaks -}} }
-      {% endfor %}
-    {% endif %}
-
-    {% if profile.patent_active and profile.patent_set.count() > 0 %}
-      \section[\faBook]{ {{- profile.patent_label| latex_escape  -}} }
-      {% for patent in profile.patent_set.all() %}
-        \patent{ {{- patent.issuing_date | latex_escape  -}} }
-            { {{- patent.issuer | latex_escape -}} }
-            { {{- patent.title | latex_escape  -}} {% if patent.number %} ({{ patent.number | latex_escape  }}){% endif %} }
-            { {{- patent.description | latex_escape  | linebreaks -}} }
-      {% endfor %}
-    {% endif %}
-
-    {% if profile.project_active and profile.project_set.count() > 0 %}
-      \section[\faLightbulb]{ {{- profile.project_label| latex_escape  -}} }
-      {% for project in profile.project_set.all() %}
-        \project{ {{ project.start_date | latex_escape  }} - {{ project.end_date | latex_escape  }}  }
-            { {{- project.organization | latex_escape -}} }
-            { {{- project.title | latex_escape  -}} }
-            { {{- project.description | latex_escape  | linebreaks -}} }
-      {% endfor %}
-    {% endif %}
-
-    {% if profile.publication_active and profile.publication_set.count() > 0 %}
-      \section[\faLightbulb]{ {{- profile.get_tex_value("publication_label")  -}} }
-      {% for publication in profile.publication_set.all() %}
-        \publication
-            { {{- publication.get_tex_value("title") -}}  }
-            { {{- publication.get_tex_value("authors") -}}  }
-            { {{- publication.get_tex_value("date") -}} }
-            { {{- publication.get_tex_value("publisher") -}} }
-            { {{- publication.get_tex_value("link") -}} }
-      {% endfor %}
-    {% endif %}
-
-
+{% if profile.education_active and profile.education_set.count() > 0 %}
+  \section[\faGraduationCap]{ {{- profile.get_tex_value("education_label")   -}} }
+  {% for education in profile.education_set.all() %}
+    \job{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} }
+    { {{- education.get_tex_value("institution") -}} }
+    { {{- education.get_tex_value("title") -}} }
+    { {{- education.get_tex_value("description") | linebreaks -}} }
+  {% endfor %}
+{% endif %}
+{% if profile.experience_active and profile.experience_set.count() > 0 %}
+  \section[\faBriefcase]{ {{- profile.experience_label  -}} }
+  {% for experience in profile.experience_set.all() %}
+    \job{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} }
+    { {{- experience.get_tex_value("company")   -}} }
+    { {{- experience.get_tex_value("title")    -}} }
+    { {{- experience.get_tex_value("description") | linebreaks -}} }
+  {% endfor %}
+{% endif %}
+{% if profile.achievement_active and profile.achievement_set.count() > 0 %}
+  \section[\faTrophy]{ {{- profile.get_tex_value("achievement_label")  -}} }
+  {% for achievement in profile.achievement_set.all() %}
+    \honor{ {{- achievement.get_tex_value("date") -}} }
+    { {{- achievement.get_tex_value("title") -}} }
+    { }
+  {% endfor %}
+{% endif %}
+{% if profile.project_active and profile.project_set.count() > 0 %}
+  \section[\faLightbulb]{ {{- profile.get_tex_value("project_label")   -}} }
+  {% for project in profile.project_set.all() %}
+    \project{ {{- project.get_tex_value("role")  -}} }
+    { {{- project.get_tex_value("organization")   -}} }
+    { {{- project.get_tex_value("title")   -}} }
+    { {{- project.get_tex_value("link") -}} }
+  {% endfor %}
+{% endif %}
+{% if profile.publication_active and profile.publication_set.count() > 0 %}
+  \section[\faLightbulb]{ {{- profile.get_tex_value("publication_label")  -}} }
+  {% for publication in profile.publication_set.all() %}
+    \publication
+    { {{- publication.get_tex_value("title") -}}  }
+    { {{- publication.get_tex_value("authors") -}}  }
+    { {{- publication.get_tex_value("date") -}} }
+    { {{- publication.get_tex_value("publisher") -}} }
+    { {{- publication.get_tex_value("link") -}} }
+  {% endfor %}
+{% endif %}
 }
 \makebody
-
 \clearpage
-
 \pagestyle{highlightmain}
-
 % The highlightbar needs to be filled to display mainbar contents correctly in singlesised mode
 % For an empty highlightbar, fill with empty space
 \highlightbar{\hfill}
 % \makebody
-
-
 \end{document}

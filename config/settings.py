@@ -99,7 +99,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     # "allauth.socialaccount.providers.linkedin",
     "django_htmx",
-    "django_tex",
     "django_celery_results",
     "djstripe",
     "django_cleanup.apps.CleanupConfig",  # https://github.com/un1t/django-cleanup
@@ -207,11 +206,11 @@ TEMPLATES = [
     },
     {
         "NAME": "tex",
-        "BACKEND": "django_tex.engine.TeXEngine",
+        "BACKEND": "core.tex.backend.TeXEngine",
         "DIRS": [BASE_TEX_DIR],
         "APP_DIRS": False,
         "OPTIONS": {
-            "environment": "config.environment.tex_environment",
+            "environment": "core.tex.environment.environment",
         },
     },
 ]

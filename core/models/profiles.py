@@ -14,7 +14,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
-from ..latex import escape_latex
+from ..tex.filters import do_latex_escape
 from .languages import Language
 
 
@@ -29,7 +29,7 @@ class Profile(auto_prefetch.Model):
 
     PROFILE_CATEGORIES = (
         ("temporal", _("Temporal")),
-        ("user_profile", _("User profile")),
+        ("user", _("User profile")),
         ("template", _("Template")),
     )
 
@@ -56,7 +56,7 @@ class Profile(auto_prefetch.Model):
     category = models.CharField(
         max_length=16,
         choices=PROFILE_CATEGORIES,
-        default="user_profile",
+        default="user",
     )
 
     language_setting = auto_prefetch.ForeignKey(
@@ -199,7 +199,7 @@ class Profile(auto_prefetch.Model):
 
     def get_tex_value(self, field_name):
         field = getattr(self, field_name, None)
-        return escape_latex(field) if field else ""
+        return do_latex_escape(field) if field else ""
 
     @cached_property
     def upload_photo_url(self):
@@ -460,7 +460,7 @@ class AbstractChildSet(auto_prefetch.Model):
 
     def get_tex_value(self, field_name):
         field = getattr(self, field_name, None)
-        return escape_latex(field) if field else ""
+        return do_latex_escape(field) if field else ""
 
     def save(self, *args, **kwargs):
         if not self.pk:

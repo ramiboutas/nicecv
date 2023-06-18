@@ -1,4 +1,3 @@
-tblib
 celery
 django
 deepl
@@ -10,7 +9,6 @@ django-rosetta
 django-allauth
 django-htmx
 django-crispy-forms
-django-tex
 django-celery-results
 django-slugger
 django-analytical
@@ -30,6 +28,7 @@ django-money[exchange]
 django-modeltranslation
 django-cleanup
 crispy-tailwind
+Jinja2
 
 djlint
 ipython

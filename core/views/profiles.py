@@ -39,11 +39,9 @@ def create_cv(request, profile_id, tex_id):
 @transaction.atomic
 def _create_initial_profile(request):
     # get language
-    lang, _ = Language.objects.get_or_create(
-        code=getattr(request, "LANGUAGE_CODE", "other")
-    )
-    # create an empty profile
-    profile = Profile.objects.create(language_setting=lang)
+    lang, _ = Language.objects.get_or_create(code=request.LANGUAGE_CODE)
+
+    profile = Profile(language_setting=lang)
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, User):
         profile.user = user

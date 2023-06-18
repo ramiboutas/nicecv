@@ -43,6 +43,12 @@ class CvTex(auto_prefetch.Model):
         editable=False,
         help_text=_("Read from metadata"),
     )
+    interpreter_options = models.CharField(
+        max_length=64,
+        default="",
+        editable=False,
+        help_text=_("Read from metadata"),
+    )
     license = models.CharField(
         max_length=32,
         default="MIT",

@@ -8,10 +8,11 @@ from django.db import models
 from django.db.models import Q
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django_tex.core import compile_template_to_pdf
+
 from pdf2image import convert_from_path
 
 from .profiles import Profile
+from ..tex.compile import compile_template_to_pdf
 
 
 def get_cv_upload_path(cv, filename):
@@ -30,10 +31,7 @@ class Cv(auto_prefetch.Model):
     def render_files(self):
         pdf_start = time.time()
         # rendering pdf file
-        bytes_pdf = compile_template_to_pdf(
-            self.tex.template_name, {"profile": self.profile}
-        )
-
+        bytes_pdf = compile_template_to_pdf(self.tex, {"profile": self.profile})
         self.pdf.save(f"{self.profile.id}.pdf", ContentFile(bytes_pdf), save=False)
         # pdf time calculations
         pdf_end = time.time()
