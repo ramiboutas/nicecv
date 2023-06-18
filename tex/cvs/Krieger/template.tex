@@ -98,8 +98,6 @@
       {% endif %}
     {% endif %}
 
-    {% if profile.website_active  %}\github{ {{- profile.get_tex_value("website")  -}} }{% endif %}
-
     %\skillsection{Programming}
 
     {% if profile.skill_active  %}
@@ -206,26 +204,17 @@
     {% endif %}
 
     {% if profile.publication_active and profile.publication_set.count() > 0 %}
-      \section[\faLightbulb]{ {{- profile.publication_label| latex_escape  -}} }
+      \section[\faLightbulb]{ {{- profile.get_tex_value("publication_label")  -}} }
       {% for publication in profile.publication_set.all() %}
         \publication
-            { {{- publication.title | latex_escape -}}  }
-            { {{- publication.authors | latex_escape -}} }
-            { {{- publication.issuing_date | latex_escape  -}} }
-            { {{- publication.publisher | latex_escape -}} }
-            { {{- publication.description | latex_escape  | linebreaks -}} }
+            { {{- publication.get_tex_value("title") -}}  }
+            { {{- publication.get_tex_value("authors") -}}  }
+            { {{- publication.get_tex_value("date") -}} }
+            { {{- publication.get_tex_value("publisher") -}} }
+            { {{- publication.get_tex_value("link") -}} }
       {% endfor %}
     {% endif %}
 
-    {% if profile.volunteering_active and profile.volunteering_set.count() > 0 %}
-      \section[\faGears]{ {{- profile.volunteering_label| latex_escape  -}} }
-      {% for volunteering in profile.volunteering_set.all() %}
-        \volunteering{ {{ volunteering.start_date | latex_escape  }} - {{ volunteering.end_date | latex_escape  }} }
-            { {{- volunteering.company | latex_escape -}} }
-            { {{- volunteering.title | latex_escape  -}} }
-            { {{- volunteering.description | latex_escape  | linebreaks -}} }
-      {% endfor %}
-    {% endif %}
 
 }
 \makebody

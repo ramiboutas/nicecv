@@ -317,15 +317,14 @@ class ProjectForm(BaseChildFormSet):
 class PublicationForm(BaseChildFormSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         build_form_widgets(
             self,
-            fields=["date", "title", "publisher", "link"],
+            fields=["date", "title", "authors", "publisher", "link"],
             html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
             html_autocomplete="off",
         )
 
     class Meta:
-        fields = ["date", "title", "publisher", "link"]
+        fields = ["date", "title", "publisher", "authors", "link"]
         model = profiles.Publication

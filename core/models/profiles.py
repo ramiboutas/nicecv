@@ -64,9 +64,7 @@ class Profile(auto_prefetch.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    public = models.BooleanField(
-        default=False,
-    )
+    public = models.BooleanField(default=False)
     auto_created = models.BooleanField(default=False)
     slug = models.SlugField(null=True, blank=True, max_length=16, unique=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -93,9 +91,21 @@ class Profile(auto_prefetch.Model):
         max_length=64,
         null=True,
     )
-    phone = models.CharField(_("Phone number"), max_length=64, null=True)
-    email = models.EmailField(_("Full name"), max_length=64)
-    website = models.URLField(_("Website"), max_length=32)
+    phone = models.CharField(
+        _("Phone number"),
+        max_length=64,
+        null=True,
+    )
+    email = models.EmailField(
+        _("Full name"),
+        max_length=64,
+        null=True,
+    )
+    website = models.URLField(
+        _("Website"),
+        max_length=32,
+        null=True,
+    )
     about = models.TextField(
         max_length=2048,
         null=True,
@@ -635,13 +645,21 @@ class Publication(AbstractChildSet):
         "🔬 " + _("Publication title"),
         max_length=128,
     )
+    authors = models.CharField(
+        "👥 " + _("Authors"),
+        null=True,
+        blank=True,
+        max_length=64,
+    )
     publisher = models.CharField(
         "📑 " + _("Publisher"),
         null=True,
         blank=True,
         max_length=32,
     )
-    link = models.CharField(
+
+    # try not to include
+    link = models.URLField(
         "🔗 " + _("Link"),
         null=True,
         blank=True,

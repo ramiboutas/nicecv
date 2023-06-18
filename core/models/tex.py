@@ -1,4 +1,7 @@
+import shutil
+
 import auto_prefetch
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Sum
@@ -6,6 +9,15 @@ from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from slugger import AutoSlugField
+
+
+def copy_latex_local_files_to_destination():
+    dest = settings.DESTINATION_LATEX_LOCAL_DIR
+    for path in settings.ORIGIN_LATEX_LOCAL_DIR.iterdir():
+        if path.is_dir() and not path.is_file():
+            continue
+        shutil.copy(path, dest / path.name)
+        print(f"✅ {path.name} copied to {dest}")
 
 
 class CvTex(auto_prefetch.Model):

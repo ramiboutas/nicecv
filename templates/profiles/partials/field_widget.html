@@ -1,4 +1,4 @@
-<div {% if field.widget_type == "textarea" %} class="relative col-span-4" {% else %} class="relative col-span-2" {% endif %}
+<div {% if field.widget_type == "textarea" or field.widget_type == "url" %} class="relative col-span-4" {% else %} class="relative col-span-2" {% endif %}
      x-data="{ active: false }"
      @click="active = true"
      @mouseenter="active = true"

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from ...factories.plans import PremiumPlanFactory
+from ...models.tex import copy_latex_local_files_to_destination
 from ...models import Cv
 from ...models import Profile
 from ...models import CvTex
@@ -14,6 +15,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write("Creating objects...")
+
+        # copy latex local files
+        copy_latex_local_files_to_destination()
+
         # db-based settings
         Secrets.get()
         # language objects
@@ -21,7 +26,8 @@ class Command(BaseCommand):
         # plan objects
         PremiumPlanFactory()
         PremiumPlanFactory(price=14, months=6)
-        # cv tex objects
+
+        # tex objects
         CvTex.update_objects()
 
         # profile templates
