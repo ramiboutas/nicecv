@@ -14,11 +14,7 @@ from ..views.profiles import update_profile_fields
 from ..views.profiles import update_settings
 from ..views.profiles import upload_photo
 
-
-# from ..views.profiles import save_personal_information_view, update_description_view
-
 app_name = "profiles"
-# general
 
 urlpatterns = [
     # profile list

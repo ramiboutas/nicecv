@@ -7,6 +7,8 @@ from django.utils.translation import gettext_lazy as _
 
 # Setup
 
+# TEST_MODE = True
+
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,11 +16,11 @@ TEMP_DIR = BASE_DIR / "temp"
 
 TESTS_TEMP_DIR = TEMP_DIR / "tests"
 
-BASE_TEX_DIR = BASE_DIR / "tex"
+TEX_TEMPLATES_DIR = BASE_DIR / "tex_templates"
 
-CV_TEX_DIR = BASE_TEX_DIR / "cvs"
+CV_TEX_DIR = TEX_TEMPLATES_DIR / "cvs"
 
-ORIGIN_LATEX_LOCAL_DIR = BASE_TEX_DIR / "local"
+ORIGIN_LATEX_LOCAL_DIR = TEX_TEMPLATES_DIR / "local"
 
 DESTINATION_LATEX_LOCAL_DIR = Path("/home/rami/texmf/tex/latex/local")
 
@@ -207,7 +209,7 @@ TEMPLATES = [
     {
         "NAME": "tex",
         "BACKEND": "core.tex.backend.TeXEngine",
-        "DIRS": [BASE_TEX_DIR],
+        "DIRS": [TEX_TEMPLATES_DIR],
         "APP_DIRS": False,
         "OPTIONS": {
             "environment": "core.tex.environment.environment",

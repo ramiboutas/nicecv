@@ -108,7 +108,7 @@ fontsize=10pt
   {% endfor %}
 {% endif %}
 {% if profile.experience_active and profile.experience_set.count() > 0 %}
-  \section[\faBriefcase]{ {{- profile.experience_label  -}} }
+  \section[\faBriefcase]{ {{- profile.get_tex_value("experience_label")  -}} }
   {% for experience in profile.experience_set.all() %}
     \job{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} }
     { {{- experience.get_tex_value("company")   -}} }

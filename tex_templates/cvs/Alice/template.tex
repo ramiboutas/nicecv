@@ -1,0 +1,189 @@
+\documentclass[letterpaper]{twentysecondcv-alice} % a4paper for A4
+\usepackage{graphicx}
+{% graphicspath %}
+%----------------------------------------------------------------------------------------
+%	 PERSONAL INFORMATION
+%----------------------------------------------------------------------------------------
+% photo
+{% if profile.has_photo %}
+  \photo{\includegraphics[width=\imagewidth]{ {{- profile.photo_path -}} } }
+{% else %}
+  \photo{}
+{% endif %}
+% Your name
+\fullname{ {{- profile.get_tex_value("fullname") -}} }
+% Job title/career
+{% if profile.jobtitle_active %}
+  \jobtitle{ {{- profile.get_tex_value("jobtitle") -}} }
+{% else %}
+  \jobtitle{}
+{% endif %}
+% Location
+{% if profile.location_active %}
+  \location{ {{- profile.get_tex_value("location") -}} }
+{% else %}
+  \location{}
+{% endif %}
+% Date of birth
+{% if profile.birth_active %}
+  \birth{ {{- profile.get_tex_value("birth") -}} }
+{% else %}
+  \birth{}
+{% endif %}
+% Phone number
+{% if profile.phone_active %}
+  \phone{ {{- profile.get_tex_value("phone") -}} }
+{% else %}
+  \phone{}
+{% endif %}
+% Email address
+{% if profile.email_active %}
+  \email{ {{- profile.get_tex_value("email") -}} }
+{% else %}
+  \email{}
+{% endif %}
+{% if profile.website_active %}
+  {% if "linkedin." in profile.get_tex_value("website") %}
+    \linkedin{ {{- profile.get_tex_value("website") -}}}
+  {% elif "github." in profile.get_tex_value("website") %}
+    \github{ {{- profile.get_tex_value("website") -}}}
+  {% elif "instagram." in profile.get_tex_value("website") %}
+    \instagram{ {{- profile.get_tex_value("website") -}} }
+  {% elif "twitter." in profile.get_tex_value("website") %}
+    \twitter{ {{- profile.get_tex_value("website") -}} }
+  {% elif "facebook." in profile.get_tex_value("website") %}
+    \facebook{ {{- profile.get_tex_value("website") -}} }
+  {% elif "gitlab." in profile.get_tex_value("website") %}
+    \gitlab{ {{- profile.get_tex_value("website") -}} }
+  {% elif "stackoverflow." in profile.get_tex_value("website") %}
+    \stackoverflow{ {{- profile.get_tex_value("website") -}} }
+  {% elif "medium." in profile.get_tex_value("website") %}
+    \medium{ {{- profile.get_tex_value("website") -}} }
+  {% elif "orcid." in profile.get_tex_value("website") %}
+    \orcid{ {{- profile.get_tex_value("website") -}} }
+  {% else %}
+    \website{ {{- profile.get_tex_value("website") -}}}
+  {% endif %}
+{% endif %}
+\linkedin{}
+\github{}
+\instagram{}
+\twitter{}
+\facebook{}
+\gitlab{}
+\stackoverflow{}
+\medium{}
+\orcid{}
+\youtube{}
+\website{}
+\skype{}
+%----------------------------------------------------------------------------------------
+\begin{document}
+%----------------------------------------------------------------------------------------
+%	 ABOUT ME
+%----------------------------------------------------------------------------------------
+{% if profile.about_active %}
+  % To have no About Me section, just remove all the text and leave \description{}
+  \aboutmelabel{ {{- profile.get_tex_value("about_label") -}} }
+  \aboutme{ {{- profile.get_tex_value("about")| linebreaks -}} }
+{% else %}
+  \aboutme{}
+{% endif %}
+%----------------------------------------------------------------------------------------
+%	 SKILLS
+%----------------------------------------------------------------------------------------
+{% if profile.skill_active and profile.skill_set.count() > 0 %}
+  \skilllabel{ {{- profile.get_tex_value("skill_label") -}} }
+  \numberofskills{ {{- profile.skill_set.count() -}} }
+  %	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01} }
+  \skills{
+  {% for skill in profile.skill_set.all() %}
+    { {{- skill.get_tex_value("name") -}} / {{- skill.level_base_6_float -}} }
+    {% if not loop.last %},{% endif %}
+  {% endfor %}
+  }
+{% endif %}
+%----------------------------------------------------------------------------------------
+%	 LANGUAGES
+%----------------------------------------------------------------------------------------
+{% if profile.language_active and profile.languageability_set.count() > 0 %}
+  \languagelabel{ {{- profile.get_tex_value("language_label") -}} }
+  \numberoflanguages{ {{- profile.languageability_set.count() -}} }
+  \languages{
+  {% for language in profile.languageability_set.all() %}
+    { {{- language.get_tex_value("name") -}} / {{- language.level_base_6_float -}} }
+    {% if not loop.last %},{% endif %}
+  {% endfor %}
+  }
+{% endif %}
+%----------------------------------------------------------------------------------------
+\makeprofile % Print the sidebar
+%----------------------------------------------------------------------------------------
+%	 ABOUT ME
+%----------------------------------------------------------------------------------------
+{% if profile.about_active %}
+  \section{ {{- profile.get_tex_value("about_label") -}} }
+  \begin{twenty}
+  \twentyitemshort{}
+  { {{- profile.get_tex_value("about") | linebreaks -}} }
+  \end{twenty}
+{% endif %}
+%----------------------------------------------------------------------------------------
+%	 EDUCATION
+%----------------------------------------------------------------------------------------
+{% if profile.education_active and profile.education_set.count() > 0 %}
+  \section{ {{- profile.get_tex_value("education_label") -}} }
+  \begin{twenty} % Environment for a list with descriptions
+  {% for education in profile.education_set.all() %}
+    \twentyitem{\footnotesize{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} } }
+    { {{- education.get_tex_value("title") -}} }
+    { {{- education.get_tex_value("institution") -}} }
+    { {{- education.get_tex_value("description") | linebreaks -}}  }
+  {% endfor %}
+  \end{twenty}
+{% endif %}
+{% if profile.experience_active and profile.experience_set.count() > 0 %}
+  \section{ {{- profile.experience_label -}} }
+  \begin{twenty} % Environment for a list with descriptions
+  {% for experience in profile.experience_set.all() %}
+    \twentyitem{\footnotesize{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} } }
+    { {{- experience.get_tex_value("title") -}} }
+    { {{- experience.get_tex_value("company") -}} }
+    { {{- experience.get_tex_value("description") | linebreaks -}}  }
+  {% endfor %}
+  \end{twenty}
+{% endif %}
+{% if profile.achievement_active and profile.achievement_set.count() > 0 %}
+  \section{ {{- profile.achievement_label -}} }
+  \begin{twenty}
+  %\twentyitemshort{<dates>}{<title>}
+  {% for honor in profile.achievement_set.all() %}
+    \twentyitem{ \small{ {{- achievement.get_tex_value("date") -}} } }
+    { {{- honor.get_tex_value("title") -}} }
+    {}
+  {% endfor %}
+  \end{twenty}
+{% endif %}
+{% if profile.project_active and profile.project_set.count() > 0 %}
+  \section{ {{- profile.get_tex_value("project_label") -}} }
+  \begin{twenty} % Environment for a list with descriptions
+  {% for project in profile.project_set.all() %}
+    \twentyitem{ \footnotesize{ {{- project.get_tex_value("role") -}} } }
+    { {{- project.get_tex_value("title") -}} }
+    { {{- project.get_tex_value("organization") -}} }
+    { }
+  {% endfor %}
+  \end{twenty}
+{% endif %}
+{% if profile.publication_active and profile.publication_set.count() > 0 %}
+  \section{ {{- profile.get_tex_value("publication_label") -}} }
+  \begin{twenty} % Environment for a list with descriptions
+  {% for publication in profile.publication_set.all() %}
+    \twentyitem{ \footnotesize{ {{- publication.get_tex_value("date") -}} } }
+    { {{- publication.get_tex_value("title") -}} }
+    { {{- publication.get_tex_value("publisher") -}} }
+    { {{- publication.get_tex_value("authors") -}} }
+  {% endfor %}
+  \end{twenty}
+{% endif %}
+\end{document}
