@@ -16,14 +16,14 @@ from ..http import HTTPResponseHXRedirect
 from ..models.cvs import Cv
 from ..models.languages import Language
 from ..models.profiles import Profile
-from ..models.tex import CvTex
+from ..models.tex import Tex
 from ..models.users import User
 from ..sessions import get_or_create_session
 
 
 def create_cv(request, profile_id, tex_id):
     profile = get_object_or_404(Profile, id=profile_id)
-    tex = get_object_or_404(CvTex, id=tex_id)
+    tex = get_object_or_404(Tex, id=tex_id)
     try:
         cv, created = Cv.objects.get_or_create(profile=profile, tex=tex)
     except Cv.MultipleObjectsReturned:

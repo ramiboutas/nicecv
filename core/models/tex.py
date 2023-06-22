@@ -20,7 +20,7 @@ def copy_latex_local_files_to_destination():
         print(f"✅ {path.name} copied to {dest}")
 
 
-class CvTex(auto_prefetch.Model):
+class Tex(auto_prefetch.Model):
     title = models.CharField(
         max_length=64,
         editable=False,
@@ -114,9 +114,6 @@ class CvTex(auto_prefetch.Model):
 
     def __str__(self):
         return self.title
-
-    def download_object_url(self):
-        return reverse("tex_download_resume", kwargs={"pk": self.pk})
 
     def add_download(self):
         self.downloads = self.downloads + 1

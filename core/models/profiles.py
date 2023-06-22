@@ -418,11 +418,11 @@ class Profile(auto_prefetch.Model):
     def fetch_cvs(self):
         start = time.time()
         from .cvs import Cv
-        from .tex import CvTex
+        from .tex import Tex
 
         cvs = []
 
-        for tex in CvTex.objects.all():
+        for tex in Tex.objects.all():
             try:
                 cv = Cv.objects.get(tex=tex, profile=self)
             except Cv.DoesNotExist:

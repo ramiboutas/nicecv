@@ -5,7 +5,7 @@ from ...factories.plans import PremiumPlanFactory
 from ...models.tex import copy_latex_local_files_to_destination
 from ...models import Cv
 from ...models import Profile
-from ...models import CvTex
+from ...models import Tex
 from ...models import Language
 from ...models import Secrets
 
@@ -28,7 +28,7 @@ class Command(BaseCommand):
         PremiumPlanFactory(price=14, months=6)
 
         # tex objects
-        CvTex.update_objects()
+        Tex.update_objects()
 
         # profile templates
         Profile.create_template_profiles()

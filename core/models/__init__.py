@@ -5,6 +5,6 @@ from .plans import PlanFAQ  # noqa
 from .plans import PremiumPlan  # noqa
 from .profiles import Profile  # noqa
 from .secrets import Secrets  # noqa
-from .tex import CvTex  # noqa
+from .tex import Tex  # noqa
 from .users import User  # noqa
 from .users import UserPremiumPlan  # noqa
