@@ -41,7 +41,7 @@ def _create_initial_profile(request):
     # get language
     lang, _ = Language.objects.get_or_create(code=request.LANGUAGE_CODE)
 
-    profile = Profile(language_setting=lang)
+    profile = Profile(lang=lang)
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, User):
         profile.user = user

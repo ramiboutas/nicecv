@@ -11,8 +11,8 @@
     <a href="#cvs"
        class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">📰 {% trans "CV templates" %}</a>
     <div>
-      {{ profile.language_setting.code }}
-      {{ profile.language_setting.name }}
+      {{ profile.lang.code }}
+      {{ profile.lang.name }}
       sessionid = {{ request.session.sessionid }}
     </div>
   </nav>

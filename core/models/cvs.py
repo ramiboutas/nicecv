@@ -33,6 +33,7 @@ class Cv(auto_prefetch.Model):
     image_time = models.FloatField(default=0)
     rendering_time = models.FloatField(default=0)
     auto_created = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def render_files(self):
         pdf_start = time.time()
@@ -101,3 +102,6 @@ class Cv(auto_prefetch.Model):
 
     def __str__(self) -> str:
         return f"CV ({self.profile.fullname} {self.tex})"
+
+    class Meta(auto_prefetch.Model.Meta):
+        ordering = ["-created"]

@@ -11,7 +11,7 @@ def context_processors(request):
     return {
         "resume_templates": Cv.objects.filter(
             profile__category="template",
-            profile__language_setting=Language.get(request.LANGUAGE_CODE),
+            profile__lang=Language.get(request.LANGUAGE_CODE),
         ),
         "request": request,
     }

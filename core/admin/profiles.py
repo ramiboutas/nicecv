@@ -46,8 +46,8 @@ class PublicationInline(admin.TabularInline):
 
 @admin.register(profiles.Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "category", "language_setting", "created"]
-    list_filter = ["category", "public", "language_setting", "created"]
+    list_display = ["__str__", "category", "lang", "created"]
+    list_filter = ["category", "public", "lang", "created"]
     inlines = [
         CvInline,
         SkillInline,

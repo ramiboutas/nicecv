@@ -1,6 +1,8 @@
 import time
 import uuid
 from functools import cache
+from operator import attrgetter
+from itertools import chain
 
 import auto_prefetch
 import factory
@@ -59,8 +61,8 @@ class Profile(auto_prefetch.Model):
         default="user",
     )
 
-    language_setting = auto_prefetch.ForeignKey(
-        Language,
+    lang = auto_prefetch.ForeignKey(
+        "core.Language",
         on_delete=models.SET_NULL,
         null=True,
     )
@@ -199,7 +201,7 @@ class Profile(auto_prefetch.Model):
 
     def get_tex_value(self, field_name):
         field = getattr(self, field_name, None)
-        return do_latex_escape(field) if field else ""
+        return do_latex_escape(field).strip("\n") if field else ""
 
     @cached_property
     def upload_photo_url(self):
@@ -402,7 +404,7 @@ class Profile(auto_prefetch.Model):
             return self.cropped_photo.path
 
     def __str__(self):
-        return f"{self.category.capitalize()} Profile ({self.fullname} - {self.language_setting})"
+        return f"{self.category.capitalize()} Profile ({self.fullname} - {self.lang})"
 
     @classmethod
     def create_template_profiles(cls):
@@ -412,26 +414,18 @@ class Profile(auto_prefetch.Model):
 
         for lang_obj in [Language.get(lang[0]) for lang in settings.LANGUAGES]:
             with factory.Faker.override_default_locale(lang_obj.code):
-                obj = ProfileFactory(language_setting=lang_obj)
+                obj = ProfileFactory(lang=lang_obj)
                 print(f"✅ {obj} created.")
 
     def fetch_cvs(self):
-        start = time.time()
         from .cvs import Cv
-        from .tex import Tex
 
-        cvs = []
-
-        for tex in Tex.objects.all():
-            try:
-                cv = Cv.objects.get(tex=tex, profile=self)
-            except Cv.DoesNotExist:
-                cv = Cv.objects.filter(
-                    profile__category="template",
-                    profile__language_setting=self.language_setting,
-                )[0]
-            cvs.append(cv)
-        return cvs
+        profile_cvs = self.cv_set.all()
+        template_cvs = Cv.objects.filter(
+            profile__category="template",
+            profile__lang=self.lang,
+        ).exclude(tex__in=[cv.tex for cv in profile_cvs])
+        return sorted(chain(template_cvs, profile_cvs), key=attrgetter("created"))
 
     def save(self, *args, **kwargs):
         if self.about:
@@ -460,7 +454,7 @@ class AbstractChildSet(auto_prefetch.Model):
 
     def get_tex_value(self, field_name):
         field = getattr(self, field_name, None)
-        return do_latex_escape(field) if field else ""
+        return do_latex_escape(field).strip("\n") if field else ""
 
     def save(self, *args, **kwargs):
         if not self.pk:
