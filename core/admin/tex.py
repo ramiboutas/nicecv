@@ -14,6 +14,6 @@ class CvTexAdmin(admin.ModelAdmin):
         "interpreter",
         "license",
         "credits",
-        "credits_url",
+        "source_url",
         "downloads",
     ]

@@ -5,5 +5,5 @@ from ..views.users import MyAccountView
 app_name = "users"
 
 urlpatterns = [
-    path("my-account/", MyAccountView.as_view(), name="my_account"),
+    path("me/", MyAccountView.as_view(), name="dashboard"),
 ]

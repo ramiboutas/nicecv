@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Secrets(models.Model):
@@ -38,6 +39,11 @@ class Secrets(models.Model):
     # deepl api
     deepl_auth_key = models.CharField(max_length=255, blank=True)
 
+    # urls (will be used in Wagtail pages)
+    profiles_url = models.URLField(blank=True, null=True, editable=False)
+    plans_url = models.URLField(blank=True, null=True, editable=False)
+    user_dashboard_url = models.URLField(blank=True, null=True, editable=False)
+
     class Meta:
         constraints = (
             models.CheckConstraint(
@@ -49,3 +55,12 @@ class Secrets(models.Model):
     @classmethod
     def get(cls):
         return cls.objects.get_or_create(singleton=True)[0]
+
+    def update_urls(self):
+        self.profiles_url = reverse("profiles:list")
+        self.plans_url = reverse("plans:list")
+        self.user_dashboard_url = reverse("users:dashboard")
+
+    def save(self, *args, **kwargs):
+        self.update_urls()
+        super().save(*args, **kwargs)

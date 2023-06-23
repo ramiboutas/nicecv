@@ -20,6 +20,11 @@ def copy_latex_local_files_to_destination():
         print(f"✅ {path.name} copied to {dest}")
 
 
+# Solve the fonts problem
+
+https://tex.stackexchange.com/questions/60539/manually-installing-a-font-map-in-texmfhome-updmap-cant-find-the-map-file
+
+
 class Tex(auto_prefetch.Model):
     title = models.CharField(
         max_length=64,
@@ -61,7 +66,7 @@ class Tex(auto_prefetch.Model):
         editable=False,
         help_text=_("Read from metadata"),
     )
-    credits_url = models.URLField(
+    source_url = models.URLField(
         max_length=128,
         null=True,
         editable=False,

@@ -6,16 +6,14 @@
 #
 amqp==5.1.1
     # via kombu
-anyascii==0.3.1
+anyascii==0.3.2
     # via wagtail
-asgiref==3.6.0
+asgiref==3.7.2
     # via django
-astroid==2.15.0
+astroid==2.15.5
     # via pylint
 asttokens==2.2.1
     # via stack-data
-async-timeout==4.0.2
-    # via redis
 autopep8==2.0.2
     # via -r requirements.in
 babel==2.12.1
@@ -24,21 +22,21 @@ backcall==0.2.0
     # via ipython
 beautifulsoup4==4.11.2
     # via wagtail
-billiard==3.6.4.0
+billiard==4.1.0
     # via celery
-black==23.1.0
+black==23.3.0
     # via -r requirements.in
-boto3==1.26.89
+boto3==1.26.159
     # via -r requirements.in
-botocore==1.29.89
+botocore==1.29.159
     # via
     #   boto3
     #   s3transfer
-celery==5.2.7
+celery==5.3.1
     # via
     #   -r requirements.in
     #   django-celery-results
-certifi==2022.12.7
+certifi==2023.5.7
     # via
     #   django-money
     #   requests
@@ -58,37 +56,40 @@ click-didyoumean==0.3.0
     # via celery
 click-plugins==1.1.1
     # via celery
-click-repl==0.2.0
+click-repl==0.3.0
     # via celery
 colorama==0.4.6
     # via djlint
-coverage[toml]==7.2.1
+coverage[toml]==7.2.7
     # via
     #   -r requirements.in
     #   django-coverage-plugin
 crispy-tailwind==0.5.0
     # via -r requirements.in
-cryptography==39.0.2
+cryptography==41.0.1
     # via pyjwt
-cssbeautifier==1.14.7
+cssbeautifier==1.14.8
     # via djlint
 decorator==5.1.1
     # via ipython
 deepl==1.15.0
     # via -r requirements.in
 defusedxml==0.7.1
-    # via python3-openid
+    # via
+    #   python3-openid
+    #   willow
 dill==0.3.6
     # via pylint
 dj-stripe==2.7.3
     # via -r requirements.in
-django==4.1.7
+django==4.2.2
     # via
     #   -r requirements.in
     #   dj-stripe
     #   django-allauth
     #   django-auto-prefetch
     #   django-browser-reload
+    #   django-celery-results
     #   django-crispy-forms
     #   django-debug-toolbar
     #   django-extensions
@@ -106,17 +107,15 @@ django==4.1.7
     #   djangorestframework
     #   jsonfield
     #   wagtail
-django-allauth==0.52.0
+django-allauth==0.54.0
     # via -r requirements.in
-django-analytical==3.1.0
+django-auto-prefetch==1.6.0
     # via -r requirements.in
-django-auto-prefetch==1.5.0
+django-browser-reload==1.10.0
     # via -r requirements.in
-django-browser-reload==1.7.0
+django-celery-results==2.5.1
     # via -r requirements.in
-django-celery-results==2.4.0
-    # via -r requirements.in
-django-cleanup==7.0.0
+django-cleanup==8.0.0
     # via -r requirements.in
 django-coverage-plugin==3.0.0
     # via -r requirements.in
@@ -124,23 +123,23 @@ django-crispy-forms==2.0
     # via
     #   -r requirements.in
     #   crispy-tailwind
-django-debug-toolbar==3.8.1
+django-debug-toolbar==4.1.0
     # via -r requirements.in
-django-extensions==3.2.1
+django-extensions==3.2.3
     # via -r requirements.in
 django-filter==22.1
     # via wagtail
-django-htmx==1.14.0
+django-htmx==1.15.0
     # via -r requirements.in
 django-modelcluster==6.0
     # via wagtail
-django-modeltranslation==0.18.9
+django-modeltranslation==0.18.10
     # via -r requirements.in
-django-money[exchange]==3.0.0
+django-money[exchange]==3.1.0
     # via -r requirements.in
 django-permissionedforms==0.1
     # via wagtail
-django-rosetta==0.9.8
+django-rosetta==0.9.9
     # via -r requirements.in
 django-slugger==1.1.2
     # via -r requirements.in
@@ -148,11 +147,11 @@ django-storages==1.13.2
     # via -r requirements.in
 django-taggit==3.1.0
     # via wagtail
-django-treebeard==4.6.1
+django-treebeard==4.7
     # via wagtail
 djangorestframework==3.14.0
     # via wagtail
-djlint==1.27.2
+djlint==1.31.0
     # via -r requirements.in
 draftjs-exporter==2.1.7
     # via wagtail
@@ -166,13 +165,15 @@ executing==1.2.0
     # via stack-data
 factory-boy==3.2.1
     # via -r requirements.in
-faker==17.6.0
+faker==18.11.1
     # via factory-boy
+filetype==1.2.0
+    # via willow
 flake8==6.0.0
     # via -r requirements.in
 gunicorn==20.1.0
     # via -r requirements.in
-hiredis==2.2.2
+hiredis==2.2.3
     # via -r requirements.in
 html-tag-names==0.1.2
     # via djlint
@@ -182,7 +183,7 @@ html5lib==1.1
     # via wagtail
 idna==3.4
     # via requests
-ipython==8.11.0
+ipython==8.14.0
     # via -r requirements.in
 isort==5.12.0
     # via pylint
@@ -194,15 +195,15 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-jsbeautifier==1.14.7
+jsbeautifier==1.14.8
     # via
     #   cssbeautifier
     #   djlint
-json5==0.9.11
+json5==0.9.14
     # via djlint
 jsonfield==3.1.0
     # via dj-stripe
-kombu==5.2.4
+kombu==5.3.1
     # via celery
 l18n==2021.3
     # via wagtail
@@ -220,13 +221,13 @@ mypy-extensions==1.0.0
     # via black
 oauthlib==3.2.2
     # via requests-oauthlib
-openpyxl==3.1.1
+openpyxl==3.1.2
     # via wagtail
-packaging==23.0
+packaging==23.1
     # via black
 parso==0.8.3
     # via jedi
-pathspec==0.11.0
+pathspec==0.11.1
     # via
     #   black
     #   djlint
@@ -236,12 +237,12 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==9.4.0
+pillow==9.5.0
     # via
     #   -r requirements.in
     #   pdf2image
     #   wagtail
-platformdirs==3.1.1
+platformdirs==3.8.0
     # via
     #   black
     #   pylint
@@ -251,7 +252,7 @@ prompt-toolkit==3.0.38
     # via
     #   click-repl
     #   ipython
-psycopg2-binary==2.9.5
+psycopg2-binary==2.9.6
     # via -r requirements.in
 ptyprocess==0.7.0
     # via pexpect
@@ -259,7 +260,7 @@ pure-eval==0.2.2
     # via stack-data
 py-moneyed==2.0
     # via django-money
-pyclean==2.7.0
+pyclean==2.7.3
     # via -r requirements.in
 pycodestyle==2.10.0
     # via
@@ -269,40 +270,40 @@ pycparser==2.21
     # via cffi
 pyflakes==3.0.1
     # via flake8
-pygments==2.14.0
+pygments==2.15.1
     # via ipython
-pyjwt[crypto]==2.6.0
+pyjwt[crypto]==2.7.0
     # via django-allauth
-pylint==2.17.0
+pylint==2.17.4
     # via
     #   -r requirements.in
     #   pylint-django
     #   pylint-plugin-utils
 pylint-django==2.5.3
     # via -r requirements.in
-pylint-plugin-utils==0.7
+pylint-plugin-utils==0.8.2
     # via pylint-django
 python-dateutil==2.8.2
     # via
     #   botocore
+    #   celery
     #   faker
 python-dotenv==1.0.0
     # via -r requirements.in
 python3-openid==3.2.0
     # via django-allauth
-pytz==2022.7.1
+pytz==2023.3
     # via
-    #   celery
     #   django-modelcluster
     #   djangorestframework
     #   l18n
 pyyaml==6.0
     # via djlint
-redis==4.5.1
+redis==4.5.5
     # via -r requirements.in
-regex==2023.5.5
+regex==2023.6.3
     # via djlint
-requests==2.28.2
+requests==2.31.0
     # via
     #   deepl
     #   django-allauth
@@ -312,20 +313,19 @@ requests==2.28.2
     #   wagtail
 requests-oauthlib==1.3.1
     # via django-allauth
-s3transfer==0.6.0
+s3transfer==0.6.1
     # via boto3
 six==1.16.0
     # via
     #   asttokens
-    #   click-repl
     #   cssbeautifier
     #   html5lib
     #   jsbeautifier
     #   l18n
     #   python-dateutil
-soupsieve==2.4
+soupsieve==2.4.1
     # via beautifulsoup4
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via
     #   django
     #   django-debug-toolbar
@@ -333,9 +333,9 @@ stack-data==0.6.2
     # via ipython
 stripe==4.2.0
     # via dj-stripe
-telepath==0.3
+telepath==0.3.1
     # via wagtail
-tomlkit==0.11.6
+tomlkit==0.11.8
     # via pylint
 tqdm==4.65.0
     # via djlint
@@ -343,15 +343,17 @@ traitlets==5.9.0
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.5.0
+typing-extensions==4.6.3
     # via
     #   django-modeltranslation
     #   py-moneyed
+tzdata==2023.3
+    # via celery
 unidecode==1.3.6
     # via django-slugger
-unittest-parametrize==1.0.0
+unittest-parametrize==1.2.0
     # via -r requirements.in
-urllib3==1.26.14
+urllib3==1.26.16
     # via
     #   botocore
     #   requests
@@ -360,13 +362,13 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-wagtail==4.2
+wagtail==5.0.2
     # via -r requirements.in
 wcwidth==0.2.6
     # via prompt-toolkit
 webencodings==0.5.1
     # via html5lib
-willow==1.4.1
+willow==1.5
     # via wagtail
 wrapt==1.15.0
     # via astroid

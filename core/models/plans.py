@@ -24,7 +24,7 @@ class FreePlan(AbractPlan):
     singleton = models.BooleanField(primary_key=True, default=True)
     name = models.CharField(max_length=32, default="Free Plan")
 
-    class Meta:
+    class Meta(auto_prefetch.Model.Meta):
         constraints = (
             models.CheckConstraint(
                 name="single_free_plan",

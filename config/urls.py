@@ -21,10 +21,9 @@ urlpatterns = [
     path("rosetta/", include("rosetta.urls")),
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
     # My own apps
-    path("accounts/", include("core.urls.users", namespace="users")),
+    path("users/", include("core.urls.users", namespace="users")),
     path("plans/", include("core.urls.plans", namespace="plans")),
     path("profiles/", include("core.urls.profiles", namespace="profiles")),
-    path("", include("core.urls.home")),
 ]
 
 
