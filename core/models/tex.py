@@ -11,18 +11,14 @@ from django.utils.translation import gettext_lazy as _
 from slugger import AutoSlugField
 
 
-def copy_latex_local_files_to_destination():
-    dest = settings.DESTINATION_LATEX_LOCAL_DIR
-    for path in settings.ORIGIN_LATEX_LOCAL_DIR.iterdir():
-        if path.is_dir() and not path.is_file():
-            continue
-        shutil.copy(path, dest / path.name)
-        print(f"✅ {path.name} copied to {dest}")
-
-
-# Solve the fonts problem
-
-https://tex.stackexchange.com/questions/60539/manually-installing-a-font-map-in-texmfhome-updmap-cant-find-the-map-file
+def copy_texmf():
+    shutil.rmtree(settings.DESTINATION_TEXMF_DIR)
+    shutil.copytree(
+        settings.ORIGIN_TEXMF_DIR,
+        settings.DESTINATION_TEXMF_DIR,
+        dirs_exist_ok=True,
+    )
+    print(f"✅ texmf copied successfully")
 
 
 class Tex(auto_prefetch.Model):

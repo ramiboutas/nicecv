@@ -20,9 +20,9 @@ TEX_TEMPLATES_DIR = BASE_DIR / "tex_templates"
 
 CV_TEX_DIR = TEX_TEMPLATES_DIR / "cvs"
 
-ORIGIN_LATEX_LOCAL_DIR = TEX_TEMPLATES_DIR / "local"
+ORIGIN_TEXMF_DIR = TEX_TEMPLATES_DIR / "texmf"
 
-DESTINATION_LATEX_LOCAL_DIR = Path("/home/rami/texmf/tex/latex/local")
+DESTINATION_TEXMF_DIR = Path("/home/rami/texmf")
 
 # Load env vars from .env file
 dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")

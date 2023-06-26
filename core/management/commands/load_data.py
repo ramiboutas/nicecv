@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from ...factories.plans import PremiumPlanFactory
-from ...models.tex import copy_latex_local_files_to_destination
+from ...models.tex import copy_texmf
 from ...models import Cv
 from ...models import Profile
 from ...models import Tex
@@ -17,7 +17,7 @@ class Command(BaseCommand):
         self.stdout.write("Creating objects...")
 
         # copy latex local files
-        copy_latex_local_files_to_destination()
+        copy_texmf()
 
         # db-based settings
         Secrets.get()
