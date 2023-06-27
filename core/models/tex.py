@@ -40,7 +40,7 @@ class Tex(auto_prefetch.Model):
     )
     interpreter = models.CharField(
         max_length=32,
-        default="lualatex",
+        default="xelatex",
         editable=False,
         help_text=_("Read from metadata"),
     )
@@ -51,7 +51,7 @@ class Tex(auto_prefetch.Model):
         help_text=_("Read from metadata"),
     )
     license = models.CharField(
-        max_length=32,
+        max_length=64,
         default="MIT",
         editable=False,
         help_text=_("Read from metadata"),
@@ -63,7 +63,7 @@ class Tex(auto_prefetch.Model):
         help_text=_("Read from metadata"),
     )
     source_url = models.URLField(
-        max_length=128,
+        max_length=255,
         null=True,
         editable=False,
         help_text=_("Read from metadata"),
@@ -80,6 +80,7 @@ class Tex(auto_prefetch.Model):
 
     @classmethod
     def update_objects(cls):
+        cls.objects.all().delete()
         for path in settings.CV_TEX_DIR.iterdir():
             tex_path, metadata_path = path / "template.tex", path / "metadata"
             if tex_path.is_file() and metadata_path.is_file():

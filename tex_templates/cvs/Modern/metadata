@@ -1,0 +1,5 @@
+title = Modern CV
+interpreter = xelatex
+license = LaTeX Project Public License
+credits = LaTeX3 Project
+source_url = https://www.ctan.org/pkg/moderncv
