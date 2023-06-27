@@ -1,0 +1,5 @@
+title = Developer CV
+interpreter = pdflatex
+license = MIT
+credits = Jan Vorisek and rewritten by Vel (latextemplates.com)
+source = https://www.latextemplates.com/template/developer-cv
