@@ -17,7 +17,7 @@ class ContactFormField(AbstractFormField):
 
 
 class ContactPage(AbstractEmailForm):
-    template = "contact/contact_page.html"
+    template = "cms/contact/contact_page.html"
 
     intro = RichTextField(blank=True)
     trank_you_text = RichTextField(blank=True)

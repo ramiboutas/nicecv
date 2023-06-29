@@ -29,7 +29,8 @@ class ErrorBySettingFormWidgetInputType(FormException):
 class TexError(BaseException):
     def __init__(self, log, source, template_name=None):
         self.log = log
-        self.source = source.splitlines()
+        self.source = source
+        self.source_lines = source.splitlines()
 
         mo = ERROR.search(self.log)
 
@@ -37,10 +38,10 @@ class TexError(BaseException):
 
         if mo.group("lineno"):
             lineno = int(mo.group("lineno")) - 1
-            total = len(self.source)
+            total = len(self.source_lines)
             top = max(0, lineno - 5)
             bottom = min(lineno + 5, total)
-            source_lines = list(enumerate(self.source[top:bottom], top + 1))
+            source_lines = list(enumerate(self.source_lines[top:bottom], top + 1))
             line, during = source_lines[lineno - top]
 
             self.template_debug = {
@@ -66,4 +67,4 @@ class TexError(BaseException):
             self.message += "\n\n" + template_context
 
     def __str__(self):
-        return self.message
+        return self.message + "\n\nCompiled source:\n\n" + self.source

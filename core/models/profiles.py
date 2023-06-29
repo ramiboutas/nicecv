@@ -204,6 +204,26 @@ class Profile(auto_prefetch.Model):
         return do_latex_escape(field).strip("\n") if field else ""
 
     @cached_property
+    def tex_curlybraket_skill_name_slash_levelfloatbase6_curlybraket(self):
+        # { Excel\5.6 }, { Python\5.7 }
+        out = ""
+        qs = self.skill_set.all()
+        for index, skill in enumerate(qs):
+            out += "{" + skill.name + "/" + str(skill.level_base_6_float) + "}"
+            out += "," if index != qs.count() - 1 else ""
+        return out
+
+    @cached_property
+    def tex_curlybraket_language_name_slash_levelfloatbase6_curlybraket(self):
+        # { Enlish\5.6 }, { Spanish\5.7 }
+        out = ""
+        qs = self.languageability_set.all()
+        for index, lang in enumerate(qs):
+            out += "{" + lang.name + "/" + str(lang.level_base_6_float) + "}"
+            out += "," if index != qs.count() - 1 else ""
+        return out
+
+    @cached_property
     def upload_photo_url(self):
         return reverse("profiles:upload-photo", kwargs={"id": self.id})
 

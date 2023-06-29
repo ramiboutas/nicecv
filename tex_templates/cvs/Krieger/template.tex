@@ -41,7 +41,7 @@ fontsize=10pt
 {% endif %}
 {# this is a comment #}
 {% if profile.about_active %}
-  \tagline{ {{- profile.get_tex_value("about")| linebreaks -}} }
+  \tagline{ {{- profile.get_tex_value("about") | linebreaks -}} }
 {% else %}
   \tagline{}
 {% endif %}
@@ -58,7 +58,7 @@ fontsize=10pt
 {% if profile.location_active %}\location{ {{- profile.get_tex_value("location") -}} }{% endif %}
 {% if profile.birth_active %}\birth{ {{- profile.get_tex_value("birth") -}} }{% endif %}
 {% if profile.phone_active %}\phone{ {{- profile.get_tex_value("phone") -}} }{% endif %}
-{% if profile.email_active %}\email{ {{- profile.get_tex_value("email")  -}} }{% endif %}
+{% if profile.email_active %}\email{ {{- profile.get_tex_value("email") -}} }{% endif %}
 {% if profile.website_active %}
   {% if "linkedin." in profile.get_tex_value("website") %}
     \linkedin{ {{- profile.get_tex_value("website") -}} }
@@ -79,27 +79,27 @@ fontsize=10pt
   {% elif "orcid." in profile.get_tex_value("website") %}
     \orcid{ {{- profile.get_tex_value("website") -}} }
   {% else %}
-    \website{ {{- profile.get_tex_value("website")  -}} }
+    \website{ {{- profile.get_tex_value("website") -}} }
   {% endif %}
 {% endif %}
 %\skillsection{Programming}
 {% if profile.skill_active %}
   \section{ {{- profile.get_tex_value("skill_label") -}} }
   {% for skill in profile.skill_set.all() %}
-    \skill{ {{- skill.get_tex_value("name")  -}} }{ {{- skill.level_base_5_int -}} }
+    \skill{ {{- skill.get_tex_value("name") -}} }{ {{- skill.level_base_5_int -}} }
   {% endfor %}
 {% endif %}
 \vspace{0.5em}
 {% if profile.language_active and profile.languageability_set.count() > 0 %}
-  \section{ {{- profile.get_tex_value("language_label")   -}} }
+  \section{ {{- profile.get_tex_value("language_label") -}} }
   {% for language in profile.languageability_set.all() %}
-    \skill{ {{- language.get_tex_value("name")   -}} }{ {{- language.level_base_5_int -}} }
+    \skill{ {{- language.get_tex_value("name") -}} }{ {{- language.level_base_5_int -}} }
   {% endfor %}
 {% endif %}
 }
 \mainbar{
 {% if profile.education_active and profile.education_set.count() > 0 %}
-  \section[\faGraduationCap]{ {{- profile.get_tex_value("education_label")   -}} }
+  \section[\faGraduationCap]{ {{- profile.get_tex_value("education_label") -}} }
   {% for education in profile.education_set.all() %}
     \job{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} }
     { {{- education.get_tex_value("institution") -}} }
@@ -108,16 +108,16 @@ fontsize=10pt
   {% endfor %}
 {% endif %}
 {% if profile.experience_active and profile.experience_set.count() > 0 %}
-  \section[\faBriefcase]{ {{- profile.get_tex_value("experience_label")  -}} }
+  \section[\faBriefcase]{ {{- profile.get_tex_value("experience_label") -}} }
   {% for experience in profile.experience_set.all() %}
     \job{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} }
-    { {{- experience.get_tex_value("company")   -}} }
-    { {{- experience.get_tex_value("title")    -}} }
+    { {{- experience.get_tex_value("company") -}} }
+    { {{- experience.get_tex_value("title") -}} }
     { {{- experience.get_tex_value("description") | linebreaks -}} }
   {% endfor %}
 {% endif %}
 {% if profile.achievement_active and profile.achievement_set.count() > 0 %}
-  \section[\faTrophy]{ {{- profile.get_tex_value("achievement_label")  -}} }
+  \section[\faTrophy]{ {{- profile.get_tex_value("achievement_label") -}} }
   {% for achievement in profile.achievement_set.all() %}
     \honor{ {{- achievement.get_tex_value("date") -}} }
     { {{- achievement.get_tex_value("title") -}} }
@@ -125,16 +125,16 @@ fontsize=10pt
   {% endfor %}
 {% endif %}
 {% if profile.project_active and profile.project_set.count() > 0 %}
-  \section[\faLightbulb]{ {{- profile.get_tex_value("project_label")   -}} }
+  \section[\faLightbulb]{ {{- profile.get_tex_value("project_label") -}} }
   {% for project in profile.project_set.all() %}
-    \project{ {{- project.get_tex_value("role")  -}} }
-    { {{- project.get_tex_value("organization")   -}} }
-    { {{- project.get_tex_value("title")   -}} }
+    \project{ {{- project.get_tex_value("role") -}} }
+    { {{- project.get_tex_value("organization") -}} }
+    { {{- project.get_tex_value("title") -}} }
     { {{- project.get_tex_value("link") -}} }
   {% endfor %}
 {% endif %}
 {% if profile.publication_active and profile.publication_set.count() > 0 %}
-  \section[\faLightbulb]{ {{- profile.get_tex_value("publication_label")  -}} }
+  \section[\faLightbulb]{ {{- profile.get_tex_value("publication_label") -}} }
   {% for publication in profile.publication_set.all() %}
     \publication
     { {{- publication.get_tex_value("title") -}}  }

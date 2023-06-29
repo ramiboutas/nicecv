@@ -43,27 +43,9 @@
   \email{}
 {% endif %}
 {% if profile.website_active %}
-  {% if "linkedin." in profile.get_tex_value("website") %}
-    \linkedin{ {{- profile.get_tex_value("website") -}}}
-  {% elif "github." in profile.get_tex_value("website") %}
-    \github{ {{- profile.get_tex_value("website") -}}}
-  {% elif "instagram." in profile.get_tex_value("website") %}
-    \instagram{ {{- profile.get_tex_value("website") -}} }
-  {% elif "twitter." in profile.get_tex_value("website") %}
-    \twitter{ {{- profile.get_tex_value("website") -}} }
-  {% elif "facebook." in profile.get_tex_value("website") %}
-    \facebook{ {{- profile.get_tex_value("website") -}} }
-  {% elif "gitlab." in profile.get_tex_value("website") %}
-    \gitlab{ {{- profile.get_tex_value("website") -}} }
-  {% elif "stackoverflow." in profile.get_tex_value("website") %}
-    \stackoverflow{ {{- profile.get_tex_value("website") -}} }
-  {% elif "medium." in profile.get_tex_value("website") %}
-    \medium{ {{- profile.get_tex_value("website") -}} }
-  {% elif "orcid." in profile.get_tex_value("website") %}
-    \orcid{ {{- profile.get_tex_value("website") -}} }
-  {% else %}
-    \website{ {{- profile.get_tex_value("website") -}}}
-  {% endif %}
+  \website{ {{- profile.get_tex_value("website") -}} }
+{% else %}
+  \website{}
 {% endif %}
 \linkedin{}
 \github{}
@@ -75,7 +57,6 @@
 \medium{}
 \orcid{}
 \youtube{}
-\website{}
 \skype{}
 %----------------------------------------------------------------------------------------
 \begin{document}
@@ -85,23 +66,18 @@
 {% if profile.about_active %}
   % To have no About Me section, just remove all the text and leave \description{}
   \aboutmelabel{ {{- profile.get_tex_value("about_label") -}} }
-  \aboutme{ {{- profile.get_tex_value("about")| linebreaks -}} }
+  \aboutme{ {{- profile.get_tex_value("about") | linebreaks -}} }
 {% else %}
   \aboutme{}
 {% endif %}
 %----------------------------------------------------------------------------------------
 %	 SKILLS
 %----------------------------------------------------------------------------------------
+%	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01} }
 {% if profile.skill_active and profile.skill_set.count() > 0 %}
   \skilllabel{ {{- profile.get_tex_value("skill_label") -}} }
   \numberofskills{ {{- profile.skill_set.count() -}} }
-  %	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01} }
-  \skills{
-  {% for skill in profile.skill_set.all() %}
-    { {{- skill.get_tex_value("name") -}} / {{- skill.level_base_6_float -}} }
-    {% if not loop.last %},{% endif %}
-  {% endfor %}
-  }
+  \skills{ {{- profile.tex_curlybraket_skill_name_slash_levelfloatbase6_curlybraket -}} }
 {% endif %}
 %----------------------------------------------------------------------------------------
 %	 LANGUAGES
@@ -109,12 +85,7 @@
 {% if profile.language_active and profile.languageability_set.count() > 0 %}
   \languagelabel{ {{- profile.get_tex_value("language_label") -}} }
   \numberoflanguages{ {{- profile.languageability_set.count() -}} }
-  \languages{
-  {% for language in profile.languageability_set.all() %}
-    { {{- language.get_tex_value("name") -}} / {{- language.level_base_6_float -}} }
-    {% if not loop.last %},{% endif %}
-  {% endfor %}
-  }
+  \languages{ {{- profile.tex_curlybraket_language_name_slash_levelfloatbase6_curlybraket -}} }
 {% endif %}
 %----------------------------------------------------------------------------------------
 \makeprofile % Print the sidebar
