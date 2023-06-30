@@ -8,15 +8,4 @@ from .secrets import Secrets  # noqa
 from .tex import Tex  # noqa
 from .users import User  # noqa
 from .users import UserPremiumPlan  # noqa
-
-
-Cv = Cv
-Language = Language
-FreePlan = FreePlan
-PlanFAQ = PlanFAQ
-PremiumPlan = PremiumPlan
-Profile = Profile
-Secrets = Secrets
-Tex = Tex
-User = User
-UserPremiumPlan
+from .site import SiteUrls  # noqa

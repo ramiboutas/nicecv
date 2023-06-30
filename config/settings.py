@@ -68,13 +68,8 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.forms",
     # My own apps
-    # "apps.forms.apps.FormsConfig",
-    # "apps.accounts",
     "core.CoreConfig",
-    # "apps.plans",
-    # "apps.profiles",
-    # "apps.tex",
-    # "apps.celery_progress_htmx",  # Actually a thid party but adapted
+    "cms.CmsConfig",
     # Wagtail apps
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -108,6 +103,7 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "debug_toolbar",
     "django_browser_reload",
+    "simple_menu",
 ]
 
 # Authentication
