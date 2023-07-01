@@ -1,7 +1,6 @@
 import stripe
 from django.db.models import Model
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
 from djstripe import models as djstripe_models
 from djstripe import settings as djstripe_settings
 
@@ -55,7 +54,6 @@ def create_stripe_session(request, plan: Model):
                         "currency": plan.price.currency,
                         # "currency": "gbp",  # for bacs_debit
                         "unit_amount": int(plan.price.amount * 100),
-                        "product_data": {"name": plan.name},
                         "product_data": {
                             "name": plan.name,
                             "description": plan.description,
@@ -85,7 +83,6 @@ def create_stripe_session(request, plan: Model):
                         "currency": plan.price.currency,
                         # "currency": "gbp",  # for bacs_debit
                         "unit_amount": int(plan.price.amount * 100),
-                        "product_data": {"name": plan.name},
                         "product_data": {
                             "name": plan.name,
                             "description": plan.description,

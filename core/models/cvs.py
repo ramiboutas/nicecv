@@ -1,19 +1,20 @@
-import time
 import tempfile
-from pathlib import Path
+import time
 from functools import cache
-from subprocess import PIPE, run, CalledProcessError
+from pathlib import Path
+from subprocess import CalledProcessError
+from subprocess import PIPE
+from subprocess import run
 
 import auto_prefetch
 from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models import Q
-from django.utils.translation import gettext_lazy as _
 from django.template.loader import get_template
-
-from ..exceptions import TexError
+from django.utils.translation import gettext_lazy as _
 from pdf2image import convert_from_path
 
+from ..exceptions import TexError
 from .profiles import Profile
 
 # from ..tex.compile import compile_template_to_pdf
@@ -50,7 +51,7 @@ class Cv(auto_prefetch.Model):
                 run(args, shell=True, stdout=PIPE, stderr=PIPE, check=True, cwd=tempdir)
             except CalledProcessError as called_process_error:
                 try:
-                    with open(temppath / "texput.log", "r", encoding="utf-8") as f:
+                    with open(temppath / "texput.log", encoding="utf-8") as f:
                         log = f.read()
                 except FileNotFoundError:
                     raise called_process_error

@@ -37,6 +37,6 @@
     {% endfor %}
   </div>
   <a hx-boost="true"
-     href="{% url 'profiles:create' %}"
-     hx-push-url="{% url 'profiles:list' %}">{% translate "Create profile" %}</a>
+     href="{% url 'profile_create' %}"
+     hx-push-url="{% url 'profile_list' %}">{% translate "Create profile" %}</a>
 {% endblock content %}

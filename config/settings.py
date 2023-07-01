@@ -71,13 +71,14 @@ INSTALLED_APPS = [
     "core.CoreConfig",
     "cms.CmsConfig",
     # Wagtail apps
-    "wagtail.contrib.forms",
+    # "wagtail.contrib.routable_page",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.forms",
+    "wagtail.documents",
+    "wagtail.snippets",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
-    "wagtail.snippets",
-    "wagtail.documents",
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
@@ -266,9 +267,9 @@ LANGUAGE_COOKIE_NAME = "client_language"
 
 LANGUAGES = (
     ("en", _("English")),
-    ("es", _("Spanish")),
-    ("de", _("German")),
-    ("fr", _("French")),
+    #  ("es", _("Spanish")),
+    #  ("de", _("German")),
+    #  ("fr", _("French")),
 )
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)

@@ -4,7 +4,6 @@ import logging
 import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -14,16 +13,14 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from djstripe import settings as djstripe_settings
 
+from ..models.plans import PlanFAQ
+from ..models.plans import PremiumPlan
+from ..models.users import User
+from ..models.users import UserPremiumPlan
+from .payments import create_stripe_session
 
 logger = logging.getLogger(__name__)
 stripe.api_key = djstripe_settings.djstripe_settings.STRIPE_SECRET_KEY
-
-# User = get_user_model()
-from ..models.users import User
-from ..models.users import UserPremiumPlan
-from ..models.plans import PremiumPlan
-from ..models.plans import PlanFAQ
-from .payments import create_stripe_session
 
 
 def plan_list(request):
@@ -66,21 +63,22 @@ def stripe_webhook(request):  # pragma: no cover
     endpoint_secret = settings.DJSTRIPE_WEBHOOK_SECRET
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
-    except ValueError as e:
+    except ValueError:
         # Invalid payload
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
+    except stripe.error.SignatureVerificationError:
         # Invalid signature
         return HttpResponse(status=400)
 
     # Handle the checkout.session.completed event
     if event["type"] == "checkout.session.completed":
-        # Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
+        # Retrieve the session. If you require line items in the response,
+        # you may include them by expanding line_items.
         session = stripe.checkout.Session.retrieve(
             event["data"]["object"]["id"],
             expand=["line_items"],
         )
-        line_items = session.line_items
+        _ = session.line_items
 
         data = json.loads(payload)
         plan_id = data["data"]["object"]["metadata"]["plan_id"]

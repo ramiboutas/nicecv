@@ -1,14 +1,5 @@
 import re
 
-error_patterns = [
-    r"^\!.*?l\.(?P<lineno>\d+).*?$",
-    r"^\! Emergency stop.*?\*{3}.*?$",
-    r"^\!.*?$",
-]
-
-
-ERROR = re.compile(r"|".join(error_patterns), re.DOTALL + re.MULTILINE)
-
 
 class BaseException(Exception):
     pass
@@ -27,12 +18,20 @@ class ErrorBySettingFormWidgetInputType(FormException):
 
 
 class TexError(BaseException):
+    error_patterns = [
+        r"^\!.*?l\.(?P<lineno>\d+).*?$",
+        r"^\! Emergency stop.*?\*{3}.*?$",
+        r"^\!.*?$",
+    ]
+
+    ERROR = re.compile(r"|".join(error_patterns), re.DOTALL + re.MULTILINE)
+
     def __init__(self, log, source, template_name=None):
         self.log = log
         self.source = source
         self.source_lines = source.splitlines()
 
-        mo = ERROR.search(self.log)
+        mo = TexError.ERROR.search(self.log)
 
         self.message = mo.group() or "No error message found."
 

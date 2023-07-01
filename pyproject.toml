@@ -31,5 +31,8 @@ fail_under = 100
 show_missing = true
 skip_empty = true
 
+[tool.coverage.html]
+directory = "htmlcov"
+
 [tool.djlint]
 profile="jinja"

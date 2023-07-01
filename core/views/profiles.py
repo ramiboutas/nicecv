@@ -10,18 +10,17 @@ from django.utils.translation import gettext as _
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
+from django_htmx.http import HttpResponseClientRedirect
 
 from ..forms import profiles as profile_forms
-from ..http import HTTPResponseHXRedirect
 from ..models.cvs import Cv
-from ..models.languages import Language
 from ..models.profiles import Profile
 from ..models.tex import Tex
 from ..models.users import User
 from ..sessions import get_or_create_session
 
 
-def create_cv(request, profile_id, tex_id):
+def create_profile_cv(request, profile_id, tex_id):
     profile = get_object_or_404(Profile, id=profile_id)
     tex = get_object_or_404(Tex, id=tex_id)
     try:
@@ -38,9 +37,7 @@ def create_cv(request, profile_id, tex_id):
 
 @transaction.atomic
 def _create_initial_profile(request):
-    # get language
-    lang, lang_created = Language.objects.get_or_create(code=request.LANGUAGE_CODE)
-    profile = Profile(lang=lang)
+    profile = Profile(language_code=request.LANGUAGE_CODE)
     user = getattr(request, "user", AnonymousUser())
     if isinstance(user, User):
         profile.user = user
@@ -71,7 +68,8 @@ def profile_list(request):
 
 def profile_create(request):
     profile, request = _create_initial_profile(request)
-    return HTTPResponseHXRedirect(redirect_to=profile.update_url())
+    return HttpResponseClientRedirect(profile.update_url())
+    # return HTTPResponseHXRedirect(redirect_to=profile.update_url())
 
 
 def profile_update(request, id):
@@ -95,7 +93,7 @@ def update_settings(request, klass, id):
     profile = get_object_or_404(Profile, id=id)
     Form = getattr(profile_forms, klass, None)
     if Form is None:
-        return HTTPResponseHXRedirect(redirect_to=profile.update_url())
+        return HttpResponseClientRedirect(profile.update_url())
 
     form = Form(request.POST, instance=profile)
     if form.is_valid():
@@ -152,7 +150,7 @@ def order_child_formset(request, klass, id):
 
 
 @require_http_methods(["DELETE"])
-def delete_child(request, klass, id):
+def delete_profile_child(request, klass, id):
     Model, Form = profile_forms.get_child_model_and_form(klass)
     child = get_object_or_404(Model, id=id)
     child.delete()
@@ -160,14 +158,14 @@ def delete_child(request, klass, id):
 
 
 @require_POST
-def delete_profile(request, id):
+def profile_delete(request, id):
     object = get_object_or_404(Profile, id=id)
     object.delete()
     return HttpResponse(status=200)
 
 
 @require_POST
-def upload_photo(request, id):
+def upload_profile_photo(request, id):
     profile = get_object_or_404(Profile, id=id)
     form = profile_forms.UploadPhotoForm(request.POST, request.FILES, instance=profile)
     if form.is_valid():
@@ -182,7 +180,7 @@ def upload_photo(request, id):
 
 
 @require_POST
-def crop_photo(request, id):
+def crop_profile_photo(request, id):
     profile = get_object_or_404(Profile, id=id)
     form = profile_forms.CropPhotoForm(request.POST, instance=profile)
     if form.is_valid():

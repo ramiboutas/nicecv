@@ -1,8 +1,8 @@
 import time
 import uuid
 from functools import cache
-from operator import attrgetter
 from itertools import chain
+from operator import attrgetter
 
 import auto_prefetch
 import factory
@@ -17,7 +17,6 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
 from ..tex.filters import do_latex_escape
-from .languages import Language
 
 
 def get_photo_upload_path(profile, filename):
@@ -61,11 +60,13 @@ class Profile(auto_prefetch.Model):
         default="user",
     )
 
-    lang = auto_prefetch.ForeignKey(
-        "core.Language",
-        on_delete=models.SET_NULL,
+    language_code = models.CharField(
+        _("Language code"),
+        max_length=64,
         null=True,
+        default=settings.LANGUAGE_CODE,
     )
+
     public = models.BooleanField(default=False)
     auto_created = models.BooleanField(default=False)
     slug = models.SlugField(null=True, blank=True, max_length=16, unique=True)
@@ -225,18 +226,18 @@ class Profile(auto_prefetch.Model):
 
     @cached_property
     def upload_photo_url(self):
-        return reverse("profiles:upload-photo", kwargs={"id": self.id})
+        return reverse("profile_upload_photo", kwargs={"id": self.id})
 
     @cached_property
     def crop_photo_url(self):
-        return reverse("profiles:crop-photo", kwargs={"id": self.id})
+        return reverse("profile_crop_photo", kwargs={"id": self.id})
 
     @cached_property
     def delete_photos_url(self):
-        return reverse("profiles:delete-photos", kwargs={"id": self.id})
+        return reverse("profile_delete_photos", kwargs={"id": self.id})
 
     def update_url(self, params=None):
-        url = reverse("profiles:update", kwargs={"id": self.id})
+        url = reverse("profile_update", kwargs={"id": self.id})
         extra = (
             "?" + "&".join([f"{k}={v}" for k, v in params.items()])
             if bool(params)
@@ -246,30 +247,30 @@ class Profile(auto_prefetch.Model):
 
     def update_formset_url(self, Klass):
         return reverse(
-            "profiles:update-formset", kwargs={"klass": Klass.__name__, "id": self.id}
+            "profile_update_formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
 
     @cached_property
     def update_fields_url(self):
-        return reverse("profiles:update-fields", kwargs={"id": self.id})
+        return reverse("profile_update_fields", kwargs={"id": self.id})
 
     @cached_property
     def update_labelling_url(self):
         return reverse(
-            "profiles:update-settings",
+            "profile_update_settings",
             kwargs={"klass": "LabellingForm", "id": self.id},
         )
 
     @cached_property
     def update_activation_url(self):
         return reverse(
-            "profiles:update-settings",
+            "profile_update_settings",
             kwargs={"klass": "ActivationForm", "id": self.id},
         )
 
     def order_formset_url(self, Klass):
         return reverse(
-            "profiles:order-formset", kwargs={"klass": Klass.__name__, "id": self.id}
+            "profile_order_formset", kwargs={"klass": Klass.__name__, "id": self.id}
         )
 
     @cached_property
@@ -344,7 +345,7 @@ class Profile(auto_prefetch.Model):
 
     @cached_property
     def delete_object_url(self):
-        return reverse("profiles:delete", kwargs={"id": self.id})
+        return reverse("profile_delete", kwargs={"id": self.id})
 
     def collect_context(self) -> dict:
         from ..forms import profiles
@@ -423,18 +424,15 @@ class Profile(auto_prefetch.Model):
         if self.has_photo:
             return self.cropped_photo.path
 
-    def __str__(self):
-        return f"{self.category.capitalize()} Profile ({self.fullname} - {self.lang})"
-
     @classmethod
     def create_template_profiles(cls):
         from ..factories.profiles import ProfileFactory
 
         cls.objects.filter(auto_created=True).delete()
 
-        for lang_obj in [Language.get(lang[0]) for lang in settings.LANGUAGES]:
-            with factory.Faker.override_default_locale(lang_obj.code):
-                obj = ProfileFactory(lang=lang_obj)
+        for code, _ in settings.LANGUAGES:
+            with factory.Faker.override_default_locale(code):
+                obj = ProfileFactory(language_code=code)
                 print(f"✅ {obj} created.")
 
     def fetch_cvs(self):
@@ -443,7 +441,7 @@ class Profile(auto_prefetch.Model):
         profile_cvs = self.cv_set.all()
         template_cvs = Cv.objects.filter(
             profile__category="template",
-            profile__lang=self.lang,
+            profile__language_code=self.language_code,
         ).exclude(tex__in=[cv.tex for cv in profile_cvs])
         return sorted(chain(template_cvs, profile_cvs), key=attrgetter("created"))
 
@@ -452,6 +450,9 @@ class Profile(auto_prefetch.Model):
             rows = int(len(self.about) / 35)
             self.about_rows = rows if rows > 3 else 3
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.category.capitalize()} Profile ({self.fullname} - {self.language_code})"
 
 
 class LevelMethodsMixin:
@@ -470,7 +471,7 @@ class AbstractChildSet(auto_prefetch.Model):
 
     def get_delete_url(self):
         cls = type(self).__name__
-        return reverse("profiles:delete-child", kwargs={"klass": cls, "id": self.id})
+        return reverse("profile_delete_child", kwargs={"klass": cls, "id": self.id})
 
     def get_tex_value(self, field_name):
         field = getattr(self, field_name, None)

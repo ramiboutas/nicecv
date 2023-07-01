@@ -1,6 +1,6 @@
 from django.conf import settings
-from jinja2.ext import Extension
 from jinja2 import nodes
+from jinja2.ext import Extension
 
 
 def format_path_for_latex(path):
@@ -20,7 +20,7 @@ class GraphicspathExtension(Extension):
     the BASE_DIR setting by default.
     """
 
-    tags = set(["graphicspath"])
+    tags = {"graphicspath"}
 
     def parse(self, parser):
         list_of_paths = getattr(settings, "LATEX_GRAPHICSPATH", [settings.BASE_DIR])

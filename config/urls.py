@@ -20,10 +20,10 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("rosetta/", include("rosetta.urls")),
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
-    # My own apps
-    path("users/", include("core.urls.users", namespace="users")),
-    path("plans/", include("core.urls.plans", namespace="plans")),
-    path("profiles/", include("core.urls.profiles", namespace="profiles")),
+    # core app
+    path("", include("core.urls")),
+    # path("plans/", include("core.urls.plans", namespace="plans")),
+    # path("profiles/", include("core.urls.profiles", namespace="profiles")),
 ]
 
 

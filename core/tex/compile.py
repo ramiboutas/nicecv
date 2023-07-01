@@ -1,6 +1,8 @@
-from pathlib import Path
-from subprocess import PIPE, run, CalledProcessError
 import tempfile
+from pathlib import Path
+from subprocess import CalledProcessError
+from subprocess import PIPE
+from subprocess import run
 
 from django.conf import settings
 from django.template.loader import get_template
@@ -21,7 +23,7 @@ def compile_template_to_pdf(tex, context):
             run(args, shell=True, stdout=PIPE, stderr=PIPE, check=True, cwd=tempdir)
         except CalledProcessError as called_process_error:
             try:
-                with open(temppath / "texput.log", "r", encoding="utf-8") as f:
+                with open(temppath / "texput.log", encoding="utf-8") as f:
                     log = f.read()
             except FileNotFoundError:
                 raise called_process_error

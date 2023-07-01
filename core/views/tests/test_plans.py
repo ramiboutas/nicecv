@@ -1,10 +1,10 @@
 from http import HTTPStatus
 
-from plans import plan_detail_view
-from ...factories.plans import PremiumPlanFactory
 from django.test import RequestFactory
 from django.urls import reverse
+from plans import plan_detail_view
 
+from ...factories.plans import PremiumPlanFactory
 from config.test import TestCase
 from core.factories.users import UserFactory
 

@@ -53,6 +53,7 @@ class ProfileFieldForm(ModelForm):
                 "phone",
                 "email",
                 "website",
+                "language_code",
             ],
             html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
             x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
@@ -83,6 +84,7 @@ class ProfileFieldForm(ModelForm):
             "email",
             "website",
             "about",
+            "language_code",
         ]
 
 

@@ -1,9 +1,8 @@
 from django.urls import path
 
-from ..views.users import MyAccountView
+from ..views.users import UserDashboard
 
-app_name = "users"
 
 urlpatterns = [
-    path("me/", MyAccountView.as_view(), name="dashboard"),
+    path("account/", UserDashboard.as_view(), name="user_dashboard"),
 ]

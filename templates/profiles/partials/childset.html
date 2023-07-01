@@ -22,9 +22,11 @@
             <button type="button"
                     hx-delete="{{ form.instance.get_delete_url }}"
                     hx-target="closest form"
-                    hx-swap="outerHTML swap:100ms">🗑️</button>
+                    hx-swap="outerHTML swap:100ms">
+              🗑️
+            </button>
             <!-- order -->
-            <button class="handle">🟰 </button>
+            <button class="handle">🟰</button>
             <input type="hidden" name="child-id" value="{{ form.instance.id }}" />
           </div>
           <div class="mt-2 grid grid-cols-4 gap-4"
@@ -49,7 +51,9 @@
       <button type="button"
               class="rounded-md w-full py-2 text-sm text-indigo-600"
               :class="open ? '' : 'border-dashed border border-indigo-300'"
-              x-on:click="open = true">{% trans "New" %}</button>
+              x-on:click="open = true">
+        {% trans "New" %}
+      </button>
       <div x-show="open"
            class="transition delay-200"
            x-transition:enter.delay.200ms
@@ -60,7 +64,9 @@
           {% endfor %}
         </div>
         <button class="rounded-md w-full bg-indigo-200  py-2 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-400"
-                type="submit">{% trans "Add" %}</button>
+                type="submit">
+          {% trans "Add" %}
+        </button>
       </div>
     </div>
   {% endfor %}

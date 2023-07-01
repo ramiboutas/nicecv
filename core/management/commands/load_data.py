@@ -2,12 +2,12 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from ...factories.plans import PremiumPlanFactory
-from ...models.tex import copy_texmf
 from ...models import Cv
+from ...models import DeeplLanguage
 from ...models import Profile
-from ...models import Tex
-from ...models import Language
 from ...models import Secrets
+from ...models import Tex
+from ...models.tex import copy_texmf
 
 
 class Command(BaseCommand):
@@ -22,7 +22,7 @@ class Command(BaseCommand):
         # db-based settings
         Secrets.get()
         # language objects
-        Language.update_objects()
+        DeeplLanguage.update_objects()
         # plan objects
         PremiumPlanFactory()
         PremiumPlanFactory(price=14, months=6)

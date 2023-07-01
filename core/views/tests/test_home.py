@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from django.test import RequestFactory
 from django.urls import resolve
-
 from home import HomeView
+
 from config.test import TestCase
 from core.factories.users import UserFactory
 
