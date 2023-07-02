@@ -26,6 +26,7 @@ boto3
 django-storages
 django-money[exchange]
 django-modeltranslation
+wagtail-localize
 django-cleanup
 crispy-tailwind
 Jinja2

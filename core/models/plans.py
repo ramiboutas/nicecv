@@ -51,11 +51,11 @@ class PremiumPlan(AbractPlan):
 
     @cached_property
     def detail_url(self):
-        return reverse("plans:detail", kwargs={"id": self.id})
+        return reverse("plan_detail", kwargs={"id": self.id})
 
     @cached_property
     def checkout_url(self):
-        return reverse("plans:checkout", kwargs={"id": self.id})
+        return reverse("plan_checkout", kwargs={"id": self.id})
 
 
 class PlanFAQ(auto_prefetch.Model):

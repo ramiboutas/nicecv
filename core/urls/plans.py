@@ -12,8 +12,8 @@ urlpatterns = [
     # standard
     path("plans/", plan_list, name="plan_list"),
     path("plan/<int:id>/", plan_detail, name="plan_detail"),
-    path("checkout/<int:id>/", checkout, name="checkout"),
-    path("payment-successed/", payment_success, name="payment-successed"),
-    path("payment-failed/", payment_fail, name="payment-failed"),
-    path("webhook/", stripe_webhook, name="webhook-intent"),
+    path("checkout/<int:id>/", checkout, name="plan_checkout"),
+    path("payment-successed/", payment_success, name="payment_successed"),
+    path("payment-failed/", payment_fail, name="payment_failed"),
+    path("webhook/", stripe_webhook, name="webhook_intent"),
 ]

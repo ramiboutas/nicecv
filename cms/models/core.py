@@ -24,6 +24,9 @@ class CorePage(Page):
         FixTreeCommand().handle()
         home = HomePage.objects.all().first()
 
+        if not home:
+            return
+
         core_pages = [
             cls(
                 title="Profile List",

@@ -11,12 +11,12 @@ def create_stripe_session(request, plan: Model):
     """
 
     success_url = (
-        request.build_absolute_uri(reverse("plans:payment-successed"))
+        request.build_absolute_uri(reverse("payment_successed"))
         + "?session_id={CHECKOUT_SESSION_ID}"
     )
 
     cancel_url = request.build_absolute_uri(
-        reverse("plans:payment-failed") + "?session_id={CHECKOUT_SESSION_ID}"
+        reverse("payment_failed") + "?session_id={CHECKOUT_SESSION_ID}"
     )
 
     # get the id of the Model instance of djstripe_settings.djstripe_settings.get_subscriber_model()

@@ -68,8 +68,9 @@ def profile_list(request):
 
 def profile_create(request):
     profile, request = _create_initial_profile(request)
-    return HttpResponseClientRedirect(profile.update_url())
-    # return HTTPResponseHXRedirect(redirect_to=profile.update_url())
+    if request.htmx:
+        return HttpResponseClientRedirect(profile.update_url())
+    return HttpResponseRedirect(profile.update_url())
 
 
 def profile_update(request, id):

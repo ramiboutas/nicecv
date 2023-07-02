@@ -9,6 +9,8 @@ from ...models import Secrets
 from ...models import Tex
 from ...models.tex import copy_texmf
 
+from cms.models import CorePage
+
 
 class Command(BaseCommand):
     help = "Creates initial objects for the site"
@@ -19,10 +21,15 @@ class Command(BaseCommand):
         # copy latex local files
         copy_texmf()
 
+        # creating some core pages available in Wagtail
+        CorePage.update_objects()
+
         # db-based settings
         Secrets.get()
+
         # language objects
         DeeplLanguage.update_objects()
+
         # plan objects
         PremiumPlanFactory()
         PremiumPlanFactory(price=14, months=6)

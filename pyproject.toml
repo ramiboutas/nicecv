@@ -16,14 +16,12 @@ parallel = true
 omit = [
   "manage.py",
   "*/node_modules/*",
-  "celery_progress_htmx/*",
   "venv/*",
-  "_ideas/*",
   "geoip2dbs/*",
   "*/migrations/*",
   "media/*",
   "static/*",
-  "apps/celery_progress_htmx/*",
+
 ]
 [tool.coverage.report]
 skip_covered = true
@@ -35,4 +33,4 @@ skip_empty = true
 directory = "htmlcov"
 
 [tool.djlint]
-profile="jinja"
+profile="django"

@@ -104,36 +104,35 @@
 %----------------------------------------------------------------------------------------
 {% if profile.education_active and profile.education_set.count() > 0 %}
   \section{ {{- profile.get_tex_value("education_label") -}} }
-  \begin{twenty} % Environment for a list with descriptions
   {% for education in profile.education_set.all() %}
-    \twentyitem{\footnotesize{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} } }
+    \begin{twenty} % Environment for a list with descriptions
+    \twentyitem{\footnotesize{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} }
     { {{- education.get_tex_value("title") -}} }
     { {{- education.get_tex_value("institution") -}} }
     { {{- education.get_tex_value("description") | linebreaks -}}  }
+    \end{twenty}
   {% endfor %}
-  \end{twenty}
 {% endif %}
 {% if profile.experience_active and profile.experience_set.count() > 0 %}
   \section{ {{- profile.experience_label -}} }
-  \begin{twenty} % Environment for a list with descriptions
   {% for experience in profile.experience_set.all() %}
+    \begin{twenty} % Environment for a list with descriptions
     \twentyitem{\footnotesize{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} } }
     { {{- experience.get_tex_value("title") -}} }
     { {{- experience.get_tex_value("company") -}} }
     { {{- experience.get_tex_value("description") | linebreaks -}}  }
+    \end{twenty}
   {% endfor %}
-  \end{twenty}
 {% endif %}
 {% if profile.achievement_active and profile.achievement_set.count() > 0 %}
   \section{ {{- profile.achievement_label -}} }
-  \begin{twenty}
-  %\twentyitemshort{<dates>}{<title>}
-  {% for honor in profile.achievement_set.all() %}
-    \twentyitem{ \small{ {{- achievement.get_tex_value("date") -}} } }
-    { {{- honor.get_tex_value("title") -}} }
-    {}
+  {% for achievement in profile.achievement_set.all() %}
+    \begin{twenty}
+    %\twentyitemshort{<dates>}{<title>}
+    \twentyitemshort{ \small{ {{- achievement.get_tex_value("date") -}} } }
+    { {{- achievement.get_tex_value("title") -}} }
+    \end{twenty}
   {% endfor %}
-  \end{twenty}
 {% endif %}
 {% if profile.project_active and profile.project_set.count() > 0 %}
   \section{ {{- profile.get_tex_value("project_label") -}} }

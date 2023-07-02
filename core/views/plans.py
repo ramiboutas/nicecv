@@ -40,12 +40,12 @@ def plan_detail(request, id):
 
 def payment_success(request):  # pragma: no cover
     messages.success(request, _("Thank you for your order, enjoy the premium!"))
-    return redirect("core:home")
+    return redirect("profile_list")
 
 
 def payment_fail(request):  # pragma: no cover
     messages.error(request, _("Unexpected error happened, please try again."))
-    return redirect("plans:list")
+    return redirect("plan_list")
 
 
 @login_required

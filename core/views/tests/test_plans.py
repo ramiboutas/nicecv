@@ -11,7 +11,7 @@ from core.factories.users import UserFactory
 
 class PlanViewTest(TestCase):
     def test_plan_list_view(self):
-        response = self.client.get(reverse("plans:list"))
+        response = self.client.get(reverse("plan_list"))
         assert response.status_code == HTTPStatus.OK
 
     def test_plan_detail_view(self):

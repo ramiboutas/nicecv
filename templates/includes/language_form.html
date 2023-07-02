@@ -1,0 +1,25 @@
+{% load i18n %}
+{% load define_action %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% if page %}
+  {% define languages as page.get_translations.live %}
+{% else %}
+  {% get_language_info_list for LANGUAGES as languages %}
+{% endif %}
+{% if languages %}
+  <form action="{% url 'set_language' %}" method="post">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}">
+    <select onchange="this.form.submit()"
+            name="language"
+            class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+      {% for language in languages %}
+        <option value="{{ language.code }}"
+                {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+          {{ language.name_local|capfirst }} ({{ language.code }})
+        </option>
+      {% endfor %}
+    </select>
+  </form>
+{% endif %}

@@ -22,8 +22,6 @@ urlpatterns = [
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
     # core app
     path("", include("core.urls")),
-    # path("plans/", include("core.urls.plans", namespace="plans")),
-    # path("profiles/", include("core.urls.profiles", namespace="profiles")),
 ]
 
 
@@ -35,6 +33,15 @@ if settings.DEBUG:
         path("__reload__/", include("django_browser_reload.urls")),
     ]
 
-
+# urlpatterns = urlpatterns + i18n_patterns(
+#     # path("search/", search_views.search, name="search"),
+#     # For anything not caught by a more specific rule above, hand over to
+#     # Wagtail's page serving mechanism. This should be the last pattern in
+#     # the list:
+#     path("", include(wagtail_urls)),
+#     # Alternatively, if you want Wagtail pages to be served from a subpath
+#     # of your site, rather than the site root:
+#     #    path("pages/", include(wagtail_urls)),
+# )
 # Wagtail's serving mechanism (at the ends)
 urlpatterns += [path("", include(wagtail_urls))]

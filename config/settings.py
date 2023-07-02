@@ -85,6 +85,8 @@ INSTALLED_APPS = [
     "wagtail",
     "taggit",
     "modelcluster",
+    "wagtail_localize",
+    "wagtail_localize.locales",  # This replaces "wagtail.locales"
     # Third-party apps
     "django_extensions",
     "rosetta",
@@ -109,25 +111,6 @@ INSTALLED_APPS = [
 
 # Authentication
 AUTH_USER_MODEL = "core.User"
-
-# allauth
-SITE_ID = 1
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-]
-ACCOUNT_LOGOUT_REDIRECT = "core:home"
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
-
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-
-
-LOGIN_REDIRECT_URL = "core:home"
-LOGOUT_REDIRECT_URL = "core:home"
 
 
 # Provider specific settings
@@ -164,7 +147,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST
 
 MIDDLEWARE = [
     # django middlewares
-    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -172,6 +154,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     # wagtails middlewares
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # third-party middlewares
@@ -261,13 +244,17 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
+
+WAGTAIL_I18N_ENABLED = True
+
+
 USE_TZ = True
 
 LANGUAGE_COOKIE_NAME = "client_language"
 
-LANGUAGES = (
+LANGUAGES = WAGTAIL_CONTENT_LANGUAGES = (
     ("en", _("English")),
-    #  ("es", _("Spanish")),
+    ("es", _("Spanish")),
     #  ("de", _("German")),
     #  ("fr", _("French")),
 )
@@ -283,6 +270,25 @@ OPEN_EXCHANGE_RATES_APP_ID = os.environ.get("OPEN_EXCHANGE_RATES_APP_ID", "")
 # geoip2
 GEOIP_PATH = BASE_DIR / "geoip2dbs"
 
+
+# allauth
+
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+ACCOUNT_LOGOUT_REDIRECT = "/"
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+
+LOGIN_REDIRECT_URL = "profiles"
+LOGOUT_REDIRECT_URL = "/"
 
 # Static files (CSS, JavaScript, Images)
 

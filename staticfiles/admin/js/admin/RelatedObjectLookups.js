@@ -11,7 +11,7 @@
         relatedWindows.forEach(function(win) {
             if(!win.closed) {
                 win.dismissChildPopups();
-                win.close();
+                win.close();    
             }
         });
     }
@@ -19,20 +19,18 @@
     function setPopupIndex() {
         if(document.getElementsByName("_popup").length > 0) {
             const index = window.name.lastIndexOf("__") + 2;
-            popupIndex = parseInt(window.name.substring(index));
+            popupIndex = parseInt(window.name.substring(index));   
         } else {
             popupIndex = 0;
         }
     }
 
     function addPopupIndex(name) {
-        name = name + "__" + (popupIndex + 1);
-        return name;
+        return name + "__" + (popupIndex + 1);
     }
 
     function removePopupIndex(name) {
-        name = name.replace(new RegExp("__" + (popupIndex + 1) + "$"), '');
-        return name;
+        return name.replace(new RegExp("__" + (popupIndex + 1) + "$"), '');
     }
 
     function showAdminPopup(triggeringLink, name_regexp, add_popup) {

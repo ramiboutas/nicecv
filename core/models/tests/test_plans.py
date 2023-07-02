@@ -23,10 +23,10 @@ class PremiumPlanTests(TestCase):
     def test_plan_urls(self):
         plan = PremiumPlanFactory()
         self.assertEqual(
-            plan.detail_url, reverse("plans:detail", kwargs={"id": plan.id})
+            plan.detail_url, reverse("plan_detail", kwargs={"id": plan.id})
         )
         self.assertEqual(
-            plan.checkout_url, reverse("plans:checkout", kwargs={"id": plan.id})
+            plan.checkout_url, reverse("plan_checkout", kwargs={"id": plan.id})
         )
 
 
