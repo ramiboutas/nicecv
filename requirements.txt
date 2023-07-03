@@ -119,6 +119,8 @@ django-celery-results==2.5.1
     # via -r requirements.in
 django-cleanup==8.0.0
     # via -r requirements.in
+django-cogwheels==0.3
+    # via wagtailmenus
 django-coverage-plugin==3.0.0
     # via -r requirements.in
 django-crispy-forms==2.0
@@ -374,6 +376,8 @@ wagtail==5.0.2
     #   -r requirements.in
     #   wagtail-localize
 wagtail-localize==1.5.1
+    # via -r requirements.in
+wagtailmenus==3.1.8
     # via -r requirements.in
 wcwidth==0.2.6
     # via prompt-toolkit

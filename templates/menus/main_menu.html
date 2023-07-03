@@ -1,0 +1,17 @@
+<ul>
+  {% for item in menu_items %}
+    <li class="{{ item.active_class }}">
+      <a href="{{ item.href }}">{{ item.text }}</a>
+      {% if item.sub_menu %}
+        <ul class="sub-menu">
+          {% for sub_item in item.sub_menu.items %}
+            <li class="{{ sub_item.active_class }}">
+              <a href="{{ sub_item.href }}">{{ sub_item.text }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{{ menu_items }}

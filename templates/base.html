@@ -1,4 +1,4 @@
-{% load static i18n django_htmx %}
+{% load static i18n django_htmx menu_tags %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -19,7 +19,7 @@
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include "includes/messages.html" %}
-    {% include "includes/header.html" %}
+    {% main_menu %}
     {% block content %}
     {% endblock content %}
     {% block extra_body %}

@@ -8,7 +8,6 @@ from ...models import Profile
 from ...models import Secrets
 from ...models import Tex
 from ...models.tex import copy_texmf
-
 from cms.models import CorePage
 
 

@@ -21,15 +21,16 @@ coverage[toml]
 gunicorn
 redis
 hiredis
-wagtail
 boto3
 django-storages
 django-money[exchange]
 django-modeltranslation
-wagtail-localize
 django-cleanup
 crispy-tailwind
 Jinja2
+wagtail
+wagtail-localize
+wagtailmenus
 
 djlint
 ipython

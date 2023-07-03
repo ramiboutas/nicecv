@@ -1,11 +1,9 @@
-from wagtail.blocks import (
-    CharBlock,
-    ChoiceBlock,
-    RichTextBlock,
-    StreamBlock,
-    StructBlock,
-    TextBlock,
-)
+from wagtail.blocks import CharBlock
+from wagtail.blocks import ChoiceBlock
+from wagtail.blocks import RichTextBlock
+from wagtail.blocks import StreamBlock
+from wagtail.blocks import StructBlock
+from wagtail.blocks import TextBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 

@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "cms.CmsConfig",
     # Wagtail apps
     # "wagtail.contrib.routable_page",
+    "wagtail.contrib.modeladmin",
     "wagtail.contrib.redirects",
     "wagtail.contrib.forms",
     "wagtail.documents",
@@ -87,6 +88,7 @@ INSTALLED_APPS = [
     "modelcluster",
     "wagtail_localize",
     "wagtail_localize.locales",  # This replaces "wagtail.locales"
+    "wagtailmenus",
     # Third-party apps
     "django_extensions",
     "rosetta",
@@ -175,12 +177,14 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                # django context processors
+                # django
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # project context processors
+                # thid-party
+                "wagtailmenus.context_processors.wagtailmenus",
+                # project
                 "config.project.context_processors",
             ],
             "debug": DEBUG,
@@ -295,6 +299,14 @@ LOGOUT_REDIRECT_URL = "/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
+# Wagtail menus
+
+WAGTAIL_NAV_MENU_CHOICES_DEFAULT = (
+    ("top", "Top"),
+    ("footer", "Footer"),
+)
 
 
 if USE_SPACES:  # pragma: no cover

@@ -1,9 +1,9 @@
-from wagtail.models import Page
-from wagtail.management.commands.fixtree import Command as FixTreeCommand
-from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.urls import reverse
+from wagtail.management.commands.fixtree import Command as FixTreeCommand
+from wagtail.models import Page
 
-from . import HomePage
+from .home import HomePage
 
 
 class CorePage(Page):
@@ -15,8 +15,8 @@ class CorePage(Page):
     # the instances shouldn't be served by wagtail
     template = "404.html"
 
-    content_panels = []
-    promote_panels = []
+    # content_panels = []
+    # promote_panels = []
 
     @classmethod
     def update_objects(cls):
