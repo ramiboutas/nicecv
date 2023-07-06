@@ -108,7 +108,6 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "debug_toolbar",
     "django_browser_reload",
-    "simple_menu",
 ]
 
 # Authentication
@@ -302,11 +301,9 @@ STATICFILES_DIRS = [
 
 
 # Wagtail menus
+# https://github.com/jazzband/wagtailmenus
 
-WAGTAIL_NAV_MENU_CHOICES_DEFAULT = (
-    ("top", "Top"),
-    ("footer", "Footer"),
-)
+WAGTAILMENUS_MAIN_MENU_MODEL = "cms.LocalizedMainMenu"
 
 
 if USE_SPACES:  # pragma: no cover
