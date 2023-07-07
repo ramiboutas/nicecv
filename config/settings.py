@@ -303,8 +303,7 @@ STATICFILES_DIRS = [
 # Wagtail menus
 # https://github.com/jazzband/wagtailmenus
 
-WAGTAILMENUS_MAIN_MENU_MODEL = "cms.LocalizedMainMenu"
-
+WAGTAILMENUS_FLAT_MENU_MODEL = "cms.TranslatedFlatMenu"
 
 if USE_SPACES:  # pragma: no cover
     # Stuff that could be useful (comments):
