@@ -177,22 +177,64 @@ class Profile(auto_prefetch.Model):
         verbose_name=_("Publications"),
     )
 
-    fullname_label = models.CharField(max_length=32, default=_("Full name"))
-    jobtitle_label = models.CharField(max_length=32, default=_("Job title"))
-    location_label = models.CharField(max_length=32, default=_("Location"))
-    birth_label = models.CharField(max_length=32, default=_("Birth date"))
-    phone_label = models.CharField(max_length=32, default=_("Phone number"))
+    fullname_label = models.CharField(
+        max_length=32,
+        default=_("Full name"),
+    )
+    jobtitle_label = models.CharField(
+        max_length=32,
+        default=_("Job title"),
+    )
+    location_label = models.CharField(
+        max_length=32,
+        default=_("Location"),
+    )
+    birth_label = models.CharField(
+        max_length=32,
+        default=_("Birth date"),
+    )
+    phone_label = models.CharField(
+        max_length=32,
+        default=_("Phone number"),
+    )
     email_label = models.CharField(max_length=32, default=_("Email address"))
-    website_label = models.CharField(max_length=32, default=_("Website"))
-    about_label = models.CharField(max_length=32, default=_("About me"))
-    skill_label = models.CharField(max_length=32, default=_("Skills"))
-    language_label = models.CharField(max_length=32, default=_("Languages"))
-    education_label = models.CharField(max_length=32, default=_("Education"))
-    experience_label = models.CharField(max_length=32, default=_("Work experience"))
-    achievement_label = models.CharField(max_length=32, default=_("Achievements"))
-    project_label = models.CharField(max_length=32, default=_("Projects"))
-    publication_label = models.CharField(max_length=32, default=_("Publications"))
-
+    website_label = models.CharField(
+        max_length=32,
+        default=_("Website"),
+    )
+    about_label = models.CharField(
+        max_length=32,
+        default=_("About me"),
+    )
+    skill_label = models.CharField(
+        max_length=32,
+        default=_("Skills"),
+    )
+    language_label = models.CharField(
+        max_length=32,
+        default=_("Languages"),
+    )
+    education_label = models.CharField(
+        max_length=32,
+        default=_("Education"),
+    )
+    experience_label = models.CharField(
+        max_length=32,
+        default=_("Work experience"),
+    )
+    achievement_label = models.CharField(
+        max_length=32,
+        default=_("Achievements"),
+    )
+    project_label = models.CharField(
+        max_length=32,
+        default=_("Projects"),
+    )
+    publication_label = models.CharField(
+        max_length=32,
+        default=_("Publications"),
+    )
+    # photo-related fields
     full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
     cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
     crop_x = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -270,7 +312,11 @@ class Profile(auto_prefetch.Model):
 
     def order_formset_url(self, Klass):
         return reverse(
-            "profile_order_formset", kwargs={"klass": Klass.__name__, "id": self.id}
+            "profile_order_formset",
+            kwargs={
+                "klass": Klass.__name__,
+                "id": self.id,
+            },
         )
 
     @cached_property
