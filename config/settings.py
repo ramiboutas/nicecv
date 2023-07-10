@@ -303,7 +303,11 @@ STATICFILES_DIRS = [
 # Wagtail menus
 # https://github.com/jazzband/wagtailmenus
 
-WAGTAILMENUS_FLAT_MENU_MODEL = "cms.TranslatedFlatMenu"
+WAGTAILMENUS_FLAT_MENU_MODEL = "cms.CustomFlatMenu"
+WAGTAILMENUS_FLAT_MENU_ITEMS_RELATED_NAME = "menu_items"
+# WAGTAILMENUS_MAIN_MENU_MODEL = "cms.MainMenu"
+WAGTAILMENUS_MAIN_MENU_ITEMS_RELATED_NAME = "menu_items"
+# MAIN_MENUS_MODELADMIN_CLASS = "wagtailmenus.modeladmin.MainMenuAdmin"
 
 if USE_SPACES:  # pragma: no cover
     # Stuff that could be useful (comments):

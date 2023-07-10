@@ -1,9 +1,12 @@
 from modeltranslation.translator import register
 from modeltranslation.translator import TranslationOptions
 
-from wagtailmenus.models import MainMenuItem
+from .models import CustomMainMenuItem
 
 
-@register(MainMenuItem)
+@register(CustomMainMenuItem)
 class MenuItemTranslationOptions(TranslationOptions):
     fields = ("link_text",)
+
+
+# @register()
