@@ -22,6 +22,21 @@ def get_localized_fieldpannels(field_name: str):
     ]
 
 
+menu_item_panels = (
+    [
+        PageChooserPanel("link_page"),
+        FieldPanel("link_url"),
+        FieldPanel("url_append"),
+        FieldPanel("link_text"),
+    ]
+    + get_localized_fieldpannels("link_text")
+    + [
+        FieldPanel("handle"),
+        FieldPanel("allow_subnav"),
+    ]
+)
+
+
 class CustomFlatMenu(AbstractFlatMenu):
     # Like pages, panels for menus are split into multiple tabs.
     # To update the panels in the 'Content' tab, override 'content_panels'
@@ -52,21 +67,11 @@ class CustomFlatMenuItem(AbstractFlatMenuItem):
         on_delete=models.CASCADE,
         related_name=settings.WAGTAILMENUS_FLAT_MENU_ITEMS_RELATED_NAME,
     )
-
-    # Also override the panels attribute, so that the new fields appear
-    # in the admin interface
-    panels = [
-        PageChooserPanel("link_page"),
-        FieldPanel("link_url"),
-        FieldPanel("url_append"),
-        FieldPanel("link_text"),
-        FieldPanel("handle"),
-        FieldPanel("allow_subnav"),
-    ] + get_localized_fieldpannels("link_text")
+    panels = menu_item_panels
 
 
 class CustomMainMenu(AbstractMainMenu):
-    pass
+    content_panels = (MainMenuItemsInlinePanel(),)
 
 
 class CustomMainMenuItem(AbstractMainMenuItem):
@@ -75,16 +80,4 @@ class CustomMainMenuItem(AbstractMainMenuItem):
         on_delete=models.CASCADE,
         related_name=settings.WAGTAILMENUS_MAIN_MENU_ITEMS_RELATED_NAME,
     )
-    panels = (
-        [
-            PageChooserPanel("link_page"),
-            FieldPanel("link_url"),
-            FieldPanel("url_append"),
-            FieldPanel("link_text"),
-        ]
-        + get_localized_fieldpannels("link_text")
-        + [
-            FieldPanel("handle"),
-            FieldPanel("allow_subnav"),
-        ]
-    )
+    panels = menu_item_panels
