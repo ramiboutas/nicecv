@@ -22,17 +22,17 @@ def get_localized_fieldpannels(field_name: str):
     ]
 
 
-menu_item_panels = (
+common_menu_item_panels = (
     [
         PageChooserPanel("link_page"),
         FieldPanel("link_url"),
         FieldPanel("url_append"),
-        FieldPanel("link_text"),
+        # FieldPanel("link_text"),
     ]
     + get_localized_fieldpannels("link_text")
     + [
         FieldPanel("handle"),
-        FieldPanel("allow_subnav"),
+        # FieldPanel("allow_subnav"),
     ]
 )
 
@@ -67,7 +67,7 @@ class CustomFlatMenuItem(AbstractFlatMenuItem):
         on_delete=models.CASCADE,
         related_name=settings.WAGTAILMENUS_FLAT_MENU_ITEMS_RELATED_NAME,
     )
-    panels = menu_item_panels
+    panels = common_menu_item_panels
 
 
 class CustomMainMenu(AbstractMainMenu):
@@ -80,4 +80,7 @@ class CustomMainMenuItem(AbstractMainMenuItem):
         on_delete=models.CASCADE,
         related_name=settings.WAGTAILMENUS_MAIN_MENU_ITEMS_RELATED_NAME,
     )
-    panels = menu_item_panels
+    add_to_profile_dropdown = models.BooleanField(default=False)
+    panels = common_menu_item_panels + [
+        FieldPanel("add_to_profile_dropdown"),
+    ]
