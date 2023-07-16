@@ -74,6 +74,8 @@ INSTALLED_APPS = [
     # "wagtail.contrib.routable_page",
     "wagtail.contrib.modeladmin",
     "wagtail.contrib.redirects",
+    "wagtail.contrib.settings",
+    "wagtail.contrib.styleguide",
     "wagtail.contrib.forms",
     "wagtail.documents",
     "wagtail.snippets",
@@ -181,6 +183,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # wagtail
+                "wagtail.contrib.settings.context_processors.settings",
                 # thid-party
                 "wagtailmenus.context_processors.wagtailmenus",
                 # project

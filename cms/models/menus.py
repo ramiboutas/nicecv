@@ -13,12 +13,7 @@ from wagtailmenus.panels import MainMenuItemsInlinePanel
 from wagtailmenus.models import AbstractFlatMenu, AbstractFlatMenuItem
 from wagtailmenus.models import AbstractMainMenu, AbstractMainMenuItem
 
-
-def get_localized_fieldpannels(field_name: str):
-    return [
-        FieldPanel(field_name + "_" + lang[0])
-        for lang in settings.WAGTAIL_CONTENT_LANGUAGES
-    ]
+from ..utils import get_localized_fieldpannels
 
 
 common_menu_item_panels = (
@@ -26,7 +21,7 @@ common_menu_item_panels = (
         PageChooserPanel("link_page"),
         FieldPanel("link_url"),
         FieldPanel("url_append"),
-        FieldPanel("link_text"),
+        # FieldPanel("link_text"),
     ]
     + get_localized_fieldpannels("link_text")
     + [
@@ -37,7 +32,7 @@ common_menu_item_panels = (
 
 flat_menu_heading_panels = tuple(
     [
-        FieldPanel("heading"),
+        # FieldPanel("heading"),
     ]
     + get_localized_fieldpannels("heading"),
 )
