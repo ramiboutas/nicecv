@@ -8,7 +8,6 @@ from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, PageChooserPanel
 
 
-from wagtailmenus.conf import settings as wagtailmenus_settings
 from wagtailmenus.panels import FlatMenuItemsInlinePanel
 from wagtailmenus.panels import MainMenuItemsInlinePanel
 from wagtailmenus.models import AbstractFlatMenu, AbstractFlatMenuItem
@@ -27,13 +26,20 @@ common_menu_item_panels = (
         PageChooserPanel("link_page"),
         FieldPanel("link_url"),
         FieldPanel("url_append"),
-        # FieldPanel("link_text"),
+        FieldPanel("link_text"),
     ]
     + get_localized_fieldpannels("link_text")
     + [
         FieldPanel("handle"),
         # FieldPanel("allow_subnav"),
     ]
+)
+
+flat_menu_heading_panels = tuple(
+    [
+        FieldPanel("heading"),
+    ]
+    + get_localized_fieldpannels("heading"),
 )
 
 
@@ -52,7 +58,7 @@ class CustomFlatMenu(AbstractFlatMenu):
         ),
         MultiFieldPanel(
             heading=_("Heading"),
-            children=(FieldPanel("heading"),),
+            children=flat_menu_heading_panels,
             classname="collapsible",
         ),
         FlatMenuItemsInlinePanel(),
@@ -60,7 +66,7 @@ class CustomFlatMenu(AbstractFlatMenu):
 
 
 class CustomFlatMenuItem(AbstractFlatMenuItem):
-    """A custom menu item model to be used by ``FlatMenu``"""
+    """A custom flat menu item model to be used by ``CustomFlatMenu``"""
 
     menu = ParentalKey(
         CustomFlatMenu,  # we can use the model from above
@@ -71,6 +77,8 @@ class CustomFlatMenuItem(AbstractFlatMenuItem):
 
 
 class CustomMainMenu(AbstractMainMenu):
+    """A custom main menu item model to be used by ``CustomMainMenu``"""
+
     content_panels = (MainMenuItemsInlinePanel(),)
 
 
@@ -80,7 +88,9 @@ class CustomMainMenuItem(AbstractMainMenuItem):
         on_delete=models.CASCADE,
         related_name=settings.WAGTAILMENUS_MAIN_MENU_ITEMS_RELATED_NAME,
     )
+
     add_to_profile_dropdown = models.BooleanField(default=False)
+
     panels = common_menu_item_panels + [
         FieldPanel("add_to_profile_dropdown"),
     ]

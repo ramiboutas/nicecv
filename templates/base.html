@@ -19,17 +19,20 @@
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include "includes/messages.html" %}
-    {% main_menu %}
+    <!-- TODO: add template caching with arg=language_code -->
+    {% include "includes/header.html" %}
     {% block content %}
     {% endblock content %}
-    {% block extra_body %}
-    {% endblock extra_body %}
-    <!-- js files -->
+    <!-- TODO: add template caching with arg=language_code -->
+    {% include "includes/footer.html" %}
+    <!-- js -->
     <script defer src="{% static 'js/htmx.js' %}"></script>
     <script defer src="{% static 'js/cropper.js' %}"></script>
     <script defer src="{% static 'js/alpine.js' %}"></script>
     <script defer src="{% static 'js/base.js' %}"></script>
     <script defer src="{% static 'js/sortable.js' %}"></script>
     {% django_htmx_script %}
+    {% block extra_js %}
+    {% endblock extra_js %}
   </body>
 </html>

@@ -1,17 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block head_title %}
-  {% translate
-  "E-mail Addresses" %}
+  {% translate "E-mail Addresses" %}
 {% endblock %}
 {% block content %}
   <div class="container">
     <h1>{% translate "E-mail Addresses" %}</h1>
     {% if user.emailaddress_set.all %}
-      <p>
-        {% translate 'The following e-mail addresses are associated with your
-        account:' %}
-      </p>
+      <p>{% translate 'The following e-mail addresses are associated with your account:' %}</p>
       <form action="{% url 'account_email' %}" class="email_list" method="post">
         {% csrf_token %}
         <fieldset class="blockLabels">
@@ -56,8 +52,8 @@
         </form>
       {% endif %}
     </div>
-  {% endblock %}
-  {% block extra_body %}
+  {% endblock content %}
+  {% block extra_js %}
     <script type="text/javascript">
   (function () {
     var message =
@@ -72,4 +68,4 @@
     }
   })();
     </script>
-  {% endblock %}
+  {% endblock extra_js %}
