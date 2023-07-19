@@ -294,7 +294,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
-LOGIN_REDIRECT_URL = "profiles"
+LOGIN_REDIRECT_URL = "profile_list"
 LOGOUT_REDIRECT_URL = "/"
 
 # Static files (CSS, JavaScript, Images)

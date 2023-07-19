@@ -1,7 +1,10 @@
 from django.db import models
+from django.conf import settings
 from django.utils.translation import gettext as _
+
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
+
 from wagtail.admin.panels import FieldPanel
 from wagtail.admin.panels import FieldRowPanel
 from wagtail.admin.panels import InlinePanel
@@ -73,3 +76,10 @@ class HomePage(Page):
 
     def __str__(self):
         return self.title
+
+
+def get_default_homepage():
+    try:
+        return HomePage.objects.get(locale__language_code=settings.LANGUAGE_CODE)
+    except HomePage.DoesNotExist:
+        pass

@@ -8,7 +8,6 @@ from ...models import Profile
 from ...models import Secrets
 from ...models import Tex
 from ...models.tex import copy_texmf
-from cms.models import CorePage
 
 
 class Command(BaseCommand):
@@ -19,9 +18,6 @@ class Command(BaseCommand):
 
         # copy latex local files
         copy_texmf()
-
-        # creating some core pages available in Wagtail
-        CorePage.update_objects()
 
         # db-based settings
         Secrets.get()

@@ -1,4 +1,4 @@
-from .core import CorePage
+from .dj_pages import PureDjangoPage
 from .home import HomePage
 
 from .menus import CustomFlatMenu
