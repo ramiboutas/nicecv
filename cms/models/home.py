@@ -12,67 +12,40 @@ from wagtail.admin.panels import MultiFieldPanel
 from wagtail.admin.panels import PublishingPanel
 from wagtail.fields import RichTextField
 from wagtail.fields import StreamField
-from wagtail.models import Page
 
-from ..blocks import CustomStreamBlock
+from wagtail.models import Page
+from wagtail.models import Orderable
+
+from ..blocks import FullStreamBlock
+
+
+class HomeFeature(Orderable):
+    # Add as block???
+    page = ParentalKey("cms.HomePage", related_name="features")
+    svg = models.ForeignKey(
+        "wagtaildocs.Document",
+        blank=True,  # or False
+        null=True,  # or False
+        related_name="+",
+        on_delete=models.SET_NULL,  # Only works with null=True
+    )
+
+    # panels = [ImageChooserPanel("carousel_image")]
 
 
 class HomePage(Page):
     template = "cms/home.html"
 
-    # Hero section of HomePage
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Homepage image",
-    )
-    hero_text = models.CharField(
-        max_length=255,
-        null=True,
-        help_text="Write an introduction",
-    )
-    hero_cta = models.CharField(
-        verbose_name="Hero CTA",
-        null=True,
-        max_length=255,
-        help_text="Text to display on Call to Action",
-    )
-    hero_cta_link = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name="Hero CTA link",
-        help_text="Choose a page to link to for the Call to Action",
-    )
-
     # Body section of the HomePage
     body = StreamField(
-        CustomStreamBlock(),
+        FullStreamBlock(),
         verbose_name="Home content block",
         null=True,
         blank=True,
         use_json_field=True,
+        collapsed=False,
     )
-    content_panels = Page.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("image"),
-                FieldPanel("hero_text"),
-                MultiFieldPanel(
-                    [
-                        FieldPanel("hero_cta"),
-                        FieldPanel("hero_cta_link"),
-                    ]
-                ),
-            ],
-            heading="Hero section",
-        ),
-    ]
+    content_panels = Page.content_panels + [FieldPanel("body")]
 
     def __str__(self):
         return self.title

@@ -21,8 +21,10 @@
     {% include "includes/messages.html" %}
     <!-- TODO: add template caching with arg=language_code -->
     {% include "includes/header.html" %}
-    {% block content %}
-    {% endblock content %}
+    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      {% block content %}
+      {% endblock content %}
+    </div>
     <!-- TODO: add template caching with arg=language_code -->
     {% include "includes/footer.html" %}
     <!-- js -->

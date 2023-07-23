@@ -179,6 +179,8 @@ flake8==6.0.0
     # via -r requirements.in
 gunicorn==20.1.0
     # via -r requirements.in
+heroicons==2.4.0
+    # via -r requirements.in
 hiredis==2.2.3
     # via -r requirements.in
 html-tag-names==0.1.2

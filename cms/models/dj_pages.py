@@ -1,18 +1,16 @@
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from wagtail.management.commands.fixtree import Command as FixTreeCommand
-from wagtail.contrib.forms.panels import FormSubmissionsPanel
 
 from wagtail.models import Page
 
-from .home import HomePage
 from .home import get_default_homepage
 
 
 class PureDjangoPage(Page):
     """A way to access to the core app urls (first level paths: no slash in between)
     * Valid: /profiles/                    slug = "profiles" (it will work)
-    * Not valid: /profiles/detailed/       slug = "profiles-detailed" (it won't work)
+    * Not valid: /profiles/detailed/       slug = "profilesdetailed" (it won't work)
     """
 
     # the instances shouldn't be served by wagtail
