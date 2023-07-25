@@ -10,8 +10,6 @@ from wagtail.blocks import ListBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.blocks import PageChooserBlock
-from wagtail.documents.blocks import DocumentChooserBlock
-
 
 from wagtailsvg.blocks import SvgChooserBlock
 
@@ -104,25 +102,16 @@ class FeatureItemBlock(StructBlock):
         blank=True,
         help_text="Feature name",
     )
-    description = CharBlock(
+    description = TextBlock(
         max_length=512,
         null=True,
         blank=True,
         help_text="Feature description",
     )
-
-    svg = SvgChooserBlock()
+    svg = SvgChooserBlock(help_text="Feature svg")
 
 
 class FeatureSection(StructBlock):
-    feature_type = ChoiceBlock(
-        choices=[
-            ("centered", "Centered"),
-            ("with-offset", "With offset"),
-            ("with-image-on-left", "With image on left"),
-            ("with-image-on-right", "With image on right"),
-        ],
-    )
     heading_text = CharBlock(
         max_length=255,
         null=True,
@@ -134,16 +123,27 @@ class FeatureSection(StructBlock):
         blank=True,
         help_text="Write a title",
     )
-    description = CharBlock(
-        max_length=255,
+    description = TextBlock(
+        max_length=512,
         null=True,
         blank=True,
         help_text="Write an introduction",
     )
 
+    image = ImageChooserBlock(required=False)
+
+    feature_type = ChoiceBlock(
+        choices=[
+            ("centered", "Centered"),
+            ("with-offset", "With offset"),
+            ("with-image-on-left", "With image on left"),
+            ("with-image-on-right", "With image on right"),
+        ],
+    )
+
     items = ListBlock(
         FeatureItemBlock(),
-        label="Feature item",
+        label="Feature items",
     )
 
     class Meta:
