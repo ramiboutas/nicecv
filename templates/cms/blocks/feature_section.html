@@ -1,4 +1,4 @@
-{% load heroicons %}
+{% load static svg %}
 {% if self.feature_type == "centered" %}
   <div class="bg-white py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -87,7 +87,7 @@
             <div class="relative pl-16">
               <dt class="text-base font-semibold leading-7 text-gray-900">
                 <div class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                  {% heroicon_outline feature.heroicon_name class="h-6 w-6 text-white" %}
+                  <div class="h-6 w-6 text-white">{% svg feature.svg.file %}</div>
                 </div>
                 {{ feature.name }}
               </dt>

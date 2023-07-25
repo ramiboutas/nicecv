@@ -10,9 +10,10 @@ from wagtail.blocks import ListBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.blocks import PageChooserBlock
+from wagtail.documents.blocks import DocumentChooserBlock
 
 
-from cms import heroicons
+from wagtailsvg.blocks import SvgChooserBlock
 
 
 class ImageBlock(StructBlock):
@@ -109,21 +110,8 @@ class FeatureItemBlock(StructBlock):
         blank=True,
         help_text="Feature description",
     )
-    # svg = CharBlock(
-    #     max_length=1024,
-    #     null=True,
-    #     blank=True,
-    #     help_text="Feature svg (html code)",
-    # )
 
-    # heroicon_name = CharBlock(
-    #     max_length=32,
-    #     null=True,
-    #     blank=True,
-    #     help_text="Heroicon name",
-    # )
-
-    heroicon_name = ChoiceBlock(choices=heroicons.OUTLINE_ICONS)
+    svg = SvgChooserBlock()
 
 
 class FeatureSection(StructBlock):
@@ -155,7 +143,7 @@ class FeatureSection(StructBlock):
 
     items = ListBlock(
         FeatureItemBlock(),
-        label="List Item",
+        label="Feature item",
     )
 
     class Meta:

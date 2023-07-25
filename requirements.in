@@ -31,7 +31,7 @@ Jinja2
 wagtail
 wagtail-localize
 wagtailmenus
-heroicons
+wagtailsvg
 
 djlint
 ipython

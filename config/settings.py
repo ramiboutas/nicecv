@@ -102,7 +102,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     # "allauth.socialaccount.providers.linkedin",
-    "heroicons",
     "django_htmx",
     "django_celery_results",
     "djstripe",
@@ -111,6 +110,8 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "debug_toolbar",
     "django_browser_reload",
+    "wagtailsvg",
+    "generic_chooser",
 ]
 
 # Authentication
@@ -422,6 +423,13 @@ DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 
 SHELL_PLUS = "ipython"
 
+# svg
+
+WAGTAILSVG_UPLOAD_FOLDER = "svg"
+SVG_DEFAULT_THEME = "light"
+SVG_DEFAULT_WIDTH = 24
+SVG_DEFAULT_HEIGHT = 24
+
 
 # Https for production environment
 if HTTPS:
@@ -458,3 +466,5 @@ FORM_ATTRIBUTES = {
 }
 
 # project settings
+
+WAGTAIL_INITIAL_FILE_COLLECTIONS_DIR = BASE_DIR / "initialcollections"
