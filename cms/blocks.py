@@ -117,17 +117,17 @@ class FeatureSection(StructBlock):
         null=True,
         help_text="Write the heading",
     )
-    title = CharBlock(
+    slogan = CharBlock(
         max_length=255,
         null=True,
-        blank=True,
-        help_text="Write a title",
+        required=False,
+        help_text="Add a slogan",
     )
     description = TextBlock(
         max_length=512,
         null=True,
-        blank=True,
-        help_text="Write an introduction",
+        required=False,
+        help_text="Description of the feature section",
     )
 
     image = ImageChooserBlock(required=False)
