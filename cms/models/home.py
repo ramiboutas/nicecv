@@ -19,22 +19,16 @@ from wagtail.models import Orderable
 from ..blocks import FullStreamBlock
 
 
-class HomeFeature(Orderable):
-    # Add as block???
-    page = ParentalKey("cms.HomePage", related_name="features")
-    svg = models.ForeignKey(
-        "wagtaildocs.Document",
-        blank=True,  # or False
-        null=True,  # or False
-        related_name="+",
-        on_delete=models.SET_NULL,  # Only works with null=True
-    )
-
-    # panels = [ImageChooserPanel("carousel_image")]
-
-
 class HomePage(Page):
-    template = "cms/home.html"
+    template = "cms/page.html"
+
+    subpage_types = [
+        "cms.BlogIndexPage",
+        "cms.TextPage",
+        "cms.FlexPage",
+    ]
+
+    parent_page_type = ["wagtailcore.Page"]
 
     # Body section of the HomePage
     body = StreamField(

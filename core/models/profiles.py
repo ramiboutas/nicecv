@@ -11,12 +11,14 @@ from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
 from django.db import models
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
 from ..tex.filters import do_latex_escape
+from .users import User
 
 
 def get_photo_upload_path(profile, filename):
@@ -40,7 +42,7 @@ class Profile(auto_prefetch.Model):
         editable=False,
     )
     user = auto_prefetch.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.SET_NULL,
         related_name="profile_set",
         null=True,

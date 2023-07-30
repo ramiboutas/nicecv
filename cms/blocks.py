@@ -13,8 +13,21 @@ from wagtail.blocks import PageChooserBlock
 
 from wagtailsvg.blocks import SvgChooserBlock
 
+# https://docs.wagtail.org/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
+RICH_TEXT_FEATURES = [
+    "h2",
+    "h3",
+    "h4",
+    "bold",
+    "italic",
+    "ol",
+    "ul",
+    "link",
+    "document-link",
+]
 
-class ImageBlock(StructBlock):
+
+class ImageSectionBlock(StructBlock):
     """
     Custom `StructBlock` for utilizing images with associated caption and
     attribution data
@@ -22,36 +35,34 @@ class ImageBlock(StructBlock):
 
     image = ImageChooserBlock(required=True)
     caption = CharBlock(required=False)
-    attribution = CharBlock(required=False)
 
     class Meta:
         icon = "image"
-        template = "cms/blocks/image.html"
+        template = "cms/blocks/image_section.html"
 
 
-class HeadingBlock(StructBlock):
+class HeaderSectionBlock(StructBlock):
     """
-    Custom `StructBlock` that allows the user to select h2 - h4 sizes for headers
+    Header Section https://tailwindui.com/components/marketing/sections/header
     """
 
     heading_text = CharBlock(classname="title", required=True)
-    size = ChoiceBlock(
+    description = TextBlock(required=False)
+    template_type = ChoiceBlock(
         choices=[
-            ("", "Select a header size"),
-            ("h2", "H2"),
-            ("h3", "H3"),
-            ("h4", "H4"),
-        ],
-        blank=True,
-        required=False,
+            ("simple", "Simple"),
+            ("simple-on-dark", "Simple on dark"),
+            ("centered", "Centered"),
+            ("centered-on-dark", "Centered on dark"),
+        ]
     )
 
     class Meta:
         icon = "title"
-        template = "cms/blocks/heading.html"
+        template = "cms/blocks/header_section.html"
 
 
-class BlockQuote(StructBlock):
+class QuoteBlock(StructBlock):
     """
     Custom `StructBlock` that allows the user to attribute a quote to the author
     """
@@ -64,9 +75,9 @@ class BlockQuote(StructBlock):
         template = "cms/blocks/quote.html"
 
 
-class HeroSection(StructBlock):
+class HeroSectionBlock(StructBlock):
     image = ImageChooserBlock()
-    hero_type = ChoiceBlock(
+    template_type = ChoiceBlock(
         choices=[
             ("with-phone-mockup", "With phone mockup"),
             ("split-with-image", "Split with image"),
@@ -111,7 +122,7 @@ class FeatureItemBlock(StructBlock):
     svg = SvgChooserBlock(help_text="Feature svg")
 
 
-class FeatureSection(StructBlock):
+class FeatureSectionBlock(StructBlock):
     heading_text = CharBlock(
         max_length=255,
         null=True,
@@ -132,7 +143,7 @@ class FeatureSection(StructBlock):
 
     image = ImageChooserBlock(required=False)
 
-    feature_type = ChoiceBlock(
+    template_type = ChoiceBlock(
         choices=[
             ("centered", "Centered"),
             ("with-offset", "With offset"),
@@ -151,23 +162,40 @@ class FeatureSection(StructBlock):
         template = "cms/blocks/feature_section.html"
 
 
+class RichTextSectionBlock(RichTextBlock):
+    class Meta:
+        icon = "pilcrow"
+        template = "cms/blocks/richttext.html"
+
+
+class EmbedSectionBlock(EmbedBlock):
+    class Meta:
+        icon = "media"
+        template = "cms/blocks/embed.html"
+
+
 # StreamBlocks
 class FullStreamBlock(StreamBlock):
+
     """
     Define the custom blocks that `StreamField` will utilize
     """
 
-    heading_block = HeadingBlock()
-    paragraph_block = RichTextBlock(
-        icon="pilcrow",
-        template="cms/blocks/paragraph.html",
-    )
-    image_block = ImageBlock()
-    block_quote = BlockQuote()
-    embed_block = EmbedBlock(
-        help_text="Insert an embed URL",
-        icon="media",
-        template="cms/blocks/embed.html",
-    )
-    hero_section = HeroSection()
-    feature_section = FeatureSection()
+    hero_section_block = HeroSectionBlock()
+    header_section_block = HeaderSectionBlock()
+    feature_section_block = FeatureSectionBlock()
+    embed_section_block = EmbedSectionBlock()
+    rich_text_section_block = RichTextSectionBlock()
+    quote_block = QuoteBlock()
+    image_block = ImageSectionBlock()
+
+
+class TextStreamBlock(StreamBlock):
+    rich_text_section_block = RichTextSectionBlock(features=RICH_TEXT_FEATURES)
+
+
+class ArticleStreamBlock(StreamBlock):
+    embed_section_block = EmbedSectionBlock()
+    rich_text_section_block = RichTextSectionBlock()
+    quote_block = QuoteBlock()
+    image_block = ImageSectionBlock()

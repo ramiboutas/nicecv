@@ -1,5 +1,5 @@
 {% load wagtailimages_tags wagtailcore_tags svg %}
-{% if self.feature_type == "centered" %}
+{% if self.template_type == "centered" %}
   <div class="bg-white py-24 sm:py-32 mt-2">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto max-w-2xl lg:text-center">
@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-{% elif self.feature_type == "with-offset" %}
+{% elif self.template_type == "with-offset" %}
   <div class="bg-white py-24 sm:py-32 mt-2">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -49,7 +49,7 @@
       </div>
     </div>
   </div>
-{% elif self.feature_type == "with-image-on-left" %}
+{% elif self.template_type == "with-image-on-left" %}
   <div class="overflow-hidden bg-white py-24 sm:py-32 mt-2">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
@@ -79,7 +79,7 @@
       </div>
     </div>
   </div>
-{% elif self.feature_type == "with-image-on-right" %}
+{% elif self.template_type == "with-image-on-right" %}
   <div class="overflow-hidden bg-white py-24 sm:py-32 mt-2">
     <div class="mx-auto max-w-7xl md:px-6 lg:px-8">
       <div class="grid grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2 lg:items-start">

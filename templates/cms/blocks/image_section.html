@@ -1,0 +1,5 @@
+{% load wagtailimages_tags %}
+<figure class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <div class="px-4 py-5 sm:p-6 lg:px-52 ">{% image self.image width-1200 loading="lazy" %}</div>
+  <figcaption class="px-4 py-4 sm:px-6 lg:px-52">{{ self.caption }}</figcaption>
+</figure>

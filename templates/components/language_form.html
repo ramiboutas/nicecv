@@ -1,12 +1,12 @@
-{% load i18n %}
-{% load define_action %}
+{% load i18n wagtailcore_tags %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
 {% get_language_info_list for LANGUAGES as languages %}
 {% if languages %}
-  <form action="{% url 'set_language' %}" method="post">
+  <form action="{% url 'switch_language' %}" method="post">
     {% csrf_token %}
     <input name="next" type="hidden" value="{{ redirect_to }}">
+    {% if page %}<input name="wagtail_page_id" type="hidden" value="{{ page.id }}">{% endif %}
     <select onchange="this.form.submit()"
             name="language"
             class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">

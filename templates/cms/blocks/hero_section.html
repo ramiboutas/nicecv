@@ -1,5 +1,5 @@
 {% load wagtailimages_tags wagtailcore_tags %}
-{% if self.hero_type == "with-phone-mockup" %}
+{% if self.template_type == "with-phone-mockup" %}
   <div class="bg-white mt-2">
     <div class="relative isolate pt-12">
       <svg class="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
@@ -45,7 +45,7 @@
       </div>
     </div>
   </div>
-{% elif self.hero_type == "split-with-image" %}
+{% elif self.template_type == "split-with-image" %}
   <div class="relative bg-white mt-2">
     <div class="mx-auto max-w-7xl lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-8">
       <div class="px-6 pb-24 pt-10 sm:pb-32 lg:col-span-7 lg:px-0 lg:pb-56 lg:pt-48 xl:col-span-6">

@@ -22,5 +22,6 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('tailwindcss-bg-patterns'),
     require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
   ],
 }
