@@ -1,5 +1,5 @@
 # Django page
-from .dj_pages import PureDjangoPage
+from .dj import DjangoServedPage
 
 # Home page
 from .home import HomePage
@@ -11,12 +11,12 @@ from .menus import CustomMainMenu
 from .menus import CustomMainMenuItem
 
 # Site settings
-from .site_settings import SocialMediaLinks
-from .site_settings import FooterSlogan
+from .site import SocialMediaLinks
+from .site import FooterSlogan
 
 # Blog pages
 from .blog import BlogIndexPage
-from .blog import BlogPost
+from .blog import BlogPostPage
 
 # Text page
 from .text import TextPage

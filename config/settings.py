@@ -470,3 +470,5 @@ FORM_ATTRIBUTES = {
 WAGTAIL_INITIAL_FILE_COLLECTIONS_DIR = BASE_DIR / "initialcollections"
 
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
+
+WAGTAILIMAGES_EXTENSIONS = ["gif", "jpg", "jpeg", "png", "webp", "svg"]

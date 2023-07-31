@@ -7,7 +7,7 @@ from wagtail.models import Page
 from .home import get_default_homepage
 
 
-class PureDjangoPage(Page):
+class DjangoServedPage(Page):
     """A way to access to the core app urls (first level paths: no slash in between)
     * Valid: /profiles/                    slug = "profiles" (it will work)
     * Not valid: /profiles/detailed/       slug = "profilesdetailed" (it won't work)
@@ -16,8 +16,8 @@ class PureDjangoPage(Page):
     # the instances shouldn't be served by wagtail
     template = "404.html"
 
-    # content_panels = []
-    # promote_panels = []
+    subpage_types = []
+    parent_page_type = ["wagtailcore.Page"]
 
     @classmethod
     def update_objects(cls):

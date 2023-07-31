@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from cms.models import PureDjangoPage
+from cms.models import DjangoServedPage
 
 
 class Command(BaseCommand):
@@ -11,6 +11,6 @@ class Command(BaseCommand):
         self.stdout.write("Creating objects...")
 
         # creating some core pages available in Wagtail
-        PureDjangoPage.update_objects()
+        DjangoServedPage.update_objects()
 
         self.stdout.write("Objects created.")
