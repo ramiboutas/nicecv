@@ -247,7 +247,10 @@ pillow==9.5.0
     # via
     #   -r requirements.in
     #   pdf2image
+    #   pillow-heif
     #   wagtail
+pillow-heif==0.12.0
+    # via willow
 platformdirs==3.8.0
     # via
     #   black
@@ -372,7 +375,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-wagtail==5.0.2
+wagtail==5.1
     # via
     #   -r requirements.in
     #   wagtail-localize
@@ -388,7 +391,7 @@ wcwidth==0.2.6
     # via prompt-toolkit
 webencodings==0.5.1
     # via html5lib
-willow==1.5
+willow[heif]==1.6
     # via wagtail
 wrapt==1.15.0
     # via astroid

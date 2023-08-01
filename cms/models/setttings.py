@@ -1,10 +1,11 @@
 from django.db import models
 
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.contrib.settings.models import (
-    BaseSiteSetting,
-    register_setting,
-)
+from wagtail.models import Page
+from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import MultiFieldPanel
+from wagtail.contrib.settings.models import BaseSiteSetting
+from wagtail.contrib.settings.models import register_setting
+
 
 from ..utils import get_localized_fieldpannels
 
@@ -44,3 +45,17 @@ class FooterSlogan(BaseSiteSetting):
             heading="Footer Slogan in Footer",
         )
     ]
+
+
+@register_setting(icon="pick")
+class Banner(BaseSiteSetting):
+    linked_page = models.ForeignKey(
+        Page,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="+",
+    )
+    title = models.CharField(max_length=32, blank=True, null=True)
+    text = models.CharField(max_length=255, blank=True, null=True)
+    active = models.BooleanField(default=True)

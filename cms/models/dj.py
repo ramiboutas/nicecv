@@ -1,7 +1,8 @@
-from django.core.exceptions import ValidationError
 from django.urls import reverse
-from wagtail.management.commands.fixtree import Command as FixTreeCommand
+from django.core.exceptions import ValidationError
 
+from wagtail.management.commands.fixtree import Command as FixTreeCommand
+from wagtail.admin.panels import FieldPanel
 from wagtail.models import Page
 
 from .home import get_default_homepage
@@ -18,6 +19,13 @@ class DjangoServedPage(Page):
 
     subpage_types = []
     parent_page_type = ["wagtailcore.Page"]
+
+    content_panels = [
+        FieldPanel("title"),
+        FieldPanel("show_in_menus"),
+        FieldPanel("slug", read_only=True),
+    ]
+    promote_panels = []
 
     @classmethod
     def update_objects(cls):

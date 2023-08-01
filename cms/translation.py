@@ -5,6 +5,7 @@ from .models import CustomMainMenuItem
 from .models import CustomFlatMenuItem
 from .models import CustomFlatMenu
 from .models import FooterSlogan
+from .models import Banner
 
 
 # menus
@@ -27,3 +28,8 @@ class FlatMenuTranslationOptions(TranslationOptions):
 @register(FooterSlogan)
 class FooterSloganLinksTranslationOptions(TranslationOptions):
     fields = ("text",)
+
+
+@register(Banner)
+class BannerTranslationOptions(TranslationOptions):
+    fields = ("title", "text", "linked_page")

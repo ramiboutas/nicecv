@@ -11,8 +11,9 @@ from .menus import CustomMainMenu
 from .menus import CustomMainMenuItem
 
 # Site settings
-from .site import SocialMediaLinks
-from .site import FooterSlogan
+from .setttings import SocialMediaLinks
+from .setttings import FooterSlogan
+from .setttings import Banner
 
 # Blog pages
 from .blog import BlogIndexPage

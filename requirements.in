@@ -28,7 +28,7 @@ django-modeltranslation
 django-cleanup
 crispy-tailwind
 Jinja2
-wagtail
+wagtail==5.1
 wagtail-localize
 wagtailmenus
 wagtailsvg
