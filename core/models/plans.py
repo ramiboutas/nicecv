@@ -56,13 +56,3 @@ class PremiumPlan(AbractPlan):
     @cached_property
     def checkout_url(self):
         return reverse("plan_checkout", kwargs={"id": self.id})
-
-
-class PlanFAQ(auto_prefetch.Model):
-    # Frequent asked question regared to plans
-    question = models.CharField(max_length=128)
-    answer = models.TextField()
-    active = models.BooleanField(default=True)
-
-    def __str__(self) -> str:
-        return self.question

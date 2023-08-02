@@ -7,7 +7,7 @@ from wagtail.contrib.settings.models import BaseSiteSetting
 from wagtail.contrib.settings.models import register_setting
 
 
-from ..utils import get_localized_fieldpannels
+from ..utils import localized_fieldpanel_list
 
 
 @register_setting(icon="link")
@@ -41,7 +41,7 @@ class FooterSlogan(BaseSiteSetting):
 
     panels = [
         MultiFieldPanel(
-            get_localized_fieldpannels("text"),
+            localized_fieldpanel_list("text"),
             heading="Footer Slogan in Footer",
         )
     ]

@@ -1,5 +1,5 @@
 # Django page
-from .dj import DjangoServedPage
+from .djangopages import DjangoServedPage
 
 # Home page
 from .home import HomePage
@@ -24,3 +24,9 @@ from .text import TextPage
 
 # Flex page
 from .flex import FlexPage
+
+# FAQs
+from .faqs import FrequentAskedQuestion
+
+# Category Page
+from .categories import CategoryPage

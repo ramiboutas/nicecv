@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from djstripe import settings as djstripe_settings
 
-from ..models.plans import PlanFAQ
+from cms.models.faqs import FrequentAskedQuestion
 from ..models.plans import PremiumPlan
 from ..models.users import User
 from ..models.users import UserPremiumPlan
@@ -26,7 +26,7 @@ stripe.api_key = djstripe_settings.djstripe_settings.STRIPE_SECRET_KEY
 def plan_list(request):
     context = {
         "plans": PremiumPlan.objects.all(),
-        "faqs": PlanFAQ.objects.filter(active=True),
+        "faqs": FrequentAskedQuestion.objects.filter(active=True, category="pricing"),
     }
     return render(request, "plans/plan_list.html", context)
 

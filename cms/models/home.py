@@ -26,6 +26,7 @@ class HomePage(Page):
         "cms.BlogIndexPage",
         "cms.TextPage",
         "cms.FlexPage",
+        "cms.CategoryPage",
     ]
 
     parent_page_type = ["wagtailcore.Page"]

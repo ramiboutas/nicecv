@@ -165,7 +165,23 @@ class FeatureSectionBlock(StructBlock):
 class RichTextSectionBlock(RichTextBlock):
     class Meta:
         icon = "pilcrow"
-        template = "cms/blocks/richttext.html"
+        template = "cms/blocks/richtext.html"
+
+
+class RichtTextAndImageBlock(StructBlock):
+    text = RichTextBlock(features=RICH_TEXT_FEATURES)
+    image = ImageChooserBlock()
+
+    template_type = ChoiceBlock(
+        choices=[
+            ("with-image-on-left", "With image on left"),
+            ("with-image-on-right", "With image on right"),
+        ],
+    )
+
+    class Meta:
+        icon = "pilcrow"
+        template = "cms/blocks/image_and_richtext.html"
 
 
 class EmbedSectionBlock(EmbedBlock):
@@ -186,6 +202,7 @@ class FullStreamBlock(StreamBlock):
     feature_section_block = FeatureSectionBlock()
     embed_section_block = EmbedSectionBlock()
     rich_text_section_block = RichTextSectionBlock()
+    rich_text_and_image_section_block = RichtTextAndImageBlock()
     quote_block = QuoteBlock()
     image_block = ImageSectionBlock()
 

@@ -6,6 +6,7 @@ from .models import CustomFlatMenuItem
 from .models import CustomFlatMenu
 from .models import FooterSlogan
 from .models import Banner
+from .models import FrequentAskedQuestion
 
 
 # menus
@@ -33,3 +34,9 @@ class FooterSloganLinksTranslationOptions(TranslationOptions):
 @register(Banner)
 class BannerTranslationOptions(TranslationOptions):
     fields = ("title", "text", "linked_page")
+
+
+# FAQs
+@register(FrequentAskedQuestion)
+class FrequentAskedQuestionTranslationOptions(TranslationOptions):
+    fields = ("question", "answer")
