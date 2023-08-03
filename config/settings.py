@@ -472,3 +472,17 @@ WAGTAIL_INITIAL_FILE_COLLECTIONS_DIR = BASE_DIR / "initialcollections"
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
 
 WAGTAILIMAGES_EXTENSIONS = ["gif", "jpg", "jpeg", "png", "webp", "svg"]
+
+
+# https://docs.wagtail.org/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
+CMS_RICHTEXT_FEATURES = [
+    "h2",
+    "h3",
+    "h4",
+    "bold",
+    "italic",
+    "ol",
+    "ul",
+    "link",
+    "document-link",
+]

@@ -16,7 +16,7 @@ from wagtail.fields import StreamField
 from wagtail.models import Page
 from wagtail.models import Orderable
 
-from ..blocks import FullStreamBlock
+from ..streams import FullStreamBlock
 
 
 class HomePage(Page):
@@ -26,7 +26,6 @@ class HomePage(Page):
         "cms.BlogIndexPage",
         "cms.TextPage",
         "cms.FlexPage",
-        "cms.CategoryPage",
     ]
 
     parent_page_type = ["wagtailcore.Page"]

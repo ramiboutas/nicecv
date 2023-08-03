@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             field=wagtail.fields.StreamField(
                 [
                     ("embed_section_block", cms.blocks.EmbedSectionBlock()),
-                    ("rich_text_section_block", cms.blocks.RichTextSectionBlock()),
+                    ("rich_text_section_block", cms.blocks.RichTextSection()),
                     (
                         "quote_block",
                         wagtail.blocks.StructBlock(

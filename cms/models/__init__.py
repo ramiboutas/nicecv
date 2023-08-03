@@ -27,6 +27,3 @@ from .flex import FlexPage
 
 # FAQs
 from .faqs import FrequentAskedQuestion
-
-# Category Page
-from .categories import CategoryPage

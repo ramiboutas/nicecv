@@ -422,7 +422,7 @@ class Migration(migrations.Migration):
                             ("embed_section_block", cms.blocks.EmbedSectionBlock()),
                             (
                                 "rich_text_section_block",
-                                cms.blocks.RichTextSectionBlock(),
+                                cms.blocks.RichTextSection(),
                             ),
                             (
                                 "quote_block",
@@ -510,7 +510,7 @@ class Migration(migrations.Migration):
                         [
                             (
                                 "rich_text_section_block",
-                                cms.blocks.RichTextSectionBlock(
+                                cms.blocks.RichTextSection(
                                     features=[
                                         "h2",
                                         "h3",

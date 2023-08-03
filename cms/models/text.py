@@ -2,7 +2,7 @@ from wagtail.models import Page
 
 from wagtail.fields import StreamField
 
-from ..blocks import TextStreamBlock
+from ..streams import TextStreamBlock
 from wagtail.admin.panels import FieldPanel
 
 

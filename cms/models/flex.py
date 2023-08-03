@@ -1,6 +1,6 @@
 from wagtail.models import Page
 
-from ..blocks import FullStreamBlock
+from ..streams import FullStreamBlock
 
 
 class FlexPage(Page):

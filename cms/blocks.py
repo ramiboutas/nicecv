@@ -1,9 +1,8 @@
-from modelcluster.fields import ParentalKey
+from django.conf import settings
 
 from wagtail.blocks import CharBlock
 from wagtail.blocks import ChoiceBlock
 from wagtail.blocks import RichTextBlock
-from wagtail.blocks import StreamBlock
 from wagtail.blocks import StructBlock
 from wagtail.blocks import TextBlock
 from wagtail.blocks import ListBlock
@@ -13,21 +12,8 @@ from wagtail.blocks import PageChooserBlock
 
 from wagtailsvg.blocks import SvgChooserBlock
 
-# https://docs.wagtail.org/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
-RICH_TEXT_FEATURES = [
-    "h2",
-    "h3",
-    "h4",
-    "bold",
-    "italic",
-    "ol",
-    "ul",
-    "link",
-    "document-link",
-]
 
-
-class ImageSectionBlock(StructBlock):
+class ImageSection(StructBlock):
     """
     Custom `StructBlock` for utilizing images with associated caption and
     attribution data
@@ -41,7 +27,7 @@ class ImageSectionBlock(StructBlock):
         template = "cms/blocks/image_section.html"
 
 
-class HeaderSectionBlock(StructBlock):
+class HeaderSection(StructBlock):
     """
     Header Section https://tailwindui.com/components/marketing/sections/header
     """
@@ -62,7 +48,7 @@ class HeaderSectionBlock(StructBlock):
         template = "cms/blocks/header_section.html"
 
 
-class QuoteBlock(StructBlock):
+class QuoteSection(StructBlock):
     """
     Custom `StructBlock` that allows the user to attribute a quote to the author
     """
@@ -75,7 +61,7 @@ class QuoteBlock(StructBlock):
         template = "cms/blocks/quote.html"
 
 
-class HeroSectionBlock(StructBlock):
+class HeroSection(StructBlock):
     image = ImageChooserBlock()
     template_type = ChoiceBlock(
         choices=[
@@ -122,7 +108,7 @@ class FeatureItemBlock(StructBlock):
     svg = SvgChooserBlock(help_text="Feature svg")
 
 
-class FeatureSectionBlock(StructBlock):
+class FeatureSection(StructBlock):
     heading_text = CharBlock(
         max_length=255,
         null=True,
@@ -162,14 +148,14 @@ class FeatureSectionBlock(StructBlock):
         template = "cms/blocks/feature_section.html"
 
 
-class RichTextSectionBlock(RichTextBlock):
+class RichTextSection(RichTextBlock):
     class Meta:
         icon = "pilcrow"
         template = "cms/blocks/richtext.html"
 
 
-class RichtTextAndImageBlock(StructBlock):
-    text = RichTextBlock(features=RICH_TEXT_FEATURES)
+class RichtTextAndImageSection(StructBlock):
+    text = RichTextBlock(features=settings.CMS_RICHTEXT_FEATURES)
     image = ImageChooserBlock()
 
     template_type = ChoiceBlock(
@@ -188,31 +174,3 @@ class EmbedSectionBlock(EmbedBlock):
     class Meta:
         icon = "media"
         template = "cms/blocks/embed.html"
-
-
-# StreamBlocks
-class FullStreamBlock(StreamBlock):
-
-    """
-    Define the custom blocks that `StreamField` will utilize
-    """
-
-    hero_section_block = HeroSectionBlock()
-    header_section_block = HeaderSectionBlock()
-    feature_section_block = FeatureSectionBlock()
-    embed_section_block = EmbedSectionBlock()
-    rich_text_section_block = RichTextSectionBlock()
-    rich_text_and_image_section_block = RichtTextAndImageBlock()
-    quote_block = QuoteBlock()
-    image_block = ImageSectionBlock()
-
-
-class TextStreamBlock(StreamBlock):
-    rich_text_section_block = RichTextSectionBlock(features=RICH_TEXT_FEATURES)
-
-
-class ArticleStreamBlock(StreamBlock):
-    embed_section_block = EmbedSectionBlock()
-    rich_text_section_block = RichTextSectionBlock()
-    quote_block = QuoteBlock()
-    image_block = ImageSectionBlock()
