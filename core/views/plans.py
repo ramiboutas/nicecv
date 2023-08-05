@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from djstripe import settings as djstripe_settings
 
-from cms.models.faqs import FrequentAskedQuestion
+from cms.models.snippets import FrequentAskedQuestion
 from ..models.plans import PremiumPlan
 from ..models.users import User
 from ..models.users import UserPremiumPlan

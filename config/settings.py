@@ -264,7 +264,7 @@ LANGUAGE_COOKIE_NAME = "client_language"
 LANGUAGES = WAGTAIL_CONTENT_LANGUAGES = (
     ("en", _("English")),
     ("es", _("Spanish")),
-    #  ("de", _("German")),
+    ("de", _("German")),
     #  ("fr", _("French")),
 )
 
@@ -361,9 +361,6 @@ else:  # pragma: no cover
 
 
 # Message tags
-
-MESSAGE_TAGS = {messages.ERROR: "danger"}
-
 
 # caching
 CACHES = {

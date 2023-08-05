@@ -1,23 +1,4 @@
 {% load i18n static %}
-<!--
-<ul>
-  {% for item in menu_items %}
-    <li class="{{ item.active_class }}">
-      <a href="{{ item.href }}">{{ item.text }}</a>
-      {% if item.sub_menu %}
-        <ul class="sub-menu">
-          {% for sub_item in item.sub_menu.items %}
-            <li class="{{ sub_item.active_class }}">
-              <a href="{{ sub_item.href }}">{{ sub_item.text }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    </li>
-  {% endfor %}
-</ul>
--->
-<!-- navbar starts here: -->
 <nav class="bg-white shadow" x-data="{ openMobile: false }">
   <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
     <div class="flex h-16 justify-between">
@@ -35,7 +16,11 @@
           {% for item in menu_items %}
             {% if item.add_to_profile_dropdown == False %}
               <a href="{{ item.href }}"
-                 {% if item.link_page.url == request.path %} class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900" {% else %} class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700" {% endif %}>{{ item.text }}</a>
+                 {% if item.link_page.url == request.path %}
+                   class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                 {% else %}
+                   class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                 {% endif %}>{{ item.text }}</a>
             {% endif %}
           {% endfor %}
         </div>
@@ -58,7 +43,7 @@
 
             Menu open: "hidden", Menu closed: "block"
           -->
-          <svg class=" h-6 w-6"
+          <svg class="h-6 w-6"
                x-bind:class="openMobile ? 'hidden' : 'block'"
                fill="none"
                viewBox="0 0 24 24"
@@ -72,7 +57,7 @@
 
             Menu open: "block", Menu closed: "hidden"
           -->
-          <svg class=" h-6 w-6"
+          <svg class="h-6 w-6"
                x-bind:class="openMobile ? 'block' : 'hidden'"
                fill="none"
                viewBox="0 0 24 24"
@@ -110,16 +95,7 @@
                    alt="">
             </button>
           </div>
-          <!--
-            Dropdown menu, show/hide based on menu state.
-
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
+          <!-- Dropdown menu, show/hide based on menu state. -->
           <div x-show="open"
                x-transition:enter="transition ease-out duration-100"
                x-transition:enter-start="transform opacity-0 scale-95"
@@ -135,7 +111,11 @@
             {% for item in menu_items %}
               {% if item.add_to_profile_dropdown == True %}
                 <a href="{{ item.href }}"
-                   {% if item.link_page.url == request.path %} class="block px-4 py-2 text-sm text-gray-700 bg-gray-100" {% else %} class="block px-4 py-2 text-sm text-gray-700" {% endif %}>{{ item.text }}</a>
+                   {% if item.link_page.url == request.path %}
+                     class="block px-4 py-2 text-sm text-gray-700 bg-gray-100"
+                   {% else %}
+                     class="block px-4 py-2 text-sm text-gray-700"
+                   {% endif %}>{{ item.text }}</a>
               {% endif %}
             {% endfor %}
           </div>
@@ -151,7 +131,11 @@
       {% for item in menu_items %}
         {% if item.add_to_profile_dropdown == False %}
           <a href="{{ item.href }}"
-             {% if item.link_page.url == request.path %} class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700" {% else %} class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800" {% endif %}>{{ item.text }}</a>
+             {% if item.link_page.url == request.path %}
+               class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700"
+             {% else %}
+               class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800"
+             {% endif %}>{{ item.text }}</a>
         {% endif %}
       {% endfor %}
     </div>

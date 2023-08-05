@@ -11,26 +11,29 @@ from wagtail.models import Page
 def switch_language(request):
     if "wagtail_page_id" in request.POST:
         # Wagtail page
-        page_found = True
-        locale_found = True
         post = request.POST.copy()
         lang_code = request.POST.get("language", settings.LANGUAGE_CODE)
 
         try:
-            locale = Locale.objects.get(language_code=lang_code)
-        except Locale.DoesNotExist:
-            messages.info(request, _("This page does not exist in that language"))
-            locale_found = False
+            page = Page.objects.get(id=request.POST.get("wagtail_page_id"))
+        except (Page.DoesNotExist, ValueError):
+            messages.error(
+                request,
+                _("We did not find the requested page."),
+            )
+            post["next"] = "/"
+            request.POST = post
+            return set_language(request)
 
         try:
-            page = Page.objects.get(id=request.POST.get("wagtail_page_id"))
-        except Page.DoesNotExist:
-            messages.error(request, _("There was an error with this page"))
-            page_found = False
-            post["next"] = "/"
-
-        if locale_found and page_found:
+            locale = Locale.objects.get(language_code=lang_code)
             post["next"] = page.get_translation(locale).url
+        except (Page.DoesNotExist, Locale.DoesNotExist):
+            messages.warning(
+                request,
+                _("Page not available in the requested language."),
+            )
+            return set_language(request)
 
         request.POST = post
 

@@ -1,10 +1,36 @@
 {% for message in messages %}
-  <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center"
-       role="alert">
+  <!--
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
     {{ message }}
-    <button type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"></button>
+    {{ message.tags }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  Make sure you add some bottom padding to pages that include a sticky banner like this to prevent
+  your content from being obscured when the user scrolls to the bottom of the page.
+-->
+  <div class="flex items-center gap-x-6 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 rounded-lg mt-2
+              {% if message.tags == 'error' %}
+                bg-red-600
+              {% elif message.tags == 'warning' %}
+                bg-yellow-600
+              {% else %}
+                bg-indigo-600
+              {% endif %}"
+       x-data="{ open: true }"
+       x-show="open">
+    <p class="text-sm leading-6 text-gray-100">{{ message }}</p>
+    <div class="flex flex-1 justify-end">
+      <button type="button"
+              class="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+              x-on:click="open = false">
+        <span class="sr-only">Dismiss</span>
+        <svg class="h-5 w-5 text-white"
+             viewBox="0 0 20 20"
+             fill="currentColor"
+             aria-hidden="true">
+          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+        </svg>
+      </button>
+    </div>
   </div>
 {% endfor %}

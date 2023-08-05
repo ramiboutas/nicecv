@@ -26,4 +26,5 @@ from .text import TextPage
 from .flex import FlexPage
 
 # FAQs
-from .faqs import FrequentAskedQuestion
+from .snippets import FrequentAskedQuestion
+from .snippets import Person
