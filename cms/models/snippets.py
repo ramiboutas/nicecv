@@ -1,9 +1,23 @@
 from django.db import models
+from django.utils.translation import gettext as _
 
 from wagtail.snippets.models import register_snippet
-from ..utils import localized_fieldpanel_list
 
-from wagtail.admin.panels import FieldPanel
+from modelcluster.models import ClusterableModel
+from wagtail.admin.panels import (
+    FieldPanel,
+    PublishingPanel,
+)
+from wagtail.models import (
+    DraftStateMixin,
+    LockableMixin,
+    PreviewableMixin,
+    RevisionMixin,
+    WorkflowMixin,
+)
+from wagtail.search import index
+
+from ..utils import localized_fieldpanel_list
 
 
 @register_snippet
@@ -28,37 +42,6 @@ class FrequentAskedQuestion(models.Model):
 
     def __str__(self) -> str:
         return self.question
-
-
-from django.db import models
-from django.utils.translation import gettext as _
-from modelcluster.fields import ParentalKey
-from modelcluster.models import ClusterableModel
-from wagtail.admin.panels import (
-    FieldPanel,
-    FieldRowPanel,
-    InlinePanel,
-    MultiFieldPanel,
-    PublishingPanel,
-)
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-from wagtail.contrib.settings.models import (
-    BaseGenericSetting,
-    BaseSiteSetting,
-    register_setting,
-)
-from wagtail.fields import RichTextField, StreamField
-from wagtail.models import (
-    Collection,
-    DraftStateMixin,
-    LockableMixin,
-    Page,
-    PreviewableMixin,
-    RevisionMixin,
-    TranslatableMixin,
-    WorkflowMixin,
-)
-from wagtail.search import index
 
 
 @register_snippet
@@ -107,15 +90,6 @@ class Person(
         index.FilterField("job_title"),
         index.AutocompleteField("name"),
     ]
-
-    @property
-    def thumb_image(self):
-        # Returns an empty string if there is no profile pic or the rendition
-        # file can't be found.
-        try:
-            return self.image.get_rendition("fill-50x50").img_tag()
-        except:  # noqa: E722 FIXME: remove bare 'except:'
-            return ""
 
     @property
     def preview_modes(self):

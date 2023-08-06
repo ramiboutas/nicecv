@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load wagtailimages_tags wagtailcore_tags humanize i18n %}
 {% block content %}
   <!-- header and page.description-->
@@ -9,7 +9,7 @@
       <article class="flex max-w-xl flex-col items-start justify-between">
         <div class="flex items-center gap-x-4 text-xs">
           <time datetime="{{ post.latest_revision_created_at|date:'Y-m-d' }}"
-                class="text-gray-500">{{ post.latest_revision_created_at  | naturaltime }}</time>
+                class="text-gray-500">{{ post.latest_revision_created_at | naturaltime }}</time>
           <!-- there comes the tags if available -->
         </div>
         <div class="group relative">
@@ -19,8 +19,8 @@
           <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ post.description }}</p>
         </div>
         <div class="relative mt-8 flex items-center gap-x-4">
-          {% for author in post.authors|slice:1 %}
-            {% image author.image fill-200x200-c100 class="h-10 w-10 rounded-full bg-gray-50" %}
+          {% for author in post.authors|slice:2 %}
+            {% image author.image fill-50x50-c100 class="h-10 w-10 rounded-full bg-gray-50" %}
             <div class="text-sm leading-6">
               <p class="font-semibold text-gray-900">
                 <a href="#"> <span class="absolute inset-0"></span>{{ author.name }}</a>
