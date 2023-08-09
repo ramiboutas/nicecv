@@ -4,43 +4,56 @@
   {% translate "Sign In" %}
 {% endblock %}
 {% block content %}
-  <div class="container py-5" style="height: 950px">
-    <div class="row">
-      <div class="col-md-4 offset-md-4">
-        <h1>{% translate "Sign In" %}</h1>
-        {% get_providers as socialaccount_providers %}
-        {% if socialaccount_providers %}
-          <p>
-            {% blocktrans with site.name as site_name %}
-            Please sign in with one of your existing third party accounts.
-            Or, <a href="{{ signup_url }}">sign up</a> for a {{ site_name }} account and sign in below:
-            {% endblocktrans %}
-          </p>
-          <div class="socialaccount_ballot">
-            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-            <div class="login-or text-center">{% translate 'or' %}</div>
-          </div>
-          {% include "socialaccount/snippets/login_extra.html" %}
-        {% else %}
-          <p>
-            {% blocktrans %}
-            If you have not created an account yet,
-            then please <a href="{{ signup_url }}">sign up</a> first.
-            {% endblocktrans %}
-          </p>
+  {% get_providers as socialaccount_providers %}
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img class="mx-auto h-10 w-auto"
+           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+           alt="Your Company">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">{% translate "Sign In" %}</h2>
+    </div>
+    <div class="mt-2 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}" />
         {% endif %}
-        <form class="login" method="POST" action="{% url 'account_login' %}">
-          {% csrf_token %}
-          {{ form|crispy }}
-          {% if redirect_field_value %}
-            <input type="hidden"
-                   name="{{ redirect_field_name }}"
-                   value="{{ redirect_field_value }}"/>
-          {% endif %}
-          <a class="me-5" href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
-          <button class="btn btn-primary" type="submit">{% translate "Sign In" %}</button>
-        </form>
-      </div>
+        <div class="mt-5">
+          <button type="submit"
+                  class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            {% translate "Sign In" %}
+          </button>
+        </div>
+      </form>
+      <p class="mt-5 text-center text-sm text-gray-500">
+        {% translate "Forgot Password?" %}
+        <a href="{% url 'account_reset_password' %}"
+           class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1">{% translate "Click here" %}</a>
+      </p>
+      <p class="mt-5 text-center text-sm text-gray-500">
+        {% blocktrans %}
+          No account? <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ signup_url }}">Sign up</a> first.
+          {% endblocktrans %}
+      </p>
+      {% if socialaccount_providers %}
+        <div class="mt-10">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm font-medium leading-6">
+              <span class="bg-gray-50 px-6 text-gray-900">{% trans "Or continue with" %}</span>
+            </div>
+          </div>
+          <div class="mt-6 grid grid-cols-1 gap-4">
+            <div class="socialaccount_ballot">{% include "socialaccount/snippets/provider_list.html" with process="login" %}</div>
+            {% include "socialaccount/snippets/login_extra.html" %}
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

@@ -11,10 +11,10 @@
     <div class="flex items-center justify-end gap-x-6 py-4">
       <button hx-delete="{{ profile.delete_photos_url }}"
               hx-swap="outerHTML"
-              hx-confirm="{% trans "Delete photo?" %} "
+              hx-confirm="{% trans "Delete photo?" %}"
               hx-target="#crop-container"
               type="button"
-              class="rounded-md bg-white py-2 px-3  text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              class="rounded-md  py-2 px-3  text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
         🗑️
       </button>
       <button type="submit"

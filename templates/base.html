@@ -1,7 +1,7 @@
 {% load static i18n django_htmx menu_tags %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" class="h-full bg-gray-50">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -17,7 +17,7 @@
       {% endblock title %}
     </title>
   </head>
-  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full">
     {% include "includes/banner.html" %}
     <!-- TODO: add template caching with arg=language_code -->
     {% include "includes/navbar.html" %}
