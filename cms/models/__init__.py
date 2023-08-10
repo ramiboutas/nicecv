@@ -12,7 +12,7 @@ from .menus import CustomMainMenuItem
 
 # Site settings
 from .setttings import SocialMediaLinks
-from .setttings import FooterSlogan
+from .setttings import Brand
 from .setttings import Banner
 
 # Blog pages

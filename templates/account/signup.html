@@ -4,28 +4,31 @@
   {% translate "Signup" %}
 {% endblock %}
 {% block content %}
-  <div class="container py-5" style="height: 950px">
-    <div class="row">
-      <div class="col-md-4 offset-md-4">
-        <h1>{% translate "Sign Up" %}</h1>
-        <p>
-          {% blocktrans %}Already have an account? Then please
-        <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
-        </p>
-        <form class="signup"
-              id="signup_form"
-              method="post"
-              action="{% url 'account_signup' %}">
-          {% csrf_token %}
-          {{ form|crispy }}
-          {% if redirect_field_value %}
-            <input type="hidden"
-                   name="{{ redirect_field_name }}"
-                   value="{{ redirect_field_value }}"/>
-          {% endif %}
-          <button class="btn btn-outline-primary w-100 my-5" type="submit">{% translate "Sign Up" %}</button>
-        </form>
-      </div>
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        {% translate "Sign Up" %}
+      </h1>
+      <form class="signup"
+            id="signup_form"
+            method="post"
+            action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit"
+                class="mt-5 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          {% translate "Sign Up" %}
+        </button>
+      </form>
+      <p class="mt-5 text-center text-sm text-gray-500">
+        {% blocktrans %}Already have an account? Then please
+        <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+      </p>
     </div>
   </div>
 {% endblock %}

@@ -6,14 +6,15 @@
       <a title="{{ brand.name }}"
          class="socialaccount_provider {{ provider.id }} {{ brand.id }}"
          href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">
-        <i class="bi bi-{{ provider.id }}"></i>{{ brand.name }}
+        <i class="fa-brands fa-{{ provider.id }}"></i>
+        {{ brand.name }}
       </a>
     {% endfor %}
   {% endif %}
   <a title="{{ provider.name }}"
-     class="my-3 flex w-full items-center justify-center gap-3 rounded-md bg-[#1D9BF0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]socialaccount_provider {{ provider.id }}"
+     class="my-3 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 text-white  socialaccount_provider {{ provider.id }}"
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-    <i class="bi bi-{{ provider.id }}"></i>
+    <i class="fa-brands fa-{{ provider.id }}"></i>
     {{ provider.name }}
   </a>
 {% endfor %}

@@ -4,19 +4,24 @@
   {% translate "Sign Out" %}
 {% endblock %}
 {% block content %}
-  <div class="container text-center mt-5" style="height: 950px">
-    <h1>{% translate "Sign Out" %}</h1>
-    <p>{% translate 'Are you sure you want to sign out?' %}</p>
-    <form method="post" action="{% url 'account_logout' %}">
-      {% csrf_token %}
-      {% if redirect_field_value %}
-        <input type="hidden"
-               name="{{ redirect_field_name }}"
-               value="{{ redirect_field_value }}"/>
-      {% endif %}
-      <button class="btn btn-outline-secondary" type="submit">
-        {% translate 'Sign Out' %} <i class="bi bi-box-arrow-right"></i>
-      </button>
-    </form>
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        {% translate "Sign Out" %}
+      </h1>
+      <p class="leading-6 text-center">{% translate 'Are you sure you want to sign out?' %}</p>
+      <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+          <input type="hidden"
+                 name="{{ redirect_field_name }}"
+                 value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="mt-5 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 bg-indigo-600 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                type="submit">
+          {% translate 'Sign Out' %} <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </form>
+    </div>
   </div>
 {% endblock %}

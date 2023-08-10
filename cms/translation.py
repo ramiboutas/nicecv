@@ -4,7 +4,7 @@ from modeltranslation.translator import TranslationOptions
 from .models import CustomMainMenuItem
 from .models import CustomFlatMenuItem
 from .models import CustomFlatMenu
-from .models import FooterSlogan
+from .models import Brand
 from .models import Banner
 from .models import FrequentAskedQuestion
 
@@ -26,9 +26,9 @@ class FlatMenuTranslationOptions(TranslationOptions):
 
 
 # site setttings
-@register(FooterSlogan)
-class FooterSloganLinksTranslationOptions(TranslationOptions):
-    fields = ("text",)
+@register(Brand)
+class BrandTranslationOptions(TranslationOptions):
+    fields = ("footer_text",)
 
 
 @register(Banner)

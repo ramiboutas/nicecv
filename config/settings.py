@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     "django_browser_reload",
     "wagtailsvg",
     "generic_chooser",
+    "fontawesomefree",
 ]
 
 # Authentication

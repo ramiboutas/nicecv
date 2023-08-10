@@ -32,6 +32,7 @@ wagtail==5.1
 wagtail-localize
 wagtailmenus
 wagtailsvg
+fontawesomefree
 
 djlint
 ipython

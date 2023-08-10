@@ -1,28 +1,38 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n wagtailsettings_tags svg %}
+{% get_settings %}
 {% block head_title %}
   {% translate "Login with {{ provider }}" %}
 {% endblock %}
 {% block content %}
-  <div class="container text-center mt-5" style="height: 950px">
-    {% if process == "connect" %}
-      <h1>{% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}</h1>
-      <p>
-        {% blocktrans with provider.name as provider %}
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      {% if process == "connect" %}
+        <h1 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+        </h1>
+        <p class="mt-5 text-center text-sm text-gray-500">
+          {% blocktrans with provider.name as provider %}
         You are about to connect a new third party account from {{ provider }}.
         {% endblocktrans %}
-      </p>
-    {% else %}
-      <h1>{% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}</h1>
-      <p>
-        {% blocktrans with provider.name as provider %}
+        </p>
+      {% else %}
+        <h1 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
+        </h1>
+        <p class="mt-5 text-center text-sm text-gray-500">
+          {% blocktrans with provider.name as provider %}
         You are about to sign in using a third party account from {{ provider }}.
         {% endblocktrans %}
-      </p>
-    {% endif %}
-    <form method="post">
-      {% csrf_token %}
-      <button class="btn btn-outline-secondary" type="submit">{% translate "Continue" %}</button>
-    </form>
+        </p>
+      {% endif %}
+      <form class="mt-10" method="post">
+        {% csrf_token %}
+        <button class="my-3 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 text-white  socialaccount_provider {{ provider.id }}"
+                type="submit">
+          <i class="fa-brands fa-{{ provider.id }}"></i> {% translate "Continue" %}
+        </button>
+      </form>
+    </div>
   </div>
 {% endblock %}

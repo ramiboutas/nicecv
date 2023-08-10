@@ -6,6 +6,8 @@ from wagtail.admin.panels import MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting
 from wagtail.contrib.settings.models import register_setting
 
+from wagtailsvg.edit_handlers import SvgChooserPanel
+from wagtailsvg.models import Svg
 
 from ..utils import localized_fieldpanel_list
 
@@ -36,14 +38,20 @@ class SocialMediaLinks(BaseSiteSetting):
 
 
 @register_setting(icon="openquote")
-class FooterSlogan(BaseSiteSetting):
-    text = models.TextField(blank=True, null=True)
+class Brand(BaseSiteSetting):
+    footer_text = models.TextField(blank=True, null=True)
+    name = models.CharField(blank=True, null=True, max_length=16)
+    svg = models.ForeignKey(
+        Svg, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     panels = [
+        SvgChooserPanel("svg"),
+        FieldPanel("name"),
         MultiFieldPanel(
-            localized_fieldpanel_list("text"),
+            localized_fieldpanel_list("footer_text"),
             heading="Footer Slogan in Footer",
-        )
+        ),
     ]
 
 

@@ -1,18 +1,17 @@
-.fade-me-out.htmx-swapping {
-  opacity: 0;
-  transition: opacity 1s ease-out;
+
+
+
+/* color for brands: https://brandcolors.net/ */
+
+.socialaccount_provider.google {
+  background-color: #4285f4;
 }
 
-.responsive-object {
-  position: relative;
+
+.socialaccount_provider.twitter {
+  background-color: #1D9BF0;
 }
 
-.responsive-object iframe,
-.responsive-object object,
-.responsive-object embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.socialaccount_provider.linkedin {
+  background-color: #0a66c2;
 }
