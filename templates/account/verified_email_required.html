@@ -4,22 +4,21 @@
   {% translate "Verify Your E-mail Address" %}
 {% endblock %}
 {% block content %}
-  <div class="container">
-    <h1>{% translate "Verify Your E-mail Address" %}</h1>
-    {% url 'account_email' as email_url %}
-    <p>
-      {% blocktrans %}This part of the site requires us to verify that you are who
-    you claim to be. For this purpose, we require that you verify ownership of
-    your e-mail address. {% endblocktrans %}
-    </p>
-    <p>
-      {% blocktrans %}We have sent an e-mail to you for verification. Please click
-    on the link inside this e-mail. Please contact us if you do not receive it
-    within a few minutes.{% endblocktrans %}
-    </p>
-    <p>
-      {% blocktrans %}<strong>Note:</strong> you can still
-    <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}
-    </p>
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        {% translate "Verify Your E-mail Address" %}
+      </h1>
+      {% url 'account_email' as email_url %}
+      <p class="mt-5 text-sm text-gray-500">
+        {% blocktrans %}This part of the site requires us to verify that you are who you claim to be. For this purpose, we require that you verify ownership of your e-mail address. {% endblocktrans %}
+      </p>
+      <p class="mt-5 text-sm text-gray-500">
+        {% blocktrans %}We have sent an e-mail to you for verification. Please click on the link inside this e-mail. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}
+      </p>
+      <p class="mt-5 text-sm text-gray-500">
+        {% blocktrans %}<strong>Note:</strong> you can still <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}
+      </p>
+    </div>
   </div>
 {% endblock %}
