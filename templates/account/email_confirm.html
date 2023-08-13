@@ -2,31 +2,38 @@
 {% load i18n account %}
 {% block head_title %}
   {% translate "Confirm E-mail Address" %}
-{% endblock %}
+{% endblock head_title %}
 {% block content %}
-  <div class="container">
-    <h1>{% translate "Confirm E-mail Address" %}</h1>
-    {% if confirmation %}
-      {% user_display confirmation.email_address.user as
-      user_display %}
-      <p>
-        {% blocktrans with confirmation.email_address.email as email %}Please
-    confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail
-    address for user {{ user_display }}.{% endblocktrans %}
-      </p>
-      <form method="post"
-            action="{% url 'account_confirm_email' confirmation.key %}">
-        {% csrf_token %}
-        <button type="submit">{% translate 'Confirm' %}</button>
-      </form>
-    {% else %}
-      {% url 'account_email' as email_url %}
-      <p>
-        {% blocktrans %}
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      {% include "account/snippets/back_to_dashboard.html" %}
+      <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        {% translate "Confirm E-mail Address" %}
+      </h1>
+      {% if confirmation %}
+        {% user_display confirmation.email_address.user as user_display %}
+        <p class="my-5 text-gray-800">
+          {% blocktrans with confirmation.email_address.email as email %}
+          Please confirm that <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.
+          {% endblocktrans %}
+        </p>
+        <form method="post"
+              action="{% url 'account_confirm_email' confirmation.key %}">
+          {% csrf_token %}
+          <button type="submit"
+                  class="mt-5 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            {% translate "Confirm" %}
+          </button>
+        </form>
+      {% else %}
+        {% url 'account_email' as email_url %}
+        <p class="my-5 text-gray-800">
+          {% blocktrans %}
         This e-mail confirmation link expired or is invalid.
-        Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.
+        Please <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ email_url }}">issue a new e-mail confirmation request</a>.
         {% endblocktrans %}
-      </p>
+        </p>
+      {% endif %}
     </div>
-  {% endif %}
-{% endblock %}
+  </div>
+{% endblock content %}

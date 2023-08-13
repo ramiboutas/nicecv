@@ -2,7 +2,7 @@
 {% load i18n crispy_forms_tags account socialaccount %}
 {% block head_title %}
   {% translate "Sign In" %}
-{% endblock %}
+{% endblock head_title %}
 {% block content %}
   {% get_providers as socialaccount_providers %}
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -10,7 +10,7 @@
       <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         {% translate "Sign In" %}
       </h1>
-      <form class="login" method="POST" action="{% url 'account_login' %}">
+      <form class="login" method="post" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form|crispy }}
         {% if redirect_field_value %}
@@ -30,7 +30,7 @@
       </p>
       <p class="mt-5 text-center text-sm text-gray-500">
         {% blocktrans %}
-          No account? <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ signup_url }}">Sign up</a> first.
+          No account? <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ signup_url }}">Sign up</a>
           {% endblocktrans %}
       </p>
       {% if socialaccount_providers %}
@@ -51,4 +51,4 @@
       {% endif %}
     </div>
   </div>
-{% endblock %}
+{% endblock content %}

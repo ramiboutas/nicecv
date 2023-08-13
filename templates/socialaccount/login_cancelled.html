@@ -2,16 +2,20 @@
 {% load i18n %}
 {% block head_title %}
   {% translate "Login Cancelled" %}
-{% endblock %}
+{% endblock head_title %}
 {% block content %}
-  <div class="container">
-    <h1>{% translate "Login Cancelled" %}</h1>
-    {% url 'account_login' as login_url %}
-    <p>
-      {% blocktrans %}
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        {% translate "Login Cancelled" %}
+      </h1>
+      {% url 'account_login' as login_url %}
+      <p class="my-5 text-gray-800">
+        {% blocktrans %}
       You decided to cancel logging in to our site using one of your existing accounts.
-      If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.
+      If this was a mistake, please proceed to <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{login_url}}">sign in</a>.
       {% endblocktrans %}
-    </p>
+      </p>
+    </div>
   </div>
-{% endblock %}
+{% endblock content %}

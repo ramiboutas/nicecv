@@ -1,31 +1,23 @@
 {% extends "base.html" %}
 {% load i18n crispy_forms_tags %}
 {% block head_title %}
-  {% translate "Change Password" %}
+  {% translate "Edit Account" %}
 {% endblock head_title %}
 {% block content %}
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       {% include "account/snippets/back_to_dashboard.html" %}
       <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        {% translate "Change Password" %}
+        {% translate "Edit Account" %}
       </h1>
-      <form method="post"
-            action="{% url 'account_change_password' %}"
-            class="password_change">
+      <form method="post" action="{% url 'account_edit' %}">
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit"
-                name="action"
                 class="mt-5 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          {% translate "Change Password" %}
+          {% translate "Save" %}
         </button>
       </form>
-      <p class="mt-5 text-center text-sm text-gray-500">
-        {% translate "Forgot Password?" %}
-        <a href="{% url 'account_reset_password' %}"
-           class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1">{% translate "Click here" %}</a>
-      </p>
     </div>
   </div>
 {% endblock content %}

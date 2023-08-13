@@ -2,15 +2,16 @@
 {% load i18n crispy_forms_tags %}
 {% block head_title %}
   {% translate "E-mail Addresses" %}
-{% endblock %}
+{% endblock head_title %}
 {% block content %}
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      {% include "account/snippets/back_to_dashboard.html" %}
       <h1 class="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         {% translate "E-mail Addresses" %}
       </h1>
       {% if user.emailaddress_set.all %}
-        <p class="my-5 text-gray-800">{% translate 'The following e-mail addresses are associated with your account:' %}</p>
+        <p class="my-5 text-gray-800">{% translate "The following e-mail addresses are associated with your account:" %}</p>
         <form action="{% url 'account_email' %}" class="email_list" method="post">
           {% csrf_token %}
           <fieldset class="blockLabels">
@@ -26,13 +27,13 @@
                          {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{% endif %}
                          value="{{ emailaddress.email }}" />
                   {{ emailaddress.email }}
-                  {% if emailaddress.verified %}
-                    <span class="verified">✅ {% translate "Verified" %}</span>
-                  {% else %}
-                    <span class="unverified">❌ {% translate "Unverified" %}</span>
-                  {% endif %}
                   {% if emailaddress.primary %}
-                    <span class="primary">{% translate "Primary" %}</span>
+                    <span class="primary">({% translate "Primary" %})</span>
+                  {% endif %}
+                  {% if emailaddress.verified %}
+                    <span class="verified float-right">✅ {% translate "Verified" %}</span>
+                  {% else %}
+                    <span class="unverified float-right">❌ {% translate "Unverified" %}</span>
                   {% endif %}
                 </label>
               </div>
@@ -41,24 +42,24 @@
               <button type="submit"
                       name="action_primary"
                       class="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-                {% translate 'Make Primary' %}
+                {% translate "Make Primary" %}
               </button>
               <button type="submit"
                       name="action_send"
                       class="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-                {% translate 'Re-send Verification' %}
+                {% translate "Re-send Verification" %}
               </button>
               <button type="submit"
                       name="action_remove"
                       class="relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-                {% translate 'Remove' %}
+                {% translate "Remove" %}
               </button>
             </span>
           </fieldset>
         </form>
       {% else %}
         <p>
-          <strong>{% translate 'Warning:' %}</strong> {% translate "You currently do
+          <strong>{% translate "Warning:" %}</strong> {% translate "You currently do
           not have any e-mail address set up. You should really add an e-mail address
           so you can receive notifications, reset your password, etc." %}
         </p>

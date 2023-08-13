@@ -5,22 +5,29 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
+from django.urls import re_path
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
+from allauth.socialaccount import views as socialaccount_views
+from allauth.account import views as account_views
+
 urlpatterns = [
-    # Django
+    ##### Django admin
     path("admin/", admin.site.urls),
     path("i18n/", include("django.conf.urls.i18n")),
-    # Wagtail
+    ##### Wagtail admin
     path("wagtail/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    # Third-party apps
+    ##### Third-party apps
+    # allauth
     path("", include("allauth.urls")),
+    # rosetta
     path("rosetta/", include("rosetta.urls")),
+    # stripe
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
-    # core app
+    ##### core app
     path("", include("core.urls")),
 ]
 

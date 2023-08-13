@@ -3,7 +3,7 @@
 {% get_settings %}
 {% block head_title %}
   {% translate "Login with {{ provider }}" %}
-{% endblock %}
+{% endblock head_title %}
 {% block content %}
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -35,4 +35,4 @@
       </form>
     </div>
   </div>
-{% endblock %}
+{% endblock content %}
