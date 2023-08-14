@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.urls import reverse
 
-from ...factories.plans import PlanFAQFactory
 from ...factories.plans import PremiumPlanFactory
 from ..plans import FreePlan
 from ..plans import PremiumPlan
@@ -39,10 +38,3 @@ class FreePlanTests(TestCase):
     def test_when_instance_does_not_exist(self):
         plan = FreePlan.get()
         self.assertEqual(plan.name, "Free Plan")
-
-
-class PlanFAQTest(TestCase):
-    def test_planfaq_instance(self):
-        faq = PlanFAQFactory()
-        self.assertTrue("?" in faq.question)
-        self.assertIsNotNone(str(faq))

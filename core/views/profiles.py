@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.utils.translation import gettext as _
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.decorators.http import require_http_methods
@@ -35,26 +36,6 @@ def create_profile_cv(request, profile_id, tex_id):
     return render(request, "profiles/cvs/cv_card.html", context)
 
 
-@transaction.atomic
-def _create_initial_profile(request):
-    profile = Profile(language_code=request.LANGUAGE_CODE)
-    user = getattr(request, "user", AnonymousUser())
-    if isinstance(user, User):
-        profile.user = user
-        profile.fullname = user.fullname
-        profile.email = user.email
-    else:
-        session, request = get_or_create_session(request)
-        if Profile.objects.filter(session=session).count() >= 1:
-            messages.info(request, _("Only one profile is allowed for guest users"))
-            return Profile.objects.filter(session=session).first(), request
-        profile.category = "temporal"
-        profile.session = session
-
-    profile.save()
-    return profile, request
-
-
 def profile_list(request):
     if request.user.is_authenticated:
         profiles = Profile.objects.filter(user=request.user)
@@ -67,7 +48,20 @@ def profile_list(request):
 
 
 def profile_create(request):
-    profile, request = _create_initial_profile(request)
+    profile = Profile(language_code=request.LANGUAGE_CODE)
+    user = getattr(request, "user", AnonymousUser())
+    if isinstance(user, User):
+        profile.user = user
+        profile.fullname = user.fullname
+        profile.email = user.email
+    else:
+        session, request = get_or_create_session(request)
+        if Profile.objects.filter(session=session).count() >= 1:
+            messages.info(request, _("Only one profile is allowed for guest users"))
+            return redirect("profile_list")
+        profile.category = "temporal"
+        profile.session = session
+    profile.save()
     if request.htmx:
         return HttpResponseClientRedirect(profile.update_url())
     return HttpResponseRedirect(profile.update_url())

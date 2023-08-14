@@ -347,6 +347,8 @@ stack-data==0.6.2
     # via ipython
 stripe==4.2.0
     # via dj-stripe
+tblib==2.0.0
+    # via -r requirements.in
 telepath==0.3.1
     # via wagtail
 tomlkit==0.11.8

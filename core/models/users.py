@@ -11,7 +11,6 @@ from .plans import PremiumPlan
 
 class User(AbstractUser):
     avatar_url = models.URLField(null=True, blank=True)
-    notify_when_plan_expires = models.BooleanField(default=False)
 
     @cached_property
     def plan(self):

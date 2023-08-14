@@ -20,12 +20,3 @@ class FreePlanFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "core.FreePlan"
         django_get_or_create = ("name",)
-
-
-class PlanFAQFactory(factory.django.DjangoModelFactory):
-    question = "Is this a question?"
-    answer = "Yes, it is."
-
-    class Meta:
-        model = "core.PlanFAQ"
-        django_get_or_create = ("question",)

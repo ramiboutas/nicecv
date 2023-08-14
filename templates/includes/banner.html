@@ -1,7 +1,7 @@
 {% if settings.cms.Banner.active %}
   <div class="flex items-center gap-x-6 bg-indigo-600 px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
-       x-data="{ open: true }"
-       x-show="open">
+       x-data="{ open: true, closedTimes: $persist(0)}"
+       x-show="open && closedTimes < 4">
     <p class="text-sm leading-6 text-white">
       <a href="{{ settings.cms.Banner.linked_page.url }}">
         <strong class="font-semibold">{{ settings.cms.Banner.title }}</strong>
@@ -16,7 +16,7 @@
     <div class="flex flex-1 justify-end">
       <button type="button"
               class="-m-3 p-3 focus-visible:outline-offset-[-4px]"
-              x-on:click="open = false">
+              x-on:click="closedTimes++; open = false">
         <span class="sr-only">Dismiss</span>
         <svg class="h-5 w-5 text-white"
              viewBox="0 0 20 20"
