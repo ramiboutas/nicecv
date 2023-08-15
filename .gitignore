@@ -129,3 +129,6 @@ secrets.txt
 
 # npm
 node_modules
+
+# static files
+staticfiles
