@@ -11,7 +11,7 @@ from slugger import AutoSlugField
 
 
 def copy_texmf():
-    shutil.rmtree(settings.DESTINATION_TEXMF_DIR)
+    shutil.rmtree(settings.DESTINATION_TEXMF_DIR, ignore_errors=True)
     shutil.copytree(
         settings.ORIGIN_TEXMF_DIR,
         settings.DESTINATION_TEXMF_DIR,

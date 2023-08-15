@@ -40,7 +40,7 @@ class CustomFlatMenu(AbstractFlatMenu):
     # Like pages, panels for menus are split into multiple tabs.
     # To update the panels in the 'Content' tab, override 'content_panels'
     # To update the panels in the 'Settings' tab, override 'settings_panels'
-    content_panels = (
+    panels = (
         MultiFieldPanel(
             heading=_("Settings"),
             children=(

@@ -23,7 +23,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.8"
+        python-version: "3.11"
     - uses: actions/cache@v3
       name: Configure pip caching
       with:
@@ -37,7 +37,7 @@ jobs:
         python -m pip install -r requirements.txt
     - name: Run Tests
       run: |
-        CI=true pytest
+        python manage.py test
     - name: Deploy to server, executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
       with:

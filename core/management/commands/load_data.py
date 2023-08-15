@@ -17,7 +17,8 @@ class Command(BaseCommand):
         self.stdout.write("Creating objects...")
 
         # copy latex local files
-        copy_texmf()
+        if not getattr(settings, "TEST_MODE", False):
+            copy_texmf()
 
         # db-based settings
         Secrets.get()
