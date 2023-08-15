@@ -1,4 +1,17 @@
-.fade-me-out.htmx-swapping {
-  opacity: 0;
-  transition: opacity 1s ease-out;
+
+
+
+/* color for brands: https://brandcolors.net/ */
+
+.socialaccount_provider.google {
+  background-color: #4285f4;
+}
+
+
+.socialaccount_provider.twitter {
+  background-color: #1D9BF0;
+}
+
+.socialaccount_provider.linkedin {
+  background-color: #0a66c2;
 }
