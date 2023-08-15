@@ -131,4 +131,4 @@ secrets.txt
 node_modules
 
 # static files
-staticfiles
+staticfiles/*
