@@ -18,7 +18,6 @@ django-coverage-plugin
 pdf2image
 flake8
 coverage[toml]
-gunicorn
 redis
 hiredis
 boto3
