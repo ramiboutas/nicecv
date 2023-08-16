@@ -30,8 +30,8 @@ dotenv.load_dotenv(dotenv_path=BASE_DIR / ".env")
 # The name of the class to use for starting the test suite.
 TEST_RUNNER = "config.test.TestRunner"
 
-# Use Digital Ocean Spaces service (Storage)
-USE_SPACES = os.environ.get("USE_SPACES", "") == "1"
+# s3 storage
+USE_S3 = os.environ.get("USE_S3", "") == "1"
 
 # HTTPS
 HTTPS = os.environ.get("HTTPS", "") == "1"
@@ -331,41 +331,29 @@ WAGTAILMENUS_FLAT_MENUS_HANDLE_CHOICES = (
 )
 
 
-if USE_SPACES:  # pragma: no cover
-    # Stuff that could be useful (comments):
-    # AWS_LOCATION = f"https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com"
-    # MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com/{AWS_MEDIA_LOCATION}/" # it worked
-    # MEDIA_URL = f"https://{AWS_s3_endpoint_url}/{AWS_MEDIA_LOCATION}/"
-    # STATIC_URL = f"https://{AWS_s3_endpoint_url}/{AWS_STATIC_LOCATION}/"
-
+if USE_S3:
+    # aws settings
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
-    AWS_S3_ENDPOINT_URL = "https://fra1.digitaloceanspaces.com"
-    AWS_S3_CUSTOM_DOMAIN = "ramiboutas.fra1.cdn.digitaloceanspaces.com"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400", "ACL": "public-read"}
-
-    AWS_DEFAULT_ACL = "public-read"
-    AWS_S3_SIGNATURE_VERSION = "s3v4"
-
-    DEFAULT_FILE_STORAGE = "config.storage.MediaRootStorage"
-    STATICFILES_STORAGE = "config.storage.StaticRootStorage"
-
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    # s3 static settings
     AWS_STATIC_LOCATION = "nicecv-static"
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
-    STATIC_ROOT = f"{AWS_STATIC_LOCATION}/"
-
+    STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
+    # s3 public media settings
     AWS_MEDIA_LOCATION = "nicecv-media"
-
-    MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
-    MEDIA_ROOT = f"{AWS_MEDIA_LOCATION}/"
-
-else:  # pragma: no cover
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
+    DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
+else:
     STATIC_URL = "/static/"
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 
 # Message tags
