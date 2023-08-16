@@ -15,6 +15,9 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from django.core.files.storage import default_storage as storage
+
+
 from PIL import Image
 
 from ..tex.filters import do_latex_escape
@@ -428,6 +431,7 @@ class Profile(auto_prefetch.Model):
                 save=False,
             )
             image = Image.open(self.cropped_photo)
+
             cropping_area = (
                 self.crop_x,
                 self.crop_y,
@@ -436,7 +440,12 @@ class Profile(auto_prefetch.Model):
             )
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
-            resized_image.save(self.cropped_photo.path, save=False)
+
+            # resized_image.save(self.cropped_photo.path, save=False)
+            fh = storage.open(self.cropped_photo.name, "wb")
+            resized_image.save(fh, "png")
+            fh.close()
+
             self.save()
 
     def process_photo(self):
