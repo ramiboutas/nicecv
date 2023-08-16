@@ -342,11 +342,11 @@ if USE_S3:
     # s3 static settings
     AWS_STATIC_LOCATION = "nicecv-static"
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
-    STATICFILES_STORAGE = "config.storage_backends.StaticStorage"
+    STATICFILES_STORAGE = "config.storage_backends.StaticRootStorage"
     # s3 public media settings
     AWS_MEDIA_LOCATION = "nicecv-media"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
-    DEFAULT_FILE_STORAGE = "config.storage_backends.PublicMediaStorage"
+    DEFAULT_FILE_STORAGE = "config.storage_backends.MediaRootStorage"
 else:
     STATIC_URL = "/static/"
     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -359,10 +359,14 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 # Message tags
 
 # caching
+# Server-side cache settings. Do not confuse with front-end cache.
+# https://docs.djangoproject.com/en/stable/topics/cache/
+REDIS_UL = os.environ.get("REDIS_TLS_URL", os.environ.get("REDIS_URL"))
+
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": REDIS_UL,
     }
 }
 
