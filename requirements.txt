@@ -179,8 +179,6 @@ flake8==6.0.0
     # via -r requirements.in
 fontawesomefree==6.4.2
     # via -r requirements.in
-gunicorn==20.1.0
-    # via -r requirements.in
 hiredis==2.2.3
     # via -r requirements.in
 html-tag-names==0.1.2
