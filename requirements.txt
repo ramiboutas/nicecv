@@ -97,6 +97,7 @@ django==4.2.2
     #   django-extensions
     #   django-filter
     #   django-htmx
+    #   django-minify-html
     #   django-modelcluster
     #   django-modeltranslation
     #   django-money
@@ -136,6 +137,8 @@ django-extensions==3.2.3
 django-filter==22.1
     # via wagtail
 django-htmx==1.15.0
+    # via -r requirements.in
+django-minify-html==1.6.0
     # via -r requirements.in
 django-modelcluster==6.0
     # via wagtail
@@ -227,6 +230,8 @@ mccabe==0.7.0
     # via
     #   flake8
     #   pylint
+minify-html==0.11.1
+    # via django-minify-html
 mypy-extensions==1.0.0
     # via black
 oauthlib==3.2.2

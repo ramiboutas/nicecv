@@ -113,6 +113,7 @@ INSTALLED_APPS = [
     "wagtailsvg",
     "generic_chooser",
     "fontawesomefree",
+    "django_minify_html",
 ]
 
 # Authentication
@@ -171,6 +172,7 @@ MIDDLEWARE = [
     # wagtails middlewares
     # "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # third-party middlewares
+    "django_minify_html.middleware.MinifyHtmlMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
