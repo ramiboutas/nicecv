@@ -33,6 +33,7 @@ wagtail-localize
 wagtailmenus
 wagtailsvg
 fontawesomefree
+whitenoise[brotli]
 
 tblib
 djlint
