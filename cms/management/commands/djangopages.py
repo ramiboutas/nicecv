@@ -12,5 +12,3 @@ class Command(BaseCommand):
 
         # creating some core pages available in Wagtail
         DjangoServedPage.update_objects()
-
-        self.stdout.write("Objects created.")

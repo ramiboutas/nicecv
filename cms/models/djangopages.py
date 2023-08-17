@@ -54,7 +54,7 @@ class DjangoServedPage(Page):
             ),
             cls(
                 title="User dashboard",
-                slug=reverse("user_dashboard").replace("/", ""),
+                slug=reverse("account_dashboard").replace("/", ""),
                 show_in_menus=True,
             ),
             cls(
@@ -76,10 +76,10 @@ class DjangoServedPage(Page):
         for page in pages:
             try:
                 home.add_child(instance=page)
-            except AttributeError:
-                pass
-            except ValidationError:
-                pass
+            except AttributeError as e:
+                print(e)
+            except ValidationError as e:
+                print(e)
         home.save()
 
     def __str__(self):
