@@ -145,7 +145,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # Email Backend
 
-EMAIL_BACKEND = os.environ.get("EMAIL_HOST", "django.core.mail.backends.console.EmailBackend")
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+)
 EMAIL_USE_TLS = str(os.environ.get("EMAIL_USE_TLS")) == "1"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
