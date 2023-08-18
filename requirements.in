@@ -28,13 +28,15 @@ django-modeltranslation
 django-cleanup
 crispy-tailwind
 Jinja2
-wagtail==5.1
+wagtail
 wagtail-localize
 wagtailmenus
 wagtailsvg
 fontawesomefree
 whitenoise[brotli]
 django-minify-html
+django-extensions
+django-celery-email
 
 tblib
 djlint
@@ -47,4 +49,3 @@ pylint
 autopep8
 black
 pylint-django
-django-extensions

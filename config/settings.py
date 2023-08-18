@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     "generic_chooser",
     "fontawesomefree",
     "django_minify_html",
+    "djcelery_email",
 ]
 
 # Authentication
@@ -298,6 +299,7 @@ AUTHENTICATION_BACKENDS = [
 ACCOUNT_LOGOUT_REDIRECT = "/"
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+# ACCOUNT_ADAPTER = "core.account_adapter.AccountAdapter"
 
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"

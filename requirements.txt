@@ -37,6 +37,7 @@ brotli==1.0.9
 celery==5.3.1
     # via
     #   -r requirements.in
+    #   django-celery-email
     #   django-celery-results
 certifi==2023.5.7
     # via
@@ -84,13 +85,15 @@ dill==0.3.6
     # via pylint
 dj-stripe==2.7.3
     # via -r requirements.in
-django==4.2.2
+django==4.2.3
     # via
     #   -r requirements.in
     #   dj-stripe
     #   django-allauth
+    #   django-appconf
     #   django-auto-prefetch
     #   django-browser-reload
+    #   django-celery-email
     #   django-celery-results
     #   django-crispy-forms
     #   django-debug-toolbar
@@ -114,9 +117,13 @@ django==4.2.2
     #   wagtail-localize
 django-allauth==0.54.0
     # via -r requirements.in
+django-appconf==1.0.5
+    # via django-celery-email
 django-auto-prefetch==1.6.0
     # via -r requirements.in
 django-browser-reload==1.10.0
+    # via -r requirements.in
+django-celery-email==3.0.0
     # via -r requirements.in
 django-celery-results==2.5.1
     # via -r requirements.in
