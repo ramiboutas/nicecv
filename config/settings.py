@@ -101,7 +101,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    # "allauth.socialaccount.providers.linkedin",
+    "allauth.socialaccount.providers.linkedin_oauth2",
     "django_htmx",
     "django_celery_results",
     "djstripe",
@@ -122,12 +122,11 @@ AUTH_USER_MODEL = "core.User"
 
 
 # Provider specific settings
-SOCIALACCOUNT_GOOGLE_CLIENT_ID = os.environ.get(
-    "SOCIALACCOUNT_GOOGLE_CLIENT_ID"
-)  # my own variable
-SOCIALACCOUNT_GOOGLE_SECRET_KEY = os.environ.get(
-    "SOCIALACCOUNT_GOOGLE_SECRET_KEY"
-)  # my own variable
+SOCIALACCOUNT_GOOGLE_CLIENT_ID = os.environ.get("SOCIALACCOUNT_GOOGLE_CLIENT_ID")
+SOCIALACCOUNT_GOOGLE_SECRET_KEY = os.environ.get("SOCIALACCOUNT_GOOGLE_SECRET_KEY")
+SOCIALACCOUNT_LINKEDIN_CLIENT_ID = os.environ.get("SOCIALACCOUNT_LINKEDIN_CLIENT_ID")
+SOCIALACCOUNT_LINKEDIN_SECRET_KEY = os.environ.get("SOCIALACCOUNT_LINKEDIN_SECRET_KEY")
+
 
 SOCIALACCOUNT_PROVIDERS = {
     # https://django-allauth.readthedocs.io/en/latest/providers.html#google
@@ -140,6 +139,23 @@ SOCIALACCOUNT_PROVIDERS = {
             "secret": SOCIALACCOUNT_GOOGLE_SECRET_KEY,
             "key": "",
         }
+    },
+    "linkedin_oauth2": {
+        "APP": {
+            "client_id": SOCIALACCOUNT_LINKEDIN_CLIENT_ID,
+            "secret": SOCIALACCOUNT_LINKEDIN_SECRET_KEY,
+            "key": "",
+        },
+        "SCOPE": ["r_liteprofile", "r_emailaddress", "w_member_social"],
+        "PROFILE_FIELDS": [
+            "id",
+            "first-name",
+            "last-name",
+            "email-address",
+            "picture-url",
+            "public-profile-url",
+            "openid",
+        ],
     },
 }
 
@@ -351,8 +367,8 @@ MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
 
 # static files (whitenoise)
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = ((BASE_DIR / "static"),)
 
 STORAGES = {
     "default": {

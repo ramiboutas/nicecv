@@ -12,9 +12,9 @@
     {% endfor %}
   {% endif %}
   <a title="{{ provider.name }}"
-     class="my-3 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 text-white  socialaccount_provider {{ provider.id }}"
+     class="my-3 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 text-white  socialaccount_provider {{ provider.name|lower }}"
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-    <i class="fa-brands fa-{{ provider.id }}"></i>
+    <i class="fa-brands fa-{{ provider.name|lower }}"></i>
     {{ provider.name }}
   </a>
 {% endfor %}

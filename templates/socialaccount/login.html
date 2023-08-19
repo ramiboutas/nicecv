@@ -28,9 +28,9 @@
       {% endif %}
       <form class="mt-10" method="post">
         {% csrf_token %}
-        <button class="my-3 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 text-white  socialaccount_provider {{ provider.id }}"
+        <button class="my-3 flex w-full items-center justify-center gap-3 rounded-md  px-3 py-1.5 text-white  socialaccount_provider {{ provider.name|lower }}"
                 type="submit">
-          <i class="fa-brands fa-{{ provider.id }}"></i> {% translate "Continue" %}
+          <i class="fa-brands fa-{{ provider.name|lower }}"></i> {% translate "Continue" %}
         </button>
       </form>
     </div>
