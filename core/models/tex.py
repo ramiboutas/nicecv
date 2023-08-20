@@ -114,7 +114,7 @@ class Tex(auto_prefetch.Model):
             print(f"🔴 The was an error with {template_name}: {e}")
 
     def __str__(self):
-        return self.title
+        return f"Tex ({self.title})"
 
     def add_download(self):
         self.downloads = self.downloads + 1
