@@ -1,4 +1,6 @@
 import debug_toolbar
+from allauth.account import views as account_views
+from allauth.socialaccount import views as socialaccount_views
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -9,9 +11,6 @@ from django.urls import re_path
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
-
-from allauth.socialaccount import views as socialaccount_views
-from allauth.account import views as account_views
 
 urlpatterns = [
     ##### Django admin

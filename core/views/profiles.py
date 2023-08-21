@@ -5,8 +5,8 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.decorators.http import require_http_methods

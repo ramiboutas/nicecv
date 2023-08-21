@@ -7,17 +7,15 @@ from operator import attrgetter
 import auto_prefetch
 import factory
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage as storage
 from django.db import models
 from django.db.models import Q
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django.core.files.storage import default_storage as storage
-
-
 from PIL import Image
 
 from ..tex.filters import do_latex_escape

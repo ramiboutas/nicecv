@@ -1,5 +1,4 @@
 from django.conf import settings
-
 from wagtail.blocks import StreamBlock
 
 from . import blocks

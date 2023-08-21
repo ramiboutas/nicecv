@@ -1,15 +1,16 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
-
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel, PageChooserPanel
-
-
+from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import MultiFieldPanel
+from wagtail.admin.panels import PageChooserPanel
+from wagtailmenus.models import AbstractFlatMenu
+from wagtailmenus.models import AbstractFlatMenuItem
+from wagtailmenus.models import AbstractMainMenu
+from wagtailmenus.models import AbstractMainMenuItem
 from wagtailmenus.panels import FlatMenuItemsInlinePanel
 from wagtailmenus.panels import MainMenuItemsInlinePanel
-from wagtailmenus.models import AbstractFlatMenu, AbstractFlatMenuItem
-from wagtailmenus.models import AbstractMainMenu, AbstractMainMenuItem
 
 from ..utils import localized_fieldpanel_list
 

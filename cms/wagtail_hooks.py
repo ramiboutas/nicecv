@@ -1,6 +1,6 @@
-from .models.snippets import Person
-
 from wagtail.snippets.views.snippets import SnippetViewSet
+
+from .models.snippets import Person
 
 
 class PersonViewSet(SnippetViewSet):

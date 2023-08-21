@@ -1,5 +1,4 @@
 # https://docs.gunicorn.org/en/stable/settings.html#settings
-
 import multiprocessing
 
 max_requests = 1000
