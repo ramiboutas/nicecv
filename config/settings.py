@@ -20,7 +20,7 @@ TEX_TEMPLATES_DIR = BASE_DIR / "tex_templates"
 
 CV_TEX_DIR = TEX_TEMPLATES_DIR / "cvs"
 
-ORIGIN_TEXMF_DIR = TEX_TEMPLATES_DIR / "texmf"
+ORIGIN_TEXMF_DIR = BASE_DIR / "texmf"
 
 DESTINATION_TEXMF_DIR = Path("/home/rami/texmf")
 
