@@ -424,7 +424,7 @@ class Profile(auto_prefetch.Model):
         pass
 
     def generate_cropped_photo_name(self):
-        return f'{self.full_photo.name.split("/")[-1]}_cropped_{self.crop_x}_{self.crop_y}_{self.crop_width}_{self.crop_height}'
+        return f'cropped_{self.crop_x}_{self.crop_y}_{self.crop_width}_{self.crop_height}_{self.full_photo.name.split("/")[-1]}'
 
     def crop_photo(self):
         if self.full_photo:
