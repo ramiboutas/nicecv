@@ -355,6 +355,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = ((BASE_DIR / "static"),)
 
+LOCAL_MEDIA_URL = "/media/"
 
 # media storage (aws s3)
 if USE_S3:
@@ -368,7 +369,7 @@ if USE_S3:
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
     MEDIA_STORAGE_BACKEND = "config.storage_backends.MediaRootStorage"
 else:
-    MEDIA_URL = "/media/"
+    MEDIA_URL = LOCAL_MEDIA_URL
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     MEDIA_STORAGE_BACKEND = "django.core.files.storage.FileSystemStorage"
 
@@ -381,7 +382,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {
             "location": BASE_DIR / "media",
-            "base_url": MEDIA_URL,
+            "base_url": LOCAL_MEDIA_URL,
         },
     },
     "staticfiles": {
