@@ -377,6 +377,12 @@ STORAGES = {
     "default": {
         "BACKEND": MEDIA_STORAGE_BACKEND,
     },
+    "local": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": BASE_DIR / "media",
+        },
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
