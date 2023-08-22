@@ -447,8 +447,9 @@ class Profile(auto_prefetch.Model):
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
 
-            fh = storages["default"].open(self.cropped_photo.name, "wb")
-
+            # TODO: this code need to be improved
+            # the field Profile.cropped_photo has already a specified storage object
+            fh = storages["local"].open(self.cropped_photo.name, "wb")
             resized_image.save(fh, "png")
             fh.close()
 
