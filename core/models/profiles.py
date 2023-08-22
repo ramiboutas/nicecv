@@ -423,10 +423,13 @@ class Profile(auto_prefetch.Model):
         # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
         pass
 
+    def generate_cropped_photo_name(self):
+        return f'{self.full_photo.name.split("/")[-1]}_cropped_{self.crop_x}_{self.crop_y}_{self.crop_width}_{self.crop_height}'
+
     def crop_photo(self):
         if self.full_photo:
             self.cropped_photo.save(
-                "cropped_" + self.full_photo.name.split("/")[-1],
+                self.generate_cropped_photo_name(),
                 ContentFile(self.full_photo.read()),
                 save=False,
             )
