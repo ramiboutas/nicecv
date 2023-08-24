@@ -1,13 +1,15 @@
 
 # Django dev version
 django
+media/**
+media
 
 # Django #
 *.log
 *.pot
 *.pyc
 __pycache__
-media/**
+
 
 
 # Backup files #
