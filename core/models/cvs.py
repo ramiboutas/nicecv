@@ -67,8 +67,10 @@ class Cv(auto_prefetch.Model):
             with open(temppath / "texput.pdf", "rb") as f:
                 bytes_pdf = f.read()
 
+            filename = f"CV_{now.year}{now.month}{now.day}_{now.hour}{now.minute}{now.second}_{now.microsecond}"
+
             self.pdf.save(
-                f"CV_{now.year}{now.month}{now.day}_{now.second}{now.min}_{now.microsecond}.pdf",
+                f"{filename}.pdf",
                 ContentFile(bytes_pdf),
                 save=False,
             )
@@ -85,7 +87,7 @@ class Cv(auto_prefetch.Model):
             )[0]
             with open(image.filename, "rb") as f:
                 self.image.save(
-                    f"{self.profile.id}.jpg",
+                    f"{filename}.jpg",
                     ContentFile(f.read()),
                     save=False,
                 )
