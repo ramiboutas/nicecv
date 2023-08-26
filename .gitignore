@@ -3,6 +3,7 @@
 django
 media/**
 media
+celerybeat-schedule
 
 # Django #
 *.log

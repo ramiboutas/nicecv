@@ -19,24 +19,34 @@ def copy_texmf():
     )
     print(f"✅ texmf copied successfully")
 
+def populate_tex_slug(obj):
+
+
 
 class Tex(auto_prefetch.Model):
-    title = models.CharField(
-        max_length=64,
+    category = models.CharField(
+        max_length=32,
         editable=False,
-        help_text=_("Read from metadata"),
+        help_text=_("Created from folder name. tex_templates/<category>/"),
     )
-    slug = AutoSlugField(
-        populate_from="title",
+    name = models.CharField(
+        max_length=32,
         editable=False,
-        help_text=_("Calculated from title field"),
+        help_text=_("Created from folder name. tex_templates/<category>/<name>/"),
     )
     template_name = models.CharField(
         max_length=64,
         unique=True,
         editable=False,
+        help_text=_("Created from tex file name relative to tex_templates dir. tex_templates/<category>/<name>/<texfile>"),
+    )
+
+    title = models.CharField(
+        max_length=64,
+        editable=False,
         help_text=_("Read from metadata"),
     )
+
     interpreter = models.CharField(
         max_length=32,
         default="xelatex",
@@ -79,7 +89,7 @@ class Tex(auto_prefetch.Model):
 
     @classmethod
     def update_objects(cls):
-        cls.objects.all().delete()
+        
         for path in settings.CV_TEX_DIR.iterdir():
             tex_path, metadata_path = path / "template.tex", path / "metadata"
             if tex_path.is_file() and metadata_path.is_file():

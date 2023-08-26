@@ -101,6 +101,7 @@ django==4.2.3
     #   django-filter
     #   django-htmx
     #   django-minify-html
+    #   django-mjml
     #   django-modelcluster
     #   django-modeltranslation
     #   django-money
@@ -147,6 +148,8 @@ django-htmx==1.15.0
     # via -r requirements.in
 django-minify-html==1.6.0
     # via -r requirements.in
+django-mjml==1.1
+    # via wagtail-birdsong
 django-modelcluster==6.0
     # via wagtail
 django-modeltranslation==0.18.10
@@ -398,7 +401,10 @@ vine==5.0.0
 wagtail==5.1
     # via
     #   -r requirements.in
+    #   wagtail-birdsong
     #   wagtail-localize
+wagtail-birdsong==1.1.2
+    # via -r requirements.in
 wagtail-generic-chooser==0.5.1
     # via wagtailsvg
 wagtail-localize==1.5.1

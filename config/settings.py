@@ -88,10 +88,10 @@ INSTALLED_APPS = [
     "wagtail",
     "taggit",
     "modelcluster",
+    # Third-party apps
     "wagtail_localize",
     "wagtail_localize.locales",  # This replaces "wagtail.locales"
     "wagtailmenus",
-    # Third-party apps
     "django_extensions",
     "rosetta",
     "modeltranslation",

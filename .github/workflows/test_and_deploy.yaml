@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     name: build, test and deploy django app
-    if: contains(github.event.head_commit.message, '--run-on-ga')
+    if: contains(github.event.head_commit.message, '--ga')
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -54,3 +54,6 @@ jobs:
           pip-sync
           python manage.py collectstatic --noinput
           python manage.py migrate
+          systemctl --user restart celerybeat_nicecv.service
+          systemctl --user restart celery_nicecv.service
+          systemctl --user restart gunicorn_nicecv.service
