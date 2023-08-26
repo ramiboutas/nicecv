@@ -21,7 +21,7 @@ from .profiles import Profile
 
 
 def get_cv_upload_path(cv, filename):
-    return f"profiles/{cv.profile.category}/{cv.profile.id}/cvs/{filename}"
+    return f"profiles-{cv.profile.category}/{cv.created.year}-{cv.created.month}/{cv.created.day}/{cv.profile.id}/{filename}"
 
 
 class Cv(auto_prefetch.Model):
@@ -64,7 +64,7 @@ class Cv(auto_prefetch.Model):
             with open(temppath / "texput.pdf", "rb") as f:
                 bytes_pdf = f.read()
 
-            self.pdf.save(f"{self.profile.id}.pdf", ContentFile(bytes_pdf), save=False)
+            self.pdf.save(f"{self.id}.pdf", ContentFile(bytes_pdf), save=False)
             # pdf time calculations
             pdf_end = time.time()
             self.pdf_time = pdf_end - pdf_start
