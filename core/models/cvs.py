@@ -14,6 +14,8 @@ from django.template.loader import get_template
 from django.utils.translation import gettext_lazy as _
 from pdf2image import convert_from_path
 
+from django.utils import timezone
+
 from ..exceptions import TexError
 from .profiles import Profile
 
@@ -21,7 +23,8 @@ from .profiles import Profile
 
 
 def get_cv_upload_path(cv, filename):
-    return f"profiles-{cv.profile.category}/{cv.created.year}-{cv.created.month}/{cv.created.day}/{cv.profile.id}/{filename}"
+    now = timezone.now()
+    return f"profiles-{cv.profile.category}/{now.year}-{now.month}/{now.day}/{filename}"
 
 
 class Cv(auto_prefetch.Model):
