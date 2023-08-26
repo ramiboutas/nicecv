@@ -19,12 +19,12 @@ from django.utils import timezone
 from ..exceptions import TexError
 from .profiles import Profile
 
-# from ..tex.compile import compile_template_to_pdf
+
+now = timezone.now()
 
 
 def get_cv_upload_path(cv, filename):
-    now = timezone.now()
-    return f"profiles-{cv.profile.category}/{now.year}-{now.month}/{now.day}/{filename}"
+    return f"profiles-{cv.profile.category}/{now.year}-{now.month}/{now.day}/{cv.profile.id}/{filename}"
 
 
 class Cv(auto_prefetch.Model):
@@ -67,7 +67,11 @@ class Cv(auto_prefetch.Model):
             with open(temppath / "texput.pdf", "rb") as f:
                 bytes_pdf = f.read()
 
-            self.pdf.save(f"{self.id}.pdf", ContentFile(bytes_pdf), save=False)
+            self.pdf.save(
+                f"CV_{now.year}{now.month}{now.day}_{now.second}{now.min}_{now.microsecond}.pdf",
+                ContentFile(bytes_pdf),
+                save=False,
+            )
             # pdf time calculations
             pdf_end = time.time()
             self.pdf_time = pdf_end - pdf_start
