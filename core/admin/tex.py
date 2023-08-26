@@ -8,8 +8,9 @@ class CvTexAdmin(admin.ModelAdmin):
     list_display = ["__str__", "template_name", "average_rendering_time", "downloads"]
 
     readonly_fields = [
+        "category",
+        "name",
         "title",
-        "slug",
         "template_name",
         "interpreter",
         "license",

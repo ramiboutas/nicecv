@@ -5,9 +5,6 @@ from ...factories.plans import PremiumPlanFactory
 from ...models import Cv
 from ...models import DeeplLanguage
 from ...models import Profile
-from ...models import Secrets
-from ...models import Tex
-from ...models.tex import copy_texmf
 
 
 class Command(BaseCommand):
@@ -16,18 +13,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Creating objects...")
 
-        # db-based settings
-        Secrets.get()
-
         # language objects
         DeeplLanguage.update_objects()
 
         # plan objects
         PremiumPlanFactory()
         PremiumPlanFactory(price=14, months=6)
-
-        # tex objects
-        Tex.update_objects()
 
         # profile templates
         Profile.create_template_profiles()
