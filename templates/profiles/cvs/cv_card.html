@@ -3,8 +3,8 @@
 <div id="cv_{{ cv.id }}">
   <div class="relative">
     <div class="relative h-full w-full overflow-hidden rounded-lg">
-      <img src="{{ cv.image.url }}"
-           alt="Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls."
+      <img src="{{ cv.image.url }}?{{ cv.id }}"
+           alt="{{ cv.tex.title }}"
            class="h-full w-full object-cover object-center">
     </div>
     <div class="relative mt-4">
