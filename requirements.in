@@ -37,6 +37,7 @@ whitenoise[brotli]
 django-minify-html
 django-extensions
 django-celery-email
+django-tweets
 
 tblib
 djlint
