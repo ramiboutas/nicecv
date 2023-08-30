@@ -5,20 +5,18 @@ import dotenv
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
 
+
 # Setup
 
-# TEST_MODE = True
+
+
+# site
+SITE_ID = 1
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TEMP_DIR = BASE_DIR / "temp"
-
-TESTS_TEMP_DIR = TEMP_DIR / "tests"
-
 TEX_TEMPLATES_DIR = BASE_DIR / "tex_templates"
-
-CV_TEX_DIR = TEX_TEMPLATES_DIR / "cvs"
 
 ORIGIN_TEXMF_DIR = BASE_DIR / "texmf"
 
@@ -115,6 +113,9 @@ INSTALLED_APPS = [
     "fontawesomefree",
     "django_minify_html",
     "djcelery_email",
+    "django_tweets",
+    # "mjml",
+    # "birdsong",
 ]
 
 # Authentication
@@ -295,19 +296,18 @@ LANGUAGES = WAGTAIL_CONTENT_LANGUAGES = (
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
+
+#### Third-party app settings
+
 # Model translation
 MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 # Currency exchange
 OPEN_EXCHANGE_RATES_APP_ID = os.environ.get("OPEN_EXCHANGE_RATES_APP_ID", "")
 
-# geoip2
-GEOIP_PATH = BASE_DIR / "geoip2dbs"
-
 
 # allauth
 
-SITE_ID = 1
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -452,13 +452,30 @@ DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 
 SHELL_PLUS = "ipython"
 
-# svg
+# wagtailsvg
 
 WAGTAILSVG_UPLOAD_FOLDER = "svg"
 SVG_DEFAULT_THEME = "light"
 SVG_DEFAULT_WIDTH = 24
 SVG_DEFAULT_HEIGHT = 24
 
+
+
+# django-tweets
+# Consumer Keys
+TWITTER_API_KEY = os.environ.get("TWITTER_API_KEY")
+TWITTER_API_KEY_SECRET = os.environ.get("TWITTER_API_KEY_SECRET")
+# Authentication Tokens
+TWITTER_BEARER_TOKEN = os.environ.get("TWITTER_BEARER_TOKEN")
+TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN")
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET")
+# OAuth 2.0 Client ID and Client Secret
+TWITTER_CLIENT_ID = os.environ.get("TWITTER_CLIENT_ID")
+TWITTER_CLIENT_SECRET = os.environ.get("TWITTER_CLIENT_SECRET")
+
+
+
+#### Project settings 
 
 # Https for production environment
 if HTTPS:
@@ -469,6 +486,7 @@ if HTTPS:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
+
 
 
 # html form elements
@@ -494,7 +512,6 @@ FORM_ATTRIBUTES = {
     },
 }
 
-# project settings
 
 WAGTAIL_INITIAL_FILE_COLLECTIONS_DIR = BASE_DIR / "initialcollections"
 

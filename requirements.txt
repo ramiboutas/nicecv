@@ -112,6 +112,7 @@ django==4.2.3
     #   django-storages
     #   django-taggit
     #   django-treebeard
+    #   django-tweets
     #   djangorestframework
     #   jsonfield
     #   wagtail
@@ -170,6 +171,8 @@ django-taggit==3.1.0
     # via wagtail
 django-treebeard==4.7
     # via wagtail
+django-tweets==0.0.4
+    # via -r requirements.in
 djangorestframework==3.14.0
     # via wagtail
 djlint==1.31.0
@@ -245,7 +248,9 @@ minify-html==0.11.1
 mypy-extensions==1.0.0
     # via black
 oauthlib==3.2.2
-    # via requests-oauthlib
+    # via
+    #   requests-oauthlib
+    #   tweepy
 openpyxl==3.1.2
     # via wagtail
 packaging==23.1
@@ -342,10 +347,13 @@ requests==2.31.0
     #   django-rosetta
     #   requests-oauthlib
     #   stripe
+    #   tweepy
     #   wagtail
     #   wagtail-generic-chooser
 requests-oauthlib==1.3.1
-    # via django-allauth
+    # via
+    #   django-allauth
+    #   tweepy
 s3transfer==0.6.1
     # via boto3
 six==1.16.0
@@ -378,6 +386,8 @@ traitlets==5.9.0
     # via
     #   ipython
     #   matplotlib-inline
+tweepy==4.14.0
+    # via django-tweets
 typing-extensions==4.6.3
     # via
     #   django-modeltranslation

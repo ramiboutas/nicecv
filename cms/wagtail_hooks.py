@@ -11,3 +11,5 @@ class PersonViewSet(SnippetViewSet):
     list_filter = {
         "job_title": ["icontains"],
     }
+
+
