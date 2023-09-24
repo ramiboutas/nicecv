@@ -8,11 +8,6 @@ from django.utils.translation import gettext_lazy as _
 
 # Setup
 
-
-
-# site
-SITE_ID = 1
-
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,8 +42,6 @@ ALLOWED_HOSTS = [
     "nicecv.online",
     "www.nicecv.online",
     "127.0.0.1",
-    "testserver",
-    "nicecv.local",
 ]
 
 
@@ -120,45 +113,6 @@ INSTALLED_APPS = [
 
 # Authentication
 AUTH_USER_MODEL = "core.User"
-
-
-# Provider specific settings
-SOCIALACCOUNT_GOOGLE_CLIENT_ID = os.environ.get("SOCIALACCOUNT_GOOGLE_CLIENT_ID")
-SOCIALACCOUNT_GOOGLE_SECRET_KEY = os.environ.get("SOCIALACCOUNT_GOOGLE_SECRET_KEY")
-SOCIALACCOUNT_LINKEDIN_CLIENT_ID = os.environ.get("SOCIALACCOUNT_LINKEDIN_CLIENT_ID")
-SOCIALACCOUNT_LINKEDIN_SECRET_KEY = os.environ.get("SOCIALACCOUNT_LINKEDIN_SECRET_KEY")
-
-
-SOCIALACCOUNT_PROVIDERS = {
-    # https://django-allauth.readthedocs.io/en/latest/providers.html#google
-    "google": {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        "APP": {
-            "client_id": SOCIALACCOUNT_GOOGLE_CLIENT_ID,
-            "secret": SOCIALACCOUNT_GOOGLE_SECRET_KEY,
-            "key": "",
-        }
-    },
-    "linkedin_oauth2": {
-        "APP": {
-            "client_id": SOCIALACCOUNT_LINKEDIN_CLIENT_ID,
-            "secret": SOCIALACCOUNT_LINKEDIN_SECRET_KEY,
-            "key": "",
-        },
-        "SCOPE": ["r_liteprofile", "r_emailaddress", "w_member_social"],
-        "PROFILE_FIELDS": [
-            "id",
-            "first-name",
-            "last-name",
-            "email-address",
-            "picture-url",
-            "public-profile-url",
-            "openid",
-        ],
-    },
-}
 
 
 # Email Backend
@@ -327,6 +281,40 @@ LOGIN_REDIRECT_URL = "profile_list"
 LOGOUT_REDIRECT_URL = "/"
 
 
+# django-allauth (social)
+
+SOCIALACCOUNT_PROVIDERS = {
+    # https://django-allauth.readthedocs.io/en/latest/providers.html#google
+    "google": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APP": {
+            "client_id": os.environ.get("SOCIALACCOUNT_GOOGLE_CLIENT_ID"),
+            "secret": os.environ.get("SOCIALACCOUNT_GOOGLE_SECRET_KEY"),
+            "key": "",
+        }
+    },
+    "linkedin_oauth2": {
+        "APP": {
+            "client_id": os.environ.get("SOCIALACCOUNT_LINKEDIN_CLIENT_ID"),
+            "secret": os.environ.get("SOCIALACCOUNT_LINKEDIN_SECRET_KEY"),
+            "key": "",
+        },
+        "SCOPE": ["r_liteprofile", "r_emailaddress", "w_member_social"],
+        "PROFILE_FIELDS": [
+            "id",
+            "first-name",
+            "last-name",
+            "email-address",
+            "picture-url",
+            "public-profile-url",
+            "openid",
+        ],
+    },
+}
+
+
 # Static files (CSS, JavaScript, Images)
 
 STATICFILES_DIRS = [
@@ -370,7 +358,7 @@ if USE_S3:
     MEDIA_STORAGE_BACKEND = "config.storage_backends.MediaRootStorage"
 else:
     MEDIA_URL = LOCAL_MEDIA_URL
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    MEDIA_ROOT = BASE_DIR / "media"
     MEDIA_STORAGE_BACKEND = "django.core.files.storage.FileSystemStorage"
 
 
@@ -438,27 +426,26 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
 
-# analytics
-GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = os.environ.get(
-    "GOOGLE_ANALYTICS_GTAG_PROPERTY_ID", "G-XXXXXXXX"
-)
-
 # rosseta
 
 DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 
 
-# shell plus
+# shell-plus
 
 SHELL_PLUS = "ipython"
 
-# wagtailsvg
+# svg
 
 WAGTAILSVG_UPLOAD_FOLDER = "svg"
 SVG_DEFAULT_THEME = "light"
 SVG_DEFAULT_WIDTH = 24
 SVG_DEFAULT_HEIGHT = 24
 
+
+############################
+##### project settings #####
+############################
 
 
 # django-tweets
@@ -474,8 +461,7 @@ TWITTER_CLIENT_ID = os.environ.get("TWITTER_CLIENT_ID")
 TWITTER_CLIENT_SECRET = os.environ.get("TWITTER_CLIENT_SECRET")
 
 
-
-#### Project settings 
+#### Project settings
 
 # Https for production environment
 if HTTPS:
@@ -486,7 +472,6 @@ if HTTPS:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
-
 
 
 # html form elements
@@ -512,6 +497,7 @@ FORM_ATTRIBUTES = {
     },
 }
 
+# project settings
 
 WAGTAIL_INITIAL_FILE_COLLECTIONS_DIR = BASE_DIR / "initialcollections"
 
