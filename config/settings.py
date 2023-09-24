@@ -142,6 +142,7 @@ MIDDLEWARE = [
     # wagtails middlewares
     # "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # third-party middlewares
+    "allauth.account.middleware.AccountMiddleware",
     "django_minify_html.middleware.MinifyHtmlMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
