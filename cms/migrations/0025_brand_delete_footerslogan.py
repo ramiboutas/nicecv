@@ -7,7 +7,6 @@ from django.db import models
 class Migration(migrations.Migration):
     dependencies = [
         ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
-        ("wagtailsvg", "0005_alter_svg_file"),
         ("cms", "0024_alter_blogpostpage_description"),
     ]
 
