@@ -4,8 +4,9 @@ from wagtail.admin.panels import MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting
 from wagtail.contrib.settings.models import register_setting
 from wagtail.models import Page
-from wagtailsvg.edit_handlers import SvgChooserPanel
-from wagtailsvg.models import Svg
+
+from wagtail.images.models import Image
+
 
 from ..utils import localized_fieldpanel_list
 
@@ -40,12 +41,16 @@ class Brand(BaseSiteSetting):
     footer_text = models.TextField(blank=True, null=True)
     name = models.CharField(blank=True, null=True, max_length=16)
     svg = models.ForeignKey(
-        Svg, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
+        Image, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
+    )
+    svg_footer = models.ForeignKey(
+        Image, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
     )
 
     panels = [
-        SvgChooserPanel("svg"),
         FieldPanel("name"),
+        FieldPanel("svg"),
+        FieldPanel("svg_footer"),
         MultiFieldPanel(
             localized_fieldpanel_list("footer_text"),
             heading="Footer Slogan in Footer",

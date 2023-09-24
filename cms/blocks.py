@@ -8,7 +8,6 @@ from wagtail.blocks import StructBlock
 from wagtail.blocks import TextBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
-from wagtailsvg.blocks import SvgChooserBlock
 
 
 class ImageSection(StructBlock):
@@ -103,7 +102,7 @@ class FeatureItemBlock(StructBlock):
         blank=True,
         help_text="Feature description",
     )
-    svg = SvgChooserBlock(help_text="Feature svg")
+    svg = ImageChooserBlock(help_text="Feature svg")
 
 
 class FeatureSection(StructBlock):

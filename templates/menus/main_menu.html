@@ -1,16 +1,12 @@
-{% load i18n static %}
+{% load i18n static svg %}
 <nav class=" shadow" x-data="{ openMobile: false }">
   <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
     <div class="flex h-16 justify-between">
       <div class="flex px-2 lg:px-0">
-        <div class="flex flex-shrink-0 items-center">
-          <img class="block h-8 w-auto lg:hidden"
-               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-               alt="Your Company">
-          <img class="hidden h-8 w-auto lg:block"
-               src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-               alt="Your Company">
-        </div>
+        <a class="mt-2 flex flex-shrink-0 items-center" href="/">
+          {% svg settings.cms.Brand.svg.file class=" h-8 text-indigo-600" %}
+          {{ settings.cms.Brand.name }}
+        </a>
         <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
           <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
           {% for item in menu_items %}

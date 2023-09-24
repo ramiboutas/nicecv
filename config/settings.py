@@ -38,11 +38,7 @@ DEBUG = os.environ.get("DEBUG", "") == "1"
 
 INTERNAL_IPS = ["127.0.0.1"]
 
-ALLOWED_HOSTS = [
-    "nicecv.online",
-    "www.nicecv.online",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["nicecv.online", "www.nicecv.online", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -101,7 +97,6 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "debug_toolbar",
     "django_browser_reload",
-    "wagtailsvg",
     "generic_chooser",
     "fontawesomefree",
     "django_minify_html",
@@ -436,13 +431,6 @@ DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 
 SHELL_PLUS = "ipython"
 
-# svg
-
-WAGTAILSVG_UPLOAD_FOLDER = "svg"
-SVG_DEFAULT_THEME = "light"
-SVG_DEFAULT_WIDTH = 24
-SVG_DEFAULT_HEIGHT = 24
-
 
 ############################
 ##### project settings #####
@@ -500,7 +488,9 @@ FORM_ATTRIBUTES = {
 
 # project settings
 
-WAGTAIL_INITIAL_FILE_COLLECTIONS_DIR = BASE_DIR / "initialcollections"
+SITE_ID = 1
+
+WAGTAIL_INITIAL_SVGS_DIR = BASE_DIR / "initialsvgs"
 
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
 
