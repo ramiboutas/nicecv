@@ -5,6 +5,7 @@ on: [push]
 jobs:
   build:
     name: build, test and deploy django app
+    if: contains(github.event.head_commit.message, '--ga')
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -20,24 +21,24 @@ jobs:
     steps:
     - name: Check out repo
       uses: actions/checkout@v3
-#    - name: Set up Python
-#      uses: actions/setup-python@v4
-#      with:
-#        python-version: "3.11"
-#    - uses: actions/cache@v3
-#      name: Configure pip caching
-#      with:
-#        path: ~/.cache/pip
-#        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-#        restore-keys: |
-#          ${{ runner.os }}-pip-
-#    - name: Install Python dependencies
-#      run: |
-#        python -m pip install --upgrade pip
-#        python -m pip install -r requirements.txt
-#    - name: Run Tests
-#      run: |
-#        python manage.py test
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    - uses: actions/cache@v3
+      name: Configure pip caching
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        python manage.py test
     - name: Deploy to server, executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
       with:
@@ -53,3 +54,6 @@ jobs:
           pip-sync
           python manage.py collectstatic --noinput
           python manage.py migrate
+          systemctl --user restart celerybeat_nicecv.service
+          systemctl --user restart celery_nicecv.service
+          systemctl --user restart gunicorn_nicecv.service

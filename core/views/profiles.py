@@ -24,14 +24,7 @@ from ..sessions import get_or_create_session
 def create_profile_cv(request, profile_id, tex_id):
     profile = get_object_or_404(Profile, id=profile_id)
     tex = get_object_or_404(Tex, id=tex_id)
-    try:
-        cv, created = Cv.objects.get_or_create(profile=profile, tex=tex)
-    except Cv.MultipleObjectsReturned:
-        created = False
-        cv = Cv.objects.filter(profile=profile, tex=tex).last()
-
-    if not created:
-        cv.save()
+    cv = Cv.objects.create(profile=profile, tex=tex)
     context = {"cv": cv, "profile": profile}
     return render(request, "profiles/cvs/cv_card.html", context)
 

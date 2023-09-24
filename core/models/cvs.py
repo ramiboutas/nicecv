@@ -14,14 +14,17 @@ from django.template.loader import get_template
 from django.utils.translation import gettext_lazy as _
 from pdf2image import convert_from_path
 
+from django.utils import timezone
+
 from ..exceptions import TexError
 from .profiles import Profile
 
-# from ..tex.compile import compile_template_to_pdf
+
+now = timezone.now()
 
 
 def get_cv_upload_path(cv, filename):
-    return f"profiles/{cv.profile.category}/{cv.profile.id}/cvs/{filename}"
+    return f"profiles-{cv.profile.category}/{now.year}-{now.month}/{now.day}/{cv.profile.id}/{filename}"
 
 
 class Cv(auto_prefetch.Model):
@@ -64,7 +67,13 @@ class Cv(auto_prefetch.Model):
             with open(temppath / "texput.pdf", "rb") as f:
                 bytes_pdf = f.read()
 
-            self.pdf.save(f"{self.profile.id}.pdf", ContentFile(bytes_pdf), save=False)
+            filename = f"CV_{now.year}{now.month}{now.day}_{now.hour}{now.minute}{now.second}_{now.microsecond}"
+
+            self.pdf.save(
+                f"{filename}.pdf",
+                ContentFile(bytes_pdf),
+                save=False,
+            )
             # pdf time calculations
             pdf_end = time.time()
             self.pdf_time = pdf_end - pdf_start
@@ -78,7 +87,7 @@ class Cv(auto_prefetch.Model):
             )[0]
             with open(image.filename, "rb") as f:
                 self.image.save(
-                    f"{self.profile.id}.jpg",
+                    f"{filename}.jpg",
                     ContentFile(f.read()),
                     save=False,
                 )

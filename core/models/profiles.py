@@ -11,11 +11,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage as storage
+from django.core.files.storage import storages
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+
 from PIL import Image
 
 from ..tex.filters import do_latex_escape
@@ -239,7 +241,11 @@ class Profile(auto_prefetch.Model):
     )
     # photo-related fields
     full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
-    cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
+    cropped_photo = models.ImageField(
+        null=True,
+        upload_to=get_photo_upload_path,
+        storage=storages["local"],
+    )
     crop_x = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_y = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_width = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -421,10 +427,13 @@ class Profile(auto_prefetch.Model):
         # https://stackoverflow.com/questions/36021526/converting-an-array-dict-to-xml-in-python
         pass
 
+    def generate_cropped_photo_name(self):
+        return f'cropped_{self.crop_x}_{self.crop_y}_{self.crop_width}_{self.crop_height}_{self.full_photo.name.split("/")[-1]}'
+
     def crop_photo(self):
         if self.full_photo:
             self.cropped_photo.save(
-                "cropped_" + self.full_photo.name.split("/")[-1],
+                self.generate_cropped_photo_name(),
                 ContentFile(self.full_photo.read()),
                 save=False,
             )
@@ -439,8 +448,9 @@ class Profile(auto_prefetch.Model):
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
 
-            # resized_image.save(self.cropped_photo.path, save=False)
-            fh = storage.open(self.cropped_photo.name, "wb")
+            # TODO: this code need to be improved
+            # the field Profile.cropped_photo has already a specified storage object
+            fh = storages["local"].open(self.cropped_photo.name, "wb")
             resized_image.save(fh, "png")
             fh.close()
 
