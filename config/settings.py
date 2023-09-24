@@ -104,6 +104,7 @@ INSTALLED_APPS = [
     "django_tweets",
     # "mjml",
     # "birdsong",
+    "wagtailsvg",
 ]
 
 # Authentication
