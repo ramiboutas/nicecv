@@ -1,10 +1,6 @@
 {% if profile.photo_active %}
   {% load static i18n %}
-  <div {% if photoopen or request.GET.photoopen %}
-         x-data="{ show : true }"
-       {% else %}
-         x-data="{ show : false }"
-       {% endif %}>
+  <div {% if photoopen or request.GET.photoopen %} x-data="{ show : true }" {% else %} x-data="{ show : false }" {% endif %}>
     <div>
       {% if profile.cropped_photo %}
         <button class="w-full" @click="show = true" onclick="pollImageToCrop()">

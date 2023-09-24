@@ -1,9 +1,8 @@
+from wagtail.admin.panels import FieldPanel
+from wagtail.fields import StreamField
 from wagtail.models import Page
 
-from wagtail.fields import StreamField
-
 from ..streams import TextStreamBlock
-from wagtail.admin.panels import FieldPanel
 
 
 class TextPage(Page):

@@ -1,8 +1,7 @@
-from django.urls import reverse
 from django.core.exceptions import ValidationError
-
-from wagtail.management.commands.fixtree import Command as FixTreeCommand
+from django.urls import reverse
 from wagtail.admin.panels import FieldPanel
+from wagtail.management.commands.fixtree import Command as FixTreeCommand
 from wagtail.models import Page
 
 from .home import get_default_homepage

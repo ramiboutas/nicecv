@@ -1,12 +1,13 @@
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import Paginator
 from django.db import models
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-
-from wagtail.models import Page
-from wagtail.models import Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import StreamField
-
 from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import InlinePanel
+from wagtail.fields import StreamField
+from wagtail.models import Orderable
+from wagtail.models import Page
 
 from ..streams import ArticleStreamBlock
 

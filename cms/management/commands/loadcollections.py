@@ -1,10 +1,8 @@
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.base import File
 from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile, File
-
-
 from wagtail.models import Collection
-
 from wagtailsvg.models import Svg
 
 

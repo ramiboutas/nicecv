@@ -1,6 +1,5 @@
-from wagtail.admin.panels import FieldPanel
-
 from django.conf import settings
+from wagtail.admin.panels import FieldPanel
 
 
 def localized_fieldpanel_list(field_name: str):

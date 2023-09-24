@@ -1,15 +1,13 @@
 from django.conf import settings
-
 from wagtail.blocks import CharBlock
 from wagtail.blocks import ChoiceBlock
+from wagtail.blocks import ListBlock
+from wagtail.blocks import PageChooserBlock
 from wagtail.blocks import RichTextBlock
 from wagtail.blocks import StructBlock
 from wagtail.blocks import TextBlock
-from wagtail.blocks import ListBlock
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
-from wagtail.blocks import PageChooserBlock
-
 from wagtailsvg.blocks import SvgChooserBlock
 
 

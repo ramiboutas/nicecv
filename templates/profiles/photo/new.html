@@ -5,9 +5,7 @@
       hx-target="this">
   {% csrf_token %}
   <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-         for="{{ uploadphoto_form.full_photo.id_for_label }}">
-    {% trans "Upload photo" %}
-  </label>
+         for="{{ uploadphoto_form.full_photo.id_for_label }}">{% trans "Upload photo" %}</label>
   {{ uploadphoto_form.full_photo }}
   <p class="mt-2 text-sm text-red-600">{{ field.errors }}</p>
   <div class="flex items-center justify-end gap-x-6 py-4">

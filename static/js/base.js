@@ -70,5 +70,3 @@ function getInitData() {
   return data;
 
 }
-
-

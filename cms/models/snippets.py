@@ -1,21 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext as _
-
-from wagtail.snippets.models import register_snippet
-
 from modelcluster.models import ClusterableModel
-from wagtail.admin.panels import (
-    FieldPanel,
-    PublishingPanel,
-)
-from wagtail.models import (
-    DraftStateMixin,
-    LockableMixin,
-    PreviewableMixin,
-    RevisionMixin,
-    WorkflowMixin,
-)
+from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import PublishingPanel
+from wagtail.models import DraftStateMixin
+from wagtail.models import LockableMixin
+from wagtail.models import PreviewableMixin
+from wagtail.models import RevisionMixin
+from wagtail.models import WorkflowMixin
 from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 
 from ..utils import localized_fieldpanel_list
 

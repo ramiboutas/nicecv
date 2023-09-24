@@ -1,9 +1,7 @@
 from django.conf import settings
-from django.views.i18n import set_language
 from django.contrib import messages
 from django.utils.translation import gettext as _
-
-
+from django.views.i18n import set_language
 from wagtail.models import Locale
 from wagtail.models import Page
 

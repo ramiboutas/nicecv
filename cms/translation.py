@@ -1,11 +1,11 @@
 from modeltranslation.translator import register
 from modeltranslation.translator import TranslationOptions
 
-from .models import CustomMainMenuItem
-from .models import CustomFlatMenuItem
-from .models import CustomFlatMenu
-from .models import Brand
 from .models import Banner
+from .models import Brand
+from .models import CustomFlatMenu
+from .models import CustomFlatMenuItem
+from .models import CustomMainMenuItem
 from .models import FrequentAskedQuestion
 
 

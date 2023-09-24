@@ -1,10 +1,8 @@
 from django.conf import settings
+from django.db import models
 from django.utils.translation import gettext as _
-
-
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
-
 from wagtail.models import Page
 
 from ..streams import FullStreamBlock

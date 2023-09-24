@@ -13,11 +13,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from djstripe import settings as djstripe_settings
 
-from cms.models.snippets import FrequentAskedQuestion
 from ..models.plans import PremiumPlan
 from ..models.users import User
 from ..models.users import UserPremiumPlan
 from .payments import create_stripe_session
+from cms.models.snippets import FrequentAskedQuestion
 
 logger = logging.getLogger(__name__)
 stripe.api_key = djstripe_settings.djstripe_settings.STRIPE_SECRET_KEY
