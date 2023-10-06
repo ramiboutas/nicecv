@@ -96,6 +96,7 @@ django==4.2.5
     #   django-celery-email
     #   django-celery-results
     #   django-crispy-forms
+    #   django-dbbackup
     #   django-debug-toolbar
     #   django-extensions
     #   django-filter
@@ -138,6 +139,8 @@ django-crispy-forms==2.0
     # via
     #   -r requirements.in
     #   crispy-tailwind
+django-dbbackup==4.0.2
+    # via -r requirements.in
 django-debug-toolbar==4.2.0
     # via -r requirements.in
 django-extensions==3.2.3
@@ -328,6 +331,7 @@ python3-openid==3.2.0
     # via django-allauth
 pytz==2023.3.post1
     # via
+    #   django-dbbackup
     #   django-modelcluster
     #   djangorestframework
     #   l18n

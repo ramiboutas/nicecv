@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     # "mjml",
     # "birdsong",
     "wagtailsvg",
+    "dbbackup",
 ]
 
 # Authentication
@@ -350,7 +351,7 @@ if USE_S3:
     AWS_DEFAULT_ACL = None
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-    AWS_MEDIA_LOCATION = "nicecv-media"
+    AWS_MEDIA_LOCATION = "nicecv/media"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
     MEDIA_STORAGE_BACKEND = "config.storage_backends.MediaRootStorage"
 else:
@@ -366,7 +367,7 @@ STORAGES = {
     "local": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {
-            "location": "/media/nicecv",
+            "location": BASE_DIR / "media",
             "base_url": LOCAL_MEDIA_URL,
         },
     },
@@ -374,6 +375,20 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+
+## Backup
+
+# Backups
+DBBACKUP_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DBBACKUP_STORAGE_OPTIONS = {
+    "access_key": AWS_ACCESS_KEY_ID,
+    "secret_key": AWS_SECRET_ACCESS_KEY,
+    "bucket_name": AWS_STORAGE_BUCKET_NAME,
+    "location": "nicecv/backups/",
+    "default_acl": "private",
+}
+
 
 # caching
 # Server-side cache settings. Do not confuse with front-end cache.

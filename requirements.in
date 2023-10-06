@@ -11,6 +11,7 @@ django-allauth
 django-simple-menu
 django-htmx
 django-crispy-forms
+django-dbbackup
 django-celery-results
 django-slugger
 python-dotenv
