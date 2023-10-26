@@ -18,7 +18,21 @@
     <link href="{% static 'fontawesomefree/css/solid.css' %}"
           rel="stylesheet"
           type="text/css">
-    <!-- for more css in a specific page -->
+    
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R41NBVLCS8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-R41NBVLCS8');
+    </script>
+
+    
+          <!-- for more css in a specific page -->
+
     {% block css %}
     {% endblock css %}
     <title>
