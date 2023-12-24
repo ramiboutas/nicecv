@@ -340,23 +340,22 @@ WAGTAILMENUS_FLAT_MENUS_HANDLE_CHOICES = (
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = ((BASE_DIR / "static"),)
-
 LOCAL_MEDIA_URL = "/media/"
 
 # media storage (aws s3)
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 if USE_S3:
-    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
-    AWS_DEFAULT_ACL = None
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_MEDIA_LOCATION = "nicecv/media"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
     MEDIA_STORAGE_BACKEND = "config.storage_backends.MediaRootStorage"
 else:
-    MEDIA_URL = LOCAL_MEDIA_URL
     MEDIA_ROOT = BASE_DIR / "media"
+    MEDIA_URL = LOCAL_MEDIA_URL
     MEDIA_STORAGE_BACKEND = "django.core.files.storage.FileSystemStorage"
 
 

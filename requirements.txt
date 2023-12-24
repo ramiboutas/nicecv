@@ -14,6 +14,8 @@ astroid==2.15.7
     # via pylint
 asttokens==2.4.0
     # via stack-data
+async-timeout==4.0.3
+    # via -r requirements.in
 autopep8==2.0.4
     # via -r requirements.in
 babel==2.12.1
@@ -310,7 +312,9 @@ pyflakes==3.1.0
 pygments==2.16.1
     # via ipython
 pyjwt[crypto]==2.8.0
-    # via django-allauth
+    # via
+    #   django-allauth
+    #   pyjwt
 pylint==2.17.5
     # via
     #   -r requirements.in
@@ -431,7 +435,9 @@ webencodings==0.5.1
 whitenoise[brotli]==6.5.0
     # via -r requirements.in
 willow[heif]==1.6.2
-    # via wagtail
+    # via
+    #   wagtail
+    #   willow
 wrapt==1.15.0
     # via astroid
 
