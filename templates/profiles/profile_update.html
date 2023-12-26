@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load static i18n %}
 {% block title %}
-  | {% translate "My profile" %}
+  {% if profile.fullname %}
+    {{ profile.fullname }}
+  {% else %}
+    {% translate "My profile" %}
+  {% endif %}
 {% endblock title %}
 {% block css %}
   <!-- cropper  -->
@@ -64,7 +68,7 @@
         <h2 class="text-xl font-bold text-gray-900">{% trans "CVs" %}</h2>
         <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
           {% for cv in profile.fetch_cvs %}
-            {% include "profiles/cvs/cv_card.html" %}
+            {% include "profiles/cvs/card.html" %}
           {% endfor %}
         </div>
       </div>

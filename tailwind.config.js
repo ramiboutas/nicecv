@@ -8,7 +8,7 @@ module.exports = {
     "./templates/**/*.html",
     "./templates/**/**/*.html",
     "./templates/**/**/**/*.html",
-    "./templates/**/**/**/*.html",
+    "./templates/**/**/**/**/*.html",
     "./venv/lib/**/site-packages/crispy_tailwind/templates/tailwind/*.html",
     "./venv/lib/**/site-packages/crispy_tailwind/templates/tailwind/**/*.html",
     "./static/js/*.js",

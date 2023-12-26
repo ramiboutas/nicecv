@@ -5,9 +5,7 @@ from .models.snippets import Person
 
 class PersonViewSet(SnippetViewSet):
     model = Person
-    menu_label = "People"  # ditch this to use verbose_name_plural from model
-    icon = "group"  # change as required
+    menu_label = "People"
+    icon = "group"
     list_display = ("name", "job_title", "thumb_image")
-    list_filter = {
-        "job_title": ["icontains"],
-    }
+    list_filter = {"job_title": ["icontains"]}

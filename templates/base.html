@@ -6,6 +6,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="{{ settings.cms.Brand.svg.file.url }}" />
+    <link rel="apple-touch-icon" href="{{ settings.cms.Brand.svg.file.url }}" />
     <!-- css -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}" />
@@ -18,8 +21,6 @@
     <link href="{% static 'fontawesomefree/css/solid.css' %}"
           rel="stylesheet"
           type="text/css">
-    
-
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-R41NBVLCS8"></script>
     <script>
@@ -29,10 +30,7 @@
 
       gtag('config', 'G-R41NBVLCS8');
     </script>
-
-    
-          <!-- for more css in a specific page -->
-
+    <!-- for more css in a specific page -->
     {% block css %}
     {% endblock css %}
     <title>
@@ -42,14 +40,12 @@
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full">
     {% include "includes/banner.html" %}
-    <!-- TODO: add template caching with arg=language_code -->
     {% include "includes/navbar.html" %}
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
       {% include "includes/messages.html" %}
       {% block content %}
       {% endblock content %}
     </div>
-    <!-- TODO: add template caching with arg=language_code -->
     {% include "includes/footer.html" %}
     <!-- js -->
     <script defer src="{% static 'js/htmx.js' %}"></script>

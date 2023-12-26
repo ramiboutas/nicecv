@@ -34,9 +34,9 @@ class Profile(auto_prefetch.Model):
     """
 
     PROFILE_CATEGORIES = (
-        ("temporal", _("Temporal")),
-        ("user", _("User profile")),
-        ("template", _("Template")),
+        ("temporal", _("⏳ Temporal")),
+        ("user", _("👤 User profile")),
+        ("template", _("📊 Template")),
     )
 
     id = models.UUIDField(
@@ -446,7 +446,7 @@ class Profile(auto_prefetch.Model):
                 self.crop_y + self.crop_height,
             )
             cropped_image = image.crop(cropping_area)
-            resized_image = cropped_image.resize((300, 300), Image.ANTIALIAS)
+            resized_image = cropped_image.resize((300, 300), Image.LANCZOS)
 
             # TODO: this code need to be improved
             # the field Profile.cropped_photo has already a specified storage object
@@ -505,10 +505,10 @@ class Profile(auto_prefetch.Model):
 
         profile_cvs = self.cv_set.all()
         template_cvs = Cv.objects.filter(
-            profile__category="template",
-            profile__language_code=self.language_code,
+            profile__category="template", profile__language_code=self.language_code
         ).exclude(tex__in=[cv.tex for cv in profile_cvs])
-        return sorted(chain(template_cvs, profile_cvs), key=attrgetter("created"))
+        return chain(profile_cvs, template_cvs)
+        # return sorted(chain(profile_cvs, template_cvs), key=attrgetter("created_on"))
 
     def save(self, *args, **kwargs):
         if self.about:
@@ -520,7 +520,7 @@ class Profile(auto_prefetch.Model):
         return f"{self.category.capitalize()} Profile ({self.fullname} - {self.language_code})"
 
 
-class LevelMethodsMixin:
+class LevelMethodsMixin(object):
     @property
     def level_base_5_int(self):
         return round(self.level * 5 / 100)
@@ -557,14 +557,8 @@ class AbstractChildSet(auto_prefetch.Model):
 
 
 class Skill(AbstractChildSet, LevelMethodsMixin):
-    name = models.CharField(
-        "📊 " + _("Skill"),
-        max_length=50,
-    )
-    level = models.IntegerField(
-        _("Level"),
-        default=50,
-    )
+    name = models.CharField("📊 " + _("Skill"), max_length=50)
+    level = models.IntegerField(_("Level"), default=50)
 
     def __str__(self):
         return self.name
@@ -575,33 +569,18 @@ class LanguageAbility(AbstractChildSet, LevelMethodsMixin):
     An object representing the languages that the member holds.
     """
 
-    name = models.CharField(
-        "🗣️ " + _("Language"),
-        max_length=50,
-    )
-    level = models.IntegerField(
-        _("Level"),
-        default=50,
-    )
+    name = models.CharField("🗣️ " + _("Language"), max_length=50)
+    level = models.IntegerField(_("Level"), default=50)
 
     def __str__(self):
         return self.name
 
 
 class AbstractModelWithDatesAndDescription(auto_prefetch.Model):
-    start_date = models.CharField(
-        "🗓️ " + _("Start date"),
-        max_length=16,
-    )
-    end_date = models.CharField(
-        "🗓️ " + _("End date"),
-        max_length=16,
-    )
+    start_date = models.CharField("🗓️ " + _("Start date"), max_length=16)
+    end_date = models.CharField("🗓️ " + _("End date"), max_length=16)
     description = models.TextField(
-        "📝 " + _("What did you learn?"),
-        null=True,
-        blank=True,
-        max_length=1024,
+        "📝 " + _("Description"), null=True, blank=True, max_length=1024
     )
     rows = models.PositiveSmallIntegerField(default=10)
 
@@ -621,14 +600,8 @@ class Education(AbstractChildSet, AbstractModelWithDatesAndDescription):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/education
     """
 
-    title = models.CharField(
-        "🎓 " + _("Title"),
-        max_length=64,
-    )
-    institution = models.CharField(
-        "🏫 " + _("Institution"),
-        max_length=32,
-    )
+    title = models.CharField("🎓 " + _("Title"), max_length=64)
+    institution = models.CharField("🏫 " + _("Institution"), max_length=3)
 
     class Meta(AbstractChildSet.Meta):
         verbose_name_plural = _("Education")
@@ -641,19 +614,10 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
     """
 
     title = models.CharField(
-        "🧑‍💼 " + _("Job title"),
-        null=True,
-        blank=True,
-        max_length=64,
+        "🧑‍💼 " + _("Job title"), null=True, blank=True, max_length=64
     )
-    location = models.CharField(
-        "📍 " + _("Location"),
-        max_length=32,
-    )
-    company = models.CharField(
-        "🏢 " + _("Company name"),
-        max_length=32,
-    )
+    location = models.CharField("📍 " + _("Location"), max_length=3)
+    company = models.CharField("🏢 " + _("Company name"), max_length=3)
 
     class Meta(AbstractChildSet.Meta):
         verbose_name_plural = _("Experience")
@@ -665,16 +629,8 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
 class Achievement(AbstractChildSet):
     """Archivement object"""
 
-    title = models.CharField(
-        "🏆 " + _("Goal achieved"),
-        max_length=64,
-    )
-    date = models.CharField(
-        "🗓️ " + _("Date"),
-        null=True,
-        blank=True,
-        max_length=16,
-    )
+    title = models.CharField("🏆 " + _("Goal achieved"), max_length=6)
+    date = models.CharField("🗓️ " + _("Date"), null=True, blank=True, max_length=16)
 
 
 class Project(AbstractChildSet):
@@ -684,10 +640,7 @@ class Project(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/project
     """
 
-    title = models.CharField(
-        "🌍 " + _("Project name"),
-        max_length=64,
-    )
+    title = models.CharField("🌍 " + _("Project name"), max_length=64)
     role = models.CharField(
         "🧑‍💼 " + _("Role in the project"),
         null=True,
@@ -715,33 +668,14 @@ class Publication(AbstractChildSet):
     # https://docs.microsoft.com/en-us/linkedin/shared/references/v2/profile/publication
     """
 
-    date = models.CharField(
-        "🗓️ " + _("Date"),
-        null=True,
-        blank=True,
-        max_length=16,
-    )
-    title = models.CharField(
-        "🔬 " + _("Publication title"),
-        max_length=128,
-    )
+    date = models.CharField("🗓️ " + _("Date"), null=True, blank=True, max_length=16)
+    title = models.CharField("🔬 " + _("Publication title"), max_length=128)
     authors = models.CharField(
-        "👥 " + _("Authors"),
-        null=True,
-        blank=True,
-        max_length=64,
+        "👥 " + _("Authors"), null=True, blank=True, max_length=64
     )
     publisher = models.CharField(
-        "📑 " + _("Publisher"),
-        null=True,
-        blank=True,
-        max_length=32,
+        "📑 " + _("Publisher"), null=True, blank=True, max_length=32
     )
 
     # try not to include
-    link = models.URLField(
-        "🔗 " + _("Link"),
-        null=True,
-        blank=True,
-        max_length=128,
-    )
+    link = models.URLField("🔗 " + _("Link"), null=True, blank=True, max_length=128)

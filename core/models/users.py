@@ -16,24 +16,16 @@ class User(AbstractUser):
     def plan(self):
         """Return a PremiumPlan object if the user has a Premium plan.
         If not, return the only FreePlan instance"""
-        user_premium_plan = self.user_premium_plans.filter(
+        premiumplan = self.user_premium_plans.filter(
             expires__gte=datetime.date.today()
         ).first()
-        if user_premium_plan:
-            return user_premium_plan.plan
+        if premiumplan:
+            return premiumplan.plan
         return FreePlan.get()
 
     @cached_property
     def fullname(self):
         return self.first_name + " " + self.last_name
-
-    @cached_property
-    def number_of_profiles(self):
-        return self.plan.profiles
-
-    @cached_property
-    def number_of_cvs(self):
-        return self.plan.cvs_per_profile
 
     def __str__(self) -> str:
         return f"User ({self.username} - {self.email})"
@@ -41,16 +33,9 @@ class User(AbstractUser):
 
 class UserPremiumPlan(auto_prefetch.Model):
     user = auto_prefetch.ForeignKey(
-        User,
-        related_name="user_premium_plans",
-        on_delete=models.SET_NULL,
-        null=True,
+        User, related_name="user_premium_plans", on_delete=models.SET_NULL, null=True
     )
-    plan = auto_prefetch.OneToOneField(
-        PremiumPlan,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
+    plan = auto_prefetch.ForeignKey(PremiumPlan, on_delete=models.SET_NULL, null=True)
     created = models.DateField(auto_now_add=True)
     starts = models.DateField()
     expires = models.DateField()

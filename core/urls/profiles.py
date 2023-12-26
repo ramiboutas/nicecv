@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ..views.profiles import create_profile_cv
+from ..views.profiles import hx_create_profile_cv
 from ..views.profiles import crop_profile_photo
 from ..views.profiles import delete_photo_files
 from ..views.profiles import delete_profile_child
@@ -90,8 +90,8 @@ urlpatterns = [
     ),
     # create cv
     path(
-        "profile-create-cv/<uuid:profile_id>/<int:tex_id>/",
-        create_profile_cv,
+        "profile-create-cv/<uuid:profile_id>/<int:tex_id>/<str:html_out>/",
+        hx_create_profile_cv,
         name="profile_create_cv",
     ),
 ]

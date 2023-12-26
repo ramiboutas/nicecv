@@ -7,36 +7,28 @@ from ..forms.users import CustomUserChangeForm
 from ..forms.users import CustomUserCreationForm
 
 
+from ..models.users import UserPremiumPlan
+
+
+class UserPremiumPlanInline(admin.TabularInline):
+    model = UserPremiumPlan
+    extra = 0
+
+
 @admin.register(get_user_model())
 class UserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     models = get_user_model()
-    list_display = [
-        "__str__",
-        "email",
-        "username",
-    ]
+    list_display = ["__str__", "email", "username"]
     fieldsets = (
         (
             None,
-            {
-                "fields": (
-                    "username",
-                    "password",
-                )
-            },
+            {"fields": ("username", "password")},
         ),
         (
             _("Personal info"),
-            {
-                "fields": (
-                    "first_name",
-                    "last_name",
-                    "email",
-                    "avatar_url",
-                )
-            },
+            {"fields": ("first_name", "last_name", "email", "avatar_url")},
         ),
         (
             _("Permissions"),
@@ -52,11 +44,7 @@ class UserAdmin(UserAdmin):
         ),
         (
             _("Important dates"),
-            {
-                "fields": (
-                    "last_login",
-                    "date_joined",
-                )
-            },
+            {"fields": ("last_login", "date_joined")},
         ),
     )
+    inlines = (UserPremiumPlanInline,)

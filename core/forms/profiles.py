@@ -11,6 +11,29 @@ from ..models import profiles
 from ..utils import build_form_widgets
 
 
+# text input attrs
+TEXTINPUT_CLASS = (
+    "px-2 w-full rounded-md border-transparent focus:border-transparent focus:ring-0"
+)
+TEXTINPUT_X_BIND_CLASS = "active ? 'bg-indigo-200' : ''"
+TEXTINPUT_HX_TRIGGER = "keyup changed delay:1s, change"
+TEXTINPUT_LABEL_CLASS = (
+    "absolute -top-2 left-2 inline-block px-1 text-xs font-medium text-gray-400"
+)
+TEXTINPUT_LABEL_X_BIND_CLASS = "active ? ' bg-indigo-200' : ''"
+
+# range input attrs
+RANGEINPUT_CLASS = "w-full"
+
+# check box input attrs
+CHECKBOX_CLASS = (
+    "h-4 w-4 rounded border-indigo-600 focus:ring-indigo-400 accent-indigo-600"
+)
+
+# file input attrs
+FILEINPUT_CLASS = "block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+
+
 @cache
 def get_inlineforms() -> dict:
     Forms = [k for _, k in inspect.getmembers(sys.modules[__name__], inspect.isclass)]
@@ -55,8 +78,8 @@ class ProfileFieldForm(ModelForm):
                 "website",
                 "language_code",
             ],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             hx_post=profile.update_fields_url,
             hx_trigger="keyup changed delay:3s, change",
             hx_swap="none",
@@ -64,10 +87,10 @@ class ProfileFieldForm(ModelForm):
         build_form_widgets(
             self,
             fields=["about"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
+            html_class=TEXTINPUT_CLASS,
             html_rows=profile.about_rows,
             html_autocomplete="off",
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             hx_post=profile.update_fields_url,
             hx_trigger="keyup changed delay:5s, change",
             hx_swap="none",
@@ -95,7 +118,7 @@ class ActivationForm(ModelForm):
         build_form_widgets(
             self,
             fields=self.Meta.fields,
-            html_class=settings.FORM_ATTRIBUTES["checkbox"]["class"],
+            html_class=CHECKBOX_CLASS,
         )
 
     class Meta:
@@ -122,8 +145,8 @@ class LabellingForm(ModelForm):
         build_form_widgets(
             self,
             fields=self.Meta.fields,
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
         )
 
     class Meta:
@@ -156,7 +179,7 @@ class UploadPhotoForm(ModelForm):
         build_form_widgets(
             self,
             fields=["full_photo"],
-            html_class=settings.FORM_ATTRIBUTES["fileinput"]["class"],
+            html_class=FILEINPUT_CLASS,
         )
 
     class Meta:
@@ -195,7 +218,7 @@ class BaseChildFormSet(ModelForm):
                 self,
                 fields=["level"],
                 widget_types={"level": "range"},
-                html_class=settings.FORM_ATTRIBUTES["rangeinput"]["class"],
+                html_class=RANGEINPUT_CLASS,
             )
 
 
@@ -205,8 +228,8 @@ class SkillForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["name"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
 
@@ -221,8 +244,8 @@ class LanguageAbilityForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["name"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
 
@@ -239,15 +262,15 @@ class EducationForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["title", "institution", "start_date", "end_date"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
         build_form_widgets(
             self,
             fields=["description"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_rows=rows,
             html_autocomplete="off",
         )
@@ -265,15 +288,15 @@ class ExperienceForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["title", "company", "start_date", "end_date"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
         build_form_widgets(
             self,
             fields=["description"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_rows=rows,
             html_autocomplete="off",
         )
@@ -290,8 +313,8 @@ class AchievementForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["title", "date"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
 
@@ -306,8 +329,8 @@ class ProjectForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["role", "title", "organization", "link"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
 
@@ -322,8 +345,8 @@ class PublicationForm(BaseChildFormSet):
         build_form_widgets(
             self,
             fields=["date", "title", "authors", "publisher", "link"],
-            html_class=settings.FORM_ATTRIBUTES["textinput"]["class"],
-            x_bind_class=settings.FORM_ATTRIBUTES["textinput"]["x_bind_class"],
+            html_class=TEXTINPUT_CLASS,
+            x_bind_class=TEXTINPUT_X_BIND_CLASS,
             html_autocomplete="off",
         )
 

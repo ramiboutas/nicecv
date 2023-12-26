@@ -1,6 +1,3 @@
-
-
-
 /* color for brands: https://brandcolors.net/ */
 
 .socialaccount_provider.google {
@@ -19,3 +16,6 @@
 .svg {
   color : "red";
 }
+
+/* alpine x-cloak */
+[x-cloak] { display: none !important; }

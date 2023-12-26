@@ -53,3 +53,4 @@ autopep8
 black
 pylint-django
 async-timeout
+huey

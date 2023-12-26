@@ -91,8 +91,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.linkedin_oauth2",
     "django_htmx",
     "django_celery_results",
-    "djstripe",
     "django_cleanup.apps.CleanupConfig",  # https://github.com/un1t/django-cleanup
+    "huey.contrib.djhuey",  # https://huey.readthedocs.io/en/latest/django.html
     "crispy_forms",
     "crispy_tailwind",
     "debug_toolbar",
@@ -102,10 +102,11 @@ INSTALLED_APPS = [
     "django_minify_html",
     "djcelery_email",
     "django_tweets",
-    # "mjml",
-    # "birdsong",
     "wagtailsvg",
     "dbbackup",
+    "djstripe",
+    # "mjml",
+    # "birdsong",
 ]
 
 # Authentication
@@ -408,7 +409,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Payments
 
-# Stripe (dj-stripe)
+# Stripe
 STRIPE_LIVE_MODE = os.environ.get("STRIPE_LIVE_MODE", "") == "1"
 STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "")
 STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "")
@@ -416,6 +417,7 @@ DJSTRIPE_WEBHOOK_SECRET = os.environ.get("DJSTRIPE_WEBHOOK_SECRET", "")
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
+
 
 # Wagtail
 WAGTAIL_SITE_NAME = "Nice CV"
@@ -477,29 +479,6 @@ if HTTPS:
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
 
-
-# html form elements
-
-FORM_ATTRIBUTES = {
-    "textinput": {
-        "class": "px-2 w-full rounded-md border-transparent focus:border-transparent focus:ring-0",
-        "x_bind_class": "active ? 'bg-indigo-200' : ''",
-        "hx_trigger": "keyup changed delay:1s, change",
-        "label": {
-            "class": "absolute -top-2 left-2 inline-block px-1 text-xs font-medium text-gray-400",
-            "x_bind_class": "active ? ' bg-indigo-200' : ''",
-        },
-    },
-    "rangeinput": {
-        "class": "w-full",
-    },
-    "checkbox": {
-        "class": "h-4 w-4 rounded border-indigo-600 focus:ring-indigo-400 accent-indigo-600",
-    },
-    "fileinput": {
-        "class": """block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"""
-    },
-}
 
 # project settings
 

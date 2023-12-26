@@ -4,6 +4,8 @@ from django.db import transaction
 from django.http import Http404
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.utils.safestring import mark_safe
+
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -11,7 +13,11 @@ from django.utils.translation import gettext as _
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.http import require_POST
+from django.urls import reverse_lazy
+
+
 from django_htmx.http import HttpResponseClientRedirect
+from django_minify_html.decorators import no_html_minification
 
 from ..forms import profiles as profile_forms
 from ..models.cvs import Cv
@@ -21,12 +27,30 @@ from ..models.users import User
 from ..sessions import get_or_create_session
 
 
-def create_profile_cv(request, profile_id, tex_id):
+def hx_create_profile_cv(request, profile_id, tex_id, html_out):
+    html_dict = {"card": "cv.html"}
     profile = get_object_or_404(Profile, id=profile_id)
     tex = get_object_or_404(Tex, id=tex_id)
-    cv = Cv.objects.create(profile=profile, tex=tex)
+    if tex.is_premium:
+        if request.user.is_authenticated:
+            if not request.user.plan.premium_templates:
+                messages.warning(
+                    request, _(f" is a Premium template. Get a plan for using it.")
+                )
+                return HttpResponseClientRedirect(reverse_lazy("plan_list"))
+        else:
+            messages.warning(
+                request, _(f"This is a Premium template. Get a plan for using it.")
+            )
+            return HttpResponseClientRedirect(reverse_lazy("plan_list"))
+
+    cv, created = Cv.objects.get_or_create(profile=profile, tex=tex)
+    if created:
+        cv.tex.add_download()
+
+    cv.render_files()
     context = {"cv": cv, "profile": profile}
-    return render(request, "profiles/cvs/cv_card.html", context)
+    return render(request, f"profiles/cvs/{html_out}.html", context)
 
 
 def profile_list(request):
@@ -42,11 +66,17 @@ def profile_list(request):
 
 def profile_create(request):
     profile = Profile(language_code=request.LANGUAGE_CODE)
-    user = getattr(request, "user", AnonymousUser())
-    if isinstance(user, User):
-        profile.user = user
-        profile.fullname = user.fullname
-        profile.email = user.email
+    if request.user.is_authenticated:
+        u = request.user
+        if Profile.objects.filter(user=u).count() >= u.plan.profiles:
+            messages.warning(
+                request,
+                _(f"Your plan allowes to create just {u.plan.profiles} profile(s)"),
+            )
+            return redirect("plan_list")
+        profile.user = u
+        profile.fullname = u.fullname
+        profile.email = u.email
     else:
         session, request = get_or_create_session(request)
         if Profile.objects.filter(session=session).count() >= 1:
@@ -60,6 +90,7 @@ def profile_create(request):
     return HttpResponseRedirect(profile.update_url())
 
 
+@no_html_minification
 def profile_update(request, id):
     try:
         if request.user.is_authenticated and not request.user.is_staff:

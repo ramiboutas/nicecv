@@ -13,7 +13,8 @@
                 type="button">{% trans "Add photo" %} 🧑‍💼</button>
       {% endif %}
     </div>
-    <div x-show="show"
+    <div x-cloak
+         x-show="show"
          class="relative z-10"
          aria-labelledby="slide-over-title"
          role="dialog"

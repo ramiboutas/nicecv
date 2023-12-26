@@ -169,9 +169,9 @@ class Migration(migrations.Migration):
                 ("rendered_text", models.TextField(blank=True, null=True)),
                 (
                     "image",
-                    models.ImageField(upload_to=core.models.cvs.get_cv_upload_path),
+                    models.ImageField(upload_to=core.models.cvs.cv_upload_path),
                 ),
-                ("pdf", models.FileField(upload_to=core.models.cvs.get_cv_upload_path)),
+                ("pdf", models.FileField(upload_to=core.models.cvs.cv_upload_path)),
                 ("pdf_time", models.FloatField(default=0)),
                 ("image_time", models.FloatField(default=0)),
                 ("rendering_time", models.FloatField(default=0)),

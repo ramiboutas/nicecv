@@ -2,8 +2,6 @@ from django.contrib import admin
 
 from ..models.deepl_language import DeeplLanguage
 
-# Register your models here.
-
 
 @admin.register(DeeplLanguage)
 class DeeplLanguageAdmin(admin.ModelAdmin):

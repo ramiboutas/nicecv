@@ -22,10 +22,10 @@ urlpatterns = [
     ##### Third-party apps
     # allauth
     path("", include("allauth.urls")),
-    # rosetta
-    path("rosetta/", include("rosetta.urls")),
     # stripe
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
+    # rosetta
+    path("rosetta/", include("rosetta.urls")),
     ##### core app
     path("", include("core.urls")),
 ]

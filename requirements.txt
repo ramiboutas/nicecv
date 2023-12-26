@@ -211,6 +211,8 @@ html-void-elements==0.1.0
     # via djlint
 html5lib==1.1
     # via wagtail
+huey==2.5.0
+    # via -r requirements.in
 idna==3.4
     # via requests
 ipython==8.15.0

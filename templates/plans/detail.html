@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n l10n djmoney %}
 {% block title %}
-  |{% translate "Plan" %} | {{ plan.name }}
+  {% translate "Plan" %} | {{ plan.name }}
 {% endblock %}
 {% block content %}
   <div class="container">

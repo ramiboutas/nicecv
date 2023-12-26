@@ -23,7 +23,7 @@ from .profiles import Profile
 now = timezone.now()
 
 
-def get_cv_upload_path(cv, filename):
+def cv_upload_path(cv, filename):
     return f"profiles-{cv.profile.category}/{now.year}-{now.month}/{now.day}/{cv.profile.id}/{filename}"
 
 
@@ -31,13 +31,13 @@ class Cv(auto_prefetch.Model):
     profile = auto_prefetch.ForeignKey("core.Profile", on_delete=models.CASCADE)
     tex = auto_prefetch.ForeignKey("core.Tex", null=True, on_delete=models.SET_NULL)
     rendered_text = models.TextField(null=True, blank=True)
-    image = models.ImageField(upload_to=get_cv_upload_path)
-    pdf = models.FileField(upload_to=get_cv_upload_path)
+    image = models.ImageField(upload_to=cv_upload_path)
+    pdf = models.FileField(upload_to=cv_upload_path)
     pdf_time = models.FloatField(default=0)
     image_time = models.FloatField(default=0)
     rendering_time = models.FloatField(default=0)
     auto_created = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def render_files(self):
         pdf_start = time.time()
@@ -95,6 +95,8 @@ class Cv(auto_prefetch.Model):
             self.image_time = time.time() - pdf_end
             self.rendering_time = self.image_time + self.pdf_time
 
+        return self
+
     @classmethod
     def crete_cvs_from_profile_templates(cls):
         cls.objects.filter(profile__auto_created=True).delete()
@@ -103,6 +105,7 @@ class Cv(auto_prefetch.Model):
         for tex in Tex.objects.all():
             for profile in Profile.objects.filter(category="template"):
                 obj = cls.objects.create(profile=profile, tex=tex, auto_created=True)
+                obj.render_files()
                 print(f"✅ {obj} created.")
 
     def save(self, *args, **kwargs):
@@ -114,4 +117,4 @@ class Cv(auto_prefetch.Model):
         return f"CV ({self.profile.fullname} {self.tex})"
 
     class Meta(auto_prefetch.Model.Meta):
-        ordering = ["-created"]
+        ordering = ["-created_on"]

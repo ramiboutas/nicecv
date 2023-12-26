@@ -3,8 +3,6 @@ import deepl
 from django.conf import settings
 from django.db import models
 
-from .secrets import Secrets
-
 
 class DeeplLanguage(auto_prefetch.Model):
     code = models.CharField(max_length=8, unique=True)
@@ -24,7 +22,7 @@ class DeeplLanguage(auto_prefetch.Model):
     @classmethod
     def update_objects(cls):
         try:
-            translator = deepl.Translator(Secrets.get().deepl_auth_key)
+            translator = deepl.Translator(settings.DEEPL_AUTH_KEY)
         except Exception as e:
             print(f"🔴 Error setting up Deepl translator: {e}")
             return

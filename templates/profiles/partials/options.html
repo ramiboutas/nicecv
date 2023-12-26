@@ -5,12 +5,11 @@
             @click="showSettings = true"
             :class="showSettings ? 'bg-gray-200 text-gray-900' : 'text-gray-900 hover:bg-gray-50 hover:text-gray-900'"
             type="button">⚙️ {% trans "Settings" %}</button>
-    <!-- TODO -->
     <a href="#cvs"
-       class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">📰 {% trans "CV templates" %} TODO: Modal  </a>
-    <div>{{ profile.language_code }}</div>
+       class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">📰 {% trans "CV templates" %}</a>
   </nav>
   <div x-show="showSettings"
+       x-cloak
        class="relative z-10"
        aria-labelledby="slide-over-title"
        role="dialog"

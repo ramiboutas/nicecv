@@ -9,11 +9,11 @@ from djmoney.models.fields import MoneyField
 
 class AbractPlan(auto_prefetch.Model):
     name = models.CharField(max_length=32)
-    description = models.CharField(max_length=64, null=True)
+    description = models.CharField(max_length=128, null=True)
     profiles = models.PositiveSmallIntegerField(default=1)
-    cvs_per_profile = models.PositiveSmallIntegerField(default=5)
-    support = models.BooleanField(default=False)
+    includes_support = models.BooleanField(default=False)
     profile_translation = models.BooleanField(default=False)
+    premium_templates = models.BooleanField(default=False)
 
     class Meta(auto_prefetch.Model.Meta):
         abstract = True
@@ -21,13 +21,11 @@ class AbractPlan(auto_prefetch.Model):
 
 class FreePlan(AbractPlan):
     singleton = models.BooleanField(primary_key=True, default=True)
-    name = models.CharField(max_length=32, default="Free Plan")
 
     class Meta(auto_prefetch.Model.Meta):
         constraints = (
             models.CheckConstraint(
-                name="single_free_plan",
-                check=models.Q(singleton=True),
+                name="single_free_plan", check=models.Q(singleton=True)
             ),
         )
 
@@ -39,15 +37,14 @@ class FreePlan(AbractPlan):
 class PremiumPlan(AbractPlan):
     months = models.PositiveSmallIntegerField()
     price = MoneyField(max_digits=6, decimal_places=2, default_currency="EUR")
+    premium_templates = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.months} months"
 
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("months", "price")
-        constraints = [
-            UniqueConstraint(fields=["months"], name="unique_months_field"),
-        ]
+        constraints = (UniqueConstraint(fields=["months"], name="unique_months_field"),)
 
     @cached_property
     def detail_url(self):

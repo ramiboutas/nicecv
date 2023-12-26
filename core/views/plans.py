@@ -2,6 +2,8 @@ import json
 import logging
 
 import stripe
+from djstripe import settings as djstripe_settings
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -11,7 +13,6 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from djstripe import settings as djstripe_settings
 
 from ..models.plans import PremiumPlan
 from ..models.users import User
@@ -20,6 +21,8 @@ from .payments import create_stripe_session
 from cms.models.snippets import FrequentAskedQuestion
 
 logger = logging.getLogger(__name__)
+
+
 stripe.api_key = djstripe_settings.djstripe_settings.STRIPE_SECRET_KEY
 
 
@@ -60,7 +63,7 @@ def stripe_webhook(request):  # pragma: no cover
     payload = request.body
     sig_header = request.headers["stripe-signature"]
     event = None
-    endpoint_secret = settings.DJSTRIPE_WEBHOOK_SECRET
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
     except ValueError:

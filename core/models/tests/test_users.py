@@ -22,7 +22,6 @@ class UserTests(TestCase):
     def test_user_just_created_with_free_plan(self):
         user = UserFactory()
         self.assertIsInstance(user.plan, FreePlan)
-        self.assertEqual(user.number_of_profiles, user.plan.profiles)
 
     def test_user_with_premium_plan(self):
         user_plan = UserPremiumPlanFactory()

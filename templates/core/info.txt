@@ -1,6 +1,0 @@
-This is for static pages:
- - home (landing page)
- - privicy & policy terms
- - contact
- - FAQs
- - similars
