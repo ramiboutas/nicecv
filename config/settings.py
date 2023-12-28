@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     "cms.CmsConfig",
     # Wagtail apps
     # "wagtail.contrib.routable_page",
-    "wagtail.contrib.modeladmin",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
@@ -90,21 +89,19 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.linkedin_oauth2",
     "django_htmx",
-    "django_celery_results",
     "django_cleanup.apps.CleanupConfig",  # https://github.com/un1t/django-cleanup
     "huey.contrib.djhuey",  # https://huey.readthedocs.io/en/latest/django.html
     "crispy_forms",
     "crispy_tailwind",
     "debug_toolbar",
-    "django_browser_reload",
     "generic_chooser",
     "fontawesomefree",
     "django_minify_html",
-    "djcelery_email",
     "django_tweets",
     "wagtailsvg",
     "dbbackup",
     "djstripe",
+    # "django_browser_reload",
     # "mjml",
     # "birdsong",
 ]
@@ -144,7 +141,7 @@ MIDDLEWARE = [
     "django_minify_html.middleware.MinifyHtmlMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    # "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 
@@ -429,19 +426,19 @@ WAGTAILADMIN_BASE_URL = "htttps://www.nicecv.online"
 # LATEX_INTERPRETER_OPTIONS = "-interaction=nonstopmode"
 LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, "media")
 
-# celery
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "django-db"
-
 
 # crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
 
 
-# rosseta
-
+# translations
 DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
+
+# rosetta
+ROSETTA_MESSAGES_PER_PAGE = 50
+ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+ROSETTA_WSGI_AUTO_RELOAD = True
 
 
 # shell-plus

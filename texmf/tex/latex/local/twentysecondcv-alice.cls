@@ -309,7 +309,7 @@
 }
 
 \newcommand{\twentyitemshort}[2]{%
-	#1&\parbox[t]{0.83\textwidth}{%
+	#1&\parbox[t]{0.83\textwidth}{
 		\textbf{#2}%
 	}\\
 }

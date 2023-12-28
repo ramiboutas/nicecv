@@ -5,9 +5,11 @@
   <div class="relative">
     <div class="relative h-full w-full overflow-hidden rounded-lg">
       <!-- adding a param (cv.id) to img source solves browser caching issues -->
-      <img src="{{ cv.image.url }}?{{ cv.id }}"
-           alt="{{ cv.tex.title }}"
-           class="h-full w-full object-cover object-center">
+      {% if cv.image %}
+        <img src="{{ cv.image.url }}?{{ cv.id }}"
+             alt="{{ cv.tex.title }}"
+             class="h-full w-full object-cover object-center">
+      {% endif %}
     </div>
     <div class="relative mt-4">
       <h3 class="text-sm font-medium text-gray-900">
@@ -45,7 +47,7 @@
         🎁 {% trans "Get Premium" %}
       </a>
     {% endif %}
-    {% if not cv.profile.category == "template" %}
+    {% if not cv.profile.category == "template" and cv.pdf %}
       <button class="w-full">
         <a href="{{ cv.pdf.url }}"
            target="_blank"

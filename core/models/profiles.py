@@ -510,6 +510,11 @@ class Profile(auto_prefetch.Model):
         return chain(profile_cvs, template_cvs)
         # return sorted(chain(profile_cvs, template_cvs), key=attrgetter("created_on"))
 
+    @cached_property
+    def has_children(self):
+        links = (rel.get_accessor_name() for rel in self._meta.related_objects)
+        return any(getattr(self, link).exists() for link in links)
+
     def save(self, *args, **kwargs):
         if self.about:
             rows = int(len(self.about) / 35)
@@ -528,6 +533,22 @@ class LevelMethodsMixin(object):
     @property
     def level_base_6_float(self):
         return self.level * 6 / 100
+
+    def get_level_as_tikzcircles(self, n=5, color1="brown", color0="white", size="4pt"):
+        """
+        This method is used in tex templates. In order for this to work, include in the command in the preambule of the tex template
+
+        \newcommand{\tikzcircle}[2][red,fill=red]{\tikz[baseline=-0.5ex]\draw[#1,radius=#2] (0,0) circle ;}
+        """
+        #  \tikzcircle[fill=white]{4pt}
+        n1 = round(self.level * n / 100)
+        n0 = n - n1
+
+        pre_results = n1 * (
+            chr(92) + "tikzcircle[fill=" + color1 + "]{" + size + "} "
+        ) + n0 * (chr(92) + "tikzcircle[fill=" + color0 + "]{" + size + "} ")
+
+        return pre_results.strip(" ")
 
 
 class AbstractChildSet(auto_prefetch.Model):
@@ -601,7 +622,7 @@ class Education(AbstractChildSet, AbstractModelWithDatesAndDescription):
     """
 
     title = models.CharField("🎓 " + _("Title"), max_length=64)
-    institution = models.CharField("🏫 " + _("Institution"), max_length=3)
+    institution = models.CharField("🏫 " + _("Institution"), max_length=32)
 
     class Meta(AbstractChildSet.Meta):
         verbose_name_plural = _("Education")
@@ -616,8 +637,8 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
     title = models.CharField(
         "🧑‍💼 " + _("Job title"), null=True, blank=True, max_length=64
     )
-    location = models.CharField("📍 " + _("Location"), max_length=3)
-    company = models.CharField("🏢 " + _("Company name"), max_length=3)
+    location = models.CharField("📍 " + _("Location"), max_length=32)
+    company = models.CharField("🏢 " + _("Company name"), max_length=32)
 
     class Meta(AbstractChildSet.Meta):
         verbose_name_plural = _("Experience")
@@ -629,7 +650,7 @@ class Experience(AbstractChildSet, AbstractModelWithDatesAndDescription):
 class Achievement(AbstractChildSet):
     """Archivement object"""
 
-    title = models.CharField("🏆 " + _("Goal achieved"), max_length=6)
+    title = models.CharField("🏆 " + _("Goal achieved"), max_length=64)
     date = models.CharField("🗓️ " + _("Date"), null=True, blank=True, max_length=16)
 
 

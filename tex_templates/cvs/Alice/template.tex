@@ -63,97 +63,99 @@
 %----------------------------------------------------------------------------------------
 %	 ABOUT ME
 %----------------------------------------------------------------------------------------
-{% if profile.about_active %}
-  % To have no About Me section, just remove all the text and leave \description{}
-  \aboutmelabel{ {{- profile.get_tex_value("about_label") -}} }
-  \aboutme{ {{- profile.get_tex_value("about") | linebreaks -}} }
+{% if profile.about_active and False %}
+% To have no About Me section, just remove all the text and leave \description{}
+\aboutmelabel{ {{- profile.get_tex_value("about_label") -}} }
+\aboutme{ {{- profile.get_tex_value("about") | linebreaks -}} }
 {% else %}
-  \aboutme{}
+\aboutme{}
 {% endif %}
 %----------------------------------------------------------------------------------------
 %	 SKILLS
 %----------------------------------------------------------------------------------------
 %	E.g: \skills{ {good manners/4}, {outgoing/4.3}, {polite/4}, {Java/0.01} }
 {% if profile.skill_active and profile.skill_set.count() > 0 %}
-  \skilllabel{ {{- profile.get_tex_value("skill_label") -}} }
-  \numberofskills{ {{- profile.skill_set.count() -}} }
-  \skills{ {{- profile.tex_curlybraket_skill_name_slash_levelfloatbase6_curlybraket -}} }
+\skilllabel{ {{- profile.get_tex_value("skill_label") -}} }
+\numberofskills{ {{- profile.skill_set.count() -}} }
+\skills{ {{- profile.tex_curlybraket_skill_name_slash_levelfloatbase6_curlybraket -}} }
 {% endif %}
 %----------------------------------------------------------------------------------------
 %	 LANGUAGES
 %----------------------------------------------------------------------------------------
 {% if profile.language_active and profile.languageability_set.count() > 0 %}
-  \languagelabel{ {{- profile.get_tex_value("language_label") -}} }
-  \numberoflanguages{ {{- profile.languageability_set.count() -}} }
-  \languages{ {{- profile.tex_curlybraket_language_name_slash_levelfloatbase6_curlybraket -}} }
+\languagelabel{ {{- profile.get_tex_value("language_label") -}} }
+\numberoflanguages{ {{- profile.languageability_set.count() -}} }
+\languages{ {{- profile.tex_curlybraket_language_name_slash_levelfloatbase6_curlybraket -}} }
 {% endif %}
 %----------------------------------------------------------------------------------------
 \makeprofile % Print the sidebar
 %----------------------------------------------------------------------------------------
 %	 ABOUT ME
 %----------------------------------------------------------------------------------------
-{% if profile.about_active %}
-  \section{ {{- profile.get_tex_value("about_label") -}} }
-  \begin{twenty}
-  \twentyitemshort{}
-  { {{- profile.get_tex_value("about") | linebreaks -}} }
-  \end{twenty}
+{% if profile.about_active  %}
+\section{ {{- profile.get_tex_value("about_label") -}} }
+
+% \paragraph{ {{- profile.get_tex_value("about") | linebreaks -}} \\ }
+
+\begin{twenty}
+  \twentyitemshort{}{ {{- profile.get_tex_value("about") | linebreaks -}} }
+\end{twenty}
 {% endif %}
 %----------------------------------------------------------------------------------------
 %	 EDUCATION
 %----------------------------------------------------------------------------------------
 {% if profile.education_active and profile.education_set.count() > 0 %}
-  \section{ {{- profile.get_tex_value("education_label") -}} }
-  {% for education in profile.education_set.all() %}
-    \begin{twenty} % Environment for a list with descriptions
-    \twentyitem{\footnotesize{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} }
-    { {{- education.get_tex_value("title") -}} }
-    { {{- education.get_tex_value("institution") -}} }
-    { {{- education.get_tex_value("description") | linebreaks -}}  }
-    \end{twenty}
-  {% endfor %}
+\section{ {{- profile.get_tex_value("education_label") -}} }
+{% for education in profile.education_set.all() %}
+\begin{twenty} % Environment for a list with descriptions
+  \twentyitem{\footnotesize{ {{ education.get_tex_value("start_date") }} - {{ education.get_tex_value("end_date") }} } }
+  { {{- education.get_tex_value("title") -}} }
+  { {{- education.get_tex_value("institution") -}} }
+  { {{- education.get_tex_value("description") | linebreaks -}}  }
+\end{twenty}
+{% endfor %}
 {% endif %}
 {% if profile.experience_active and profile.experience_set.count() > 0 %}
-  \section{ {{- profile.experience_label -}} }
-  {% for experience in profile.experience_set.all() %}
-    \begin{twenty} % Environment for a list with descriptions
-    \twentyitem{\footnotesize{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} } }
-    { {{- experience.get_tex_value("title") -}} }
-    { {{- experience.get_tex_value("company") -}} }
-    { {{- experience.get_tex_value("description") | linebreaks -}}  }
-    \end{twenty}
-  {% endfor %}
+\section{ {{- profile.experience_label -}} }
+{% for experience in profile.experience_set.all() %}
+\begin{twenty} % Environment for a list with descriptions
+  \twentyitem{\footnotesize{ {{ experience.get_tex_value("start_date") }} - {{ experience.get_tex_value("end_date") }} } }
+  { {{- experience.get_tex_value("title") -}} }
+  { {{- experience.get_tex_value("company") -}} }
+  { {{- experience.get_tex_value("description") | linebreaks -}}  }
+\end{twenty}
+{% endfor %}
 {% endif %}
 {% if profile.achievement_active and profile.achievement_set.count() > 0 %}
-  \section{ {{- profile.achievement_label -}} }
-  {% for achievement in profile.achievement_set.all() %}
-    \begin{twenty}
-    %\twentyitemshort{<dates>}{<title>}
-    \twentyitemshort{ \small{ {{- achievement.get_tex_value("date") -}} } }
-    { {{- achievement.get_tex_value("title") -}} }
-    \end{twenty}
-  {% endfor %}
+\section{ {{- profile.achievement_label -}} }
+{% for achievement in profile.achievement_set.all() %}
+\begin{twenty}
+  %\twentyitemshort{<dates>}{<title>}
+  \twentyitemshort{ \small{ {{- achievement.get_tex_value("date") -}} } }
+  { {{- achievement.get_tex_value("title") -}} }
+\end{twenty}
+{% endfor %}
 {% endif %}
 {% if profile.project_active and profile.project_set.count() > 0 %}
-  \section{ {{- profile.get_tex_value("project_label") -}} }
-  \begin{twenty} % Environment for a list with descriptions
+\section{ {{- profile.get_tex_value("project_label") -}} }
+\begin{twenty} % Environment for a list with descriptions
   {% for project in profile.project_set.all() %}
-    \twentyitem{ \footnotesize{ {{- project.get_tex_value("role") -}} } }
-    { {{- project.get_tex_value("title") -}} }
-    { {{- project.get_tex_value("organization") -}} }
-    { }
+  \twentyitem{ \footnotesize{ {{- project.get_tex_value("role") -}} } }
+  { {{- project.get_tex_value("title") -}} }
+  { {{- project.get_tex_value("organization") -}} }
+  { }
   {% endfor %}
-  \end{twenty}
+\end{twenty}
 {% endif %}
 {% if profile.publication_active and profile.publication_set.count() > 0 %}
-  \section{ {{- profile.get_tex_value("publication_label") -}} }
-  \begin{twenty} % Environment for a list with descriptions
+\section{ {{- profile.get_tex_value("publication_label") -}} }
+\begin{twenty} % Environment for a list with descriptions
   {% for publication in profile.publication_set.all() %}
-    \twentyitem{ \footnotesize{ {{- publication.get_tex_value("date") -}} } }
-    { {{- publication.get_tex_value("title") -}} }
-    { {{- publication.get_tex_value("publisher") -}} }
-    { {{- publication.get_tex_value("authors") -}} }
+  \twentyitem{ \footnotesize{ {{- publication.get_tex_value("date") -}} } }
+  { {{- publication.get_tex_value("title") -}} }
+  { {{- publication.get_tex_value("publisher") -}} }
+  { {{- publication.get_tex_value("authors") -}} }
   {% endfor %}
-  \end{twenty}
+\end{twenty}
 {% endif %}
 \end{document}

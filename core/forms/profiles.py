@@ -126,6 +126,7 @@ class ActivationForm(ModelForm):
         fields = [
             "photo_active",
             "jobtitle_active",
+            "location_active",
             "website_active",
             "about_active",
             "skill_active",

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-05 11:24+0200\n"
-"PO-Revision-Date: 2023-08-05 09:25+0000\n"
-"Last-Translator:   <>\n"
+"POT-Creation-Date: 2023-12-27 19:49+0100\n"
+"PO-Revision-Date: 2023-12-27 18:40+0000\n"
+"Last-Translator: Rami Boutassghount <ramiboutas@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -21,256 +21,297 @@ msgstr ""
 
 #: cms/forms/contact.py:27
 msgid "Form fields"
-msgstr ""
+msgstr "Campos de formulario"
 
 #: cms/forms/contact.py:39
 msgid "Email settings "
-msgstr ""
+msgstr "Configuración del correo electrónico"
 
-#: cms/models/menus.py:47 templates/profiles/partials/options.html:8
+#: cms/models/menus.py:46 templates/profiles/partials/options.html:7
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
-#: cms/models/menus.py:55
+#: cms/models/menus.py:54
 msgid "Heading"
-msgstr ""
+msgstr "Encabezado"
 
-#: config/settings.py:265
+#: cms/models/snippets.py:90
+msgid "Blog post"
+msgstr "Entrada de blog"
+
+#: config/settings.py:241
 msgid "English"
 msgstr "Inglés"
 
-#: config/settings.py:266
+#: config/settings.py:242
 msgid "Spanish"
 msgstr "Español"
 
-#: core/admin/users.py:31 templates/profiles/profile_update.html:18
+#: config/settings.py:243
+msgid "German"
+msgstr "Alemán"
+
+#: core/admin/users.py:30 templates/profiles/profile_update.html:22
 msgid "Personal info"
 msgstr "Información personal"
 
-#: core/admin/users.py:42
+#: core/admin/users.py:34
 msgid "Permissions"
 msgstr "Permisos"
 
-#: core/admin/users.py:54
+#: core/admin/users.py:46
 msgid "Important dates"
 msgstr "Fechas importantes"
 
-#: core/models/profiles.py:34
-msgid "Temporal"
-msgstr ""
+#: core/models/profiles.py:37
+msgid "⏳ Temporal"
+msgstr "⏳ Temporal"
 
-#: core/models/profiles.py:35
-msgid "User profile"
-msgstr ""
+#: core/models/profiles.py:38
+msgid "👤 User profile"
+msgstr "👤 Perfil de usuario"
 
-#: core/models/profiles.py:36
-msgid "Template"
-msgstr ""
+#: core/models/profiles.py:39
+msgid "📊 Template"
+msgstr "Plantilla 📊"
 
-#: core/models/profiles.py:66
+#: core/models/profiles.py:69
 #, fuzzy
 #| msgid "Language"
 msgid "Language code"
 msgstr "Idioma"
 
-#: core/models/profiles.py:80 core/models/profiles.py:105
-#: core/models/profiles.py:184
+#: core/models/profiles.py:83 core/models/profiles.py:108
+#: core/models/profiles.py:187
 msgid "Full name"
-msgstr ""
+msgstr "Nombre y apellidos"
 
-#: core/models/profiles.py:85 core/models/profiles.py:127
-#: core/models/profiles.py:188 core/models/profiles.py:627
+#: core/models/profiles.py:88 core/models/profiles.py:130
+#: core/models/profiles.py:191 core/models/profiles.py:617
 msgid "Job title"
-msgstr ""
+msgstr "Puesto"
 
-#: core/models/profiles.py:90 core/models/profiles.py:131
-#: core/models/profiles.py:192 core/models/profiles.py:633
+#: core/models/profiles.py:93 core/models/profiles.py:134
+#: core/models/profiles.py:195 core/models/profiles.py:619
 msgid "Location"
-msgstr ""
+msgstr "Ubicación"
 
-#: core/models/profiles.py:95
+#: core/models/profiles.py:98
 msgid "Birth"
-msgstr ""
+msgstr "Nacimiento"
 
-#: core/models/profiles.py:100 core/models/profiles.py:139
-#: core/models/profiles.py:200
+#: core/models/profiles.py:103 core/models/profiles.py:142
+#: core/models/profiles.py:203
 msgid "Phone number"
-msgstr ""
+msgstr "Número de teléfono"
 
-#: core/models/profiles.py:110 core/models/profiles.py:147
-#: core/models/profiles.py:205
+#: core/models/profiles.py:113 core/models/profiles.py:150
+#: core/models/profiles.py:208
 msgid "Website"
-msgstr ""
+msgstr "Página web"
 
-#: core/models/profiles.py:123
+#: core/models/profiles.py:126
 msgid "Photo"
-msgstr ""
+msgstr "Foto"
 
-#: core/models/profiles.py:135 core/models/profiles.py:196
+#: core/models/profiles.py:138 core/models/profiles.py:199
 msgid "Birth date"
-msgstr ""
+msgstr "Fecha de nacimiento"
 
-#: core/models/profiles.py:143 core/models/profiles.py:202
+#: core/models/profiles.py:146 core/models/profiles.py:205
 #: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:1845
 #, fuzzy
 #| msgid "Email address"
 msgid "Email address"
 msgstr "Email"
 
-#: core/models/profiles.py:151 core/models/profiles.py:209
+#: core/models/profiles.py:154 core/models/profiles.py:212
 msgid "About me"
-msgstr ""
+msgstr "Sobre mí"
 
-#: core/models/profiles.py:155 core/models/profiles.py:213
+#: core/models/profiles.py:158 core/models/profiles.py:216
 msgid "Skills"
-msgstr ""
+msgstr "Habilidades"
 
-#: core/models/profiles.py:159 core/models/profiles.py:217
+#: core/models/profiles.py:162 core/models/profiles.py:220
 #, fuzzy
 #| msgid "Language"
 msgid "Languages"
 msgstr "Idioma"
 
-#: core/models/profiles.py:163 core/models/profiles.py:221
-#: core/models/profiles.py:617
+#: core/models/profiles.py:166 core/models/profiles.py:224
+#: core/models/profiles.py:607
 msgid "Education"
-msgstr ""
+msgstr "Educación"
 
-#: core/models/profiles.py:167 core/models/profiles.py:225
+#: core/models/profiles.py:170 core/models/profiles.py:228
 msgid "Work experience"
-msgstr ""
+msgstr "Experiencia laboral"
 
-#: core/models/profiles.py:171 core/models/profiles.py:229
+#: core/models/profiles.py:174 core/models/profiles.py:232
 msgid "Achievements"
-msgstr ""
+msgstr "Logros"
 
-#: core/models/profiles.py:175 core/models/profiles.py:233
+#: core/models/profiles.py:178 core/models/profiles.py:236
 msgid "Projects"
-msgstr ""
+msgstr "Proyectos"
 
-#: core/models/profiles.py:179 core/models/profiles.py:237
+#: core/models/profiles.py:182 core/models/profiles.py:240
 msgid "Publications"
-msgstr ""
+msgstr "Publicaciones"
 
-#: core/models/profiles.py:544
+#: core/models/profiles.py:560
 msgid "Skill"
-msgstr ""
+msgstr "Habilidad"
 
-#: core/models/profiles.py:548 core/models/profiles.py:566
+#: core/models/profiles.py:561 core/models/profiles.py:573
 msgid "Level"
-msgstr ""
+msgstr "Nivel"
 
-#: core/models/profiles.py:562
+#: core/models/profiles.py:572
 #, fuzzy
 #| msgid "Language"
 msgid "Language"
 msgstr "Idioma"
 
-#: core/models/profiles.py:576
+#: core/models/profiles.py:580
 #, fuzzy
 #| msgid "Important dates"
 msgid "Start date"
 msgstr "Fechas importantes"
 
-#: core/models/profiles.py:580
+#: core/models/profiles.py:581
 msgid "End date"
-msgstr ""
+msgstr "Fecha final"
 
-#: core/models/profiles.py:584
-msgid "What did you learn?"
-msgstr ""
-
-#: core/models/profiles.py:608
-#: venv/lib/python3.11/site-packages/generic_chooser/templates/generic_chooser/_results.html:12
-#: venv/lib/python3.11/site-packages/wagtailsvg/templates/wagtailsvg/_results.html:9
-msgid "Title"
-msgstr ""
-
-#: core/models/profiles.py:612
-msgid "Institution"
-msgstr ""
-
-#: core/models/profiles.py:637
-msgid "Company name"
-msgstr ""
-
-#: core/models/profiles.py:642
-msgid "Experience"
-msgstr ""
-
-#: core/models/profiles.py:652
-msgid "Goal achieved"
-msgstr ""
-
-#: core/models/profiles.py:656 core/models/profiles.py:702
-msgid "Date"
-msgstr ""
-
-#: core/models/profiles.py:671
-msgid "Project name"
-msgstr ""
-
-#: core/models/profiles.py:675
-msgid "Role in the project"
-msgstr ""
-
-#: core/models/profiles.py:681
-msgid "Organization"
-msgstr ""
-
-#: core/models/profiles.py:687 core/models/profiles.py:726
-msgid "Link"
-msgstr ""
-
-#: core/models/profiles.py:708
-msgid "Publication title"
-msgstr ""
-
-#: core/models/profiles.py:712
-msgid "Authors"
-msgstr ""
-
-#: core/models/profiles.py:718
-msgid "Publisher"
-msgstr ""
-
-#: core/models/tex.py:27 core/models/tex.py:38 core/models/tex.py:44
-#: core/models/tex.py:50 core/models/tex.py:56 core/models/tex.py:62
-#: core/models/tex.py:68
-msgid "Read from metadata"
-msgstr ""
-
-#: core/models/tex.py:32
+#: core/models/profiles.py:583
 #, fuzzy
-#| msgid "Re-send Verification"
-msgid "Calculated from title field"
-msgstr "Reenviar verificación"
+msgid "Description"
+msgstr "Introduce la descripción meta aquí"
+
+#: core/models/profiles.py:603
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:21
+#: venv/lib/python3.11/site-packages/generic_chooser/templates/generic_chooser/_results.html:12
+msgid "Title"
+msgstr "Título"
+
+#: core/models/profiles.py:604
+msgid "Institution"
+msgstr "Institución"
+
+#: core/models/profiles.py:620
+msgid "Company name"
+msgstr "Nombre de la empresa"
+
+#: core/models/profiles.py:623
+msgid "Experience"
+msgstr "Experiencia"
+
+#: core/models/profiles.py:632
+msgid "Goal achieved"
+msgstr "Objetivo alcanzado"
+
+#: core/models/profiles.py:633 core/models/profiles.py:671
+msgid "Date"
+msgstr "Fecha"
+
+#: core/models/profiles.py:643
+msgid "Project name"
+msgstr "Nombre del proyecto"
+
+#: core/models/profiles.py:645
+msgid "Role in the project"
+msgstr "Papel en el proyecto"
+
+#: core/models/profiles.py:651
+msgid "Organization"
+msgstr "Organización"
+
+#: core/models/profiles.py:657 core/models/profiles.py:681
+msgid "Link"
+msgstr "Enlace"
+
+#: core/models/profiles.py:672
+msgid "Publication title"
+msgstr "Título de la publicación"
+
+#: core/models/profiles.py:674
+msgid "Authors"
+msgstr "Autores"
+
+#: core/models/profiles.py:677
+msgid "Publisher"
+msgstr "Editorial"
+
+#: core/signals.py:12
+msgid "Welcome"
+msgstr "Bienvenido"
+
+#: core/signals.py:14
+msgid ""
+"Hi,\n"
+"        \n"
+"Thank you for your order!\n"
+"\n"
+"Remember that if you have any questions or you require any technical "
+"support, you can contact me directly to this email!\n"
+"\n"
+"Best wishes!\n"
+"Rami (nicecv.online)\n"
+msgstr ""
+"Hola,\n"
+" \n"
+"Gracias por su pedido.\n"
+"\n"
+"¡Recuerda que si tienes alguna duda o necesitas cualquier tipo de soporte "
+"técnico, puedes contactar conmigo directamente a este email!\n"
+"\n"
+"¡Saludos cordiales!\n"
+"Rami (nicecv.online)\n"
 
 #: core/views/languages.py:20
-msgid "There was an error with this page."
-msgstr "Hay un error con esta página."
+msgid "We did not find the requested page."
+msgstr "No hemos encontrado la página solicitada."
 
-#: core/views/languages.py:31
-#, python-format
-#| msgid "Page not available in {locale.language_name}"
-msgid "Page not available in %(lang_name)s ."
+#: core/views/languages.py:32
+#, fuzzy
+#| msgid "Page not available in %(lang_name)s ."
+msgid "Page not available in the requested language."
 msgstr "Página no disponible en %(lang_name)s%."
 
-#: core/views/plans.py:42
+#: core/views/plans.py:45
 msgid "Thank you for your order, enjoy the premium!"
-msgstr ""
+msgstr "Gracias por su pedido, ¡disfruta del Plan Premium!"
 
-#: core/views/plans.py:47
+#: core/views/plans.py:50
 msgid "Unexpected error happened, please try again."
+msgstr "Se ha producido un error inesperado, inténtalo de nuevo."
+
+#: core/views/profiles.py:37 core/views/profiles.py:42
+msgid "This is a Premium template. Get a plan for using it."
+msgstr "Esta es una plantilla Premium. Consigue un plan para usarla."
+
+#: core/views/profiles.py:73
+msgid "You are not allowed to create another profile. Get a Premium Plan"
 msgstr ""
 
-#: core/views/profiles.py:49
+#: core/views/profiles.py:82
 msgid "Only one profile is allowed for guest users"
-msgstr ""
+msgstr "Solo se permite un perfil para los usuarios anónimos"
 
-#: core/views/profiles.py:103
+#: core/views/profiles.py:120
 msgid "Error with profile settings"
-msgstr ""
+msgstr "Error en la configuración del perfil"
+
+#: core/views/users.py:22
+#, fuzzy
+#| msgid "Account"
+msgid "Account updated"
+msgstr "Cuenta"
+
+#: core/views/users.py:24 core/views/users.py:41
+msgid "An error occurred"
+msgstr "Se ha producido un error"
 
 #: templates/404.html:4 templates/404.html:9
 msgid "Page not found"
@@ -284,103 +325,154 @@ msgstr ""
 msgid "Back to home"
 msgstr ""
 
+#: templates/account/account_dashboard.html:4
+#: templates/account/account_dashboard.html:10
+#, fuzzy
+#| msgid "Account"
+msgid "Account"
+msgstr "Cuenta"
+
+#: templates/account/account_dashboard.html:16
+#: templates/account/account_edit.html:4 templates/account/account_edit.html:11
+#, fuzzy
+#| msgid "Account"
+msgid "Edit Account"
+msgstr "Cuenta"
+
+#: templates/account/account_dashboard.html:21
+msgid "Change E-mail"
+msgstr ""
+
+#: templates/account/account_dashboard.html:26
+#: templates/account/password_change.html:4
+#: templates/account/password_change.html:11
+#: templates/account/password_change.html:21
+#: templates/account/password_reset_from_key.html:4
+#: templates/account/password_reset_from_key.html:14
+#: templates/account/password_reset_from_key_done.html:4
+#: templates/account/password_reset_from_key_done.html:11
+msgid "Change Password"
+msgstr ""
+
+#: templates/account/account_dashboard.html:31
+#, fuzzy
+#| msgid "Log in"
+msgid "Log out"
+msgstr "Iniciar"
+
+#: templates/account/account_edit.html:18
+#: templates/profiles/partials/options.html:70
+#: templates/profiles/partials/options.html:90
+#: templates/profiles/photo/crop_form.html:22
+msgid "Save"
+msgstr ""
+
 #: templates/account/account_inactive.html:4
-#: templates/account/account_inactive.html:8
+#: templates/account/account_inactive.html:10
 #, fuzzy
 #| msgid "Account"
 msgid "Account Inactive"
 msgstr "Cuenta"
 
-#: templates/account/account_inactive.html:9
+#: templates/account/account_inactive.html:12
 msgid "This account is inactive."
 msgstr "Esta cuenta está inactiva"
 
-#: templates/account/email.html:4 templates/account/email.html:8
+#: templates/account/email.html:4 templates/account/email.html:11
 msgid "E-mail Addresses"
 msgstr "Email"
 
-#: templates/account/email.html:10
+#: templates/account/email.html:14
 msgid "The following e-mail addresses are associated with your account:"
 msgstr ""
-"Las siguientes direcciones de correo electrónico están asociadas a su "
-"cuenta:"
+"Las siguientes direcciones de correo electrónico están asociadas a su cuenta:"
 
-#: templates/account/email.html:23
-msgid "Verified"
-msgstr "Verificado"
-
-#: templates/account/email.html:25
-msgid "Unverified"
-msgstr "No verificado"
-
-#: templates/account/email.html:28
+#: templates/account/email.html:29
 msgid "Primary"
 msgstr "Principal"
 
+#: templates/account/email.html:32
+msgid "Verified"
+msgstr "Verificado"
+
 #: templates/account/email.html:34
+msgid "Unverified"
+msgstr "No verificado"
+
+#: templates/account/email.html:43
 msgid "Make Primary"
 msgstr "Hacer principal"
 
-#: templates/account/email.html:35
+#: templates/account/email.html:48
 msgid "Re-send Verification"
 msgstr "Reenviar verificación"
 
-#: templates/account/email.html:36 templates/socialaccount/connections.html:36
+#: templates/account/email.html:53 templates/socialaccount/connections.html:39
 msgid "Remove"
 msgstr "Eliminar"
 
-#: templates/account/email.html:42
+#: templates/account/email.html:60
 msgid "Warning:"
 msgstr ""
 
-#: templates/account/email.html:48
+#: templates/account/email.html:66
 msgid "Add E-mail Address"
 msgstr "Añade email"
 
-#: templates/account/email.html:51
+#: templates/account/email.html:72
 msgid "Add E-mail"
 msgstr "Añade email"
 
-#: templates/account/email.html:60
+#: templates/account/email.html:82
 msgid "Do you really want to remove the selected e-mail address?"
 msgstr ""
 "¿Realmente deseas eliminar la dirección de correo electrónico seleccionada?"
 
-#: templates/account/email/base_message.txt:1
+#: templates/account/email/base_message.txt:3
 #, python-format
-msgid "Hello from %(site_name)s!"
+msgid " Hello from %(site_name)s!"
 msgstr ""
 
 #: templates/account/email/base_message.txt:5
 #, python-format
-msgid ""
-"Thank you for using %(site_name)s!\n"
-"%(site_domain)s"
+msgid "Thank you for using %(site_name)s! %(site_domain)s "
 msgstr ""
 
-#: templates/account/email/email_confirmation_message.txt:5
+#: templates/account/email/email_confirmation_message.txt:7
 #, python-format
 msgid ""
-"You're receiving this e-mail because user %(user_display)s has given your e-mail address to register an account on %(site_domain)s.\n"
 "\n"
-"To confirm this is correct, go to %(activate_url)s"
+"You're receiving this e-mail because user %(user_display)s has given your e-"
+"mail address to register an account on %(site_domain)s.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s\n"
 msgstr ""
 
 #: templates/account/email/email_confirmation_subject.txt:3
 msgid "Please Confirm Your E-mail Address"
 msgstr "Por favor, confirma tu email"
 
-#: templates/account/email/password_reset_key_message.txt:4
+#: templates/account/email/password_reset_key_message.txt:6
+#, fuzzy
+#| msgid ""
+#| "You're receiving this e-mail because you or someone else has requested a "
+#| "password for your user account.\n"
+#| "It can be safely ignored if you did not request a password reset. Click "
+#| "the link below to reset your password."
 msgid ""
-"You're receiving this e-mail because you or someone else has requested a password for your user account.\n"
-"It can be safely ignored if you did not request a password reset. Click the link below to reset your password."
+"You're receiving this e-mail because you or someone else has requested a "
+"password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the "
+"link below to reset your password. "
 msgstr ""
-"Está recibiendo este correo electrónico porque usted u otra persona ha solicitado una contraseña para su cuenta de usuario.\n"
-"Puede ignorarlo con seguridad si no ha solicitado el restablecimiento de la contraseña. Haga clic en el siguiente enlace para restablecer su contraseña."
+"Está recibiendo este correo electrónico porque usted u otra persona ha "
+"solicitado una contraseña para su cuenta de usuario.\n"
+"Puede ignorarlo con seguridad si no ha solicitado el restablecimiento de la "
+"contraseña. Haga clic en el siguiente enlace para restablecer su contraseña."
 
-#: templates/account/email/password_reset_key_message.txt:9
+#: templates/account/email/password_reset_key_message.txt:10
 #, python-format
-msgid "In case you forgot, your username is %(username)s."
+msgid " In case you forgot, your username is %(username)s."
 msgstr ""
 
 #: templates/account/email/password_reset_key_subject.txt:3
@@ -388,79 +480,71 @@ msgid "Password Reset E-mail"
 msgstr ""
 
 #: templates/account/email_confirm.html:4
-#: templates/account/email_confirm.html:8
+#: templates/account/email_confirm.html:11
 msgid "Confirm E-mail Address"
 msgstr ""
 
-#: templates/account/email_confirm.html:13
+#: templates/account/email_confirm.html:16
 #, python-format
 msgid ""
-"Please\n"
-"    confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail\n"
-"    address for user %(user_display)s."
-msgstr ""
-
-#: templates/account/email_confirm.html:20
-msgid "Confirm"
+"\n"
+"          Please confirm that <a class=\"font-semibold leading-6 text-"
+"indigo-600 hover:text-indigo-500 ml-1\" href=\"mailto:%(email)s\">%(email)s</"
+"a> is an e-mail address for user %(user_display)s.\n"
+"          "
 msgstr ""
 
 #: templates/account/email_confirm.html:25
+msgid "Confirm"
+msgstr ""
+
+#: templates/account/email_confirm.html:31
 #, python-format
 msgid ""
 "\n"
 "        This e-mail confirmation link expired or is invalid.\n"
-"        Please <a href=\"%(email_url)s\">issue a new e-mail confirmation request</a>.\n"
+"        Please <a class=\"font-semibold leading-6 text-indigo-600 hover:text-"
+"indigo-500 ml-1\" href=\"%(email_url)s\">issue a new e-mail confirmation "
+"request</a>.\n"
 "        "
 msgstr ""
 
-#: templates/account/login.html:4 templates/account/login.html:10
-#: templates/account/login.html:41
+#: templates/account/login.html:4 templates/account/login.html:11
+#: templates/account/login.html:23
 #, fuzzy
 #| msgid "Sign up"
 msgid "Sign In"
 msgstr "Registrate"
 
-#: templates/account/login.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Please sign in with one\n"
-#| "of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign up</a>\n"
-#| "for a %(site_name)s account and sign in below:"
-msgid ""
-"\n"
-"            Please sign in with one of your existing third party accounts.\n"
-"            Or, <a href=\"%(signup_url)s\">sign up</a> for a %(site_name)s account and sign in below:\n"
-"            "
-msgstr ""
-"Please sign in with one of your existing third party accounts. O <a href=\"%(signup_url)s\">registrate</a>\n"
-"para una cuenta en %(site_name):"
-
-#: templates/account/login.html:21
-#: venv/lib/python3.11/site-packages/django/utils/text.py:254
-msgid "or"
-msgstr "o"
-
-#: templates/account/login.html:26
-#, python-format
-msgid ""
-"\n"
-"            If you have not created an account yet,\n"
-"            then please <a href=\"%(signup_url)s\">sign up</a> first.\n"
-"            "
-msgstr ""
-
-#: templates/account/login.html:40 templates/account/password_change.html:15
+#: templates/account/login.html:27 templates/account/password_change.html:25
 msgid "Forgot Password?"
 msgstr "¿Contraseña olvidada?"
 
-#: templates/account/logout.html:4 templates/account/logout.html:8
-#: templates/account/logout.html:18
+#: templates/account/login.html:29 templates/account/password_change.html:27
+msgid "Click here"
+msgstr ""
+
+#: templates/account/login.html:32
+#, python-format
+msgid ""
+"\n"
+"          No account? <a class=\"font-semibold leading-6 text-indigo-600 "
+"hover:text-indigo-500 ml-1\" href=\"%(signup_url)s\">Sign up</a>\n"
+"          "
+msgstr ""
+
+#: templates/account/login.html:43
+msgid "Or continue with"
+msgstr ""
+
+#: templates/account/logout.html:4 templates/account/logout.html:11
+#: templates/account/logout.html:23
 #, fuzzy
 #| msgid "Sign up"
 msgid "Sign Out"
 msgstr "Registrate"
 
-#: templates/account/logout.html:9
+#: templates/account/logout.html:13
 msgid "Are you sure you want to sign out?"
 msgstr "¿Estás seguro de que quieres cerrar la sesión?"
 
@@ -511,88 +595,60 @@ msgstr "Introduce un email válido"
 msgid "Your primary e-mail address must be verified."
 msgstr ""
 
-#: templates/account/my_account.html:9
-#, fuzzy
-#| msgid "Account"
-msgid "My account"
-msgstr "Cuenta"
-
-#: templates/account/my_account.html:12
-msgid "Change E-mail"
-msgstr ""
-
-#: templates/account/my_account.html:15
-#, fuzzy
-#| msgid "Log in"
-msgid "Log out"
-msgstr "Iniciar"
-
-#: templates/account/password_change.html:4
-#: templates/account/password_change.html:8
-#: templates/account/password_change.html:14
-#: templates/account/password_reset_from_key.html:4
-#: templates/account/password_reset_from_key.html:12
-#: templates/account/password_reset_from_key_done.html:4
-#: templates/account/password_reset_from_key_done.html:8
-msgid "Change Password"
-msgstr ""
-
 #: templates/account/password_reset.html:4
 #: templates/account/password_reset.html:10
 #: templates/account/password_reset_done.html:4
-#: templates/account/password_reset_done.html:8
+#: templates/account/password_reset_done.html:11
 msgid "Password Reset"
 msgstr ""
 
-#: templates/account/password_reset.html:15
+#: templates/account/password_reset.html:16
 msgid ""
-"Forgotten your password? Enter your e-mail address below, and we'll send you"
-" an e-mail allowing you to reset it."
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
 msgstr ""
 
-#: templates/account/password_reset.html:23
+#: templates/account/password_reset.html:24
 msgid "Reset My Password"
 msgstr ""
 
-#: templates/account/password_reset.html:26
-msgid ""
-"\n"
-"          Please contact us if you have any trouble resetting your password.\n"
-"          "
+#: templates/account/password_reset.html:27
+msgid " Please contact us if you have any trouble resetting your password. "
 msgstr ""
 
-#: templates/account/password_reset_done.html:13
+#: templates/account/password_reset_done.html:17
 msgid ""
-"\n"
-"      We have sent you an e-mail.\n"
-"      Please contact us if you do not receive it within a few minutes.\n"
-"      "
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
 msgstr ""
 
-#: templates/account/password_reset_from_key.html:10
+#: templates/account/password_reset_from_key.html:12
 msgid "Bad Token"
 msgstr ""
 
-#: templates/account/password_reset_from_key.html:18
+#: templates/account/password_reset_from_key.html:20
 #, python-format
 msgid ""
 "\n"
-"        The password reset link was invalid, possibly because it has already been used.\n"
-"        Please request a <a href=\"%(passwd_reset_url)s\">new password reset</a>.\n"
+"        The password reset link was invalid, possibly because it has already "
+"been used.\n"
+"        Please request a <a class=\"font-semibold leading-6 text-indigo-600 "
+"hover:text-indigo-500 ml-1\" href=\"%(passwd_reset_url)s\">new password "
+"reset</a>.\n"
 "        "
 msgstr ""
 
-#: templates/account/password_reset_from_key.html:27
+#: templates/account/password_reset_from_key.html:31
 msgid "change password"
 msgstr ""
 
-#: templates/account/password_reset_from_key.html:30
-#: templates/account/password_reset_from_key_done.html:9
+#: templates/account/password_reset_from_key.html:35
+#: templates/account/password_reset_from_key_done.html:13
 msgid "Your password is now changed."
 msgstr ""
 
-#: templates/account/password_set.html:4 templates/account/password_set.html:8
-#: templates/account/password_set.html:13
+#: templates/account/password_set.html:4 templates/account/password_set.html:11
+#: templates/account/password_set.html:20
 msgid "Set Password"
 msgstr ""
 
@@ -602,27 +658,28 @@ msgstr ""
 msgid "Signup"
 msgstr "Registrate"
 
-#: templates/account/signup.html:10 templates/account/signup.html:26
-#: templates/socialaccount/signup.html:8
-#: templates/socialaccount/signup.html:26
+#: templates/account/signup.html:10 templates/account/signup.html:25
+#: templates/socialaccount/signup.html:10
+#: templates/socialaccount/signup.html:31
 #, fuzzy
 #| msgid "Sign up"
 msgid "Sign Up"
 msgstr "Registrate"
 
-#: templates/account/signup.html:12
+#: templates/account/signup.html:29
 #, python-format
 msgid ""
 "Already have an account? Then please\n"
-"        <a href=\"%(login_url)s\">sign in</a>."
+"        <a class=\"font-semibold leading-6 text-indigo-600 hover:text-"
+"indigo-500 ml-1\" href=\"%(login_url)s\">sign in</a>."
 msgstr ""
 
 #: templates/account/signup_closed.html:4
-#: templates/account/signup_closed.html:8
+#: templates/account/signup_closed.html:10
 msgid "Sign Up Closed"
 msgstr ""
 
-#: templates/account/signup_closed.html:9
+#: templates/account/signup_closed.html:12
 msgid "We are sorry, but the sign up is currently closed."
 msgstr ""
 
@@ -632,19 +689,21 @@ msgstr ""
 
 #: templates/account/snippets/already_logged_in.html:5
 #, python-format
-msgid ""
-"you are already\n"
-"  logged in as %(user_display)s."
+msgid "you are already logged in as %(user_display)s."
+msgstr ""
+
+#: templates/account/snippets/back_to_dashboard.html:4
+msgid "Back to Account"
 msgstr ""
 
 #: templates/account/verification_sent.html:4
-#: templates/account/verification_sent.html:8
+#: templates/account/verification_sent.html:10
 #: templates/account/verified_email_required.html:4
-#: templates/account/verified_email_required.html:8
+#: templates/account/verified_email_required.html:10
 msgid "Verify Your E-mail Address"
 msgstr ""
 
-#: templates/account/verification_sent.html:10
+#: templates/account/verification_sent.html:13
 msgid ""
 "\n"
 "      We have sent an e-mail to you for verification.\n"
@@ -653,45 +712,40 @@ msgid ""
 "      "
 msgstr ""
 
-#: templates/account/verified_email_required.html:11
+#: templates/account/verified_email_required.html:14
 msgid ""
-"This part of the site requires us to verify that you are who\n"
-"    you claim to be. For this purpose, we require that you verify ownership of\n"
-"    your e-mail address. "
+"This part of the site requires us to verify that you are who you claim to "
+"be. For this purpose, we require that you verify ownership of your e-mail "
+"address. "
 msgstr ""
 
-#: templates/account/verified_email_required.html:16
+#: templates/account/verified_email_required.html:17
 msgid ""
-"We have sent an e-mail to you for verification. Please click\n"
-"    on the link inside this e-mail. Please contact us if you do not receive it\n"
-"    within a few minutes."
+"We have sent an e-mail to you for verification. Please click on the link "
+"inside this e-mail. Please contact us if you do not receive it within a few "
+"minutes."
 msgstr ""
 
-#: templates/account/verified_email_required.html:21
+#: templates/account/verified_email_required.html:20
 #, python-format
 msgid ""
-"<strong>Note:</strong> you can still\n"
-"    <a href=\"%(email_url)s\">change your e-mail address</a>."
+"<strong>Note:</strong> you can still <a class=\"font-semibold leading-6 text-"
+"indigo-600 hover:text-indigo-500 ml-1\" href=\"%(email_url)s\">change your e-"
+"mail address</a>."
 msgstr ""
 
-#: templates/core/home.html:5
-msgid "Home"
-msgstr "Inicio"
+#: templates/cms/blog/post.html:19
+#, fuzzy
+#| msgid "Important dates"
+msgid "Last update:"
+msgstr "Fechas importantes"
 
-#: templates/core/home.html:11
-msgid "Nice CV"
-msgstr "Nice CV"
-
-#: templates/core/home.html:12
-msgid "Create a profile and download any templates you like"
+#: templates/components/pagination.html:14
+msgid "Previous page"
 msgstr ""
 
-#: templates/core/home.html:14
-msgid "Start"
-msgstr ""
-
-#: templates/core/home.html:18
-msgid "Templates"
+#: templates/components/pagination.html:34
+msgid "Next page"
 msgstr ""
 
 #: templates/openid/login.html:6
@@ -726,71 +780,84 @@ msgstr ""
 msgid "Buy plan"
 msgstr ""
 
-#: templates/plans/plan_list.html:39
-msgid "profiles"
+#: templates/plans/plan_list.html:34
+msgid "Months"
 msgstr ""
 
-#: templates/plans/plan_list.html:48
-msgid "months"
+#: templates/plans/plan_list.html:38 templates/profiles/profile_list.html:4
+#: templates/profiles/profile_list.html:8
+msgid "Profiles"
 msgstr ""
 
-#: templates/plans/plan_list.html:58
-msgid "Support"
+#: templates/plans/plan_list.html:43
+msgid "Technical support"
 msgstr ""
 
-#: templates/plans/plan_list.html:71
+#: templates/plans/plan_list.html:49
+#, fuzzy
+#| msgid "Sign up, create a new account"
+msgid "Translate your profile"
+msgstr "Registrate, crea una nueva cuenta"
+
+#: templates/plans/plan_list.html:62
 msgid "Frequently asked questions"
 msgstr ""
 
-#: templates/plans/plan_list.html:86
+#: templates/plans/plan_list.html:83
 msgid "Do you have a different question? Contact us."
 msgstr ""
 
-#: templates/profiles/cvs/cv_card.html:12
+#: templates/profiles/cvs/card.html:18
+msgid "Premium"
+msgstr ""
+
+#: templates/profiles/cvs/card.html:22
+msgid "Free"
+msgstr ""
+
+#: templates/profiles/cvs/card.html:28
 msgid "Average process time:"
 msgstr ""
 
-#: templates/profiles/cvs/cv_card.html:12
+#: templates/profiles/cvs/card.html:28
 msgid "seconds"
 msgstr ""
 
-#: templates/profiles/cvs/cv_card.html:22
+#: templates/profiles/cvs/card.html:39
 msgid "Generate CV"
 msgstr ""
 
-#: templates/profiles/cvs/cv_card.html:33
+#: templates/profiles/cvs/card.html:47
+msgid "Get Premium"
+msgstr ""
+
+#: templates/profiles/cvs/card.html:56
 msgid "Download"
 msgstr ""
 
-#: templates/profiles/partials/childset.html:55
+#: templates/profiles/partials/childset.html:52
 msgid "New"
 msgstr ""
 
-#: templates/profiles/partials/childset.html:68
+#: templates/profiles/partials/childset.html:63
 msgid "Add"
 msgstr ""
 
-#: templates/profiles/partials/options.html:12
+#: templates/profiles/partials/options.html:9
 msgid "CV templates"
 msgstr ""
 
-#: templates/profiles/partials/options.html:38
+#: templates/profiles/partials/options.html:34
 msgid "Customize your profile"
 msgstr ""
 
-#: templates/profiles/partials/options.html:63
+#: templates/profiles/partials/options.html:58
 #, fuzzy
 #| msgid "Re-send Verification"
 msgid "Deactivate or activate fields"
 msgstr "Reenviar verificación"
 
-#: templates/profiles/partials/options.html:75
-#: templates/profiles/partials/options.html:95
-#: templates/profiles/photo/crop_form.html:22
-msgid "Save"
-msgstr ""
-
-#: templates/profiles/partials/options.html:83
+#: templates/profiles/partials/options.html:78
 msgid "Name your own labels"
 msgstr ""
 
@@ -800,138 +867,139 @@ msgstr ""
 msgid "Delete photo?"
 msgstr "Eliminar"
 
-#: templates/profiles/photo/main.html:14
+#: templates/profiles/photo/main.html:13
 msgid "Add photo"
 msgstr ""
 
-#: templates/profiles/photo/main.html:39
+#: templates/profiles/photo/main.html:38
 msgid "Edit photo"
 msgstr ""
 
-#: templates/profiles/photo/new.html:9
+#: templates/profiles/photo/new.html:8
 msgid "Upload photo"
 msgstr ""
 
-#: templates/profiles/photo/new.html:17
+#: templates/profiles/photo/new.html:15
 msgid "Upload"
 msgstr ""
 
-#: templates/profiles/profile_list.html:4
-#: templates/profiles/profile_list.html:8
-msgid "My profiles"
+#: templates/profiles/profile_list.html:18
+msgid "Without name"
 msgstr ""
 
-#: templates/profiles/profile_list.html:24
+#: templates/profiles/profile_list.html:66
+#: venv/lib/python3.11/site-packages/birdsong/options.py:40
 msgid "Edit"
 msgstr ""
 
-#: templates/profiles/profile_list.html:27
-msgid "View resumes"
-msgstr ""
-
-#: templates/profiles/profile_list.html:32
+#: templates/profiles/profile_list.html:72
 #, fuzzy
 #| msgid "Are you sure you want to sign out?"
 msgid "Are you sure to delete this profile?"
 msgstr "¿Estás seguro de que quieres cerrar la sesión?"
 
-#: templates/profiles/profile_list.html:33
+#: templates/profiles/profile_list.html:83
+#: venv/lib/python3.11/site-packages/birdsong/options.py:36
 #: venv/lib/python3.11/site-packages/django/forms/formsets.py:499
 msgid "Delete"
 msgstr ""
 
-#: templates/profiles/profile_list.html:41
+#: templates/profiles/profile_list.html:121
 #, fuzzy
 #| msgid "Sign up, create a new account"
-msgid "Create profile"
+msgid "Create a new profile"
 msgstr "Registrate, crea una nueva cuenta"
 
-#: templates/profiles/profile_update.html:4
+#: templates/profiles/profile_update.html:7
 msgid "My profile"
 msgstr ""
 
-#: templates/profiles/profile_update.html:64
+#: templates/profiles/profile_update.html:68
 msgid "CVs"
 msgstr ""
 
 #: templates/socialaccount/authentication_error.html:4
-#: templates/socialaccount/authentication_error.html:8
+#: templates/socialaccount/authentication_error.html:10
 msgid "Social Network Login Failure"
 msgstr ""
 
-#: templates/socialaccount/authentication_error.html:9
+#: templates/socialaccount/authentication_error.html:13
 msgid ""
 "An error occurred while attempting to login via your social network account."
 msgstr ""
 
 #: templates/socialaccount/connections.html:4
-#: templates/socialaccount/connections.html:8
+#: templates/socialaccount/connections.html:10
 msgid "Account Connections"
 msgstr ""
 
-#: templates/socialaccount/connections.html:11
+#: templates/socialaccount/connections.html:14
 msgid ""
-"\n"
-"        You can sign in to your account using any of the following third party accounts:\n"
-"        "
+"You can sign in to your account using any of the following third party "
+"accounts:"
 msgstr ""
 
-#: templates/socialaccount/connections.html:41
+#: templates/socialaccount/connections.html:46
 msgid ""
 "You currently have no social network accounts connected to this account."
 msgstr ""
 
-#: templates/socialaccount/connections.html:43
+#: templates/socialaccount/connections.html:49
 msgid "Add a 3rd Party Account"
 msgstr ""
 
-#: templates/socialaccount/login.html:4
+#: templates/socialaccount/login.html:5
 #, fuzzy
 #| msgid "Log in with Google"
 msgid "Login with {{ provider }}"
 msgstr "Iniciar con Google"
 
-#: templates/socialaccount/login.html:9
+#: templates/socialaccount/login.html:12
 #, python-format
 msgid "Connect %(provider)s"
 msgstr ""
 
-#: templates/socialaccount/login.html:11
+#: templates/socialaccount/login.html:15
 #, python-format
 msgid ""
 "\n"
-"        You are about to connect a new third party account from %(provider)s.\n"
+"        You are about to connect a new third party account from "
+"%(provider)s.\n"
 "        "
 msgstr ""
 
-#: templates/socialaccount/login.html:16
+#: templates/socialaccount/login.html:21
 #, python-format
 msgid "Sign In Via %(provider)s"
 msgstr ""
 
-#: templates/socialaccount/login.html:18
+#: templates/socialaccount/login.html:24
 #, python-format
 msgid ""
 "\n"
-"        You are about to sign in using a third party account from %(provider)s.\n"
+"        You are about to sign in using a third party account from "
+"%(provider)s.\n"
 "        "
 msgstr ""
 
-#: templates/socialaccount/login.html:25
+#: templates/socialaccount/login.html:33
 msgid "Continue"
 msgstr ""
 
 #: templates/socialaccount/login_cancelled.html:4
-#: templates/socialaccount/login_cancelled.html:8
+#: templates/socialaccount/login_cancelled.html:10
 msgid "Login Cancelled"
 msgstr ""
 
-#: templates/socialaccount/login_cancelled.html:11
+#: templates/socialaccount/login_cancelled.html:14
 #, python-format
 msgid ""
 "\n"
-"      You decided to cancel logging in to our site using one of your existing accounts.\n"
-"      If this was a mistake, please proceed to <a href=\"%(login_url)s\">sign in</a>.\n"
+"      You decided to cancel logging in to our site using one of your "
+"existing accounts.\n"
+"      If this was a mistake, please proceed to <a class=\"font-semibold "
+"leading-6 text-indigo-600 hover:text-indigo-500 ml-1\" "
+"href=\"%(login_url)s\">sign in</a>.\n"
 "      "
 msgstr ""
 
@@ -947,11 +1015,12 @@ msgstr ""
 msgid "The social account has been disconnected."
 msgstr ""
 
-#: templates/socialaccount/signup.html:10
+#: templates/socialaccount/signup.html:13
 #, python-format
 msgid ""
 "\n"
-"      You are about to use your %(provider_name)s account to login to %(site_name)s.\n"
+"      You are about to use your %(provider_name)s account to login to "
+"%(site_name)s.\n"
 "      As a final step, please complete the following form:\n"
 "      "
 msgstr ""
@@ -1019,156 +1088,305 @@ msgstr ""
 msgid "--"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/_termui_impl.py:496
+#: venv/lib/python3.11/site-packages/birdsong/models.py:22
+#, fuzzy
+msgid "email"
+msgstr "Añade email"
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:25
+msgid "tags"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:39
+msgid "unsent"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:40
+msgid "sending"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:41
+msgid "sent"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:42
+msgid "failed"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:47
+msgid "name"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:49
+msgid "The name of the campaign"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:51
+msgid "subject"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:53
+#, fuzzy
+#| msgid "Important dates"
+msgid "sent date"
+msgstr "Fechas importantes"
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:59
+msgid "receipts"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/models.py:63
+msgid "status"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/options.py:31
+#: venv/lib/python3.11/site-packages/birdsong/options.py:44
+msgid "Preview"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/options.py:37
+#: venv/lib/python3.11/site-packages/birdsong/options.py:169
+msgid "Copy"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/options.py:42
+msgid "Send"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/options.py:43
+msgid "Send test"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/options.py:49
+msgid "View"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/create_campaign.html:23
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/edit_campaign.html:23
+msgid "Reload preview"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:7
+msgid "Campaign info"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:12
+msgid "Subject"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:18
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:41
+#, fuzzy
+#| msgid "Important dates"
+msgid "Sent date"
+msgstr "Fechas importantes"
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:24
+msgid "No. Recipients"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:35
+msgid "Recipients"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:39
+msgid "Contact"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:40
+msgid "Success"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/inspect_campaign.html:57
+msgid "Content"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/send_confirm.html:4
+msgid "Send Campaign"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/send_confirm.html:19
+msgid "Send to a subset of contacts?"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/send_confirm.html:27
+msgid "Yes, send campaign"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/send_confirm.html:28
+msgid "No, don't send"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/test_confirm.html:4
+msgid "Send test campaign email"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/test_confirm.html:23
+msgid "Send test email"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/templates/birdsong/editor/test_confirm.html:24
+msgid "Cancel"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/views/actions.py:20
+msgid "Campaign sent to {} contacts"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/birdsong/views/actions.py:28
+msgid "Test email sent, please check your inbox"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/_termui_impl.py:518
 #, python-brace-format
 msgid "{editor}: Editing failed"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/_termui_impl.py:500
+#: venv/lib/python3.11/site-packages/click/_termui_impl.py:522
 #, python-brace-format
 msgid "{editor}: Editing failed: {e}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1097
+#: venv/lib/python3.11/site-packages/click/core.py:1120
 msgid "Aborted!"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1282
-#: venv/lib/python3.11/site-packages/click/decorators.py:495
+#: venv/lib/python3.11/site-packages/click/core.py:1309
+#: venv/lib/python3.11/site-packages/click/decorators.py:559
 msgid "Show this message and exit."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1313
-#: venv/lib/python3.11/site-packages/click/core.py:1339
+#: venv/lib/python3.11/site-packages/click/core.py:1340
+#: venv/lib/python3.11/site-packages/click/core.py:1370
 #, python-brace-format
 msgid "(Deprecated) {text}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1357
+#: venv/lib/python3.11/site-packages/click/core.py:1387
 msgid "Options"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1383
+#: venv/lib/python3.11/site-packages/click/core.py:1413
 #, python-brace-format
 msgid "Got unexpected extra argument ({args})"
 msgid_plural "Got unexpected extra arguments ({args})"
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1399
+#: venv/lib/python3.11/site-packages/click/core.py:1429
 msgid "DeprecationWarning: The command {name!r} is deprecated."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1605
+#: venv/lib/python3.11/site-packages/click/core.py:1636
 msgid "Commands"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1637
+#: venv/lib/python3.11/site-packages/click/core.py:1668
 msgid "Missing command."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:1715
+#: venv/lib/python3.11/site-packages/click/core.py:1746
 msgid "No such command {name!r}."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:2271
+#: venv/lib/python3.11/site-packages/click/core.py:2310
 msgid "Value must be an iterable."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:2291
+#: venv/lib/python3.11/site-packages/click/core.py:2331
 #, python-brace-format
 msgid "Takes {nargs} values but 1 was given."
 msgid_plural "Takes {nargs} values but {len} were given."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:2734
+#: venv/lib/python3.11/site-packages/click/core.py:2778
 #, python-brace-format
 msgid "env var: {var}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:2764
+#: venv/lib/python3.11/site-packages/click/core.py:2808
 msgid "(dynamic)"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:2777
+#: venv/lib/python3.11/site-packages/click/core.py:2821
 #, python-brace-format
 msgid "default: {default}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/core.py:2790
+#: venv/lib/python3.11/site-packages/click/core.py:2834
 msgid "required"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/decorators.py:400
+#: venv/lib/python3.11/site-packages/click/decorators.py:465
 #, python-format
 msgid "%(prog)s, version %(version)s"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/decorators.py:464
+#: venv/lib/python3.11/site-packages/click/decorators.py:528
 msgid "Show the version and exit."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:43
-#: venv/lib/python3.11/site-packages/click/exceptions.py:79
+#: venv/lib/python3.11/site-packages/click/exceptions.py:44
+#: venv/lib/python3.11/site-packages/click/exceptions.py:80
 #, python-brace-format
 msgid "Error: {message}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:71
+#: venv/lib/python3.11/site-packages/click/exceptions.py:72
 #, python-brace-format
 msgid "Try '{command} {option}' for help."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:120
+#: venv/lib/python3.11/site-packages/click/exceptions.py:121
 #, python-brace-format
 msgid "Invalid value: {message}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:122
+#: venv/lib/python3.11/site-packages/click/exceptions.py:123
 #, python-brace-format
 msgid "Invalid value for {param_hint}: {message}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:178
+#: venv/lib/python3.11/site-packages/click/exceptions.py:179
 msgid "Missing argument"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:180
+#: venv/lib/python3.11/site-packages/click/exceptions.py:181
 msgid "Missing option"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:182
+#: venv/lib/python3.11/site-packages/click/exceptions.py:183
 msgid "Missing parameter"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:184
+#: venv/lib/python3.11/site-packages/click/exceptions.py:185
 #, python-brace-format
 msgid "Missing {param_type}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:191
+#: venv/lib/python3.11/site-packages/click/exceptions.py:192
 #, python-brace-format
 msgid "Missing parameter: {param_name}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:211
+#: venv/lib/python3.11/site-packages/click/exceptions.py:212
 #, python-brace-format
 msgid "No such option: {name}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:223
+#: venv/lib/python3.11/site-packages/click/exceptions.py:224
 #, python-brace-format
 msgid "Did you mean {possibility}?"
 msgid_plural "(Possible options: {possibilities})"
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:261
+#: venv/lib/python3.11/site-packages/click/exceptions.py:262
 msgid "unknown error"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/exceptions.py:268
+#: venv/lib/python3.11/site-packages/click/exceptions.py:269
 msgid "Could not open file {filename!r}: {message}"
 msgstr ""
 
@@ -1186,119 +1404,122 @@ msgid_plural "Option {name!r} requires {nargs} arguments."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/click/shell_completion.py:316
+#: venv/lib/python3.11/site-packages/click/shell_completion.py:319
 msgid "Shell completion is not supported for Bash versions older than 4.4."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/shell_completion.py:322
+#: venv/lib/python3.11/site-packages/click/shell_completion.py:326
 msgid "Couldn't detect Bash version, shell completion is not supported."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/termui.py:160
+#: venv/lib/python3.11/site-packages/click/termui.py:158
 msgid "Repeat for confirmation"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/termui.py:176
+#: venv/lib/python3.11/site-packages/click/termui.py:174
 msgid "Error: The value you entered was invalid."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/termui.py:178
+#: venv/lib/python3.11/site-packages/click/termui.py:176
 #, python-brace-format
 msgid "Error: {e.message}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/termui.py:189
+#: venv/lib/python3.11/site-packages/click/termui.py:187
 msgid "Error: The two entered values do not match."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/termui.py:245
+#: venv/lib/python3.11/site-packages/click/termui.py:243
 msgid "Error: invalid input"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/termui.py:776
+#: venv/lib/python3.11/site-packages/click/termui.py:773
 msgid "Press any key to continue..."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:265
+#: venv/lib/python3.11/site-packages/click/types.py:266
 #, python-brace-format
 msgid ""
 "Choose from:\n"
 "\t{choices}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:297
+#: venv/lib/python3.11/site-packages/click/types.py:298
 msgid "{value!r} is not {choice}."
 msgid_plural "{value!r} is not one of {choices}."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:387
+#: venv/lib/python3.11/site-packages/click/types.py:392
 msgid "{value!r} does not match the format {format}."
 msgid_plural "{value!r} does not match the formats {formats}."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:409
+#: venv/lib/python3.11/site-packages/click/types.py:414
 msgid "{value!r} is not a valid {number_type}."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:465
+#: venv/lib/python3.11/site-packages/click/types.py:470
 #, python-brace-format
 msgid "{value} is not in the range {range}."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:606
+#: venv/lib/python3.11/site-packages/click/types.py:611
 msgid "{value!r} is not a valid boolean."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:630
+#: venv/lib/python3.11/site-packages/click/types.py:635
 msgid "{value!r} is not a valid UUID."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:811
-#: venv/lib/python3.11/site-packages/wagtailsvg/models.py:31
+#: venv/lib/python3.11/site-packages/click/types.py:822
 msgid "file"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:813
+#: venv/lib/python3.11/site-packages/click/types.py:824
 msgid "directory"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:815
+#: venv/lib/python3.11/site-packages/click/types.py:826
 msgid "path"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:861
+#: venv/lib/python3.11/site-packages/click/types.py:877
 msgid "{name} {filename!r} does not exist."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:870
+#: venv/lib/python3.11/site-packages/click/types.py:886
 msgid "{name} {filename!r} is a file."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:878
+#: venv/lib/python3.11/site-packages/click/types.py:894
 #, python-brace-format
 msgid "{name} '{filename}' is a directory."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:887
+#: venv/lib/python3.11/site-packages/click/types.py:903
 msgid "{name} {filename!r} is not readable."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:896
+#: venv/lib/python3.11/site-packages/click/types.py:912
 msgid "{name} {filename!r} is not writable."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:905
+#: venv/lib/python3.11/site-packages/click/types.py:921
 msgid "{name} {filename!r} is not executable."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/click/types.py:972
+#: venv/lib/python3.11/site-packages/click/types.py:988
 #, python-brace-format
 msgid "{len_type} values are required, but {len_value} was given."
 msgid_plural "{len_type} values are required, but {len_value} were given."
 msgstr[0] ""
 msgstr[1] ""
+
+#: venv/lib/python3.11/site-packages/dbbackup/apps.py:16
+msgid "Backup and restore"
+msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/contrib/messages/apps.py:15
 msgid "Messages"
@@ -1341,79 +1562,79 @@ msgid "Enter a valid value."
 msgstr "Introduce un valor correcto"
 
 #: venv/lib/python3.11/site-packages/django/core/validators.py:104
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:749
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:752
 msgid "Enter a valid URL."
 msgstr "Introduce una URL válida"
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:164
+#: venv/lib/python3.11/site-packages/django/core/validators.py:165
 msgid "Enter a valid integer."
 msgstr "Introduce un entero válido."
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:175
+#: venv/lib/python3.11/site-packages/django/core/validators.py:176
 msgid "Enter a valid email address."
 msgstr "Introduce un email válido"
 
 #. Translators: "letters" means latin letters: a-z and A-Z.
-#: venv/lib/python3.11/site-packages/django/core/validators.py:256
+#: venv/lib/python3.11/site-packages/django/core/validators.py:259
 msgid ""
 "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:264
+#: venv/lib/python3.11/site-packages/django/core/validators.py:267
 msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or"
-" hyphens."
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:276
-#: venv/lib/python3.11/site-packages/django/core/validators.py:284
-#: venv/lib/python3.11/site-packages/django/core/validators.py:313
+#: venv/lib/python3.11/site-packages/django/core/validators.py:279
+#: venv/lib/python3.11/site-packages/django/core/validators.py:287
+#: venv/lib/python3.11/site-packages/django/core/validators.py:316
 #, fuzzy
 #| msgid "Enter a valid email address."
 msgid "Enter a valid IPv4 address."
 msgstr "Introduce un email válido"
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:293
-#: venv/lib/python3.11/site-packages/django/core/validators.py:314
+#: venv/lib/python3.11/site-packages/django/core/validators.py:296
+#: venv/lib/python3.11/site-packages/django/core/validators.py:317
 #, fuzzy
 #| msgid "Enter a valid email address."
 msgid "Enter a valid IPv6 address."
 msgstr "Introduce un email válido"
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:305
-#: venv/lib/python3.11/site-packages/django/core/validators.py:312
+#: venv/lib/python3.11/site-packages/django/core/validators.py:308
+#: venv/lib/python3.11/site-packages/django/core/validators.py:315
 #, fuzzy
 #| msgid "Enter a valid email address."
 msgid "Enter a valid IPv4 or IPv6 address."
 msgstr "Introduce un email válido"
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:348
+#: venv/lib/python3.11/site-packages/django/core/validators.py:351
 msgid "Enter only digits separated by commas."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:354
+#: venv/lib/python3.11/site-packages/django/core/validators.py:357
 #, python-format
 msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:389
+#: venv/lib/python3.11/site-packages/django/core/validators.py:392
 #: venv/lib/python3.11/site-packages/djmoney/models/validators.py:51
 #, python-format
 msgid "Ensure this value is less than or equal to %(limit_value)s."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:398
+#: venv/lib/python3.11/site-packages/django/core/validators.py:401
 #: venv/lib/python3.11/site-packages/djmoney/models/validators.py:43
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:407
+#: venv/lib/python3.11/site-packages/django/core/validators.py:410
 #, python-format
 msgid "Ensure this value is a multiple of step size %(limit_value)s."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:417
+#: venv/lib/python3.11/site-packages/django/core/validators.py:420
 #, python-format
 msgid ""
 "Ensure this value has at least %(limit_value)d character (it has "
@@ -1424,7 +1645,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:435
+#: venv/lib/python3.11/site-packages/django/core/validators.py:438
 #, python-format
 msgid ""
 "Ensure this value has at most %(limit_value)d character (it has "
@@ -1435,7 +1656,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:458
+#: venv/lib/python3.11/site-packages/django/core/validators.py:461
 #: venv/lib/python3.11/site-packages/django/forms/fields.py:347
 #: venv/lib/python3.11/site-packages/django/forms/fields.py:386
 #, fuzzy
@@ -1443,21 +1664,21 @@ msgstr[1] ""
 msgid "Enter a number."
 msgstr "Introduce un entero válido."
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:460
+#: venv/lib/python3.11/site-packages/django/core/validators.py:463
 #, python-format
 msgid "Ensure that there are no more than %(max)s digit in total."
 msgid_plural "Ensure that there are no more than %(max)s digits in total."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:465
+#: venv/lib/python3.11/site-packages/django/core/validators.py:468
 #, python-format
 msgid "Ensure that there are no more than %(max)s decimal place."
 msgid_plural "Ensure that there are no more than %(max)s decimal places."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:470
+#: venv/lib/python3.11/site-packages/django/core/validators.py:473
 #, python-format
 msgid ""
 "Ensure that there are no more than %(max)s digit before the decimal point."
@@ -1466,14 +1687,14 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:541
+#: venv/lib/python3.11/site-packages/django/core/validators.py:544
 #, python-format
 msgid ""
 "File extension “%(extension)s” is not allowed. Allowed extensions are: "
 "%(allowed_extensions)s."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/core/validators.py:602
+#: venv/lib/python3.11/site-packages/django/core/validators.py:605
 msgid "Null characters are not allowed."
 msgstr ""
 
@@ -1572,15 +1793,15 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:1489
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
-"HH:MM[:ss[.uuuuuu]][TZ] format."
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+"uuuuuu]][TZ] format."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:1497
 #, python-format
 msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD "
-"HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:1502
@@ -1599,8 +1820,8 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:1789
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] "
-"[[HH:]MM:]ss[.uuuuuu] format."
+"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+"uuuuuu] format."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/db/models/fields/__init__.py:1793
@@ -1718,6 +1939,7 @@ msgid "Universally unique identifier"
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/db/models/fields/files.py:232
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:26
 msgid "File"
 msgstr ""
 
@@ -1763,8 +1985,7 @@ msgid "Many-to-many relationship"
 msgstr ""
 
 #. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the
-#. label
+#. characters will prevent the default label_suffix to be appended to the label
 #: venv/lib/python3.11/site-packages/django/forms/boundfield.py:184
 msgid ":?.!"
 msgstr ""
@@ -1780,14 +2001,14 @@ msgid "Enter a whole number."
 msgstr "Introduce un entero válido."
 
 #: venv/lib/python3.11/site-packages/django/forms/fields.py:467
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:1238
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:1241
 #, fuzzy
 #| msgid "Enter a valid value."
 msgid "Enter a valid date."
 msgstr "Introduce un valor correcto"
 
 #: venv/lib/python3.11/site-packages/django/forms/fields.py:490
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:1239
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:1242
 #, fuzzy
 #| msgid "Enter a valid integer."
 msgid "Enter a valid time."
@@ -1810,65 +2031,64 @@ msgstr "Introduce un entero válido."
 msgid "The number of days must be between {min_days} and {max_days}."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:618
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:621
 msgid "No file was submitted. Check the encoding type on the form."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:619
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:622
 msgid "No file was submitted."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:620
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:623
 msgid "The submitted file is empty."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:622
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:625
 #, python-format
-msgid ""
-"Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
 "Ensure this filename has at most %(max)d characters (it has %(length)d)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:627
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:630
 msgid "Please either submit a file or check the clear checkbox, not both."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:691
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:694
 msgid ""
 "Upload a valid image. The file you uploaded was either not an image or a "
 "corrupted image."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:854
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:946
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:857
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:949
 #: venv/lib/python3.11/site-packages/django/forms/models.py:1566
 #, python-format
 msgid "Select a valid choice. %(value)s is not one of the available choices."
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:948
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:1067
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:951
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:1070
 #: venv/lib/python3.11/site-packages/django/forms/models.py:1564
 #, fuzzy
 #| msgid "Enter a valid value."
 msgid "Enter a list of values."
 msgstr "Introduce un valor correcto"
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:1068
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:1071
 #, fuzzy
 #| msgid "Enter a valid value."
 msgid "Enter a complete value."
 msgstr "Introduce un valor correcto"
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:1307
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:1310
 #, fuzzy
 #| msgid "Enter a valid URL."
 msgid "Enter a valid UUID."
 msgstr "Introduce una URL válida"
 
-#: venv/lib/python3.11/site-packages/django/forms/fields.py:1337
+#: venv/lib/python3.11/site-packages/django/forms/fields.py:1340
 #, fuzzy
 #| msgid "Enter a valid URL."
 msgid "Enter a valid JSON."
@@ -1937,8 +2157,7 @@ msgid "The inline value did not match the parent instance."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/forms/models.py:1429
-msgid ""
-"Select a valid choice. That choice is not one of the available choices."
+msgid "Select a valid choice. That choice is not one of the available choices."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/forms/models.py:1568
@@ -2337,6 +2556,10 @@ msgctxt "String to return when truncating text"
 msgid "%(truncated_text)s…"
 msgstr ""
 
+#: venv/lib/python3.11/site-packages/django/utils/text.py:254
+msgid "or"
+msgstr "o"
+
 #. Translators: This string is used as a separator between list elements
 #: venv/lib/python3.11/site-packages/django/utils/text.py:273
 #: venv/lib/python3.11/site-packages/django/utils/timesince.py:135
@@ -2410,10 +2633,10 @@ msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/views/csrf.py:127
 msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or"
-" including the “Referrer-Policy: no-referrer” header, please remove them. "
-"The CSRF protection requires the “Referer” header to do strict referer "
-"checking. If you’re concerned about privacy, use alternatives like <a "
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
 "rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
@@ -2465,8 +2688,8 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/views/generic/dates.py:652
 #, python-format
 msgid ""
-"Future %(verbose_name_plural)s not available because "
-"%(class_name)s.allow_future is False."
+"Future %(verbose_name_plural)s not available because %(class_name)s."
+"allow_future is False."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/views/generic/dates.py:692
@@ -2522,10 +2745,10 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/views/templates/default_urlconf.html:221
 #, python-format
 msgid ""
-"You are seeing this page because <a "
-"href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" "
-"target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file "
-"and you have not configured any URLs."
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/views/templates/default_urlconf.html:229
@@ -2550,6 +2773,25 @@ msgstr ""
 
 #: venv/lib/python3.11/site-packages/django/views/templates/default_urlconf.html:248
 msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:30
+msgid "Delete the file after upload"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:34
+#, fuzzy
+#| msgid "Sign up, create a new account"
+msgid "Created at"
+msgstr "Registrate, crea una nueva cuenta"
+
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:40
+msgid "Expires at"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:52
+#: venv/lib/python3.11/site-packages/django_tweets/models.py:107
+msgid "Tweepy Response"
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/djmoney/contrib/django_rest_framework/fields.py:34
@@ -2619,7 +2861,6 @@ msgid "Choose another item"
 msgstr ""
 
 #: venv/lib/python3.11/site-packages/generic_chooser/widgets.py:39
-#: venv/lib/python3.11/site-packages/wagtailsvg/widgets.py:16
 msgid "Clear choice"
 msgstr ""
 
@@ -2637,32 +2878,6 @@ msgstr "Registrate, crea una nueva cuenta"
 msgid "show this help message and exit"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/jsonfield/fields.py:48
-#, fuzzy
-#| msgid "Enter a valid URL."
-msgid "Enter valid JSON."
-msgstr "Introduce una URL válida"
-
-#: venv/lib/python3.11/site-packages/jsonfield/forms.py:15
-#, python-format
-msgid "\"%(value)s\" value must be valid JSON."
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/kombu/transport/qpid.py:1311
-#, python-format
-msgid "Attempting to connect to qpid with SASL mechanism %s"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/kombu/transport/qpid.py:1316
-#, python-format
-msgid "Connected to qpid with SASL mechanism %s"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/kombu/transport/qpid.py:1334
-#, python-format
-msgid "Unable to connect to qpid with SASL mechanism %s"
-msgstr ""
-
 #: venv/lib/python3.11/site-packages/modeltranslation/widgets.py:24
 msgid "None"
 msgstr ""
@@ -2672,64 +2887,42 @@ msgstr ""
 msgid "{something}"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/wagtailsvg/models.py:28
-msgid "title"
-msgstr ""
+#~ msgid " is a Premium template. Get a plan for using it."
+#~ msgstr " es una plantilla Premium. Consigue un plan para usarla."
 
-#: venv/lib/python3.11/site-packages/wagtailsvg/models.py:33
-msgid "tags"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/templates/modeladmin/wagtailsvg/svg/index.html:8
-#, python-format
-msgid ""
-"No %(name)s have been\n"
-"                    created yet. One of the following must be created before you can add any\n"
-"                    %(name)s:"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/templates/modeladmin/wagtailsvg/svg/index.html:16
-#, python-format
-msgid ""
-"No %(name)s have been\n"
-"                    created yet."
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/templates/modeladmin/wagtailsvg/svg/index.html:19
-#, python-format
-msgid ""
-"\n"
-"                            Why not <a href=\"%(url)s\">add one</a>?\n"
-"                        "
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/templates/wagtailsvg/_results.html:10
-msgid "Preview"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/views.py:35
-#: venv/lib/python3.11/site-packages/wagtailsvg/widgets.py:10
-msgid "Choose an SVG"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/widgets.py:11
-msgid "Choose another SVG"
-msgstr ""
-
-#: venv/lib/python3.11/site-packages/wagtailsvg/widgets.py:12
-msgid "Edit this SVG"
-msgstr ""
+#, python-brace-format
+#~ msgid "Your plan allowes to create just {u.plan.profiles} profile(s)"
+#~ msgstr "Su plan solo permite crear {u.plan.profiles} perfil(es)."
 
 #, fuzzy
-#~ msgid "Email"
-#~ msgstr "Añade email"
+#~ msgid "Calculated from title field"
+#~ msgstr "Reenviar verificación"
 
-#~ msgid "German"
-#~ msgstr "Alemán"
+#~ msgid "There was an error with this page."
+#~ msgstr "Hay un error con esta página."
+
+#, fuzzy, python-format
+#~ msgid ""
+#~ "\n"
+#~ "            Please sign in with one of your existing third party "
+#~ "accounts.\n"
+#~ "            Or, <a href=\"%(signup_url)s\">sign up</a> for a "
+#~ "%(site_name)s account and sign in below:\n"
+#~ "            "
+#~ msgstr ""
+#~ "Please sign in with one of your existing third party accounts. O <a "
+#~ "href=\"%(signup_url)s\">registrate</a>\n"
+#~ "para una cuenta en %(site_name):"
+
+#~ msgid "Home"
+#~ msgstr "Inicio"
+
+#~ msgid "Nice CV"
+#~ msgstr "Nice CV"
 
 #, fuzzy
-#~ msgid "Deactivate description"
-#~ msgstr "Introduce la descripción meta aquí"
+#~ msgid "Enter valid JSON."
+#~ msgstr "Introduce una URL válida"
 
 #, fuzzy
 #~ msgid "Message"
@@ -2794,11 +2987,19 @@ msgstr ""
 
 #, fuzzy
 #~ msgid ""
-#~ "You're receiving this e-mail because you or someone else has requested a password for your user account.</span>&nbsp;</span><span class=\"r\"></span></p>\n"
-#~ "    <p class=\"mis show_mis\"><span class=\"n\"><a id=\"t5\" href=\"#t5\">5</a></span><span class=\"t\"><span class=\"txt\">It can be safely ignored if you did not request a password reset. Click the link below to reset your password."
+#~ "You're receiving this e-mail because you or someone else has requested a "
+#~ "password for your user account.</span>&nbsp;</span><span class=\"r\"></"
+#~ "span></p>\n"
+#~ "    <p class=\"mis show_mis\"><span class=\"n\"><a id=\"t5\" "
+#~ "href=\"#t5\">5</a></span><span class=\"t\"><span class=\"txt\">It can be "
+#~ "safely ignored if you did not request a password reset. Click the link "
+#~ "below to reset your password."
 #~ msgstr ""
-#~ "Está recibiendo este correo electrónico porque usted u otra persona ha solicitado una contraseña para su cuenta de usuario.\n"
-#~ "Puede ignorarlo con seguridad si no ha solicitado el restablecimiento de la contraseña. Haga clic en el siguiente enlace para restablecer su contraseña."
+#~ "Está recibiendo este correo electrónico porque usted u otra persona ha "
+#~ "solicitado una contraseña para su cuenta de usuario.\n"
+#~ "Puede ignorarlo con seguridad si no ha solicitado el restablecimiento de "
+#~ "la contraseña. Haga clic en el siguiente enlace para restablecer su "
+#~ "contraseña."
 
 #, fuzzy
 #~ msgid "Enter your email"

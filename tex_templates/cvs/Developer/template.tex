@@ -30,142 +30,163 @@
 %	TITLE AND CONTACT INFORMATION
 %----------------------------------------------------------------------------------------
 
-\begin{minipage}[t]{0.45\textwidth} % 45% of the page width for name
+\begin{minipage}[t]{0.33\textwidth}
 	\vspace{-\baselineskip} % Required for vertically aligning minipages
-
-	% If your name is very short, use just one of the lines below
-	% If your name is very long, reduce the font size or make the minipage wider and reduce the others proportionately
-	\colorbox{black}{\textcolor{white}{\textbf{\MakeUppercase{Alyx}}}} % First name
-
-	\colorbox{black}{\textcolor{white}{\textbf{\MakeUppercase{Vance}}}} % Last name
-
+	
+	% fullname
+	\colorbox{black}{\textcolor{white}{\textbf{\MakeUppercase{ {{- profile.get_tex_value("fullname") -}} }}}}
 	\vspace{6pt}
-
-	{\huge Web App Architect} % Career or current job title
+	% job title
+	{% if profile.jobtitle_active %}
+	{\huge {{ profile.get_tex_value("jobtitle") }} }
+	{% endif %}
 \end{minipage}
-\begin{minipage}[t]{0.275\textwidth} % 27.5% of the page width for the first row of icons
+\begin{minipage}[t]{0.33\textwidth} % 27.5% of the page width for the first row of icons
 	\vspace{-\baselineskip} % Required for vertically aligning minipages
+	{% if profile.location_active %}
+	\icon{MapMarker}{12}{ {{ profile.get_tex_value("location") }} }\newline
+	{% endif %}
 
-	% The first parameter is the FontAwesome icon name, the second is the box size and the third is the text
-	% Other icons can be found by referring to fontawesome.pdf (supplied with the template) and using the word after \fa in the command for the icon you want
-	\icon{MapMarker}{12}{Black Mesa East}\newline
-	\icon{Phone}{12}{+1 123 456 789}\newline
-	\icon{At}{12}{\href{mailto:alyx@vance.me}{alyx@vance.me}}\newline
+	{% if profile.phone_active %}
+	\icon{Phone}{12}{ {{- profile.get_tex_value("phone") -}} }\newline
+	{% endif %}
+
 \end{minipage}
-\begin{minipage}[t]{0.275\textwidth} % 27.5% of the page width for the second row of icons
+\begin{minipage}[t]{0.33\textwidth} % 27.5% of the page width for the second row of icons
 	\vspace{-\baselineskip} % Required for vertically aligning minipages
+	% email
+	{% if profile.email_active %}
+	\icon{At}{12}{\href{mailto: {{- profile.get_tex_value("email") -}} }{ {{- profile.get_tex_value("email") -}} }}\newline
+	{% endif %}
+	% website
+	{% if profile.website_active %}
+	\icon{Globe}{12}{\href{ {{- profile.get_tex_value("website") -}} }{ {{- profile.get_tex_value("website") -}} }}\newline
+	{% endif %}
 
-	% The first parameter is the FontAwesome icon name, the second is the box size and the third is the text
-	% Other icons can be found by referring to fontawesome.pdf (supplied with the template) and using the word after \fa in the command for the icon you want
-	\icon{Globe}{12}{\href{https://alyx.vance.me}{alyx.vance.me}}\newline
-	\icon{Github}{12}{\href{https://github.com/alyxvance}{github.com/alyxvance}}\newline
-	\icon{Twitter}{12}{\href{https://twitter.com/@alyxvance}{@alyxvance}}\newline
 \end{minipage}
 
-\vspace{0.5cm}
+\vspace{0.3cm}
 
 %----------------------------------------------------------------------------------------
 %	INTRODUCTION, SKILLS AND TECHNOLOGIES
 %----------------------------------------------------------------------------------------
 
-\cvsect{Who Am I?}
-
-\begin{minipage}[t]{0.4\textwidth} % 40% of the page width for the introduction text
-	\vspace{-\baselineskip} % Required for vertically aligning minipages
-
-	\lorem \lorem \lorem \lorem \lorem % Dummy text
+{% if profile.about_active %}
+\cvsect{ {{- profile.get_tex_value("about_label") -}} }
+\begin{minipage}[t]{\textwidth}
+	\vspace{-\baselineskip}
+	\vspace{0.3cm}
+	{{ profile.get_tex_value("about") }}
 \end{minipage}
+{% endif %}
 
-\hfill % Whitespace between
+\vspace{0.8cm}
 
-\begin{minipage}[t]{0.5\textwidth} % 50% of the page for the skills bar chart
-	\vspace{-\baselineskip} % Required for vertically aligning minipages
-	\begin{barchart}{5.5}
-		\baritem{JavaScript}{60}
-		\baritem{PHP}{100}
-		\baritem{SASS/LESS}{70}
-		\baritem{Bootstrap}{70}
-		\baritem{Git}{40}
-		\baritem{LaTeX}{60}
+{% if profile.skill_active and profile.skill_set.count() > 0 %}
+\begin{minipage}[t]{0.5\textwidth}
+	\vspace{-\baselineskip}
+	\colorbox{black}{\textcolor{white}{\textbf{\MakeUppercase{ {{- profile.get_tex_value("skill_label") -}} }}}}
+	\begin{barchart}{4.5}
+		{% for skill in profile.skill_set.all() %}
+			\baritem{ {{- skill.get_tex_value("name") -}} }{ {{- skill.level -}} }
+		{% endfor %}
 	\end{barchart}
-\end{minipage}
+\end{minipage} {% endif %}{% if profile.language_active and profile.languageability_set.count() > 0 %}
+\begin{minipage}[t]{0.5\textwidth}
+	\vspace{-\baselineskip}
+	\colorbox{black}{\textcolor{white}{\textbf{\MakeUppercase{ {{- profile.get_tex_value("language_label") -}} }}}}
+	\begin{barchart}{4.5}
+		{% for language in profile.languageability_set.all() %}
+			\baritem{ {{- language.get_tex_value("name") -}} }{ {{- language.level -}} }
+		{% endfor %}
+	\end{barchart}
+\end{minipage} {% endif %}
 
-\begin{center}
-	\bubbles{5/Eclipse, 6/git, 4/Office, 3/Inkscape, 3/Blender}
-\end{center}
+
+% \begin{center}
+%	\bubbles{5/Eclipse, 6/git, 4/Office, 3/Inkscape, 3/Blender}
+% \end{center}
 
 %----------------------------------------------------------------------------------------
 %	EXPERIENCE
 %----------------------------------------------------------------------------------------
-
-\cvsect{Experience}
-
+{% if profile.experience_active and profile.experience_set.count() > 0 %}
+\cvsect{ {{- profile.experience_label -}} }
+{% for experience in profile.experience_set.all() %}
 \begin{entrylist}
 	\entry
-		{2017 -- 3/2018}
-		{Front-end developer}
-		{Big Corporation Name Inc.}
-		{\lorem \lorem \lorem }
-		\vspace{3mm}
+	{ {{ experience.get_tex_value("start_date") }} -- {{ experience.get_tex_value("end_date") }} }
+	{ {{- experience.get_tex_value("title") -}} }
+	{ {{- experience.get_tex_value("company") -}} }
+	{ {{- experience.get_tex_value("description") | linebreaks -}} }
+	\vspace{3mm}
 \end{entrylist}
-
-\begin{entrylist}
-	\entry
-	{2017 -- 3/2018}
-	{Front-end developer}
-	{Big Corporation Name Inc.}
-	{\lorem \lorem \lorem \texttt{node.js}\slashsep\texttt{Vue.js}\slashsep\texttt{Electron}} \\
-	\entry
-	{2017 -- 3/2018}
-	{Front-end developer}
-	{Big Corporation Name Inc.}
-	{\lorem \lorem \lorem \texttt{node.js}\slashsep\texttt{Vue.js}\slashsep\texttt{Electron}}
-\end{entrylist}
+{% endfor %}
+{% endif %}
 
 %----------------------------------------------------------------------------------------
 %	EDUCATION
 %----------------------------------------------------------------------------------------
 
-\cvsect{Education}
+{% if profile.education_active and profile.education_set.count() > 0 %}
+\cvsect{ {{- profile.get_tex_value("education_label") -}} }
 
+{% for education in profile.education_set.all() %}
 \begin{entrylist}
 	\entry
-		{2013 -- 2017}
-		{Master's Degree}
-		{Another University Name}
-		{\lorem\lorem\lorem}
+	{ {{ education.get_tex_value("start_date") }} -- {{ education.get_tex_value("end_date") }} }
+	{ {{- education.get_tex_value("title") -}} }
+	{ {{- education.get_tex_value("institution") -}} }
+	{ {{- education.get_tex_value("description") | linebreaks -}} }
+	\vspace{3mm} 
 \end{entrylist}
+{% endfor %}
+{% endif %}
 
-%----------------------------------------------------------------------------------------
-%	ADDITIONAL INFORMATION
-%----------------------------------------------------------------------------------------
 
-\begin{minipage}[t]{0.3\textwidth}
-	\vspace{-\baselineskip} % Required for vertically aligning minipages
+{% if profile.achievement_active and profile.achievement_set.count() > 0 %}
+\cvsect{ {{- profile.achievement_label -}} }
+{% for achievement in profile.achievement_set.all() %}
+\begin{entrylist}
+	\entry
+	{ {{ achievement.get_tex_value("date") }} }
+	{ {{- achievement.get_tex_value("title") -}} }
+	{ }
+	{ }
+	\vspace{3mm} 
+\end{entrylist}
+{% endfor %}
+{% endif %}
 
-	\cvsect{Languages}
+{% if profile.project_active and profile.project_set.count() > 0 %}
+\cvsect{ {{- profile.get_tex_value("project_label") -}} }
+{% for project in profile.project_set.all() %}
+\begin{entrylist}
+	\entry
+	{ {{- project.get_tex_value("role") -}} }
+	{ {{- project.get_tex_value("title") -}} }
+	{ {{- project.get_tex_value("organization") -}} }
+	{ }
+	\vspace{3mm} 
+\end{entrylist}
+{% endfor %}
+{% endif %}
 
-	\textbf{English} - native \newline
-	\textbf{German} - proficient \newline
-	\textbf{Polish} - rudimentary
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.3\textwidth}
-	\vspace{-\baselineskip} % Required for vertically aligning minipages
 
-	\cvsect{Hobbies}
 
-	I love... \lorem
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.3\textwidth}
-	\vspace{-\baselineskip} % Required for vertically aligning minipages
 
-	\cvsect{Non profit}
-
-	I help... \lorem
-\end{minipage}
-
-%----------------------------------------------------------------------------------------
+{% if profile.publication_active and profile.publication_set.count() > 0 %}
+\cvsect{ {{- profile.get_tex_value("publication_label") -}} }
+{% for publication in profile.publication_set.all() %}
+\begin{entrylist}
+	\entry
+	{ {{- publication.get_tex_value("date") -}} }
+	{ {{- publication.get_tex_value("title") -}} }
+	{ {{- publication.get_tex_value("publisher") -}} }
+	{ {{- publication.get_tex_value("authors") -}} }
+	\vspace{3mm} 
+\end{entrylist}
+{% endfor %}
+{% endif %}
 
 \end{document}

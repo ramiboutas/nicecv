@@ -28,19 +28,18 @@ from ..sessions import get_or_create_session
 
 
 def hx_create_profile_cv(request, profile_id, tex_id, html_out):
-    html_dict = {"card": "cv.html"}
     profile = get_object_or_404(Profile, id=profile_id)
     tex = get_object_or_404(Tex, id=tex_id)
     if tex.is_premium:
         if request.user.is_authenticated:
             if not request.user.plan.premium_templates:
                 messages.warning(
-                    request, _(f" is a Premium template. Get a plan for using it.")
+                    request, _("This is a Premium template. Get a plan for using it.")
                 )
                 return HttpResponseClientRedirect(reverse_lazy("plan_list"))
         else:
             messages.warning(
-                request, _(f"This is a Premium template. Get a plan for using it.")
+                request, _("This is a Premium template. Get a plan for using it.")
             )
             return HttpResponseClientRedirect(reverse_lazy("plan_list"))
 
@@ -71,7 +70,7 @@ def profile_create(request):
         if Profile.objects.filter(user=u).count() >= u.plan.profiles:
             messages.warning(
                 request,
-                _(f"Your plan allowes to create just {u.plan.profiles} profile(s)"),
+                _("You are not allowed to create another profile. Get a Premium Plan"),
             )
             return redirect("plan_list")
         profile.user = u

@@ -36,7 +36,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
-        path("__reload__/", include("django_browser_reload.urls")),
+        # path("__reload__/", include("django_browser_reload.urls")),
     ]
 
 # Wagtail's serving mechanism (at the ends)

@@ -108,11 +108,6 @@ class Cv(auto_prefetch.Model):
                 obj.render_files()
                 print(f"✅ {obj} created.")
 
-    def save(self, *args, **kwargs):
-        self.render_files()
-        self.tex.add_download()
-        super().save(*args, **kwargs)
-
     def __str__(self) -> str:
         return f"CV ({self.profile.fullname} {self.tex})"
 
