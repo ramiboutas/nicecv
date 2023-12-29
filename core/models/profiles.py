@@ -1,8 +1,6 @@
-import time
 import uuid
 from functools import cache
 from itertools import chain
-from operator import attrgetter
 
 import auto_prefetch
 import factory
@@ -505,10 +503,11 @@ class Profile(auto_prefetch.Model):
 
         profile_cvs = self.cv_set.all()
         template_cvs = Cv.objects.filter(
-            profile__category="template", profile__language_code=self.language_code
+            profile__category="template",
+            profile__language_code=self.language_code,
+            active=True,
         ).exclude(tex__in=[cv.tex for cv in profile_cvs])
         return chain(profile_cvs, template_cvs)
-        # return sorted(chain(profile_cvs, template_cvs), key=attrgetter("created_on"))
 
     @cached_property
     def has_children(self):
