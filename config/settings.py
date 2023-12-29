@@ -230,6 +230,8 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
+USE_L10N = True
+
 
 WAGTAIL_I18N_ENABLED = True
 
@@ -440,6 +442,13 @@ DEEPL_AUTH_KEY = os.environ.get("DEEPL_AUTH_KEY", "")
 ROSETTA_MESSAGES_PER_PAGE = 50
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_WSGI_AUTO_RELOAD = True
+
+# wagtail-localize
+
+WAGTAILLOCALIZE_MACHINE_TRANSLATOR = {
+    "CLASS": "wagtail_localize.machine_translators.deepl.DeepLTranslator",
+    "OPTIONS": {"AUTH_KEY": DEEPL_AUTH_KEY},
+}
 
 
 # shell-plus

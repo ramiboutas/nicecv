@@ -1,6 +1,6 @@
 import auto_prefetch
 from django.db import models
-from django.db.models import UniqueConstraint
+from django.db.models import UniqueConstraint, Q
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -13,6 +13,7 @@ class AbractPlan(auto_prefetch.Model):
     profiles = models.PositiveSmallIntegerField(default=1)
     includes_support = models.BooleanField(default=False)
     profile_translation = models.BooleanField(default=False)
+    profile_manual = models.BooleanField(default=False)
     premium_templates = models.BooleanField(default=False)
 
     class Meta(auto_prefetch.Model.Meta):
@@ -44,7 +45,17 @@ class PremiumPlan(AbractPlan):
 
     class Meta(auto_prefetch.Model.Meta):
         ordering = ("months", "price")
-        constraints = (UniqueConstraint(fields=["months"], name="unique_months_field"),)
+        constraints = (
+            UniqueConstraint(
+                fields=["months"],
+                name="unique_months_field",
+            ),
+            UniqueConstraint(
+                fields=("profile_manual",),
+                condition=Q(profile_manual=True),
+                name="unique_plan_with_manual_profile",
+            ),
+        )
 
     @cached_property
     def detail_url(self):
