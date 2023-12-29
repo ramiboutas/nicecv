@@ -55,6 +55,12 @@
                       {% translate "We create a profile for you" %}
                     </li>
                   {% endif %}
+                  {% if plan.premium_templates %}
+                    <li class="flex gap-x-3">
+                      {% include "svgs/solid_indigo_tick.html" %}
+                      {% translate "Premium templates" %}
+                    </li>
+                  {% endif %}
                 </ul>
               </div>
             {% endfor %}
