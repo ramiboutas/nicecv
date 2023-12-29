@@ -95,6 +95,8 @@ class Cv(auto_prefetch.Model):
             self.image_time = time.time() - pdf_end
             self.rendering_time = self.image_time + self.pdf_time
 
+            self.save()
+
         return self
 
     @classmethod
@@ -104,9 +106,9 @@ class Cv(auto_prefetch.Model):
 
         for tex in Tex.objects.filter(active=True):
             for profile in Profile.objects.filter(category="template"):
-                obj = cls.objects.create(profile=profile, tex=tex, auto_created=True)
-                obj.render_files()
-                print(f"✅ {obj} created.")
+                cv = cls.objects.create(profile=profile, tex=tex, auto_created=True)
+                cv.render_files()
+                print(f"✅ {cv} created.")
 
     def __str__(self) -> str:
         return f"CV ({self.profile.fullname} {self.tex})"
