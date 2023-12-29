@@ -109,6 +109,7 @@ class Cv(auto_prefetch.Model):
                 cv = cls.objects.create(profile=profile, tex=tex, auto_created=True)
                 cv.render_files()
                 print(f"✅ {cv} created.")
+                del cv
 
     def __str__(self) -> str:
         return f"CV ({self.profile.fullname} {self.tex})"

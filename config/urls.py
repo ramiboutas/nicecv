@@ -11,6 +11,7 @@ from django.urls import re_path
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.contrib.sitemaps.views import sitemap
 
 urlpatterns = [
     ##### Django admin
@@ -26,7 +27,9 @@ urlpatterns = [
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
     # rosetta
     path("rosetta/", include("rosetta.urls")),
-    ##### core app
+    # sitemap
+    path("sitemap.xml", sitemap),
+    # core app
     path("", include("core.urls")),
 ]
 
