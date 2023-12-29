@@ -95,8 +95,6 @@
 {% if profile.about_active  %}
 \section{ {{- profile.get_tex_value("about_label") -}} }
 
-% \paragraph{ {{- profile.get_tex_value("about") | linebreaks -}} \\ }
-
 \begin{twenty}
   \twentyitemshort{}{ {{- profile.get_tex_value("about") | linebreaks -}} }
 \end{twenty}
