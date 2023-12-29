@@ -102,7 +102,7 @@ class Cv(auto_prefetch.Model):
         cls.objects.filter(profile__auto_created=True).delete()
         from .tex import Tex
 
-        for tex in Tex.objects.all():
+        for tex in Tex.objects.filter(active=True):
             for profile in Profile.objects.filter(category="template"):
                 obj = cls.objects.create(profile=profile, tex=tex, auto_created=True)
                 obj.render_files()
