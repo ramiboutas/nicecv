@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="achievement",
             name="title",
-            field=models.CharField(max_length=6, verbose_name="🏆 Goal achieved"),
+            field=models.CharField(max_length=65, verbose_name="🏆 Goal achieved"),
         ),
         migrations.AlterField(
             model_name="education",
@@ -42,12 +42,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="education",
             name="institution",
-            field=models.CharField(max_length=3, verbose_name="🏫 Institution"),
+            field=models.CharField(max_length=33, verbose_name="🏫 Institution"),
         ),
         migrations.AlterField(
             model_name="experience",
             name="company",
-            field=models.CharField(max_length=3, verbose_name="🏢 Company name"),
+            field=models.CharField(max_length=33, verbose_name="🏢 Company name"),
         ),
         migrations.AlterField(
             model_name="experience",
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="experience",
             name="location",
-            field=models.CharField(max_length=3, verbose_name="📍 Location"),
+            field=models.CharField(max_length=33, verbose_name="📍 Location"),
         ),
         migrations.AlterField(
             model_name="freeplan",
