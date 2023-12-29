@@ -503,9 +503,7 @@ class Profile(auto_prefetch.Model):
 
         profile_cvs = self.cv_set.all()
         template_cvs = Cv.objects.filter(
-            profile__category="template",
-            profile__language_code=self.language_code,
-            active=True,
+            profile__category="template", profile__language_code=self.language_code
         ).exclude(tex__in=[cv.tex for cv in profile_cvs])
         return chain(profile_cvs, template_cvs)
 
