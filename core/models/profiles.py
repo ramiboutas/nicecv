@@ -492,11 +492,13 @@ class Profile(auto_prefetch.Model):
         from ..factories.profiles import ProfileFactory
 
         cls.objects.filter(auto_created=True).delete()
-
+        created_profiles = []
         for code, _ in settings.LANGUAGES:
             with factory.Faker.override_default_locale(code):
-                obj = ProfileFactory(language_code=code)
-                print(f"✅ {obj} created.")
+                p = ProfileFactory(language_code=code)
+                created_profiles.append(p)
+                print(f"✅ {p} created.")
+        return created_profiles
 
     def fetch_cvs(self):
         from .cvs import Cv

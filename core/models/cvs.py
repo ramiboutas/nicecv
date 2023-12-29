@@ -24,7 +24,7 @@ now = timezone.now()
 
 
 def cv_upload_path(cv, filename):
-    return f"profiles-{cv.profile.category}/{now.year}-{now.month}/{now.day}/{cv.profile.id}/{filename}"
+    return f"profiles-{cv.profile.category}/{now.year}/{now.month}/{now.day}/{cv.profile.id}/{cv.tex.id}/{filename}"
 
 
 class Cv(auto_prefetch.Model):
@@ -67,7 +67,7 @@ class Cv(auto_prefetch.Model):
             with open(temppath / "texput.pdf", "rb") as f:
                 bytes_pdf = f.read()
 
-            filename = f"CV_{now.year}{now.month}{now.day}_{now.hour}{now.minute}{now.second}_{now.microsecond}"
+            filename = f"CV_{now.hour}{now.minute}{now.second}{now.microsecond}"
 
             self.pdf.save(
                 f"{filename}.pdf",
@@ -98,18 +98,6 @@ class Cv(auto_prefetch.Model):
             self.save()
 
         return self
-
-    @classmethod
-    def crete_cvs_from_profile_templates(cls):
-        cls.objects.filter(profile__auto_created=True).delete()
-        from .tex import Tex
-
-        for tex in Tex.objects.filter(active=True):
-            for profile in Profile.objects.filter(category="template"):
-                cv = cls.objects.create(profile=profile, tex=tex, auto_created=True)
-                cv.render_files()
-                print(f"✅ {cv} created.")
-                del cv
 
     def __str__(self) -> str:
         return f"CV ({self.profile.fullname} {self.tex})"
