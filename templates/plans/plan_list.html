@@ -49,6 +49,12 @@
                       {% translate "Translate your profile" %}
                     </li>
                   {% endif %}
+                  {% if plan.profile_manual %}
+                    <li class="flex gap-x-3">
+                      {% include "svgs/solid_indigo_tick.html" %}
+                      {% translate "We create a profile for you" %}
+                    </li>
+                  {% endif %}
                 </ul>
               </div>
             {% endfor %}

@@ -38,7 +38,6 @@ class FreePlan(AbractPlan):
 class PremiumPlan(AbractPlan):
     months = models.PositiveSmallIntegerField()
     price = MoneyField(max_digits=6, decimal_places=2, default_currency="EUR")
-    premium_templates = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.months} months"
