@@ -451,6 +451,10 @@ WAGTAILLOCALIZE_MACHINE_TRANSLATOR = {
 }
 
 
+# django-money
+
+CURRENCIES = ("USD", "EUR")
+
 # shell-plus
 
 SHELL_PLUS = "ipython"
