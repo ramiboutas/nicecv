@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
+    "wagtail.contrib.modeladmin",
     "wagtail.contrib.forms",
     "wagtail.documents",
     "wagtail.snippets",
