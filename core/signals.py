@@ -27,16 +27,18 @@ def process_stripe_event(sender, instance, created, **kwargs):
 
     plan_id = int(instance.data["object"]["metadata"]["plan_id"])
     user_id = int(instance.data["object"]["metadata"]["user_id"])
-    customer_id = int(instance.data["object"]["metadata"][customer_key])
+    # customer_id = int(instance.data["object"]["metadata"][customer_key])
 
     try:
         user = User.objects.get(id=user_id)
         plan = PremiumPlan.objects.get(id=plan_id)
-        customer = Customer.objects.get(id=customer_id)
+        # customer = Customer.objects.get(id=customer_id)
     except (User.DoesNotExist, PremiumPlan.DoesNotExist, Customer.DoesNotExist):
         pass
 
-    userplan = UserPremiumPlan.objects.create(plan=plan, user=user, customer=customer)
+    # customer=customer not saving because it produces this error:
+    # UnboundLocalError at /stripe/webhook/ cannot access local variable 'customer' where it is not associated with a value
+    userplan = UserPremiumPlan.objects.create(plan=plan, user=user)
 
     subject = "Nice CV | " + _("Welcome")
     body = _(
