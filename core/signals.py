@@ -28,7 +28,7 @@ def process_stripe_event(sender, instance, created, **kwargs):
         user = User.objects.get(id=user_id)
         plan = PremiumPlan.objects.get(id=plan_id)
     except (User.DoesNotExist, PremiumPlan.DoesNotExist):
-        pass
+        return
 
     userplan = UserPremiumPlan.objects.create(plan=plan, user=user)
 
