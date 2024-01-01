@@ -27,10 +27,8 @@ stripe.api_key = djstripe_settings.djstripe_settings.STRIPE_SECRET_KEY
 
 
 def plan_list(request):
-    context = {
-        "plans": PremiumPlan.objects.all(),
-        "faqs": FrequentAskedQuestion.objects.filter(active=True, category="pricing"),
-    }
+    faqs = FrequentAskedQuestion.objects.filter(active=True, category="pricing")
+    context = {"plans": PremiumPlan.objects.all(), "faqs": faqs}
     return render(request, "plans/plan_list.html", context)
 
 

@@ -8,6 +8,8 @@ from django.utils.functional import cached_property
 from .plans import FreePlan
 from .plans import PremiumPlan
 
+from djstripe.models import Customer
+
 
 class User(AbstractUser):
     avatar_url = models.URLField(null=True, blank=True)
@@ -36,6 +38,7 @@ class UserPremiumPlan(auto_prefetch.Model):
         User, related_name="user_premium_plans", on_delete=models.SET_NULL, null=True
     )
     plan = auto_prefetch.ForeignKey(PremiumPlan, on_delete=models.SET_NULL, null=True)
+    customer = auto_prefetch.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     created = models.DateField(auto_now_add=True)
     starts = models.DateField()
     expires = models.DateField()

@@ -4,11 +4,40 @@ from django.utils.translation import gettext as _
 from django.core.mail import EmailMessage
 from django.conf import settings
 
-from .models.users import UserPremiumPlan
+from .models.users import UserPremiumPlan, User
+from .models.plans import PremiumPlan
+
+from djstripe.models import Event, Customer
+from djstripe import settings as djstripe_settings
 
 
-@receiver(post_save, sender=UserPremiumPlan)
-def send_welcome_email(sender, instance, created, **kwargs):
+customer_key = f"{djstripe_settings.djstripe_settings.SUBSCRIBER_CUSTOMER_KEY}"
+
+
+@receiver(post_save, sender=Event)
+def process_stripe_event(sender, instance, created, **kwargs):
+    proceed = (
+        instance.type == "checkout.session.completed"
+        and "plan_id"
+        and "user_id" in instance.data["object"]["metadata"]
+    )
+
+    if not proceed:
+        return
+
+    plan_id = int(instance.data["object"]["metadata"]["plan_id"])
+    user_id = int(instance.data["object"]["metadata"]["user_id"])
+    customer_id = int(instance.data["object"]["metadata"]["customer_key"])
+
+    try:
+        user = User.objects.get(id=user_id)
+        plan = PremiumPlan.objects.get(id=plan_id)
+        customer = Customer.objects.get(id=customer_id)
+    except (User.DoesNotExist, PremiumPlan.DoesNotExist, Customer.DoesNotExist):
+        pass
+
+    userplan = UserPremiumPlan.objects.create(plan=plan, user=user, customer=customer)
+
     subject = "Nice CV | " + _("Welcome")
     body = _(
         """Hi,
@@ -21,11 +50,11 @@ Best wishes!
 Rami (nicecv.online)
 """
     )
-    m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [instance.user.email])
+    m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [userplan.user.email])
     m.send(fail_silently=True)
 
     ## check if user has ordered a plan with manual profile creation
-    if instance.plan.profile_manual:
+    if userplan.plan.profile_manual:
         subject_m = "Nice CV | " + _("Send us your actual CV")
         body_m = _(
             """Hi again,
@@ -38,6 +67,6 @@ I look forward to your feedback!
 """
         )
         m_m = EmailMessage(
-            subject_m, body_m, settings.DEFAULT_FROM_EMAIL, [instance.user.email]
+            subject_m, body_m, settings.DEFAULT_FROM_EMAIL, [userplan.user.email]
         )
         m_m.send(fail_silently=True)
