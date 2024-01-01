@@ -1,16 +1,10 @@
 
-# Django dev version
-django
-media/**
-media
-celerybeat-schedule
 
 # Django #
 *.log
 *.pot
 *.pyc
 __pycache__
-
 
 
 # Backup files #
@@ -120,3 +114,7 @@ node_modules
 
 # static files
 staticfiles/*
+
+# media files
+media
+media/*

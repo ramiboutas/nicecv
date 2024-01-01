@@ -368,7 +368,7 @@ STORAGES = {
     "local": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {
-            "location": "/media/nicecv",  # BASE_DIR / "media",
+            "location": BASE_DIR / "media",
             "base_url": LOCAL_MEDIA_URL,
         },
     },
