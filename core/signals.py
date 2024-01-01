@@ -27,7 +27,7 @@ def process_stripe_event(sender, instance, created, **kwargs):
 
     plan_id = int(instance.data["object"]["metadata"]["plan_id"])
     user_id = int(instance.data["object"]["metadata"]["user_id"])
-    customer_id = int(instance.data["object"]["metadata"]["customer_key"])
+    customer_id = int(instance.data["object"]["metadata"][customer_key])
 
     try:
         user = User.objects.get(id=user_id)
