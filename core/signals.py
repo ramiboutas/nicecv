@@ -7,11 +7,7 @@ from django.conf import settings
 from .models.users import UserPremiumPlan, User
 from .models.plans import PremiumPlan
 
-from djstripe.models import Event, Customer
-from djstripe import settings as djstripe_settings
-
-
-customer_key = f"{djstripe_settings.djstripe_settings.SUBSCRIBER_CUSTOMER_KEY}"
+from djstripe.models import Event
 
 
 @receiver(post_save, sender=Event)
@@ -27,17 +23,13 @@ def process_stripe_event(sender, instance, created, **kwargs):
 
     plan_id = int(instance.data["object"]["metadata"]["plan_id"])
     user_id = int(instance.data["object"]["metadata"]["user_id"])
-    # customer_id = int(instance.data["object"]["metadata"][customer_key])
 
     try:
         user = User.objects.get(id=user_id)
         plan = PremiumPlan.objects.get(id=plan_id)
-        # customer = Customer.objects.get(id=customer_id)
-    except (User.DoesNotExist, PremiumPlan.DoesNotExist, Customer.DoesNotExist):
+    except (User.DoesNotExist, PremiumPlan.DoesNotExist):
         pass
 
-    # customer=customer not saving because it produces this error:
-    # UnboundLocalError at /stripe/webhook/ cannot access local variable 'customer' where it is not associated with a value
     userplan = UserPremiumPlan.objects.create(plan=plan, user=user)
 
     subject = "Nice CV | " + _("Welcome")
