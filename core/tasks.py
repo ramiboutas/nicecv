@@ -76,3 +76,8 @@ def remove_temporal_profiles():
         fullname__isnull=True,
         email__isnull=True,
     ).delete()
+
+
+@db_periodic_task(crontab(hour="0", minute="20"))
+def remove_expired_sessions():
+    call_command("clearsessions")
