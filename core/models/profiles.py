@@ -513,6 +513,8 @@ class Profile(auto_prefetch.Model):
 
     @cached_property
     def has_children(self):
+        """check if the object has 1 to many related objects (skill_set, education_set...)"""
+
         links = (rel.get_accessor_name() for rel in self._meta.related_objects)
         return any(getattr(self, link).exists() for link in links)
 
@@ -530,6 +532,10 @@ class LevelMethodsMixin(object):
     @property
     def level_base_5_int(self):
         return round(self.level * 5 / 100)
+
+    @property
+    def level_base_5_float(self):
+        return self.level * 5 / 100
 
     @property
     def level_base_6_float(self):

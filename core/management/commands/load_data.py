@@ -15,11 +15,11 @@ class Command(BaseCommand):
         self.stdout.write("Creating objects...")
 
         # language objects
-        DeeplLanguage.update_objects()
+        # DeeplLanguage.update_objects()
 
         # plan objects
-        PremiumPlanFactory()
-        PremiumPlanFactory(price=14, months=6)
+        # PremiumPlanFactory()
+        # PremiumPlanFactory(price=14, months=6)
 
         # profile templates
         template_profiles = Profile.create_template_profiles()

@@ -65,6 +65,14 @@ def notify_to_complete_profile():
 
 @db_periodic_task(crontab(hour="0", minute="15"))
 def remove_temporal_profiles():
+    # Delete all temporal profiles
     Profile.objects.filter(
         category="temporal", updated__lt=datetime.now() - timedelta(days=30)
+    ).delete()
+    # Delete recent temporal profiles with no fullname and no email
+    Profile.objects.filter(
+        category="temporal",
+        updated__lt=datetime.now() - timedelta(days=1),
+        fullname__isnull=True,
+        email__isnull=True,
     ).delete()

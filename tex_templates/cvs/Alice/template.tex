@@ -5,7 +5,7 @@
 %	 PERSONAL INFORMATION
 %----------------------------------------------------------------------------------------
 % photo
-{% if profile.has_photo %}
+{% if profile.has_photo and profile.photo_active %}
   \photo{\includegraphics[width=\imagewidth]{ {{- profile.photo_path -}} } }
 {% else %}
   \photo{}

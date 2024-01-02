@@ -39,14 +39,13 @@ fontsize=10pt
 {% else %}
   \jobtitle{}
 {% endif %}
-{# this is a comment #}
 {% if profile.about_active %}
   \tagline{ {{- profile.get_tex_value("about") | linebreaks -}} }
 {% else %}
   \tagline{}
 {% endif %}
 % photo
-{% if profile.has_photo %}
+{% if profile.has_photo and profile.photo_active %}
   \photo[round]{ {{- profile.photo_path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% else %}
   \photo[round]{picture.jpg}{\dimexpr \headerheight-\marginbottom} % Profile picture
