@@ -71,43 +71,44 @@ def notify_to_complete_profile():
 @db_periodic_task(crontab(hour="8", minute="15"))
 def ask_to_verify_email():
     # Just send one email because of GoDaddy limits
-    # users = User.objects.none()
-    # users = users.union(obj.user) # in for loop
-    # users.update(asked_to_verify_email=True)
+    users = User.objects.none()
 
     qs = EmailAddress.objects.filter(verified=False, user__asked_to_verify_email=False)
 
     if qs.count() == 0:
         return
 
-    obj = qs.last()
+    # obj = qs.last()
 
-    last_profile = obj.user.profile_set.last()
-    if last_profile is not None:
-        try:
-            activate(last_profile.language)
-        except:
-            pass
-    subject = "Nice CV | " + _("Verify your Email")
-    body = _("Hi ") + obj.user.fullname
-    body += "\n\n"
-    body += _("This is Rami from nicecv.online.")
-    body += "\n\n"
-    body += _("Please consider to verify your email:")
-    body += "\n\n"
-    body += _("1. Just visit this page: https://nicecv.online/email/")
-    body += "\n\n"
-    body += _("2. Click on Re-send Verification")
-    body += "\n\n"
-    body += _("3. Go to you Email inbox and confirm your Email Address.")
-    body += "\n\n"
-    body += "Thanks."
-    body += "\n\n"
-    body += _("Best wishes, Rami.")
-    m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [obj.email])
-    m.send(fail_silently=False)
-    obj.user.asked_to_verify_email = True
-    obj.user.save()
+    for obj in qs:
+        last_profile = obj.user.profile_set.last()
+        if last_profile is not None:
+            try:
+                activate(last_profile.language)
+            except:
+                pass
+        subject = "Nice CV | " + _("Verify your Email")
+        body = _("Hi ") + obj.user.fullname
+        body += "\n\n"
+        body += _("This is Rami from nicecv.online.")
+        body += "\n\n"
+        body += _("Please consider to verify your email:")
+        body += "\n\n"
+        body += _("1. Just visit this page: https://nicecv.online/email/")
+        body += "\n\n"
+        body += _("2. Click on Re-send Verification")
+        body += "\n\n"
+        body += _("3. Go to you Email inbox and confirm your Email Address.")
+        body += "\n\n"
+        body += "Thanks."
+        body += "\n\n"
+        body += _("Best wishes, Rami.")
+        m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [obj.email])
+        m.send(fail_silently=False)
+        users = users.union(obj.user)  # in for loop
+        # obj.user.asked_to_verify_email = True
+        # obj.user.save()
+    users.update(asked_to_verify_email=True)
 
 
 @db_periodic_task(crontab(hour="0", minute="15"))
