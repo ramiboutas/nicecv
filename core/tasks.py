@@ -71,7 +71,6 @@ def notify_to_complete_profile():
 @db_periodic_task(crontab(hour="8", minute="15"))
 def ask_to_verify_email():
     # Just send one email because of GoDaddy limits
-    users = User.objects.none()
 
     qs = EmailAddress.objects.filter(verified=False, user__asked_to_verify_email=False)
 
@@ -106,9 +105,8 @@ def ask_to_verify_email():
         m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [obj.email])
         m.send(fail_silently=False)
         users = users.union(obj.user)  # in for loop
-        # obj.user.asked_to_verify_email = True
-        # obj.user.save()
-    users.update(asked_to_verify_email=True)
+        obj.user.asked_to_verify_email = True
+        obj.user.save()
 
 
 @db_periodic_task(crontab(hour="0", minute="15"))
