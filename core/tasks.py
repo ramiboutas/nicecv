@@ -29,7 +29,7 @@ def notify_to_complete_profile():
     # Collect emails depending on the profile completion
     profiles_to_email = []
     for p in profiles:
-        if not p.has_children:
+        if not p.has_children_exclude("cv_set"):
             profiles_to_email.append(p)
 
     # Send emails

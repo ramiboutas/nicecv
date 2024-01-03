@@ -514,8 +514,15 @@ class Profile(auto_prefetch.Model):
     @cached_property
     def has_children(self):
         """check if the object has 1 to many related objects (skill_set, education_set...)"""
+        return self.has_children_exclude()
 
-        links = (rel.get_accessor_name() for rel in self._meta.related_objects)
+    def has_children_exclude(self, exclude: str | list = []):
+        links = [rel.get_accessor_name() for rel in self._meta.related_objects]
+        if isinstance(exclude, str):
+            exclude = [exclude]
+        for e in exclude:
+            links.remove(e)
+
         return any(getattr(self, link).exists() for link in links)
 
     def save(self, *args, **kwargs):

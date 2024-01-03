@@ -15,10 +15,7 @@ def switch_language(request):
         try:
             page = Page.objects.get(id=request.POST.get("wagtail_page_id"))
         except (Page.DoesNotExist, ValueError):
-            messages.error(
-                request,
-                _("We did not find the requested page."),
-            )
+            messages.error(request, _("We did not find the requested page."))
             post["next"] = "/"
             request.POST = post
             return set_language(request)
@@ -28,8 +25,7 @@ def switch_language(request):
             post["next"] = page.get_translation(locale).url
         except (Page.DoesNotExist, Locale.DoesNotExist):
             messages.warning(
-                request,
-                _("Page not available in the requested language."),
+                request, _("Page not available in the requested language.")
             )
             return set_language(request)
 
