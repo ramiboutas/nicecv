@@ -37,35 +37,35 @@ def notify_to_complete_profile():
         return
 
     # Send emails
-    # for p in profiles_to_email:
-    p = profiles_to_email[0]  # GoDaddy limits :(
-    try:
-        activate(p.language)
-    except:
-        pass
-    subject = "Nice CV | " + _("Complete your profile")
-    body = _("Hello")
-    if p.fullname is not None:
-        body += " " + p.fullname
-    body += ",\n\n"
-    body += _("This is Rami from nicecv.online.")
-    body += "\n\n"
-    body += _("I am glad you want to improve the aesthetics of your CV.")
-    body += "\n\n"
-    body += _(
-        "I writing to you because it seems that you decided to abandon the process of creating a CV that will impress recruiters."
-    )
-    body += " "
-    body += _(
-        "But if you want to complete your profile and download CV templates, visit the site:"
-    )
-    body += "\n\n"
-    body += "https://nicecv.online"
-    body += "\n\n"
-    body += _("Best wishes, Rami.")
+    # p = profiles_to_email[0]  # GoDaddy limits :(
+    for p in profiles_to_email:
+        try:
+            activate(p.language)
+        except:
+            pass
+        subject = "Nice CV | " + _("Complete your profile")
+        body = _("Hello")
+        if p.fullname is not None:
+            body += " " + p.fullname
+        body += ",\n\n"
+        body += _("This is Rami from nicecv.online.")
+        body += "\n\n"
+        body += _("I am glad you want to improve the aesthetics of your CV.")
+        body += "\n\n"
+        body += _(
+            "I writing to you because it seems that you decided to abandon the process of creating a CV that will impress recruiters."
+        )
+        body += " "
+        body += _(
+            "But if you want to complete your profile and download CV templates, visit the site:"
+        )
+        body += "\n\n"
+        body += "https://nicecv.online"
+        body += "\n\n"
+        body += _("Best wishes, Rami.")
 
-    m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [p.email])
-    m.send(fail_silently=False)
+        m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [p.email])
+        m.send(fail_silently=False)
 
 
 @db_periodic_task(crontab(hour="8", minute="15"))
