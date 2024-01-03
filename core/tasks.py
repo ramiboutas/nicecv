@@ -104,7 +104,6 @@ def ask_to_verify_email():
         body += _("Best wishes, Rami.")
         m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [obj.email])
         m.send(fail_silently=False)
-        users = users.union(obj.user)  # in for loop
         obj.user.asked_to_verify_email = True
         obj.user.save()
 

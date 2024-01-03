@@ -24,7 +24,7 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         (
             None,
-            {"fields": ("username", "password")},
+            {"fields": ("username", "password", "asked_to_verify_email")},
         ),
         (
             _("Personal info"),
