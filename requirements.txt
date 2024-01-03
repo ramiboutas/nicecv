@@ -294,6 +294,8 @@ pylint-django==2.5.3
     # via -r requirements.in
 pylint-plugin-utils==0.8.2
     # via pylint-django
+pympler==1.0.1
+    # via -r requirements.in
 python-dateutil==2.8.2
     # via
     #   botocore

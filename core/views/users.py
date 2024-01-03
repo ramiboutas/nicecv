@@ -4,6 +4,9 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
+
+from django_htmx.http import HttpResponseClientRedirect
+
 from ..forms.users import CustomUserChangeForm
 from ..models.users import User
 
@@ -40,3 +43,16 @@ def redirect_change_password(request, id):
 
     messages.error(request, _("An error occurred"))
     return redirect("/")
+
+
+@login_required
+def account_delete(request, id):
+    user = User.objects.get(id=id)
+    if request.user == user:
+        user.delete()
+        messages.info(request, _("Account deleted"))
+    else:
+        messages.error(
+            request, _("You are not allowed to delete someone else's account.")
+        )
+    return HttpResponseClientRedirect("/")

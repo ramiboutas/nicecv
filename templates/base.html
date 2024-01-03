@@ -34,8 +34,8 @@
     {% block css %}
     {% endblock css %}
     <title>
-      {% block title %}
-      {% endblock title %}
+      {% block head_title %}
+      {% endblock head_title %}
     </title>
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="h-full">

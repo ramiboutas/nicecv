@@ -11,6 +11,7 @@ from huey.contrib.djhuey import db_periodic_task, db_task
 
 
 from .models.profiles import Profile
+from .models.users import User
 
 
 @db_periodic_task(crontab(hour="0", minute="5"))
@@ -43,14 +44,14 @@ def notify_to_complete_profile():
         if p.fullname is not None:
             body += " " + p.fullname
         body += ",\n\n"
-        body += _(
-            "This is Rami from nicecv.online. I am glad that you have started to take steps to improve the structure and aesthetics of your CV."
-        )
+        body += _("This is Rami from nicecv.online.")
+        body += "\n\n"
+        body += _("I am glad you want to improve the aesthetics of your CV.")
         body += "\n\n"
         body += _(
-            "Unfortunately, your profile is incomplete. It seems that you have decided to abandon the process of creating a CV that will impress recruiters."
+            "I writing to you because it seems that you decided to abandon the process of creating a CV that will impress recruiters."
         )
-        body += "\n\n"
+        body += " "
         body += _(
             "But if you want to complete your profile and download CV templates, visit the site:"
         )
@@ -61,6 +62,44 @@ def notify_to_complete_profile():
 
         m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [p.email])
         m.send(fail_silently=False)
+
+
+@db_periodic_task(crontab(hour="8", minute="15"))
+def ask_to_verify_email():
+    from allauth.account.models import EmailAddress
+
+    users = User.objects.none()
+    qs = EmailAddress.objects.filter(verified=False, user__asked_to_verify_email=False)
+
+    # qs = asked_to_verify_email
+    for obj in qs:
+        last_profile = obj.user.profile_set.last()
+        if last_profile is not None:
+            try:
+                activate(last_profile.language)
+            except:
+                pass
+        subject = "Nice CV | " + _("Verify your Email")
+        body = _("Hi ") + obj.user.fullname
+        body += "\n\n"
+        body += _("This is Rami from nicecv.online.")
+        body += "\n\n"
+        body += _("Please consider to verify your email:")
+        body += "\n\n"
+        body += _("1. Just visit this page: https://nicecv.online/email/")
+        body += "\n\n"
+        body += _("2. Click on Re-send Verification")
+        body += "\n\n"
+        body += _("3. Go to you Email inbox and confirm your Email Address.")
+        body += "\n\n"
+        body += "Thanks."
+        body += "\n\n"
+        body += _("Best wishes, Rami.")
+        m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [obj.email])
+        m.send(fail_silently=False)
+        users = users.union(obj.user)
+
+    users.update(asked_to_verify_email=True)
 
 
 @db_periodic_task(crontab(hour="0", minute="15"))
@@ -80,4 +119,4 @@ def remove_temporal_profiles():
 
 @db_periodic_task(crontab(hour="0", minute="20"))
 def remove_expired_sessions():
-    call_command("clearsessions")
+    call_command("clearsessions", verbosity=0)

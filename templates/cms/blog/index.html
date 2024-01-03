@@ -2,7 +2,7 @@
 {% load wagtailimages_tags wagtailcore_tags humanize i18n %}
 {% block content %}
   <!-- header and page.description-->
-  {% include "cms/blog/_header.html" %}
+  {% include "cms/partials/header.html" %}
   <!-- blog posts -->
   <div class="mx-auto mt-2 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
     {% for post in posts %}

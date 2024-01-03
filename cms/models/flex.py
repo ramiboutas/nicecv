@@ -4,6 +4,6 @@ from ..streams import FullStreamBlock
 
 
 class FlexPage(Page):
-    template = "cms/page.html"
+    template = "cms/flexpage.html"
 
     body = FullStreamBlock()

@@ -9,7 +9,7 @@ from ..streams import FullStreamBlock
 
 
 class HomePage(Page):
-    template = "cms/page.html"
+    template = "cms/flexpage.html"
 
     subpage_types = [
         "cms.BlogIndexPage",

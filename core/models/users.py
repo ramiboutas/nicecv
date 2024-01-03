@@ -4,6 +4,7 @@ import auto_prefetch
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.functional import cached_property
+from django.urls import reverse
 
 from .plans import FreePlan
 from .plans import PremiumPlan
@@ -11,6 +12,7 @@ from .plans import PremiumPlan
 
 class User(AbstractUser):
     avatar_url = models.URLField(null=True, blank=True)
+    asked_to_verify_email = models.BooleanField(default=False)
 
     @cached_property
     def plan(self):
@@ -22,6 +24,14 @@ class User(AbstractUser):
         if premiumplan:
             return premiumplan.plan
         return FreePlan.get()
+
+    @cached_property
+    def last_user_plan(self):
+        return self.user_premium_plans.last()
+
+    @cached_property
+    def delete_account_url(self):
+        return reverse("account_delete", kwargs={"id": self.id})
 
     @cached_property
     def fullname(self):

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static i18n %}
-{% block title %}
+{% block head_title %}
   {% if profile.fullname %}
     {{ profile.fullname }}
   {% else %}
     {% translate "My profile" %}
   {% endif %}
-{% endblock title %}
+{% endblock head_title %}
 {% block css %}
   <!-- cropper  -->
   <link rel="stylesheet" href="{% static 'css/cropper.css' %}" />

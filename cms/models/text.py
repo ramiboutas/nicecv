@@ -3,26 +3,14 @@ from wagtail.fields import StreamField
 from wagtail.models import Page
 
 from ..streams import TextStreamBlock
+from django.conf import settings
 
 
 class TextPage(Page):
-    template = "cms/page.html"
+    template = "cms/textpage.html"
 
     body = StreamField(
-        TextStreamBlock(
-            features=[
-                "h1",
-                "h2",
-                "h3",
-                "h4",
-                "italic",
-                "bold",
-                "ul",
-                "ol",
-                "link",
-                "document-link",
-            ]
-        ),
+        TextStreamBlock(features=settings.CMS_RICHTEXT_FEATURES),
         verbose_name="Home content block",
         null=True,
         blank=True,
