@@ -51,3 +51,4 @@ pylint-django
 async-timeout
 huey
 geoip2
+beautifulsoup4

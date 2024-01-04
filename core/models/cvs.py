@@ -1,6 +1,5 @@
 import tempfile
 import time
-from functools import cache
 from pathlib import Path
 from subprocess import CalledProcessError
 from subprocess import PIPE
@@ -17,7 +16,6 @@ from pdf2image import convert_from_path
 from django.utils import timezone
 
 from ..exceptions import TexError
-from .profiles import Profile
 
 
 now = timezone.now()

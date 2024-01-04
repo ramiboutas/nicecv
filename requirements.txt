@@ -27,7 +27,9 @@ babel==2.12.1
 backcall==0.2.0
     # via ipython
 beautifulsoup4==4.11.2
-    # via wagtail
+    # via
+    #   -r requirements.in
+    #   wagtail
 black==23.9.1
     # via -r requirements.in
 boto3==1.28.53

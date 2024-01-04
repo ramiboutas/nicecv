@@ -5,4 +5,5 @@ from .plans import PremiumPlan  # noqa
 from .profiles import Profile  # noqa
 from .tex import Tex  # noqa
 from .users import User  # noqa
-from .users import UserPremiumPlan  # noqa1
+from .users import UserPremiumPlan  # noqa
+from .countries import Country  # noqa
