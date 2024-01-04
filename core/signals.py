@@ -6,6 +6,7 @@ from django.conf import settings
 
 from .models.users import UserPremiumPlan, User
 from .models.plans import PremiumPlan
+from .tasks import send_email_message
 
 from djstripe.models import Event
 
@@ -45,7 +46,8 @@ Rami (nicecv.online)
 """
     )
     m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [userplan.user.email])
-    m.send(fail_silently=True)
+    # m.send(fail_silently=True)
+    send_email_message(m)
 
     ## check if user has ordered a plan with manual profile creation
     if userplan.plan.profile_manual:
@@ -63,4 +65,5 @@ I look forward to your feedback!
         m_m = EmailMessage(
             subject_m, body_m, settings.DEFAULT_FROM_EMAIL, [userplan.user.email]
         )
-        m_m.send(fail_silently=True)
+        # m_m.send(fail_silently=True)
+        send_email_message(m_m)

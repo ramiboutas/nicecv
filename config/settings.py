@@ -493,7 +493,11 @@ TWITTER_CLIENT_ID = os.environ.get("TWITTER_CLIENT_ID")
 TWITTER_CLIENT_SECRET = os.environ.get("TWITTER_CLIENT_SECRET")
 
 
-#### Project settings
+# Telegram
+
+TELEGRAM_BOT_API_KEY = os.environ.get("TELEGRAM_BOT_API_KEY", "")
+TELEGRAM_REPORTING_CHAT_ID = os.environ.get("TELEGRAM_REPORTING_CHAT_ID", "")
+
 
 # Https for production environment
 if HTTPS:

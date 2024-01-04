@@ -7,11 +7,19 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 
 from huey import crontab
-from huey.contrib.djhuey import db_periodic_task, db_task
+from huey.contrib.djhuey import db_periodic_task, db_task, task
 from allauth.account.models import EmailAddress
 
 from .models.profiles import Profile
-from .models.users import User
+from utils.telegram import report_to_admin
+
+
+@task
+def send_email_message(m):
+    try:
+        m.send(fail_silently=False)
+    except Exception as e:
+        report_to_admin(f"Failed to send email to {m.to}: \n\n {e}")
 
 
 @db_periodic_task(crontab(hour="0", minute="5"))
@@ -65,7 +73,7 @@ def notify_to_complete_profile():
         body += _("Best wishes, Rami.")
 
         m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [p.email])
-        m.send(fail_silently=False)
+        send_email_message(m)
 
 
 @db_periodic_task(crontab(hour="8", minute="15"))
@@ -103,7 +111,7 @@ def ask_to_verify_email():
         body += "\n\n"
         body += _("Best wishes, Rami.")
         m = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [obj.email])
-        m.send(fail_silently=False)
+        send_email_message(m)
         obj.user.asked_to_verify_email = True
         obj.user.save()
 
