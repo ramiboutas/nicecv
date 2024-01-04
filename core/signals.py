@@ -6,7 +6,8 @@ from django.conf import settings
 
 from .models.users import UserPremiumPlan, User
 from .models.plans import PremiumPlan
-from .tasks import send_email_message
+from .email import send_email_message
+
 
 from djstripe.models import Event
 

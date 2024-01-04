@@ -7,19 +7,11 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 
 from huey import crontab
-from huey.contrib.djhuey import db_periodic_task, db_task, task
+from huey.contrib.djhuey import db_periodic_task, db_task
 from allauth.account.models import EmailAddress
 
 from .models.profiles import Profile
-from utils.telegram import report_to_admin
-
-
-@task
-def send_email_message(m):
-    try:
-        m.send(fail_silently=False)
-    except Exception as e:
-        report_to_admin(f"Failed to send email to {m.to}: \n\n {e}")
+from .email import send_email_message
 
 
 @db_periodic_task(crontab(hour="0", minute="5"))
