@@ -35,17 +35,24 @@ class CountryDetails:
         else:
             ip = self.request.META.get("REMOTE_ADDR")
 
-        to_admin = f"Path: {self.request.path}\n"
-        to_admin += f"IP: {ip}\n"
+        reporting_active = not ip in ["95.90.192.11", "127.0.0.1"]
+
+        if reporting_active:
+            to_admin = f"Path: {self.request.path}\n"
+            to_admin += f"IP: {ip}\n"
 
         g = GeoIP2()
 
         try:
             loc = g.country(ip)
         except (KeyError, AddressNotFoundError, GeoIP2Error, Exception) as e:
-            to_admin += f"🔴 Error getting country: {str(e)}\n"
-        to_admin += f"Country: {loc}"
-        report_to_admin(to_admin)
+            if reporting_active:
+                to_admin += f"🔴 Error getting country: {str(e)}\n"
+
+        if reporting_active:
+            to_admin += f"Country: {loc}"
+            report_to_admin(to_admin)
+
         return loc
 
     @cached_property
