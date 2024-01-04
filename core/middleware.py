@@ -1,35 +1,60 @@
 import logging
 from django.http import HttpResponseServerError
+from django.http import HttpRequest
 from django.utils.translation import gettext as _
+from django.utils.functional import cached_property
+
+from django.contrib.gis.geoip2 import GeoIP2
+from geoip2.errors import AddressNotFoundError
+from geoip2.errors import GeoIP2Error
 
 from utils.telegram import report_to_admin
-from .country import get_country
 
 
-class ExceptionMiddleware:
+class CountryMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        try:
-            get_country(request)
-        except Exception as e:
-            report_to_admin(f"Unable to get country. Exception: {str(e)}")
+        request.country = CountryDetails(request)
+        return self.get_response(request)
+
+
+class CountryDetails:
+    def __init__(self, request: HttpRequest) -> None:
+        self.request = request
+
+    def _get_country_dict(self):
+        # By default, I return where I am located :)
+        loc = {"country_code": "DE", "country_name": "Germany"}
+
+        # get IP
+        x_forwarded_for = self.request.headers.get("x-forwarded-for")
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
+        else:
+            ip = self.request.META.get("REMOTE_ADDR")
+
+        to_admin = f"Path: {self.request.path}\n"
+        to_admin += f"IP: {ip}\n"
+
+        g = GeoIP2()
 
         try:
-            response = self.get_response(request)
-        except Exception as e:
-            # Log the exception
-            logging.exception(str(e))
-            report_to_admin(
-                f"Exception occurred: {request.path} \n\n"
-                f"Exception occurred while processing {request.path}:\n{str(e)}"
-            )
-            # Return a custom error page
-            response = HttpResponseServerError(
-                _(
-                    "Oops! Something went wrong. "
-                    "Contact us to solve the issue if it is important."
-                )
-            )
-        return response
+            loc = g.country(ip)
+        except (KeyError, AddressNotFoundError, GeoIP2Error, Exception) as e:
+            to_admin += f"🔴 Error getting country: {str(e)}\n"
+        to_admin += f"Country: {loc}"
+        report_to_admin(to_admin)
+        return loc
+
+    @cached_property
+    def code(self) -> str:
+        return self._get_country_dict()["country_code"]
+
+    @cached_property
+    def name(self) -> str:
+        return self._get_country_dict()["country_name"]
+
+    def __str__(self):
+        return self.code

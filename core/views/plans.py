@@ -8,11 +8,9 @@ from django.utils.translation import gettext_lazy as _
 from ..models.plans import PremiumPlan
 from .payments import create_stripe_session
 from cms.models.snippets import FrequentAskedQuestion
-from ..country import get_country
 
 
 def plan_list(request):
-    c = get_country(request)
     faqs = FrequentAskedQuestion.objects.filter(active=True, category="pricing")
     context = {"plans": PremiumPlan.objects.all(), "faqs": faqs}
     return render(request, "plans/plan_list.html", context)
