@@ -144,6 +144,7 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     # "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "core.middleware.ExceptionMiddleware",
 ]
 
 

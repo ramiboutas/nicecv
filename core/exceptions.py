@@ -17,6 +17,10 @@ class ErrorBySettingFormWidgetInputType(FormException):
     pass
 
 
+class ObjectIsNotAnInstanceOfEmailMessageError(BaseException):
+    pass
+
+
 class TexError(BaseException):
     error_patterns = [
         r"^\!.*?l\.(?P<lineno>\d+).*?$",

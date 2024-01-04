@@ -58,7 +58,6 @@ def profile_list(request):
     else:
         session, request = get_or_create_session(request)
         profiles = Profile.objects.filter(session=session)
-
     context = {"object_list": profiles}
     return render(request, "profiles/profile_list.html", context)
 
