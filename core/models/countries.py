@@ -15,11 +15,11 @@ class Country(models.Model):
         return self.code + " " + self.name
 
     @classmethod
-    def scrap_from_wikipedia(cls, delete_objs=False):
-        if delete_objs:
-            cls.objects.all().delete()
+    def scrap_from_wikipedia(cls):
         if cls.objects.count() > 0:
+            print("## Info: Not possible to scrap, since there the objects in the db")
             return
+
         host = "https://en.wikipedia.org"
         url = host + "/wiki/List_of_countries_by_GDP_(nominal)_per_capita"
         r = requests.get(url)

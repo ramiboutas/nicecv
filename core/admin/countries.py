@@ -7,4 +7,3 @@ from ..models.countries import Country
 class CountryAdmin(admin.ModelAdmin):
     list_display = ("name", "code", "gdp", "currency", "wikipedia_url")
     list_filter = ("currency",)
-    readonly_fields = list_display
