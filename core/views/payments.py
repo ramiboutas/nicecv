@@ -4,6 +4,10 @@ from django.urls import reverse
 from djstripe import models as djstripe_models
 from djstripe import settings as djstripe_settings
 
+from django.conf import settings
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 def create_stripe_session(request, plan: Model):
     """
