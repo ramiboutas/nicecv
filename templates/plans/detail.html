@@ -1,9 +1,10 @@
 {% extends "base.html" %}
-{% load i18n l10n djmoney %}
+{% load i18n l10n djmoney plan_pricing %}
 {% block head_title %}
   {% translate "Plan" %} | {{ plan.name }}
 {% endblock %}
 {% block content %}
+  {% get_plan_price request=request plan=plan as plan_price %}
   <div class="container">
     <div class="">
       <div class="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:px-0">
@@ -18,7 +19,7 @@
                   <div>
                     <div class="flex justify-between">
                       <h4 class="text-base font-medium text-gray-700">{{ plan.name }}</h4>
-                      <p class="ml-4 text-sm font-medium text-gray-900">{% money_localize plan.price %}</p>
+                      <p class="ml-4 text-sm font-medium text-gray-900">{% money_localize plan_price %}</p>
                     </div>
                     <p class="mt-1 text-sm text-gray-500">{{ plan.description }}</p>
                   </div>

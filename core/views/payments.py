@@ -1,18 +1,204 @@
 import stripe
 from django.db.models import Model
 from django.urls import reverse
-from djstripe import models as djstripe_models
-from djstripe import settings as djstripe_settings
-
 from django.conf import settings
 
+
+from djstripe import models as djstripe_models
+from djstripe import settings as djstripe_settings
+from djmoney.money import Money
+from djmoney.contrib.exchange.models import convert_money
+
+from ..templatetags.plan_pricing import get_plan_price
+
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+# https://stripe.com/docs/currencies?presentment-currency=DE#presentment-currencies
+# Currencies marked with * are not supported by American Express
+STANDARD_CURRENCIES = (
+    "USD",
+    "AED",
+    # "AFN*",
+    "ALL",
+    "AMD",
+    "ANG",
+    # "AOA*",
+    # "ARS*",
+    "AUD",
+    "AWG",
+    "AZN",
+    "BAM",
+    "BBD",
+    "BDT",
+    "BGN",
+    "BIF",
+    "BMD",
+    "BND",
+    # "BOB*",
+    # "BRL*",
+    "BSD",
+    "BWP",
+    "BYN",
+    "BZD",
+    "CAD",
+    "CDF",
+    "CHF",
+    "CLP*",
+    "CNY",
+    "COP*",
+    "CRC*",
+    "CVE*",
+    "CZK",
+    "DJF*",
+    "DKK",
+    "DOP",
+    "DZD",
+    "EGP",
+    "ETB",
+    "EUR",
+    "FJD",
+    # "FKP*",
+    "GBP",
+    "GEL",
+    "GIP",
+    "GMD",
+    "GNF*",
+    "GTQ*",
+    "GYD",
+    "HKD",
+    # "HNL*",
+    "HTG",
+    "HUF",
+    "IDR",
+    "ILS",
+    "INR",
+    "ISK",
+    "JMD",
+    "JPY",
+    "KES",
+    "KGS",
+    "KHR",
+    "KMF",
+    "KRW",
+    "KYD",
+    "KZT",
+    # "LAK*",
+    "LBP",
+    "LKR",
+    "LRD",
+    "LSL",
+    "MAD",
+    "MDL",
+    "MGA",
+    "MKD",
+    "MMK",
+    "MNT",
+    "MOP",
+    # "MUR*",
+    "MVR",
+    "MWK",
+    "MXN",
+    "MYR",
+    "MZN",
+    "NAD",
+    "NGN",
+    # "NIO*",
+    "NOK",
+    "NPR",
+    "NZD",
+    "PAB*",
+    # "PEN*",
+    "PGK",
+    "PHP",
+    "PKR",
+    "PLN",
+    # "PYG*",
+    "QAR",
+    "RON",
+    "RSD",
+    "RUB",
+    "RWF",
+    "SAR",
+    "SBD",
+    "SCR",
+    "SEK",
+    "SGD",
+    # "SHP*",
+    "SLE",
+    "SOS",
+    # "SRD*",
+    # "STD*",
+    "SZL",
+    "THB",
+    "TJS",
+    "TOP",
+    "TRY",
+    "TTD",
+    "TWD",
+    "TZS",
+    "UAH",
+    "UGX",
+    # "UYU*",
+    "UZS",
+    "VND",
+    "VUV",
+    "WST",
+    "XAF",
+    "XCD",
+    # "XOF*",
+    # "XPF*",
+    "YER",
+    "ZAR",
+    "ZMW",
+)
+# https://stripe.com/docs/currencies?presentment-currency=DE#zero-decimal
+ZERO_DECIMAL_CURRENCIES = (
+    "BIF",
+    "CLP",
+    "DJF",
+    "GNF",
+    "JPY",
+    "KMF",
+    "KRW",
+    "MGA",
+    "PYG",
+    "RWF",
+    "UGX",
+    "VND",
+    "VUV",
+    "XAF",
+    "XOF",
+    "XPF",
+)
+
+# https://stripe.com/docs/currencies?presentment-currency=DE#three-decimal
+
+THREE_DECIMAL_CURRENCIES = ("BHD", "JOD", "KWD", "OMR", "TND")
+
+
+def round5(x):
+    return 5 * round(x / 5)
+
+
+def get_currency_and_amount(money: Money):
+    if money.currency in STANDARD_CURRENCIES:
+        return money.currency, int(100 * money.amount)
+    elif money.currency in ZERO_DECIMAL_CURRENCIES:
+        return money.currency, int(money.amount)
+    elif money.currency in THREE_DECIMAL_CURRENCIES:
+        return money.currency, round5(int(money.amount))
+    else:
+        return ("EUR", int(100 * convert_money(money, "EUR").amount))
 
 
 def create_stripe_session(request, plan: Model):
     """
     Creates and returns a Stripe Checkout Session
     """
+
+    money = get_plan_price(request, plan)
+    currency, amount = get_currency_and_amount(money)
 
     success_url = (
         request.build_absolute_uri(reverse("payment_successed"))
@@ -55,9 +241,9 @@ def create_stripe_session(request, plan: Model):
             line_items=[
                 {
                     "price_data": {
-                        "currency": plan.price.currency,
+                        "currency": currency,
                         # "currency": "gbp",  # for bacs_debit
-                        "unit_amount": int(plan.price.amount * 100),
+                        "unit_amount": amount,
                         "product_data": {
                             "name": plan.name,
                             "description": plan.description,
@@ -84,9 +270,9 @@ def create_stripe_session(request, plan: Model):
             line_items=[
                 {
                     "price_data": {
-                        "currency": plan.price.currency,
+                        "currency": currency,
                         # "currency": "gbp",  # for bacs_debit
-                        "unit_amount": int(plan.price.amount * 100),
+                        "unit_amount": amount,
                         "product_data": {
                             "name": plan.name,
                             "description": plan.description,

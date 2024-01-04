@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n l10n djmoney %}
+{% load i18n l10n djmoney plan_pricing %}
 {% block head_title %}
   {% translate "Pricing" %}
 {% endblock %}
@@ -16,11 +16,12 @@
         <div class="mt-20 flow-root">
           <div class="isolate -mt-16 grid max-w-sm grid-cols-1 gap-y-16 divide-y divide-gray-100 sm:mx-auto lg:-mx-8 lg:mt-0 lg:max-w-none lg:grid-cols-3 lg:divide-y-0 lg:divide-x xl:-mx-4">
             {% for plan in plans %}
+              {% get_plan_price request=request plan=plan as plan_price %}
               <div class="pt-16 lg:px-8 lg:pt-0 xl:px-14">
                 <h3 id="tier-basic"
                     class="text-base font-semibold leading-7 text-gray-900">{{ plan.name }}</h3>
                 <p class="mt-6 flex items-baseline gap-x-1">
-                  <span class="text-5xl font-bold tracking-tight text-gray-900">{% money_localize plan.price %}</span>
+                  <span class="text-5xl font-bold tracking-tight text-gray-900">{% money_localize plan_price %}</span>
                 </p>
                 <a href="{{ plan.detail_url }}"
                    aria-describedby="tier-basic"
