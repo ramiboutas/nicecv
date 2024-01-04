@@ -3,6 +3,7 @@ from django.http import HttpResponseServerError
 from django.utils.translation import gettext as _
 
 from utils.telegram import report_to_admin
+from .country import get_country
 
 
 class ExceptionMiddleware:
@@ -10,6 +11,11 @@ class ExceptionMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        try:
+            get_country(request)
+        except Exception as e:
+            report_to_admin(f"Unable to get country. Exception: {str(e)}")
+
         try:
             response = self.get_response(request)
         except Exception as e:

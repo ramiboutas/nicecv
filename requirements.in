@@ -50,3 +50,4 @@ black
 pylint-django
 async-timeout
 huey
+geoip2

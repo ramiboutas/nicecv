@@ -103,6 +103,7 @@ INSTALLED_APPS = [
     "wagtailsvg",
     "dbbackup",
     "djstripe",
+    "geoip2",
     # "django_browser_reload",
     # "mjml",
     # "birdsong",
@@ -470,6 +471,11 @@ WAGTAILLOCALIZE_MACHINE_TRANSLATOR = {
 # django-money
 
 CURRENCIES = ("USD", "EUR")
+
+# geoip2
+
+GEOIP_PATH = BASE_DIR / "geoip2dbs"
+
 
 # shell-plus
 
