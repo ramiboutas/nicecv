@@ -40,7 +40,6 @@ class FreePlan(AbractPlan):
 
 class PremiumPlan(AbractPlan):
     months = models.PositiveSmallIntegerField()
-    price = MoneyField(max_digits=6, decimal_places=2, default_currency="EUR")
     price_min = MoneyField(
         max_digits=6, decimal_places=2, default_currency="EUR", default=Money(5, "EUR")
     )
@@ -52,7 +51,7 @@ class PremiumPlan(AbractPlan):
         return f"{self.months} months"
 
     class Meta(auto_prefetch.Model.Meta):
-        ordering = ("months", "price")
+        ordering = ("months", "price_min")
         constraints = (
             UniqueConstraint(
                 fields=["months"],

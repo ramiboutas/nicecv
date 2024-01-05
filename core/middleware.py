@@ -1,10 +1,9 @@
-import logging
-from django.http import HttpResponseServerError
+from django.conf import settings
 from django.http import HttpRequest
-from django.utils.translation import gettext as _
 from django.utils.functional import cached_property
-
 from django.contrib.gis.geoip2 import GeoIP2
+
+
 from geoip2.errors import AddressNotFoundError
 from geoip2.errors import GeoIP2Error
 
@@ -25,9 +24,6 @@ class CountryDetails:
         self.request = request
 
     def _get_country_dict(self):
-        # By default, I return where I am located :)
-        loc = {"country_code": "DE", "country_name": "Germany"}
-
         # get IP
         x_forwarded_for = self.request.headers.get("x-forwarded-for")
         if x_forwarded_for:
@@ -35,25 +31,17 @@ class CountryDetails:
         else:
             ip = self.request.META.get("REMOTE_ADDR")
 
-        reporting_active = not ip in ["95.90.192.11", "127.0.0.1"]
-
-        if reporting_active:
-            to_admin = f"Path: {self.request.path}\n"
-            to_admin += f"IP: {ip}\n"
-
         g = GeoIP2()
 
         try:
-            loc = g.country(ip)
-        except (KeyError, AddressNotFoundError, GeoIP2Error, Exception) as e:
-            if reporting_active:
-                to_admin += f"🔴 Error getting country: {str(e)}\n"
+            country_dict = g.country(ip)
+        except Exception as e:
+            # If there is an Exception, return where I am located :)
+            country_dict = {"country_code": "DE", "country_name": "Germany"}
+            if not settings.DEBUG:
+                report_to_admin(f"🔴 Error getting country for {ip}:\n\n{str(e)}")
 
-        if reporting_active:
-            to_admin += f"Country: {loc}"
-            report_to_admin(to_admin)
-
-        return loc
+        return country_dict
 
     @cached_property
     def code(self) -> str:
