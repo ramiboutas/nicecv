@@ -57,4 +57,4 @@ class UserPremiumPlan(auto_prefetch.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.created} - {self.user.email}"
+        return f"UserPremiumPlan({self.starts} - {self.expires})"

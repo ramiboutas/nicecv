@@ -20,7 +20,7 @@ class UserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     models = get_user_model()
-    list_display = ["__str__", "email", "username"]
+    list_display = ("__str__", "email", "username", "asked_to_verify_email")
     fieldsets = (
         (
             None,
@@ -48,3 +48,9 @@ class UserAdmin(UserAdmin):
         ),
     )
     inlines = (UserPremiumPlanInline,)
+
+
+@admin.register(UserPremiumPlan)
+class UserPremiumPlanAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "user", "plan")
+    list_filter = ("plan", "user")
