@@ -118,3 +118,4 @@ staticfiles/*
 # media files
 media
 media/*
+tex_media/*

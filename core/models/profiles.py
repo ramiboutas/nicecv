@@ -483,9 +483,20 @@ class Profile(auto_prefetch.Model):
         return to_check != "" and to_check is not None
 
     @cached_property
-    def photo_path(self):
+    def photo_path_old(self):
         if self.has_photo:
             return self.cropped_photo.path
+
+    @cached_property
+    def photo_path(self):
+        if self.has_photo:
+            self.cropped_photo.seek(0)
+            photobytes = self.cropped_photo.read()
+            local_path = settings.TEX_MEDIA_DIR / self.cropped_photo.name
+            local_path.parent.mkdir(exist_ok=True, parents=True)
+            with open(local_path, "wb") as f:
+                f.write(photobytes)
+            return local_path
 
     @classmethod
     def create_template_profiles(cls):

@@ -444,7 +444,10 @@ WAGTAILADMIN_BASE_URL = "htttps://www.nicecv.online"
 # LaTex settings
 # LATEX_INTERPRETER = "pdflatex" # pdflatex, latex, xelatex, lualatex
 # LATEX_INTERPRETER_OPTIONS = "-interaction=nonstopmode"
-LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, "media")
+# LATEX_GRAPHICSPATH = os.path.join(BASE_DIR, "media") # changed 05.01.2024
+
+TEX_MEDIA_DIR = BASE_DIR / "tex_media"
+LATEX_GRAPHICSPATH = [TEX_MEDIA_DIR]
 
 
 # crispy forms

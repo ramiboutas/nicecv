@@ -4,6 +4,9 @@ from jinja2.ext import Extension
 
 
 def format_path_for_latex(path):
+    if not isinstance(path, str):
+        path = str(path)
+
     path = path.replace("\\", "/")
     if not path.endswith("/"):
         path += "/"
