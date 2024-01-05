@@ -8,8 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.models import Session
 from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage as storage
-from django.core.files.storage import storages
+from django.core.files.storage import default_storage
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
@@ -442,9 +441,7 @@ class Profile(auto_prefetch.Model):
             cropped_image = image.crop(cropping_area)
             resized_image = cropped_image.resize((300, 300), Image.LANCZOS)
 
-            # TODO: this code need to be improved
-            # the field Profile.cropped_photo has already a specified storage object
-            fh = storages["local"].open(self.cropped_photo.name, "wb")
+            fh = default_storage.open(self.cropped_photo.name, "wb")
             resized_image.save(fh, "png")
             fh.close()
 

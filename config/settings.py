@@ -367,7 +367,7 @@ STORAGES = {
     "default": {
         "BACKEND": MEDIA_STORAGE_BACKEND,
     },
-    "local": {
+    "local": {  # not used at the moment: 05.01.2024
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {
             "location": BASE_DIR / "media",
