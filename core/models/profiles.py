@@ -239,11 +239,7 @@ class Profile(auto_prefetch.Model):
     )
     # photo-related fields
     full_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
-    cropped_photo = models.ImageField(
-        null=True,
-        upload_to=get_photo_upload_path,
-        storage=storages["local"],
-    )
+    cropped_photo = models.ImageField(null=True, upload_to=get_photo_upload_path)
     crop_x = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_y = models.PositiveSmallIntegerField(null=True, blank=True)
     crop_width = models.PositiveSmallIntegerField(null=True, blank=True)
