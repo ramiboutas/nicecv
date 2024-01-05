@@ -6,5 +6,5 @@ max_requests_jitter = 0
 
 log_file = "-"
 
-# workers = multiprocessing.cpu_count() * 2 + 1
-workers = 1
+workers = multiprocessing.cpu_count() * 2 + 1
+# workers = 3
