@@ -37,11 +37,11 @@ def get_plan_price(request, plan) -> Money:
     price_amount = p_min + (gdp - gdp_min) / (gdp_max - gdp_min) * (p_max - p_min)
     in_money = Money(price_amount, in_currency)
     out_money = convert_money(in_money, out_currency)
-    print(out_money)
+
     if out_currency in settings.THREE_DECIMAL_CURRENCIES:
         return Money(round0_005(out_money.amount), out_currency)
     elif out_currency in settings.ZERO_DECIMAL_CURRENCIES:
-        return Money(round(out_money.amount), out_currency)
+        return Money(round(out_money.amount, 0), out_currency)
     elif out_currency in settings.STANDARD_CURRENCIES:
         return out_money
     else:

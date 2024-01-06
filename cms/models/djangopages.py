@@ -75,10 +75,8 @@ class DjangoServedPage(Page):
         for page in pages:
             try:
                 home.add_child(instance=page)
-            except AttributeError as e:
-                print(e)
-            except ValidationError as e:
-                print(e)
+            except (AttributeError, ValidationError) as e:
+                raise e
         home.save()
 
     def __str__(self):
