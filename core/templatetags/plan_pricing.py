@@ -177,17 +177,6 @@ def round5(x):
     return 5 * round(x / 5)
 
 
-def get_currency_and_amount(money: Money):
-    if money.currency in STANDARD_CURRENCIES:
-        return money.currency, int(100 * money.amount)
-    elif money.currency in ZERO_DECIMAL_CURRENCIES:
-        return money.currency, int(money.amount)
-    elif money.currency in THREE_DECIMAL_CURRENCIES:
-        return money.currency, round5(int(1000 * money.amount))
-    else:
-        return ("EUR", int(100 * convert_money(money, "EUR").amount))
-
-
 @register.simple_tag
 def get_plan_price(request, plan):
     """Get price depending on the GDP per capita"""
