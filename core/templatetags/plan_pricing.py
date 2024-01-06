@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from django import template
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Avg
 
 
 from djmoney.contrib.exchange.models import convert_money
@@ -194,25 +194,26 @@ def get_plan_price(request, plan):
     countries = Country.objects.all()
     gdp_min = countries.aggregate(Min("gdp"))["gdp__min"]
     gdp_max = countries.aggregate(Max("gdp"))["gdp__max"]
+    gdp_avg = countries.aggregate(Avg("gdp"))["gdp__avg"]
     p_min = plan.price_min.amount
     p_max = plan.price_max.amount
-    in_currency = plan.price_min.currency
+    in_currency = str(plan.price_min.currency)
 
     # Get the GDP and the desired currency
     try:
         country = countries.filter(code=request.country.code)[0]
         gdp, out_currency = country.gdp, country.currency
     except (IndexError, AttributeError):
-        gdp, out_currency = Decimal(50000), in_currency
+        gdp, out_currency = gdp_avg, in_currency
 
     price_amount = p_min + (gdp - gdp_min) / (gdp_max - gdp_min) * (p_max - p_min)
     in_money = Money(price_amount, in_currency)
     out_money = convert_money(in_money, out_currency)
 
     if out_currency in THREE_DECIMAL_CURRENCIES:
-        return Money(round5(int(out_money.amount)), out_currency)
+        return Money(round5(out_money.amount), out_currency)
     elif out_currency in ZERO_DECIMAL_CURRENCIES:
-        return Money(int(out_money.amount), out_currency)
+        return Money(round(out_money.amount), out_currency)
     elif out_currency in STANDARD_CURRENCIES:
         return out_money
     else:

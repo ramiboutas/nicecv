@@ -10,7 +10,7 @@ from django.db import models
 class Country(models.Model):
     code = models.CharField(max_length=8, unique=True, db_index=True)
     name = models.CharField(max_length=64)
-    gdp = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal(50_000))
+    gdp = models.DecimalField(max_digits=12, decimal_places=3, default=Decimal(50_000))
     currency = models.CharField(max_length=8)
     wikipedia_url = models.URLField(max_length=128)
 
