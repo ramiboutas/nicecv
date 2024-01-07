@@ -11,6 +11,7 @@ from .menus import CustomMainMenuItem
 from .setttings import Banner
 from .setttings import Brand
 from .setttings import Links
+from .setttings import Legal
 from .snippets import FrequentAskedQuestion
 from .snippets import Person
 from .text import TextPage

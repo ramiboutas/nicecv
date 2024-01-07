@@ -1,0 +1,10 @@
+{% load i18n  wagtailsettings_tags %}
+{% get_settings %}
+{% with privacy_url=settings.cms.Legal.privacy_policy_page.url terms_url=settings.cms.Legal.terms_page.url %}
+    {% blocktrans %}By signing up, you agree to our
+<a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ privacy_url }}">Privacy Policy</a> 
+and
+<a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href={{ terms_url }}>Terms of Service</a> 
+
+{% endblocktrans %}
+{% endwith %}

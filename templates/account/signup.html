@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load i18n crispy_forms_tags wagtailsettings_tags %}
-{% get_settings %}
 {% block head_title %}
   {% translate "Signup" %}
 {% endblock head_title %}
@@ -21,14 +20,7 @@
                  name="{{ redirect_field_name }}"
                  value="{{ redirect_field_value }}" />
         {% endif %}
-        <p class="mt-1 text-sm text-gray-500">
-          {% blocktrans %}By signing up, you agree to our
-          <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ settings.cms.Legal.privacy_policy_page.url }}">Privacy Policy</a> 
-          and
-          <a class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" href="{{ settings.cms.Legal.terms_page.url }}">Terms of Service</a> 
-           
-          {% endblocktrans %}
-        </p>
+        <p class="mt-1 text-sm text-gray-500">{% include "cms/legal/signup_agreement.html" %}</p>
         <button type="submit"
                 class="mt-5 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
           {% translate "Sign Up" %}
