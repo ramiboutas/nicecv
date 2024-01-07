@@ -9,6 +9,9 @@ from django.conf import settings
 class TextPage(Page):
     template = "cms/textpage.html"
 
+    subpage_types = []
+    parent_page_type = ["cms.HomePage"]
+
     body = StreamField(
         TextStreamBlock(features=settings.CMS_RICHTEXT_FEATURES),
         verbose_name="Home content block",

@@ -1,12 +1,9 @@
 from modeltranslation.translator import register
 from modeltranslation.translator import TranslationOptions
 
-from .models import Banner
-from .models import Brand
-from .models import CustomFlatMenu
-from .models import CustomFlatMenuItem
-from .models import CustomMainMenuItem
-from .models import FrequentAskedQuestion
+from .models.setttings import Banner, Brand, Legal
+from .models.menus import CustomFlatMenu, CustomFlatMenuItem, CustomMainMenuItem
+from .models.snippets import FrequentAskedQuestion
 
 
 # menus
@@ -40,3 +37,9 @@ class BannerTranslationOptions(TranslationOptions):
 @register(FrequentAskedQuestion)
 class FrequentAskedQuestionTranslationOptions(TranslationOptions):
     fields = ("question", "answer")
+
+
+# LEgal
+@register(Legal)
+class LegalTranslationOptions(TranslationOptions):
+    fields = ("privacy_policy_page", "terms_page", "impress_page")

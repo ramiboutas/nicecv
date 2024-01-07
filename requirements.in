@@ -30,7 +30,6 @@ Jinja2
 wagtail
 wagtail-localize
 wagtailmenus
-wagtailsvg
 fontawesomefree
 whitenoise[brotli]
 django-minify-html

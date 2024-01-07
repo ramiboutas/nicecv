@@ -7,13 +7,13 @@ from wagtail.models import Page
 
 from wagtail.images.models import Image
 
-
 from ..utils import localized_fieldpanel_list
+from .text import TextPage
 
 
 @register_setting(icon="link")
-class SocialMediaLinks(BaseSiteSetting):
-    """Social media settings for our custom website."""
+class Links(BaseSiteSetting):
+    """Links settings for our custom website."""
 
     facebook = models.URLField(blank=True, null=True, help_text="Facebook URL")
     twitter = models.URLField(blank=True, null=True, help_text="Twitter URL")
@@ -21,6 +21,9 @@ class SocialMediaLinks(BaseSiteSetting):
     linkedin = models.URLField(blank=True, null=True, help_text="Linkedin URL")
     github = models.URLField(blank=True, null=True, help_text="GitHub URL")
     instagram = models.URLField(blank=True, null=True, help_text="Instagram URL")
+    whatsapp = models.URLField(blank=True, null=True, help_text="Whatapp URL")
+    telegram = models.URLField(blank=True, null=True, help_text="Telegram URL")
+    email = models.EmailField(blank=True, null=True, help_text="Email Address")
 
     panels = [
         MultiFieldPanel(
@@ -30,8 +33,11 @@ class SocialMediaLinks(BaseSiteSetting):
                 FieldPanel("youtube"),
                 FieldPanel("linkedin"),
                 FieldPanel("instagram"),
+                FieldPanel("whatsapp"),
+                FieldPanel("telegram"),
+                FieldPanel("email"),
             ],
-            heading="Social Media Settings",
+            heading="Links",
         )
     ]
 
@@ -56,6 +62,37 @@ class Brand(BaseSiteSetting):
             heading="Footer Slogan in Footer",
         ),
     ]
+
+
+@register_setting(icon="user")
+class Legal(BaseSiteSetting):
+    privacy_policy_page = models.ForeignKey(
+        TextPage,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="+",
+    )
+    terms_page = models.ForeignKey(
+        TextPage,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="+",
+    )
+    impress_page = models.ForeignKey(
+        TextPage,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="+",
+    )
+
+    panels = (
+        localized_fieldpanel_list("privacy_policy_page")
+        + localized_fieldpanel_list("terms_page")
+        + localized_fieldpanel_list("impress_page")
+    )
 
 
 @register_setting(icon="pick")

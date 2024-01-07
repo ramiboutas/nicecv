@@ -17,7 +17,7 @@ class DjangoServedPage(Page):
     template = "404.html"
 
     subpage_types = []
-    parent_page_type = ["wagtailcore.Page"]
+    parent_page_type = ["cms.HomePage"]
 
     content_panels = [
         FieldPanel("title"),

@@ -346,7 +346,6 @@ requests==2.31.0
     #   stripe
     #   tweepy
     #   wagtail
-    #   wagtail-generic-chooser
 requests-oauthlib==1.3.1
     # via
     #   django-allauth
@@ -405,13 +404,9 @@ wagtail==5.1.1
     #   wagtail-localize
 wagtail-birdsong==1.1.2
     # via -r requirements.in
-wagtail-generic-chooser==0.5.1
-    # via wagtailsvg
 wagtail-localize==1.5.2
     # via -r requirements.in
 wagtailmenus==3.1.9
-    # via -r requirements.in
-wagtailsvg==0.0.37
     # via -r requirements.in
 wcwidth==0.2.6
     # via prompt-toolkit

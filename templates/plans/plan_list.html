@@ -109,7 +109,9 @@
             </svg>
           </dt>
           <dd>
-            <a class="hover:text-gray-900" href="https://wa.me/+4915752936373">Whatsapp</a>
+            <a class="hover:text-gray-900" href="{{ settings.cms.Links.whatsapp }}">Whatsapp</a>
+            {% trans "or" %}
+            <a class="hover:text-gray-900" href="{{ settings.cms.Links.telegram }}">Telegram</a>
           </dd>
         </div>
         <div class="flex gap-x-4">
@@ -125,7 +127,8 @@
             </svg>
           </dt>
           <dd>
-            <a class="hover:text-gray-900" href="mailto:rami@nicecv.online">rami@nicecv.online</a>
+            <a class="hover:text-gray-900"
+               href="mailto:{{ settings.cms.Links.email }}">{{ settings.cms.Links.email }}</a>
           </dd>
         </div>
       </dl>

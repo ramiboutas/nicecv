@@ -8,8 +8,8 @@
         {% svg settings.cms.Brand.svg_footer.file class="mt-2 h-8 text-indigo-600" %}
         <p class="text-sm leading-6 text-gray-600">{{ settings.cms.Brand.footer_text }}</p>
         <div class="flex space-x-6">
-          {% if settings.cms.SocialMediaLinks.facebook %}
-            <a href="{{ settings.cms.SocialMediaLinks.facebook }}"
+          {% if settings.cms.Links.facebook %}
+            <a href="{{ settings.cms.Links.facebook }}"
                class="text-gray-400 hover:text-gray-500">
               <span class="sr-only">Facebook</span>
               <svg class="h-6 w-6"
@@ -20,8 +20,8 @@
               </svg>
             </a>
           {% endif %}
-          {% if settings.cms.SocialMediaLinks.instagram %}
-            <a href="{{ settings.cms.SocialMediaLinks.instagram }}"
+          {% if settings.cms.Links.instagram %}
+            <a href="{{ settings.cms.Links.instagram }}"
                class="text-gray-400 hover:text-gray-500">
               <span class="sr-only">Instagram</span>
               <svg class="h-6 w-6"
@@ -32,8 +32,8 @@
               </svg>
             </a>
           {% endif %}
-          {% if settings.cms.SocialMediaLinks.twitter %}
-            <a href="{{ settings.cms.SocialMediaLinks.twitter }}"
+          {% if settings.cms.Links.twitter %}
+            <a href="{{ settings.cms.Links.twitter }}"
                class="text-gray-400 hover:text-gray-500">
               <span class="sr-only">Twitter</span>
               <svg class="h-6 w-6"
@@ -44,8 +44,8 @@
               </svg>
             </a>
           {% endif %}
-          {% if settings.cms.SocialMediaLinks.github %}
-            <a href="{{ settings.cms.SocialMediaLinks.github }}"
+          {% if settings.cms.Links.github %}
+            <a href="{{ settings.cms.Links.github }}"
                class="text-gray-400 hover:text-gray-500">
               <span class="sr-only">GitHub</span>
               <svg class="h-6 w-6"
@@ -56,8 +56,8 @@
               </svg>
             </a>
           {% endif %}
-          {% if settings.cms.SocialMediaLinks.youtube %}
-            <a href="{{ settings.cms.SocialMediaLinks.youtube }}"
+          {% if settings.cms.Links.youtube %}
+            <a href="{{ settings.cms.Links.youtube }}"
                class="text-gray-400 hover:text-gray-500">
               <span class="sr-only">YouTube</span>
               <svg class="h-6 w-6"
@@ -68,8 +68,8 @@
               </svg>
             </a>
           {% endif %}
-          {% if settings.cms.SocialMediaLinks.linkedin %}
-            <a href="{{ settings.cms.SocialMediaLinks.linkedin }}"
+          {% if settings.cms.Links.linkedin %}
+            <a href="{{ settings.cms.Links.linkedin }}"
                class="text-gray-400 hover:text-gray-500">
               <span class="sr-only">Linkedin</span>
               <svg class="h-6 w-6"
@@ -94,9 +94,7 @@
       </div>
     </div>
     <div class="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
-      <p class="text-xs leading-5 text-gray-500">
-        © 2022 - {% now 'Y' %}  {{ request.get_host }} | {{ request.country }}
-      </p>
+      <p class="text-xs leading-5 text-gray-500">© 2022 - {% now 'Y' %}  {{ request.get_host }} | {{ request.country }}</p>
     </div>
   </div>
 </footer>
