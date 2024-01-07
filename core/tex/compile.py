@@ -11,6 +11,7 @@ from ..exceptions import TexError
 
 
 def compile_template_to_pdf(tex, context):
+    """ "  This code is a copy from https://github.com/weinbusch/django-tex"""
     template = get_template(tex.template_name, using="tex")
     source = template.render(context)
     with tempfile.TemporaryDirectory() as tempdir:

@@ -34,8 +34,12 @@ def get_plan_price(request, plan) -> Money:
         gdp, out_currency = country.gdp, country.currency
     except (IndexError, AttributeError):
         gdp, out_currency = gdp_avg, in_currency
+
+    # Calculate the price (interpolation)
     price_amount = p_min + (gdp - gdp_min) / (gdp_max - gdp_min) * (p_max - p_min)
     in_money = Money(price_amount, in_currency)
+
+    # Convert
     out_money = convert_money(in_money, out_currency)
 
     if out_currency in settings.THREE_DECIMAL_CURRENCIES:

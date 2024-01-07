@@ -113,8 +113,6 @@ django-browser-reload==1.11.0
     # via -r requirements.in
 django-cleanup==8.0.0
     # via -r requirements.in
-django-cogwheels==0.3
-    # via wagtailmenus
 django-coverage-plugin==3.1.0
     # via -r requirements.in
 django-crispy-forms==2.0
@@ -405,8 +403,6 @@ wagtail==5.1.1
 wagtail-birdsong==1.1.2
     # via -r requirements.in
 wagtail-localize==1.5.2
-    # via -r requirements.in
-wagtailmenus==3.1.9
     # via -r requirements.in
 wcwidth==0.2.6
     # via prompt-toolkit

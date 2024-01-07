@@ -44,24 +44,12 @@ class Links(BaseSiteSetting):
 
 @register_setting(icon="openquote")
 class Brand(BaseSiteSetting):
-    footer_text = models.TextField(blank=True, null=True)
     name = models.CharField(blank=True, null=True, max_length=16)
     svg = models.ForeignKey(
         Image, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
     )
-    svg_footer = models.ForeignKey(
-        Image, related_name="+", null=True, blank=True, on_delete=models.SET_NULL
-    )
 
-    panels = [
-        FieldPanel("name"),
-        FieldPanel("svg"),
-        FieldPanel("svg_footer"),
-        MultiFieldPanel(
-            localized_fieldpanel_list("footer_text"),
-            heading="Footer Slogan in Footer",
-        ),
-    ]
+    panels = [FieldPanel("name"), FieldPanel("svg")]
 
 
 @register_setting(icon="user")

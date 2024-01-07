@@ -1,14 +1,12 @@
-from __future__ import annotations
-
 from functools import cache
 
-from core.models.cvs import Cv
+from .models.cvs import Cv
 
 
 @cache
-def context_processors(request):
+def cv_templates(request):
     return {
-        "resume_templates": Cv.objects.filter(
+        "cv_templates": Cv.objects.filter(
             profile__category="template",
             profile__language_code=request.LANGUAGE_CODE,
         ),

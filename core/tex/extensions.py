@@ -4,6 +4,7 @@ from jinja2.ext import Extension
 
 
 def format_path_for_latex(path):
+    """ "  This code is a copy from https://github.com/weinbusch/django-tex"""
     if not isinstance(path, str):
         path = str(path)
 
@@ -17,10 +18,15 @@ def format_path_for_latex(path):
 
 
 class GraphicspathExtension(Extension):
-    """Adds a `graphicspath` tag to Jinja2 that
+    """
+
+    This code is a copy from https://github.com/weinbusch/django-tex
+
+    Adds a `graphicspath` tag to Jinja2 that
     prints out a \\graphicspath{ {<path>} } command, where
     <path> is derived from the LATEX_GRAPHICSPATH setting or
     the BASE_DIR setting by default.
+
     """
 
     tags = {"graphicspath"}

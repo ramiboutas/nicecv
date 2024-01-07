@@ -22,6 +22,8 @@ class ObjectIsNotAnInstanceOfEmailMessageError(BaseException):
 
 
 class TexError(BaseException):
+    """ "  This code is a copy from https://github.com/weinbusch/django-tex"""
+
     error_patterns = [
         r"^\!.*?l\.(?P<lineno>\d+).*?$",
         r"^\! Emergency stop.*?\*{3}.*?$",

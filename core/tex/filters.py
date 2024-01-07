@@ -1,3 +1,5 @@
+""""  This code is a copy from https://github.com/weinbusch/django-tex """
+
 import re
 
 from django.template.defaultfilters import register

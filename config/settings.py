@@ -79,7 +79,7 @@ INSTALLED_APPS = [
     # Third-party apps
     "wagtail_localize",
     "wagtail_localize.locales",  # This replaces "wagtail.locales"
-    "wagtailmenus",
+    # "wagtailmenus",
     "django_extensions",
     "rosetta",
     "modeltranslation",
@@ -166,10 +166,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 # wagtail
                 "wagtail.contrib.settings.context_processors.settings",
-                # thid-party
-                "wagtailmenus.context_processors.wagtailmenus",
-                # project
-                "config.project.context_processors",
+                # core
+                "core.context_processors.cv_templates",
+                # cms
+                "cms.context_processors.cms_menu_pages",
             ],
             "debug": DEBUG,
         },
@@ -322,22 +322,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-
-# Wagtail menus
-# https://github.com/jazzband/wagtailmenus
-# main menu (navbar)
-WAGTAILMENUS_MAIN_MENU_MODEL = "cms.CustomMainMenu"
-WAGTAILMENUS_MAIN_MENU_ITEMS_RELATED_NAME = "menu_items"
-
-# flat menus
-WAGTAILMENUS_FLAT_MENU_MODEL = "cms.CustomFlatMenu"
-WAGTAILMENUS_FLAT_MENU_ITEMS_RELATED_NAME = "menu_items"
-WAGTAILMENUS_FLAT_MENUS_HANDLE_CHOICES = (
-    ("about", "About"),
-    ("learn", "Learn"),
-    ("info", "Info"),
-    ("legal", "Legal"),
-)
 
 # static files (whitenoise)
 STATIC_URL = "/static/"

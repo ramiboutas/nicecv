@@ -29,7 +29,6 @@ crispy-tailwind
 Jinja2
 wagtail
 wagtail-localize
-wagtailmenus
 fontawesomefree
 whitenoise[brotli]
 django-minify-html

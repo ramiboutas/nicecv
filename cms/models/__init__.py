@@ -4,10 +4,6 @@ from .blog import BlogPostPage
 from .djangopages import DjangoServedPage
 from .flex import FlexPage
 from .home import HomePage
-from .menus import CustomFlatMenu
-from .menus import CustomFlatMenuItem
-from .menus import CustomMainMenu
-from .menus import CustomMainMenuItem
 from .setttings import Banner
 from .setttings import Brand
 from .setttings import Links
@@ -22,4 +18,3 @@ from .text import TextPage
 # Flex page
 # Site settings
 # FAQs
-# Menus models

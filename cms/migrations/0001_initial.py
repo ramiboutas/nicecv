@@ -10,9 +10,10 @@ import wagtail.fields
 import wagtail.images.blocks
 import wagtail.models
 import wagtail.search.index
-import wagtailmenus.models.menuitems
-import wagtailmenus.models.menus
-import wagtailmenus.models.mixins
+
+# import wagtailmenus.models.menuitems
+# import wagtailmenus.models.menus
+# import wagtailmenus.models.mixins
 
 
 class Migration(migrations.Migration):
@@ -208,11 +209,11 @@ class Migration(migrations.Migration):
                 "abstract": False,
                 "unique_together": {("site", "handle")},
             },
-            bases=(
-                wagtailmenus.models.mixins.DefinesSubMenuTemplatesMixin,
-                models.Model,
-                wagtailmenus.models.menus.Menu,
-            ),
+            # bases=(
+            #     wagtailmenus.models.mixins.DefinesSubMenuTemplatesMixin,
+            #     models.Model,
+            #     wagtailmenus.models.menus.Menu,
+            # ),
         ),
         migrations.CreateModel(
             name="CustomMainMenu",
@@ -256,11 +257,11 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "main menu",
                 "abstract": False,
             },
-            bases=(
-                wagtailmenus.models.mixins.DefinesSubMenuTemplatesMixin,
-                models.Model,
-                wagtailmenus.models.menus.Menu,
-            ),
+            # bases=(
+            #     wagtailmenus.models.mixins.DefinesSubMenuTemplatesMixin,
+            #     models.Model,
+            #     wagtailmenus.models.menus.Menu,
+            # ),
         ),
         migrations.CreateModel(
             name="DjangoServedPage",
@@ -970,7 +971,7 @@ class Migration(migrations.Migration):
                 "ordering": ("sort_order",),
                 "abstract": False,
             },
-            bases=(models.Model, wagtailmenus.models.menuitems.MenuItem),
+            # bases=(models.Model, wagtailmenus.models.menuitems.MenuItem),
         ),
         migrations.CreateModel(
             name="CustomFlatMenuItem",
@@ -1087,7 +1088,7 @@ class Migration(migrations.Migration):
                 "ordering": ("sort_order",),
                 "abstract": False,
             },
-            bases=(models.Model, wagtailmenus.models.menuitems.MenuItem),
+            # bases=(models.Model, wagtailmenus.models.menuitems.MenuItem),
         ),
         migrations.CreateModel(
             name="Brand",

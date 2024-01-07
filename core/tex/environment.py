@@ -4,6 +4,7 @@ from .filters import FILTERS
 
 
 def environment(**options):
+    """ "  This code is a copy from https://github.com/weinbusch/django-tex"""
     options.update(
         {
             "autoescape": None,
