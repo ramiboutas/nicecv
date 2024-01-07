@@ -111,13 +111,6 @@ def ask_to_verify_email():
 
 @db_periodic_task(crontab(hour="0", minute="15"))
 def remove_temporal_profiles():
-    # Delete all temporal profiles
-    old_profiles = Profile.objects.filter(
-        category="temporal", updated__lt=datetime.now() - timedelta(days=30)
-    )
-    message_to_admin = f"Deleted {old_profiles.count()} old temporal profiles\n\n"
-    old_profiles.delete()
-
     # Delete recent temporal profiles with no fullname and no email
     recent_profiles = Profile.objects.filter(
         category="temporal",
@@ -125,11 +118,8 @@ def remove_temporal_profiles():
         fullname__isnull=True,
         email__isnull=True,
     )
-    message_to_admin += f"Deleted {recent_profiles.count()} recent temporal profiles"
+    report_to_admin(f"Deleted {recent_profiles.count()} recent temporal profiles")
     recent_profiles.delete()
-
-    # Inform admin about it
-    report_to_admin(message_to_admin)
 
 
 @db_periodic_task(crontab(hour="0", minute="20"))
