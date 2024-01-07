@@ -32,6 +32,7 @@ class Links(BaseSiteSetting):
                 FieldPanel("twitter"),
                 FieldPanel("youtube"),
                 FieldPanel("linkedin"),
+                FieldPanel("github"),
                 FieldPanel("instagram"),
                 FieldPanel("whatsapp"),
                 FieldPanel("telegram"),
