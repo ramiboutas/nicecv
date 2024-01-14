@@ -1,13 +1,12 @@
+from django.db import models
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import Paginator
-from django.db import models
+
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel
-from wagtail.admin.panels import InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
-from wagtail.models import Orderable
-from wagtail.models import Page
+from wagtail.models import Page, Orderable, Locale
 
 from ..streams import ArticleStreamBlock
 
@@ -21,8 +20,15 @@ class BlogIndexPage(Page):
     def get_context(self, request, *args, **kwargs):
         """Adding custom stuff to our context."""
         context = super().get_context(request, *args, **kwargs)
+        # locale
+        locale = Locale.objects.get(language_code=request.LANGUAGE_CODE)
         # Get all posts
-        all_posts = BlogPostPage.objects.live().public().order_by("-first_published_at")
+        all_posts = (
+            BlogPostPage.objects.live()
+            .filter(locale=locale)
+            .public()
+            .order_by("-first_published_at")
+        )
         # Paginate all posts by 24 per page
         paginator = Paginator(all_posts, 24)
         # Try to get the ?page=x value
