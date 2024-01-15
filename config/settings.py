@@ -38,7 +38,7 @@ DEBUG = os.environ.get("DEBUG", "") == "1"
 
 INTERNAL_IPS = ["127.0.0.1"]
 
-ALLOWED_HOSTS = ["nicecv.online", "www.nicecv.online", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["nicecv.online", "www.nicecv.online", "127.0.0.1", "ramiboutas.com"]
 
 
 # Application definition
