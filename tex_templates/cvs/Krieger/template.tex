@@ -46,7 +46,7 @@ fontsize=10pt
 {% endif %}
 % photo
 {% if profile.has_photo and profile.photo_active %}
-  \photo[round]{ {{- profile.photo_path -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
+  \photo[round]{ {{- profile.get_photo_path() -}} }{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% else %}
   \photo[round]{picture.jpg}{\dimexpr \headerheight-\marginbottom} % Profile picture
 {% endif %}

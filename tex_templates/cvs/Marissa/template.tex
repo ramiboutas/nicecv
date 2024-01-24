@@ -84,7 +84,7 @@
 %% You can add multiple photos on the left (\photoL) or right (\photoR)
 
 {% if profile.has_photo and profile.photo_active %}
-\photoR{2.5cm}{ {{- profile.photo_path -}} }
+\photoR{2.5cm}{ {{- profile.get_photo_path() -}} }
 {% endif %}
 
 \personalinfo{

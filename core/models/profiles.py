@@ -449,21 +449,20 @@ class Profile(auto_prefetch.Model):
 
     def process_photo(self):
         if self.full_photo:
-            size_modified = False
             try:
                 img = Image.open(self.full_photo)
             except Exception as e:
                 raise e
 
-            if img.height > 1200 or img.width > 1200:
-                new_size = (1200, 1200)
-                img.thumbnail(new_size)
-                img.save(self.full_photo.path)
-                size_modified = True
+            # if img.height > 1200 or img.width > 1200:
+            #    new_size = (1200, 1200)
+            #    img.thumbnail(new_size)
+            # img.save(self.full_photo.path)
+            # size_modified = True
 
             if not self.cropped_photo:
-                if size_modified:
-                    img = Image.open(self.full_photo)
+                # if size_modified:
+                #     img = Image.open(self.full_photo)
                 distance = int(0.95 * min([img.height, img.width]))
                 self.crop_width, self.crop_height = distance, distance
                 self.crop_x = int((img.width - distance) / 2)
@@ -475,13 +474,7 @@ class Profile(auto_prefetch.Model):
         to_check = getattr(getattr(self, "cropped_photo"), "name")
         return to_check != "" and to_check is not None
 
-    @cached_property
-    def photo_path_old(self):
-        if self.has_photo:
-            return self.cropped_photo.path
-
-    @cached_property
-    def photo_path(self):
+    def get_photo_path(self):
         if self.has_photo:
             self.cropped_photo.seek(0)
             photobytes = self.cropped_photo.read()
